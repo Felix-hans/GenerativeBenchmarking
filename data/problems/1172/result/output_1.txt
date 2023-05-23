@@ -1,0 +1,62 @@
+Here's the implementation of the DinnerPlates class in Python based on the given requirements:
+
+```python
+class DinnerPlates:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.stacks = [[]]  # Initialize with one empty stack
+
+    def push(self, val: int) -> None:
+        # Find the leftmost stack with available space
+        for stack in self.stacks:
+            if len(stack) < self.capacity:
+                stack.append(val)
+                return
+        # If no stack has space, create a new stack and push the value
+        self.stacks.append([val])
+
+    def pop(self) -> int:
+        # Find the rightmost non-empty stack
+        for stack in reversed(self.stacks):
+            if stack:
+                val = stack.pop()
+                # If the stack becomes empty after the pop, remove it
+                if not stack:
+                    self.stacks.pop()
+                return val
+        return -1  # All stacks are empty
+
+    def popAtStack(self, index: int) -> int:
+        if index < len(self.stacks) and self.stacks[index]:
+            val = self.stacks[index].pop()
+            return val
+        return -1  # The stack at the given index is empty
+```
+
+Here's how you can use the DinnerPlates class:
+
+```python
+# Initialize the DinnerPlates object
+obj = DinnerPlates(2)
+
+# Push values into the stacks
+obj.push(1)
+obj.push(2)
+obj.push(3)
+obj.push(4)
+obj.push(5)
+
+# Perform pop operations
+print(obj.popAtStack(0))  # Output: 2
+obj.push(20)
+obj.push(21)
+print(obj.popAtStack(0))  # Output: 20
+print(obj.popAtStack(2))  # Output: 21
+print(obj.pop())          # Output: 5
+print(obj.pop())          # Output: 4
+print(obj.pop())          # Output: 3
+print(obj.pop())          # Output: 1
+print(obj.pop())          # Output: -1
+```
+
+The output will match the example provided in the question.

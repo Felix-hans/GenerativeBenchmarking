@@ -1,0 +1,49 @@
+To solve this problem, we can use dynamic programming to count the number of eligible attendance records for each length up to n. We'll define two arrays, `ending_P` and `ending_L`, to keep track of the number of eligible records ending with 'P' and 'L' respectively. The values in these arrays will be updated based on the following rules:
+
+1. If we add a 'P' to an eligible record ending with 'P' or 'L', the count remains the same.
+2. If we add an 'L' to an eligible record ending with 'P', the count remains the same.
+3. If we add an 'L' to an eligible record ending with 'L', we need to consider the number of consecutive 'L's. If there are fewer than 2 consecutive 'L's, the count remains the same. If there are 2 consecutive 'L's, the count is reduced by the number of eligible records ending with 'P' of length `i - 2`, where `i` is the current length.
+4. If we add an 'A' to an eligible record ending with 'P' or 'L', the count is increased by the total number of eligible records of length `i - 1`, where `i` is the current length.
+
+We'll initialize `ending_P` and `ending_L` for length 0 and length 1, and then iterate from length 2 to n, updating the arrays based on the rules above. Finally, we'll sum the values in `ending_P` and `ending_L` for length n and return the result modulo 10^9 + 7.
+
+Here's the implementation of the `checkRecord` method in Python:
+
+```python
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        mod = 10 ** 9 + 7
+
+        # Initialize arrays for length 0 and length 1
+        ending_P = [1, 1, 0]  # Number of eligible records ending with 'P'
+        ending_L = [1, 0, 0]  # Number of eligible records ending with 'L'
+
+        for i in range(2, n + 1):
+            new_ending_P = sum(ending_P) % mod  # Update for adding 'P'
+            new_ending_L = sum(ending_L) % mod  # Update for adding 'L'
+
+            # Update for adding 'A' to records ending with 'P' or 'L'
+            new_ending_P += sum(ending_P[:-2]) % mod
+            new_ending_L += sum(ending_L[:-2]) % mod
+
+            # Update for adding 'L' to records ending with 'L'
+            new_ending_L -= ending_P[-2] % mod
+
+            # Update arrays for the next length
+            ending_P = [ending_P[1], ending_P[2], new_ending_P]
+            ending_L = [ending_L[1], ending_L[2], new_ending_L]
+
+        # Return the sum of eligible records for length n
+        return (sum(ending_P) + sum(ending_L)) % mod
+```
+
+Now, we can create an instance of the `Solution` class and test it with the given examples:
+
+```python
+solution = Solution()
+print(solution.checkRecord(2))  # Output: 8
+print(solution.checkRecord(1))  # Output: 3
+print(solution.checkRecord(10101))  # Output: 183236316
+```
+
+The code should produce the expected outputs for the given examples.

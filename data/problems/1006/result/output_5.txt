@@ -1,0 +1,32 @@
+Here's the implementation of the `clumsy` function in Python to calculate the clumsy factorial:
+
+```python
+class Solution:
+    def clumsy(self, n: int) -> int:
+        stack = [n]
+        ops = 0
+        
+        for i in range(n - 1, 0, -1):
+            if ops % 4 == 0:
+                stack[-1] *= i
+            elif ops % 4 == 1:
+                stack[-1] //= i
+            elif ops % 4 == 2:
+                stack.append(i)
+            else:
+                stack.append(-i)
+            
+            ops += 1
+        
+        return sum(stack)
+```
+
+You can use the `clumsy` function to calculate the clumsy factorial of a given positive integer `n`. For example:
+
+```python
+solution = Solution()
+print(solution.clumsy(4))  # Output: 7
+print(solution.clumsy(10)) # Output: 12
+```
+
+The function uses a stack to keep track of the intermediate results and applies the operations according to the given rules. It iterates from `n-1` to 1 and performs multiplication, division, addition, and subtraction based on the current index and the remainder of the division by 4 (`ops % 4`). Finally, it returns the sum of all elements in the stack, which represents the clumsy factorial of `n`.

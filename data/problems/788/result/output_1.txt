@@ -1,0 +1,26 @@
+You can implement the task using the provided class `Solution` and the `rotatedDigits` method. Here's the Python code for the solution:
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        count = 0
+        
+        for num in range(1, n+1):
+            # Check if the number contains any invalid digits
+            if any(digit in {3, 4, 7} for digit in map(int, str(num))):
+                continue
+            
+            # Check if the number contains any valid digits
+            if any(digit in {2, 5, 6, 9} for digit in map(int, str(num))):
+                count += 1
+        
+        return count
+```
+
+The `rotatedDigits` method takes an integer `n` as input and returns the number of good integers in the range [1, n].
+
+The solution uses a loop to iterate over the numbers from 1 to `n`. For each number, it checks if it contains any invalid digits (3, 4, or 7). If it does, the number is skipped. Otherwise, it checks if the number contains any valid digits (2, 5, 6, or 9). If it does, the count is incremented.
+
+Finally, the method returns the count of good integers.
+
+You can create an instance of the `Solution` class and call the `rotatedDigits` method with the desired value of `n` to test the solution.

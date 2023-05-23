@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/47 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 27: RuntimeError: Set changed size during iteration\n  \xe2\x9c\x98 Error: RuntimeError: Set changed size during iteration\n    for route in routes_passing_through_stop:\nLine 27 in numBusesToDestination (Solution.py)\n    ret = Solution().numBusesToDestination(param_1, param_2, param_3)\nLine 66 in _driver (Solution.py)\n    _driver()\nLine 77 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: [[1,2,7],[3,6,7]]\n1\n6\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 2\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:98415) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

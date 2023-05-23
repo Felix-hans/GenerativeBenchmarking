@@ -1,0 +1,36 @@
+To solve the task, we can follow the following steps:
+
+1. Count the frequency of each number in the array.
+2. Sort the numbers based on their frequency in descending order.
+3. Iterate over the sorted frequencies until we remove enough numbers to reach half of the array's size.
+4. Return the number of iterations as the minimum size of the set.
+
+Here's the implementation of the `minSetSize` function in Python:
+
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def minSetSize(self, arr: List[int]) -> int:
+        # Step 1: Count the frequency of each number
+        frequency = Counter(arr)
+
+        # Step 2: Sort the numbers based on frequency in descending order
+        sorted_freq = sorted(frequency.values(), reverse=True)
+
+        # Step 3: Remove numbers until reaching half of the array's size
+        target_size = len(arr) // 2
+        set_size = 0
+        removed_count = 0
+        for freq in sorted_freq:
+            removed_count += freq
+            set_size += 1
+            if removed_count >= target_size:
+                break
+
+        # Step 4: Return the minimum size of the set
+        return set_size
+```
+
+You can create an instance of the `Solution` class and call the `minSetSize` method with the array as the argument. It will return the minimum size of the set needed to remove at least half of the integers in the array.

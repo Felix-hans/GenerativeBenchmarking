@@ -1,0 +1,44 @@
+To add two numbers in base -2, we can follow a similar approach to adding numbers in base 10. We start from the least significant bit (LSB) and move towards the most significant bit (MSB), performing the addition and keeping track of the carry.
+
+Here's the implementation of the `addNegabinary` function in Python:
+
+```python
+class Solution:
+    def addNegabinary(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        # Reverse the input arrays to start from the LSB
+        arr1.reverse()
+        arr2.reverse()
+
+        result = []
+        carry = 0
+        i = 0
+
+        # Perform the addition until both arrays are processed and there is no carry left
+        while i < len(arr1) or i < len(arr2) or carry != 0:
+            # Get the digits at the current position, or assume 0 if one array is exhausted
+            digit1 = arr1[i] if i < len(arr1) else 0
+            digit2 = arr2[i] if i < len(arr2) else 0
+
+            # Calculate the sum of the current digits and the carry
+            current_sum = digit1 + digit2 + carry
+
+            # Compute the remainder and the new carry
+            remainder = current_sum % 2
+            carry = -(current_sum // 2)  # Integer division to handle negative carry
+
+            # Append the remainder to the result
+            result.append(remainder)
+
+            i += 1
+
+        # Remove leading zeros from the result
+        while len(result) > 1 and result[-1] == 0:
+            result.pop()
+
+        # Reverse the result to obtain the correct order
+        result.reverse()
+
+        return result
+```
+
+Now you can create an instance of the `Solution` class and call the `addNegabinary` method with the input arrays `arr1` and `arr2`. The method will return the result as an array of 0s and 1s with no leading zeros.

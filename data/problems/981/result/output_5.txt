@@ -1,0 +1,40 @@
+Here's an implementation of the TimeMap class in Python:
+
+```python
+import bisect
+
+class TimeMap:
+    def __init__(self):
+        self.data = {}
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        if key not in self.data:
+            self.data[key] = []
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.data:
+            return ""
+        values = self.data[key]
+        index = bisect.bisect_right(values, (timestamp, chr(127)))
+        if index > 0:
+            return values[index - 1][1]
+        return ""
+
+# Example usage
+timeMap = TimeMap()
+timeMap.set("foo", "bar", 1)
+print(timeMap.get("foo", 1))  # Output: "bar"
+print(timeMap.get("foo", 3))  # Output: "bar"
+timeMap.set("foo", "bar2", 4)
+print(timeMap.get("foo", 4))  # Output: "bar2"
+print(timeMap.get("foo", 5))  # Output: "bar2"
+```
+
+In this implementation, we store the data in a dictionary where the keys are the original keys and the values are lists of tuples. Each tuple contains a timestamp and the corresponding value. We use the `bisect` module to efficiently find the insertion point for a given timestamp when calling the `get` method.
+
+The `set` method appends the new timestamp-value pair to the list of values for the given key.
+
+The `get` method performs a binary search using `bisect_right` to find the rightmost insertion point for the given timestamp. This gives us the index of the largest timestamp that is less than or equal to the target timestamp. We then retrieve the corresponding value from the list.
+
+Note that if there are no values for a given key or if the target timestamp is smaller than all available timestamps, the `get` method returns an empty string `""` as specified in the requirements.

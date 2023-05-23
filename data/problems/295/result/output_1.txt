@@ -1,0 +1,39 @@
+Here's the implementation of the MedianFinder class in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+
+    def __init__(self):
+        self.small = []  # max heap for the smaller half
+        self.large = []  # min heap for the larger half
+
+    def addNum(self, num: int) -> None:
+        # Add the number to the appropriate heap
+        if len(self.small) == len(self.large):
+            # If both heaps have the same size, add to the large heap (min heap)
+            heapq.heappush(self.large, -heapq.heappushpop(self.small, -num))
+        else:
+            # If the large heap has more elements, add to the small heap (max heap)
+            heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+
+    def findMedian(self) -> float:
+        # Calculate the median based on the sizes of the heaps
+        if len(self.small) == len(self.large):
+            return (self.large[0] - self.small[0]) / 2.0
+        else:
+            return float(self.large[0])
+```
+
+In this implementation, we use two heaps to maintain the elements in the stream. The `small` heap is a max heap that stores the smaller half of the numbers, and the `large` heap is a min heap that stores the larger half. The heaps are balanced in a way that the median can be easily calculated based on their sizes.
+
+The `addNum` function adds a number to the appropriate heap. If both heaps have the same size, we add the number to the `large` heap after negating it. This ensures that the `large` heap contains the smaller half of the numbers in the stream. If the `large` heap has more elements, we add the number to the `small` heap after popping the smallest element from the `large` heap.
+
+The `findMedian` function calculates the median based on the sizes of the heaps. If the sizes are equal, we return the average of the maximum element in the `small` heap (after negating) and the minimum element in the `large` heap. Otherwise, we return the minimum element in the `large` heap directly.
+
+This implementation has a time complexity of O(log n) for the `addNum` function and O(1) for the `findMedian` function, where n is the number of elements in the stream.
+
+Optimizations for the Follow-up Questions:
+1. If all numbers are in the range [0, 100]: Instead of using heaps, we can use an array of size 101, where each index represents a number from 0 to 100. We can update the counts of each number as we add them to the stream. Finding the median would involve finding the midpoint of the total count and locating the corresponding number in the array.
+2. If 99% of numbers are in the range [0, 100]: We can use a combination of the above approach and the heap-based approach. We can maintain the counts of numbers in the range [0, 100] using an array, as described in the first optimization. For numbers outside this range, we can use the heap-based approach to handle the remaining 1% of numbers. This way, we can handle the majority of the numbers efficiently and still provide accurate medians.

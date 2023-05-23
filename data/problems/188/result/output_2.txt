@@ -1,0 +1,60 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum profit at each day and for each transaction. We'll use a 2D array, `dp`, where `dp[i][j]` represents the maximum profit at day `i` and for `j` transactions.
+
+Here's the implementation of the `maxProfit` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+        
+        # If k is larger than half the number of prices, we can perform as many transactions as we want
+        if k >= n // 2:
+            return self.maxProfitUnlimited(prices)
+        
+        # Initialize the dp array
+        dp = [[0] * (k + 1) for _ in range(n)]
+        
+        for i in range(1, k + 1):
+            # Initialize the variables for tracking the maximum profit and the minimum price
+            maxProfit = -float('inf')
+            minPrice = prices[0]
+            
+            for j in range(1, n):
+                # Calculate the maximum profit at day j and for i transactions
+                maxProfit = max(maxProfit, prices[j] - minPrice)
+                
+                # Update the minimum price if a better buy opportunity is found
+                minPrice = min(minPrice, prices[j] - dp[j - 1][i - 1])
+                
+                # Store the maximum profit in the dp array
+                dp[j][i] = max(dp[j - 1][i], maxProfit)
+        
+        # Return the maximum profit at the last day and for k transactions
+        return dp[-1][-1]
+    
+    def maxProfitUnlimited(self, prices: List[int]) -> int:
+        # Calculate the maximum profit with unlimited transactions
+        maxProfit = 0
+        
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                maxProfit += prices[i] - prices[i - 1]
+        
+        return maxProfit
+```
+
+Now you can create an instance of the `Solution` class and call the `maxProfit` function to get the maximum profit for the given inputs:
+
+```python
+solution = Solution()
+k = 2
+prices = [2, 4, 1]
+print(solution.maxProfit(k, prices))  # Output: 2
+
+prices = [3, 2, 6, 5, 0, 3]
+print(solution.maxProfit(k, prices))  # Output: 7
+```
+
+This implementation handles the given constraints and returns the maximum profit achievable with at most `k` transactions.

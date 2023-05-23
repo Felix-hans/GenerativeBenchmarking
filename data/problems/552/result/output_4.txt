@@ -1,0 +1,39 @@
+To solve this task, we can use dynamic programming to calculate the number of eligible attendance records of length `n`.
+
+We can define two arrays `dpA` and `dpP`, where `dpA[i]` represents the number of eligible records of length `i` that end with an 'A', and `dpP[i]` represents the number of eligible records of length `i` that do not end with an 'A'. We will also define two additional arrays `dpL` and `dpPL`, where `dpL[i]` represents the number of eligible records of length `i` that end with an 'L', and `dpPL[i]` represents the number of eligible records of length `i` that end with a 'P' followed by an 'L'.
+
+We can initialize the arrays as follows:
+- `dpA[0] = 0` (no records of length 0 can end with an 'A')
+- `dpP[0] = 1` (one record of length 0 can end with a 'P')
+- `dpL[0] = 0` (no records of length 0 can end with an 'L')
+- `dpPL[0] = 0` (no records of length 0 can end with a 'P' followed by an 'L')
+
+Then, we can use a loop to calculate the values for `dpA`, `dpP`, `dpL`, and `dpPL` iteratively for lengths 1 to `n`. At each step, we can update the values based on the following rules:
+
+- `dpA[i] = dpP[i-1] + dpL[i-1] + dpPL[i-1]` (an 'A' can only follow a record that does not end with an 'A')
+- `dpP[i] = dpA[i-1] + dpP[i-1] + dpL[i-1] + dpPL[i-1]` (a 'P' can follow any type of record)
+- `dpL[i] = dpP[i-1]` (an 'L' can only follow a record that does not end with an 'L')
+- `dpPL[i] = dpL[i-1]` (a 'P' followed by an 'L' can only follow a record that ends with a 'P')
+
+Finally, the total number of eligible records of length `n` is given by the sum of `dpA[n]`, `dpP[n]`, `dpL[n]`, and `dpPL[n]`.
+
+Here's the implementation of the `checkRecord` method in Python:
+
+```python
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        mod = 10**9 + 7
+        dpA = [0] * (n + 1)
+        dpP = [0] * (n + 1)
+        dpL = [0] * (n + 1)
+        dpPL = [0] * (n + 1)
+
+        dpP[0] = 1
+
+        for i in range(1, n + 1):
+            dpA[i] = (dpP[i - 1] + dpL[i - 1] + dpPL[i - 1]) % mod
+            dpP[i] = (dpA[i - 1] + dpP[i - 1] + dpL[i - 1] + dpPL[i - 1]) % mod
+            dpL[i] = dpP[i - 1] % mod
+            dpPL[i] = dpL[i - 1] % mod
+
+       

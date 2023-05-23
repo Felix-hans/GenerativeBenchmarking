@@ -1,0 +1,40 @@
+To solve the given task, we can use a sliding window approach to iterate through the DNA sequence and identify all the 10-letter-long substrings that occur more than once.
+
+Here's the implementation of the `findRepeatedDnaSequences` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        seen = set()  # to store the unique 10-letter-long substrings
+        repeated = set()  # to store the repeated 10-letter-long substrings
+
+        for i in range(len(s) - 9):
+            sequence = s[i:i+10]  # extract the current 10-letter-long substring
+
+            if sequence in seen:
+                repeated.add(sequence)
+            else:
+                seen.add(sequence)
+
+        return list(repeated)
+```
+
+You can create an instance of the `Solution` class and call the `findRepeatedDnaSequences` method to find the repeated DNA sequences. Here's an example usage:
+
+```python
+solution = Solution()
+s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+result = solution.findRepeatedDnaSequences(s)
+print(result)
+```
+
+Output:
+```
+['CCCCCAAAAA', 'AAAAACCCCC']
+```
+
+The code iterates through the given DNA sequence `s`, extracts each 10-letter-long substring, and checks whether it has been seen before. If it has, it is added to the `repeated` set. Finally, the function returns the `repeated` set as a list.
+
+Note: The code assumes that the input string `s` is at least 10 characters long. If the input string can be shorter, you may need to add additional checks to handle such cases.

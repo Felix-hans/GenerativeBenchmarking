@@ -1,0 +1,41 @@
+To solve the problem, we can iterate through the range [1, n] and check if each number is a good number according to the given conditions. We can define a helper function to determine if a number is good or not. Here's the implementation:
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        def isGoodNumber(num):
+            # Set up a dictionary to map digits to their rotated counterparts
+            rotation_map = {'0': '0', '1': '1', '2': '5', '5': '2', '6': '9', '8': '8', '9': '6'}
+            num_str = str(num)
+            rotated_num = ''
+
+            # Iterate through each digit in the number and rotate it if possible
+            for digit in num_str:
+                if digit in rotation_map:
+                    rotated_num += rotation_map[digit]
+                else:
+                    return False  # If any digit cannot be rotated, the number is not good
+
+            return rotated_num != num_str  # Check if the rotated number is different from the original number
+
+        count = 0
+
+        # Iterate through the range [1, n] and count the number of good numbers
+        for num in range(1, n + 1):
+            if isGoodNumber(num):
+                count += 1
+
+        return count
+```
+
+Now, we can create an instance of the `Solution` class and test it with the given examples:
+
+```python
+solution = Solution()
+
+print(solution.rotatedDigits(10))  # Output: 4
+print(solution.rotatedDigits(1))   # Output: 0
+print(solution.rotatedDigits(2))   # Output: 1
+```
+
+The code will output the expected results for the given examples.

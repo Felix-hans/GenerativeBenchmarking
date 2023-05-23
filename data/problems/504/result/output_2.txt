@@ -1,0 +1,36 @@
+Certainly! Here's the Python implementation of the task you described:
+
+```python
+class Solution:
+    def convertToBase7(self, num: int) -> str:
+        if num == 0:
+            return "0"
+
+        result = ""
+        is_negative = False
+
+        if num < 0:
+            is_negative = True
+            num = -num
+
+        while num > 0:
+            result = str(num % 7) + result
+            num //= 7
+
+        if is_negative:
+            result = "-" + result
+
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `convertToBase7` method to get the base 7 representation of a given integer. Here's an example usage:
+
+```python
+solution = Solution()
+print(solution.convertToBase7(100))  # Output: "202"
+print(solution.convertToBase7(-7))   # Output: "-10"
+```
+
+The implementation checks if the number is 0, returns "0" in that case. Otherwise, it initializes an empty string to store the base 7 representation and a flag to keep track of whether the number is negative or not. If the number is negative, the flag is set, and the number is converted to its absolute value.
+
+The implementation then performs a repeated division by 7, storing the remainder at each step and updating the number by integer division. This process continues until the number becomes 0. Finally, if the number was negative, a "-" sign is appended to the result before returning it.

@@ -1,0 +1,34 @@
+To solve the given task, we can follow these steps:
+
+1. Define a helper function to convert a string representation of a non-negative rational number to a float. This function will remove the parentheses and convert the repeating part to its decimal representation.
+
+2. Implement the `isRationalEqual` function, which will use the helper function to convert both strings to floats and compare them for equality.
+
+Here's the Python code that implements the solution:
+
+```python
+class Solution:
+    def isRationalEqual(self, s: str, t: str) -> bool:
+        def convert_to_float(string: str) -> float:
+            if '(' in string:
+                non_repeating_part, repeating_part = string.split('(')
+                repeating_part = repeating_part[:-1]  # Remove the closing parenthesis
+                decimal_part = non_repeating_part + repeating_part * 100  # Multiply by a large number to expand the repeating part
+            else:
+                decimal_part = string
+
+            return float(decimal_part)
+
+        return convert_to_float(s) == convert_to_float(t)
+```
+
+You can create an instance of the `Solution` class and call the `isRationalEqual` method with the given inputs to test it:
+
+```python
+solution = Solution()
+print(solution.isRationalEqual("0.(52)", "0.5(25)"))  # Output: True
+print(solution.isRationalEqual("0.1666(6)", "0.166(66)"))  # Output: True
+print(solution.isRationalEqual("0.9(9)", "1."))  # Output: True
+```
+
+The code should produce the expected outputs as mentioned in the examples.

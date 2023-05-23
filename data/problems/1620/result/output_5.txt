@@ -1,0 +1,52 @@
+To solve the given task, we can follow the following steps:
+
+1. Initialize variables to keep track of the maximum network quality and the corresponding coordinate.
+2. Iterate through all possible coordinates within the given radius.
+3. For each coordinate, calculate the network quality by iterating through all the towers and summing up the signal qualities of reachable towers.
+4. If the calculated network quality is greater than the current maximum, update the maximum quality and the corresponding coordinate.
+5. If the calculated network quality is equal to the current maximum, compare the coordinate lexicographically and update if it is smaller.
+6. Finally, return the coordinate with the maximum network quality.
+
+Here's the implementation of the `bestCoordinate` function:
+
+```python
+from typing import List
+
+class Solution:
+    def bestCoordinate(self, towers: List[List[int]], radius: int) -> List[int]:
+        max_quality = 0
+        best_coordinate = [0, 0]
+
+        for x in range(51):
+            for y in range(51):
+                network_quality = 0
+
+                for tower in towers:
+                    tx, ty, tq = tower
+                    distance = ((tx - x) ** 2 + (ty - y) ** 2) ** 0.5
+
+                    if distance <= radius:
+                        signal_quality = tq // (1 + distance)
+                        network_quality += signal_quality
+
+                if network_quality > max_quality:
+                    max_quality = network_quality
+                    best_coordinate = [x, y]
+                elif network_quality == max_quality:
+                    if (x < best_coordinate[0]) or (x == best_coordinate[0] and y < best_coordinate[1]):
+                        best_coordinate = [x, y]
+
+        return best_coordinate
+```
+
+You can create an instance of the `Solution` class and call the `bestCoordinate` method with the given input to test it out. For example:
+
+```python
+solution = Solution()
+towers = [[1, 2, 5], [2, 1, 7], [3, 1, 9]]
+radius = 2
+result = solution.bestCoordinate(towers, radius)
+print(result)  # Output: [2, 1]
+```
+
+The above code will print the expected output `[2, 1]` for the given example.

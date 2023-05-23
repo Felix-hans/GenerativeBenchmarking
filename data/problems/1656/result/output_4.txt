@@ -1,0 +1,45 @@
+Here's the implementation of the `OrderedStream` class in Python:
+
+```python
+from typing import List
+
+class OrderedStream:
+
+    def __init__(self, n: int):
+        self.stream = [None] * (n + 1)
+        self.ptr = 1
+
+    def insert(self, idKey: int, value: str) -> List[str]:
+        self.stream[idKey] = value
+        if idKey == self.ptr:
+            result = []
+            while self.ptr < len(self.stream) and self.stream[self.ptr] is not None:
+                result.append(self.stream[self.ptr])
+                self.ptr += 1
+            return result
+        return []
+```
+
+Explanation:
+- In the `__init__` method, we initialize a list `stream` of size `n + 1` (to account for 1-based indexing) and initialize all elements to `None`. We also initialize a pointer `ptr` to keep track of the next expected ID.
+- In the `insert` method, we insert the `(idKey, value)` pair into the `stream` list at the corresponding index.
+- If the inserted `idKey` is equal to the expected `ptr` value, it means we have a contiguous chunk of values. We iterate from `ptr` onwards and collect all non-None values into the `result` list. We update `ptr` to the next expected ID. Finally, we return the `result`.
+- If the inserted `idKey` is not equal to `ptr`, it means the inserted pair is out of order, so we return an empty list.
+
+Here's an example usage:
+
+```python
+# Creating an instance of OrderedStream with n=5
+os = OrderedStream(5)
+
+# Inserting values in arbitrary order
+print(os.insert(3, "ccccc"))  # Output: []
+print(os.insert(1, "aaaaa"))  # Output: ['aaaaa']
+print(os.insert(2, "bbbbb"))  # Output: ['bbbbb', 'ccccc']
+print(os.insert(5, "eeeee"))  # Output: []
+print(os.insert(4, "ddddd"))  # Output: ['ddddd', 'eeeee']
+```
+
+The output matches the expected output from the provided example.
+
+The `OrderedStream` class maintains the state of the stream and allows you to insert values and retrieve chunks of values in the increasing order of their IDs.

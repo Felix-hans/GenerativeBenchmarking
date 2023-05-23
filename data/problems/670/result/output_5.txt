@@ -1,0 +1,30 @@
+Here's the implementation of the `maximumSwap` function in Python that solves the given task:
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        # Convert the number to a list of digits
+        digits = list(str(num))
+        n = len(digits)
+        
+        # Find the last occurrence of each digit
+        last_occurrence = {int(digit): i for i, digit in enumerate(digits)}
+        
+        # Iterate through the digits
+        for i in range(n):
+            digit = int(digits[i])
+            
+            # Check if there is a larger digit to the right of the current digit
+            for j in range(9, digit, -1):
+                if j in last_occurrence and last_occurrence[j] > i:
+                    # Swap the current digit with the larger digit
+                    digits[i], digits[last_occurrence[j]] = digits[last_occurrence[j]], digits[i]
+                    
+                    # Convert the list of digits back to an integer and return it
+                    return int(''.join(digits))
+        
+        # If no swap is possible, return the original number
+        return num
+```
+
+You can create an instance of the `Solution` class and call the `maximumSwap` function on it, passing the input number as an argument. The function will return the maximum valued number after at most one swap of two digits.

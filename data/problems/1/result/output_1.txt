@@ -1,0 +1,20 @@
+Here's the Python code to solve the problem using a dictionary:
+
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        num_indices = {}
+        
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in num_indices:
+                return [num_indices[complement], i]
+            num_indices[num] = i
+        
+        # No solution found
+        return []
+```
+
+In this solution, we iterate through the `nums` array, keeping track of the indices of previously seen numbers in the `num_indices` dictionary. For each number `num`, we calculate the complement by subtracting it from the target. If the complement exists in `num_indices`, it means we have found the two numbers that add up to the target, so we return their indices. If not, we add the current number and its index to `num_indices` for future lookups.
+
+The time complexity of this solution is O(n) because we iterate through the array once, and the space complexity is also O(n) because, in the worst case, we need to store all the numbers in the dictionary.

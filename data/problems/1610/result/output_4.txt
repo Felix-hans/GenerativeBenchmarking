@@ -1,0 +1,57 @@
+To solve this problem, we can follow the steps below:
+
+1. Create a list `angles` to store the angles between each point and the location.
+2. Create two variables, `same_location` and `max_points`, both initialized to 0.
+   - `same_location` will keep track of the number of points at the same location as the given location.
+   - `max_points` will store the maximum number of visible points.
+3. Iterate through each point in the `points` list.
+   - Calculate the angle between the current point and the given location using the `math.atan2` function.
+   - Add the calculated angle to the `angles` list.
+   - If the current point is at the same location as the given location, increment `same_location` by 1.
+4. Sort the `angles` list in ascending order.
+5. Duplicate the `angles` list and concatenate it with itself to handle wrap-around angles.
+6. Iterate through each angle in the duplicated `angles` list.
+   - Initialize a variable `current_points` to `same_location`.
+   - Iterate through the remaining angles from the current angle.
+     - If the difference between the current angle and the next angle is less than or equal to the given angle, increment `current_points` by 1.
+     - Otherwise, break the loop.
+   - Update `max_points` to the maximum value between `max_points` and `current_points`.
+7. Return `max_points` as the result.
+
+Here's the implementation of the `visiblePoints` function:
+
+```python
+import math
+from typing import List
+
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        angles = []
+        same_location = 0
+        max_points = 0
+
+        for point in points:
+            x, y = point
+            if x == location[0] and y == location[1]:
+                same_location += 1
+            else:
+                angles.append(math.atan2(y - location[1], x - location[0]))
+
+        angles.sort()
+        angles += [angle + 2 * math.pi] * len(angles)
+
+        for i in range(len(angles)):
+            current_points = same_location
+
+            for j in range(i + 1, len(angles)):
+                if angles[j] - angles[i] <= math.radians(angle):
+                    current_points += 1
+                else:
+                    break
+
+            max_points = max(max_points, current_points)
+
+        return max_points
+```
+
+You can create an instance of the `Solution` class and call the `visiblePoints` method with the input parameters to get the maximum number of visible points.

@@ -1,0 +1,28 @@
+You can implement the task using the following Python code:
+
+```python
+class Solution:
+    def thousandSeparator(self, n: int) -> str:
+        n_str = str(n)
+        length = len(n_str)
+        result = []
+
+        for i in range(length):
+            if i > 0 and (length - i) % 3 == 0:
+                result.append('.')
+            result.append(n_str[i])
+
+        return ''.join(result)
+```
+
+The code converts the given integer `n` to a string `n_str`. It then iterates over each character of the string, starting from the leftmost digit. If the current position is greater than 0 and the remaining length (length - i) is a multiple of 3, it means we have reached a position where a dot separator should be inserted. In such cases, a dot character '.' is appended to the `result` list. Finally, the result is obtained by joining all the characters in the `result` list using the `join` method, and it is returned as a string.
+
+You can create an instance of the `Solution` class and call the `thousandSeparator` method to test it, as shown below:
+
+```python
+solution = Solution()
+print(solution.thousandSeparator(987))  # Output: "987"
+print(solution.thousandSeparator(1234))  # Output: "1.234"
+```
+
+This will produce the expected output as mentioned in the examples.

@@ -1,0 +1,21 @@
+To move all the zeros to the end of the array while maintaining the relative order of the non-zero elements, we can use a two-pointer approach. One pointer, `left`, will keep track of the position where the next non-zero element should be placed, and the other pointer, `right`, will iterate through the array to find non-zero elements.
+
+Here's the implementation of the `moveZeroes` function in Python:
+
+```python
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        left = 0  # Pointer to track the position of the next non-zero element
+
+        # Iterate through the array
+        for right in range(len(nums)):
+            if nums[right] != 0:
+                # Swap the non-zero element with the left pointer
+                nums[left], nums[right] = nums[right], nums[left]
+                left += 1
+```
+
+This implementation maintains the relative order of the non-zero elements while moving all the zeros to the end of the array. It iterates through the array once, and each non-zero element is swapped only once. Therefore, it minimizes the total number of operations done.

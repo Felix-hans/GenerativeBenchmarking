@@ -1,0 +1,21 @@
+Here's the implementation of the `orderlyQueue` function in Python:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k == 1:
+            # If k is 1, we can only rotate the string.
+            # We iterate through all possible rotations and keep track of the lexicographically smallest string.
+            n = len(s)
+            smallest = s
+            for _ in range(n):
+                s = s[1:] + s[0]
+                if s < smallest:
+                    smallest = s
+            return smallest
+        else:
+            # If k is greater than 1, we can sort the string directly.
+            return "".join(sorted(s))
+```
+
+This function checks whether `k` is equal to 1 or not. If `k` is 1, it iterates through all possible rotations of the string `s` and keeps track of the lexicographically smallest string. If `k` is greater than 1, it sorts the string directly using the `sorted` function and returns the result.

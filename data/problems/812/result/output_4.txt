@@ -1,0 +1,28 @@
+To solve this problem, we can use the Shoelace formula or the Gauss's area formula to calculate the area of a triangle given its three vertices. The formula is as follows:
+
+Area = 0.5 * |x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)|
+
+We need to calculate the area for all possible combinations of three points and find the maximum area among them. Here's the implementation of the `largestTriangleArea` method:
+
+```python
+from typing import List
+
+class Solution:
+    def largestTriangleArea(self, points: List[List[int]]) -> float:
+        n = len(points)
+        max_area = 0
+        
+        for i in range(n):
+            for j in range(i+1, n):
+                for k in range(j+1, n):
+                    x1, y1 = points[i]
+                    x2, y2 = points[j]
+                    x3, y3 = points[k]
+                    
+                    area = 0.5 * abs(x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2))
+                    max_area = max(max_area, area)
+        
+        return max_area
+```
+
+Now you can create an instance of the `Solution` class and call the `largestTriangleArea` method, passing the `points` array as an argument, to get the area of the largest triangle that can be formed.

@@ -1,0 +1,54 @@
+To determine if the robot stays within a circle, we need to consider two factors: the final position of the robot and its final direction.
+
+The robot will stay within a circle if it returns to the origin (0, 0) or if it faces a direction other than north after executing the instructions.
+
+We can use a variable `direction` to keep track of the robot's current direction. Initially, `direction` is set to 0, representing north. We can also use variables `x` and `y` to keep track of the robot's position. Initially, `x` and `y` are set to 0.
+
+We will iterate through the instructions and update the robot's position and direction accordingly. Here's an implementation of the `isRobotBounded` function:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Initialize variables
+        direction = 0  # 0: north, 1: east, 2: south, 3: west
+        x, y = 0, 0
+
+        # Iterate through instructions
+        for instruction in instructions:
+            if instruction == "G":
+                if direction == 0:
+                    y += 1
+                elif direction == 1:
+                    x += 1
+                elif direction == 2:
+                    y -= 1
+                else:  # direction == 3
+                    x -= 1
+            elif instruction == "L":
+                direction = (direction - 1) % 4
+            elif instruction == "R":
+                direction = (direction + 1) % 4
+
+        # Check if the robot returns to the origin or faces a direction other than north
+        return (x == 0 and y == 0) or direction != 0
+```
+
+Now we can create an instance of the `Solution` class and test it with the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+instructions = "GGLLGG"
+print(solution.isRobotBounded(instructions))  # Output: True
+
+# Example 2
+instructions = "GG"
+print(solution.isRobotBounded(instructions))  # Output: False
+
+# Example 3
+instructions = "GL"
+print(solution.isRobotBounded(instructions))  # Output: True
+```
+
+The code should produce the expected outputs for the given examples.

@@ -1,0 +1,48 @@
+Here's the Python implementation of the `fractionToDecimal` function that solves the given task:
+
+```python
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        if numerator == 0:
+            return "0"
+
+        result = []
+        
+        # Handle the sign
+        if (numerator < 0) != (denominator < 0):
+            result.append("-")
+
+        # Convert numerator and denominator to positive
+        numerator = abs(numerator)
+        denominator = abs(denominator)
+
+        # Append the integer part
+        result.append(str(numerator // denominator))
+        remainder = numerator % denominator
+
+        # If there is a remainder, append the decimal part
+        if remainder != 0:
+            result.append(".")
+            decimal_part = []
+
+            # Map remainders to their corresponding positions
+            remainder_map = {}
+            while remainder != 0:
+                # If the remainder repeats, enclose the repeating part in parentheses
+                if remainder in remainder_map:
+                    start = remainder_map[remainder]
+                    decimal_part.insert(start, "(")
+                    decimal_part.append(")")
+                    break
+                remainder_map[remainder] = len(decimal_part)
+
+                remainder *= 10
+                decimal_part.append(str(remainder // denominator))
+                remainder %= denominator
+
+            result.extend(decimal_part)
+        
+        return "".join(result)
+```
+
+You can create an instance of the `Solution` class and call the `fractionToDecimal` method with the numerator and denominator as arguments to get the desired output.

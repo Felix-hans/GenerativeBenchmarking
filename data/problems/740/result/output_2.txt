@@ -1,0 +1,28 @@
+To solve the given problem, we can use dynamic programming to keep track of the maximum points we can earn at each element of the array.
+
+Here's the implementation of the `deleteAndEarn` function in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def deleteAndEarn(self, nums: List[int]) -> int:
+        # Step 1: Count the frequency of each number
+        freq = Counter(nums)
+        
+        # Step 2: Create a list to store the maximum points up to each number
+        max_points = [0] * (max(nums) + 1)
+        
+        # Step 3: Calculate the maximum points using dynamic programming
+        max_points[1] = freq[1] * 1  # If the array contains only 1, earn its points
+        max_points[2] = max(max_points[1], freq[2] * 2)  # Compare earning 2 or keeping 1
+        
+        for i in range(3, len(max_points)):
+            # Decide whether to earn the points for the current number or skip it
+            max_points[i] = max(max_points[i-1], max_points[i-2] + freq[i] * i)
+        
+        # Step 4: Return the maximum points
+        return max_points[-1]
+```
+
+This solution has a time complexity of O(n), where n is the length of the `nums` array, since we iterate through the array once and perform constant time operations at each step.

@@ -1,0 +1,37 @@
+You can solve the given task by following these steps:
+
+1. Convert the given number, `num`, into a string so that you can manipulate its digits.
+2. Initialize two variables, `max_digit` and `max_index`, to keep track of the maximum digit found and its index.
+   Set `max_digit` to -1 and `max_index` to -1 initially.
+3. Start iterating through each digit in the string representation of `num`, along with its index.
+4. For each digit, compare it with the current `max_digit`. If the digit is greater than `max_digit`, update `max_digit` to the current digit and `max_index` to the current index.
+5. After the loop, if `max_digit` is still -1, it means the number is already in its maximum form, so return `num` as it is.
+6. Otherwise, find the leftmost occurrence of a digit that is smaller than `max_digit` by iterating through the string representation of `num` from left to right.
+7. Once you find the leftmost smaller digit, swap it with `max_digit`. Convert the modified string back to an integer and return it as the result.
+
+Here's the implementation of the `maximumSwap` function in Python:
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        num_str = str(num)
+        max_digit = -1
+        max_index = -1
+
+        for i, digit in enumerate(num_str):
+            if int(digit) > max_digit:
+                max_digit = int(digit)
+                max_index = i
+
+        if max_digit == -1:
+            return num
+
+        for i, digit in enumerate(num_str):
+            if int(digit) < max_digit:
+                num_str = num_str[:i] + num_str[max_index] + num_str[i+1:max_index] + digit + num_str[max_index+1:]
+                break
+
+        return int(num_str)
+```
+
+You can create an instance of the `Solution` class and call the `maximumSwap` method with the desired input number to get the maximum valued number.

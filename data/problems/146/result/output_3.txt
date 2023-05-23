@@ -1,0 +1,83 @@
+To implement the LRU cache in Python, we can use a combination of a dictionary and a doubly linked list. The dictionary will provide O(1) lookup for keys, and the doubly linked list will keep track of the least recently used keys.
+
+Here's the implementation of the LRUCache class:
+
+```python
+class ListNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = ListNode(None, None)  # dummy head node
+        self.tail = ListNode(None, None)  # dummy tail node
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _add_node(self, node):
+        # Add a node after the dummy head
+        node.next = self.head.next
+        node.prev = self.head
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node):
+        # Remove a node from the linked list
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _move_to_head(self, node):
+        # Move a node to the head of the linked list
+        self._remove_node(node)
+        self._add_node(node)
+
+    def _pop_tail(self):
+        # Remove the node before the dummy tail (i.e., the least recently used node)
+        tail = self.tail.prev
+        self._remove_node(tail)
+        return tail
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._move_to_head(node)
+            return node.value
+        else:
+            return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._move_to_head(node)
+        else:
+            new_node = ListNode(key, value)
+            self.cache[key] = new_node
+            self._add_node(new_node)
+            if len(self.cache) > self.capacity:
+                tail = self._pop_tail()
+                del self.cache[tail.key]
+```
+
+Let's test the LRUCache class with the given example:
+
+```python
+lRUCache = LRUCache(2)
+lRUCache.put(1, 1)
+lRUCache.put(2, 2)
+print(lRUCache.get(1))  # Output: 1
+lRUCache.put(3, 3)
+print(lRUCache.get(2))  # Output: -1
+lRUCache.put(4, 4)
+print(lRUCache.get(1))  # Output: -1
+print(lRUCache.get(3))  # Output: 3
+print(lRUCache.get(4))  # Output: 4
+```
+
+The LRUCache class correctly implements the get() and put() methods with O(1) average time complexity.

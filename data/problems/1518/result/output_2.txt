@@ -1,0 +1,30 @@
+You can implement the task in Python using the given function signature as follows:
+
+```python
+class Solution:
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        # Initialize variables
+        total_drinks = numBottles  # Total number of bottles you can drink
+        empty_bottles = numBottles  # Number of empty bottles you have after drinking
+        while empty_bottles >= numExchange:
+            # Calculate the number of full bottles you can get from exchanging empty bottles
+            full_bottles = empty_bottles // numExchange
+            # Update the total number of drinks
+            total_drinks += full_bottles
+            # Calculate the remaining empty bottles after exchanging
+            empty_bottles = empty_bottles % numExchange + full_bottles
+        return total_drinks
+```
+
+Here's how the function works:
+
+1. Initialize the `total_drinks` variable with the initial number of bottles (`numBottles`).
+2. Initialize the `empty_bottles` variable with the initial number of bottles (`numBottles`).
+3. Enter a loop that continues as long as you have enough empty bottles to exchange (`empty_bottles >= numExchange`).
+4. Within the loop, calculate the number of full bottles you can get from exchanging the empty bottles (`full_bottles = empty_bottles // numExchange`).
+5. Update the `total_drinks` variable by adding the number of full bottles obtained (`total_drinks += full_bottles`).
+6. Calculate the remaining empty bottles after exchanging by taking the modulo of empty bottles with the number of bottles required for an exchange and adding the full bottles obtained (`empty_bottles = empty_bottles % numExchange + full_bottles`).
+7. Repeat steps 4-6 until you no longer have enough empty bottles for an exchange.
+8. Return the final `total_drinks` as the maximum number of water bottles you can drink.
+
+You can create an instance of the `Solution` class and call the `numWaterBottles` method with the desired input values to get the result.

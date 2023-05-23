@@ -1,0 +1,52 @@
+To implement the RandomizedCollection class with average O(1) time complexity for each operation, we can use a combination of a list and a dictionary. The list will store the elements in the collection, while the dictionary will map each element to its indices in the list.
+
+Here's the implementation:
+
+```python
+import random
+
+class RandomizedCollection:
+
+    def __init__(self):
+        self.collection = []
+        self.indices = {}
+
+    def insert(self, val: int) -> bool:
+        self.collection.append(val)
+        if val in self.indices:
+            self.indices[val].add(len(self.collection) - 1)
+            return False
+        else:
+            self.indices[val] = {len(self.collection) - 1}
+            return True
+
+    def remove(self, val: int) -> bool:
+        if val in self.indices:
+            index = self.indices[val].pop()
+            last_element = self.collection[-1]
+            self.collection[index] = last_element
+            self.indices[last_element].remove(len(self.collection) - 1)
+            if index < len(self.collection) - 1:
+                self.indices[last_element].add(index)
+            if len(self.indices[val]) == 0:
+                del self.indices[val]
+            self.collection.pop()
+            return True
+        else:
+            return False
+
+    def getRandom(self) -> int:
+        return random.choice(self.collection)
+```
+
+Explanation of the implementation:
+
+1. In the `__init__` method, we initialize an empty list `collection` to store the elements and an empty dictionary `indices` to map elements to their indices.
+
+2. The `insert` method takes an integer `val` and adds it to the collection. We append the element to the `collection` list and check if it already exists in the `indices` dictionary. If it exists, we add the new index to the set of indices for that element and return `False`. If it doesn't exist, we create a new set with the index of the new element and add it to the `indices` dictionary, then return `True`.
+
+3. The `remove` method takes an integer `val` and removes one occurrence of the element from the collection if it exists. First, we check if the element exists in the `indices` dictionary. If it does, we remove one index of the element from the set of indices and get the index to remove from the `collection` list. We replace the element at that index with the last element in the `collection`, update the indices of the last element accordingly, and remove the last element from the list. If the element has no more occurrences, we remove it from the `indices` dictionary. Finally, we return `True` if the removal was successful or `False` if the element doesn't exist.
+
+4. The `getRandom` method returns a random element from the current collection. We use the `random.choice` function to select a random element from the `collection` list and return it.
+
+The time complexity of each operation (insert, remove, getRandom) is O(1) on average because dictionary operations (insertion, deletion, and retrieval) have an average time complexity of O(1), and list append and pop operations also have an average time complexity of O(1).

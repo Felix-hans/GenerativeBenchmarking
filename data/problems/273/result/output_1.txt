@@ -1,0 +1,52 @@
+To convert a non-negative integer to its English words representation, you can use a recursive approach. Here's the implementation of the `numberToWords` function in Python:
+
+```python
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        if num == 0:
+            return "Zero"
+        
+        singles = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+        teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen']
+        tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety']
+        thousands = ['', 'Thousand', 'Million', 'Billion']
+        
+        def helper(n):
+            if n == 0:
+                return ''
+            elif n < 10:
+                return singles[n] + ' '
+            elif n < 20:
+                return teens[n - 10] + ' '
+            elif n < 100:
+                return tens[n // 10] + ' ' + helper(n % 10)
+            else:
+                return singles[n // 100] + ' Hundred ' + helper(n % 100)
+        
+        words = ''
+        i = 0
+        
+        while num > 0:
+            if num % 1000 != 0:
+                words = helper(num % 1000) + thousands[i] + ' ' + words
+            num //= 1000
+            i += 1
+        
+        return words.strip()
+```
+
+You can create an instance of the `Solution` class and call the `numberToWords` function on it with the desired input number:
+
+```python
+solution = Solution()
+num = 1234567
+result = solution.numberToWords(num)
+print(result)
+```
+
+This will output:
+```
+One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven
+```
+
+Note that this implementation assumes the input `num` is within the constraints of a non-negative integer (0 <= num <= 2^31 - 1).

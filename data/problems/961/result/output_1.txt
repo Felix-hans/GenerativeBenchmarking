@@ -1,0 +1,30 @@
+You can implement the solution to find the element that is repeated n times in the given integer array using the following code:
+
+```python
+class Solution:
+    def repeatedNTimes(self, nums):
+        count = {}
+        for num in nums:
+            if num in count:
+                return num
+            count[num] = 1
+```
+
+Here's how the code works:
+
+1. We initialize an empty dictionary `count` to keep track of the count of each element in the array.
+2. We iterate over each element `num` in the given `nums` array.
+3. For each `num`, we check if it is already present in the `count` dictionary. If it is, then it is the element that is repeated `n` times, so we return it as the result.
+4. If `num` is not present in the `count` dictionary, we add it as a key with a value of 1 to indicate that we have encountered it once.
+5. If no repeated element is found, the loop will exit, and the function will return None (as there must be exactly one element repeated `n` times according to the problem statement).
+
+You can then create an instance of the `Solution` class and call the `repeatedNTimes` method on that instance, passing the `nums` array as the argument. For example:
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 3]
+result = solution.repeatedNTimes(nums)
+print(result)  # Output: 3
+```
+
+Hope this helps!

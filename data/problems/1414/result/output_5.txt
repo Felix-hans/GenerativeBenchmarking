@@ -1,0 +1,36 @@
+To solve this problem, we can use a greedy approach. We start by generating Fibonacci numbers until we find the largest Fibonacci number that is less than or equal to k. Then, we subtract that Fibonacci number from k and repeat the process until k becomes zero. The count of Fibonacci numbers used will be the minimum number of Fibonacci numbers required to sum up to k.
+
+Here's the implementation of the `findMinFibonacciNumbers` function:
+
+```python
+class Solution:
+    def findMinFibonacciNumbers(self, k: int) -> int:
+        fib_nums = [1, 1]  # Initialize the list of Fibonacci numbers with F1 = 1 and F2 = 1
+        while fib_nums[-1] < k:
+            # Generate Fibonacci numbers until the largest Fibonacci number is less than or equal to k
+            next_fib = fib_nums[-1] + fib_nums[-2]
+            fib_nums.append(next_fib)
+
+        count = 0
+        i = len(fib_nums) - 1  # Start from the largest Fibonacci number
+        while k > 0:
+            if fib_nums[i] <= k:
+                # If the current Fibonacci number is less than or equal to k, subtract it from k
+                k -= fib_nums[i]
+                count += 1
+            else:
+                i -= 1  # Move to the next smaller Fibonacci number
+
+        return count
+```
+
+Now, you can create an instance of the `Solution` class and call the `findMinFibonacciNumbers` method with the desired value of `k`. For example:
+
+```python
+solution = Solution()
+k = 7
+result = solution.findMinFibonacciNumbers(k)
+print(result)  # Output: 2
+```
+
+The above code will print the minimum number of Fibonacci numbers required to sum up to `k`.

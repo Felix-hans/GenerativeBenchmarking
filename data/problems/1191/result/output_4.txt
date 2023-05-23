@@ -1,0 +1,53 @@
+To solve the problem, we can follow these steps:
+
+1. Define a function `kConcatenationMaxSum` that takes in an array `arr` and an integer `k` as input.
+2. Calculate the length of the array `n`.
+3. Compute the maximum subarray sum of the original array `arr` using the Kadane's algorithm. Let's store this value in the variable `max_sum`.
+4. Compute the prefix sum and suffix sum arrays of the original array `arr` and store them in the variables `prefix_sum` and `suffix_sum` respectively.
+5. Calculate the total sum of the original array `arr` and store it in the variable `total_sum`.
+6. If `total_sum` is positive, calculate the maximum subarray sum that includes the last element of `arr` and the first element of `arr` repeated `k-2` times. Let's store this value in the variable `max_prefix_suffix_sum`.
+7. Otherwise, set `max_prefix_suffix_sum` to 0.
+8. Calculate the maximum subarray sum that includes the first element of `arr` and the last element of `arr` repeated `k-2` times. Let's store this value in the variable `max_prefix_suffix_sum`.
+9. Calculate the maximum subarray sum that includes the last `k` elements of `arr` and the first `k` elements of `arr` repeated `k-2` times. Let's store this value in the variable `max_combined_sum`.
+10. Calculate the result by taking the maximum value among `max_sum`, `max_prefix_suffix_sum`, and `max_combined_sum`.
+11. If the result is negative, return 0.
+12. Otherwise, return the result modulo 10^9 + 7.
+
+Here's the implementation of the solution in Python:
+
+```python
+class Solution:
+    def kConcatenationMaxSum(self, arr: List[int], k: int) -> int:
+        n = len(arr)
+        
+        max_sum = 0
+        current_sum = 0
+        
+        for i in range(n):
+            current_sum = max(arr[i], current_sum + arr[i])
+            max_sum = max(max_sum, current_sum)
+        
+        prefix_sum = [0] * n
+        suffix_sum = [0] * n
+        prefix_sum[0] = arr[0]
+        suffix_sum[n-1] = arr[n-1]
+        
+        for i in range(1, n):
+            prefix_sum[i] = prefix_sum[i-1] + arr[i]
+            suffix_sum[n-1-i] = suffix_sum[n-i] + arr[n-1-i]
+        
+        total_sum = sum(arr)
+        
+        if total_sum > 0:
+            max_prefix_suffix_sum = max(prefix_sum) + max(suffix_sum) + (k-2) * total_sum
+        else:
+            max_prefix_suffix_sum = 0
+        
+        max_combined_sum = max(suffix_sum) + max(prefix_sum)
+        
+        result = max(max_sum, max_prefix_suffix_sum, max_combined_sum)
+        
+        return result % (10**9 + 7)
+```
+
+You can create an instance of the `Solution` class and call the `kConcatenationMaxSum` function with the appropriate inputs to solve the problem.

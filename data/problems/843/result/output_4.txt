@@ -1,0 +1,56 @@
+To solve this task, we can use the following approach:
+
+1. Initialize a set `wordSet` with all the words from the `words` list.
+2. Initialize a variable `guesses` to 0.
+3. Iterate `i` from 0 to 9 (inclusive), since the maximum allowed guesses is 10.
+4. Select a random word `guess` from the `wordSet` (we can use the `random.choice()` function).
+5. Call `master.guess(guess)` to get the number of exact matches.
+6. If the number of exact matches is 6, we have found the secret word, so we return "You guessed the secret word correctly."
+7. Otherwise, remove `guess` from the `wordSet`.
+8. Iterate over all the words in the `wordSet` and keep only the words that have the same number of exact matches as the previous guess.
+9. Set `wordSet` to the filtered set of words.
+10. Increment `guesses` by 1.
+11. If `guesses` exceeds the maximum allowed guesses, return "Either you took too many guesses, or you did not find the secret word."
+12. Repeat steps 4-11 until the secret word is found or the maximum allowed guesses are reached.
+
+Here's the implementation of the `findSecretWord` method:
+
+```python
+import random
+from typing import List
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        wordSet = set(words)
+        guesses = 0
+
+        while guesses < 10:
+            guess = random.choice(list(wordSet))
+            matches = master.guess(guess)
+
+            if matches == 6:
+                return "You guessed the secret word correctly."
+
+            wordSet.remove(guess)
+            wordSet = set(word for word in wordSet if self.matchCount(word, guess) == matches)
+
+            guesses += 1
+
+        return "Either you took too many guesses, or you did not find the secret word."
+
+    def matchCount(self, word1: str, word2: str) -> int:
+        return sum(c1 == c2 for c1, c2 in zip(word1, word2))
+```
+
+You can now create an instance of the `Solution` class and call the `findSecretWord` method with the given inputs:
+
+```python
+solution = Solution()
+secret = "acckzz"
+words = ["acckzz", "ccbazz", "eiowzz", "abcczz"]
+allowedGuesses = 10
+result = solution.findSecretWord(words, Master(secret), allowedGuesses)
+print(result)
+```
+
+Note that in the above code, `Master` is assumed to be an instance of the `Master` class provided in the problem description. Make sure to replace `Master(secret)` with the actual instance of the `Master` class and implement its `guess` method accordingly.

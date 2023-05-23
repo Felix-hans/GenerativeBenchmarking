@@ -1,0 +1,28 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum profit at each day considering the two possible actions: buying or selling the stock.
+
+Here's the Python implementation for the `maxProfit` function:
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        n = len(prices)
+        buy = [0] * n  # keep track of the maximum profit when holding the stock
+        sell = [0] * n  # keep track of the maximum profit when not holding the stock
+        
+        buy[0] = -prices[0]  # buy the stock on the first day
+        for i in range(1, n):
+            # Update the maximum profit when holding the stock
+            buy[i] = max(buy[i-1], sell[i-1] - prices[i])
+            # Update the maximum profit when not holding the stock
+            sell[i] = max(sell[i-1], buy[i-1] + prices[i] - fee)
+        
+        return sell[n-1]  # return the maximum profit when not holding the stock on the last day
+```
+
+In this solution, we use two arrays, `buy` and `sell`, to keep track of the maximum profit at each day. The `buy` array stores the maximum profit when holding the stock, while the `sell` array stores the maximum profit when not holding the stock.
+
+We initialize the first element of the `buy` array as `-prices[0]` since we buy the stock on the first day. Then, we iterate over the remaining days and update the `buy` and `sell` arrays based on the previous day's values.
+
+Finally, we return the last element of the `sell` array, which represents the maximum profit when not holding the stock on the last day.
+
+Let me know if you need any further explanation!

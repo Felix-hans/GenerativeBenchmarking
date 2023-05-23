@@ -1,0 +1,36 @@
+To solve this problem, we can use a dynamic programming approach. We'll define an array `dp` of size `n+1` to store the number of distinct ways to climb to each step. The base cases are `dp[0] = 1` (there is one way to climb zero steps) and `dp[1] = 1` (there is one way to climb one step).
+
+For each step `i` from 2 to `n`, the number of distinct ways to climb to step `i` is the sum of the number of ways to reach step `i-1` and step `i-2`. This is because we can either take one step from step `i-1` or two steps from step `i-2`.
+
+Here's the implementation of the `climbStairs` method in Python:
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 1:
+            return 1
+
+        dp = [0] * (n + 1)
+        dp[0] = dp[1] = 1
+
+        for i in range(2, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+
+        return dp[n]
+```
+
+Now, we can create an instance of the `Solution` class and call the `climbStairs` method with the desired input:
+
+```python
+solution = Solution()
+n = 3
+distinct_ways = solution.climbStairs(n)
+print(distinct_ways)
+```
+
+Output:
+```
+3
+```
+
+The output matches the expected result, indicating that there are three distinct ways to climb to the top of a staircase with three steps.

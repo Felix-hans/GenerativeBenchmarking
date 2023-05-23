@@ -1,0 +1,41 @@
+To solve this task, we can use a greedy approach. We start by generating Fibonacci numbers until we find the largest Fibonacci number less than or equal to k. Then, we subtract this Fibonacci number from k and repeat the process until k becomes zero.
+
+Here's the implementation of the `findMinFibonacciNumbers` function in Python:
+
+```python
+class Solution:
+    def findMinFibonacciNumbers(self, k: int) -> int:
+        fibonacci = [1, 1]  # Fibonacci numbers: F1 = 1, F2 = 1
+        while fibonacci[-1] < k:
+            fibonacci.append(fibonacci[-1] + fibonacci[-2])
+        
+        count = 0
+        index = len(fibonacci) - 1
+        while k > 0:
+            if fibonacci[index] <= k:
+                k -= fibonacci[index]
+                count += 1
+            index -= 1
+        
+        return count
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+k = 7
+print(solution.findMinFibonacciNumbers(k))  # Output: 2
+
+# Example 2
+k = 10
+print(solution.findMinFibonacciNumbers(k))  # Output: 2
+
+# Example 3
+k = 19
+print(solution.findMinFibonacciNumbers(k))  # Output: 3
+```
+
+The function should produce the correct output for each example.

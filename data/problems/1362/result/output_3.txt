@@ -1,0 +1,30 @@
+Here's the implementation of the given task in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def closestDivisors(self, num: int) -> List[int]:
+        diff = float('inf')  # Initialize the minimum difference to infinity
+        res = []  # Initialize the result list
+
+        # Iterate from the square root of num+2 down to 1
+        for i in range(int((num + 2) ** 0.5), 0, -1):
+            if (num + 1) % i == 0:
+                # If (num+1) is divisible by i, calculate the difference
+                # and update the result if the difference is smaller
+                if abs(i - (num + 1) // i) < diff:
+                    diff = abs(i - (num + 1) // i)
+                    res = [i, (num + 1) // i]
+
+            if (num + 2) % i == 0:
+                # If (num+2) is divisible by i, calculate the difference
+                # and update the result if the difference is smaller
+                if abs(i - (num + 2) // i) < diff:
+                    diff = abs(i - (num + 2) // i)
+                    res = [i, (num + 2) // i]
+
+        return res
+```
+
+You can create an instance of the `Solution` class and call the `closestDivisors` method with the input number to get the closest two integers in absolute difference whose product equals `num + 1` or `num + 2`.

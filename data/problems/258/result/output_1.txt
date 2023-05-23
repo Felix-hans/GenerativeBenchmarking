@@ -1,0 +1,21 @@
+To solve this task, we can use a mathematical property called the "digital root" or "repeated digit sum." The digital root of a non-negative integer is the result obtained by summing the digits of the number until a single-digit number is obtained.
+
+To implement this in Python, we can use the following code:
+
+```python
+class Solution:
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return 0
+        else:
+            return (num - 1) % 9 + 1
+```
+
+Explanation:
+- If the input number `num` is 0, we can return 0 immediately since 0 has only one digit.
+- For other non-zero numbers, the digital root can be obtained using the formula `(num - 1) % 9 + 1`.
+  - The expression `(num - 1) % 9` calculates the remainder when `num - 1` is divided by 9.
+  - If the result is 0, we add 1 to it to obtain the digital root since we want a single-digit result.
+  - If the result is non-zero, we return the result as the digital root.
+
+This solution has a constant runtime complexity of O(1) because the computation is performed using mathematical operations and does not depend on the magnitude of the input number.

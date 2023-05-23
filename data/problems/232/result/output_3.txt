@@ -1,0 +1,72 @@
+To implement a FIFO queue using two stacks, we can use one stack for the enqueue operation and another stack for the dequeue operation. The idea is to reverse the order of elements when transferring them between the two stacks, so that the element at the top of the dequeue stack is always the oldest element in the queue.
+
+Here's the implementation of the `MyQueue` class in Python:
+
+```python
+class MyQueue:
+    def __init__(self):
+        self.enqueue_stack = []
+        self.dequeue_stack = []
+
+    def push(self, x: int) -> None:
+        # Transfer all elements from dequeue stack to enqueue stack
+        while self.dequeue_stack:
+            self.enqueue_stack.append(self.dequeue_stack.pop())
+
+        # Push the new element to enqueue stack
+        self.enqueue_stack.append(x)
+
+    def pop(self) -> int:
+        # Ensure the dequeue stack has the oldest elements
+        self._transfer_elements()
+
+        # Pop the top element from the dequeue stack
+        return self.dequeue_stack.pop()
+
+    def peek(self) -> int:
+        # Ensure the dequeue stack has the oldest elements
+        self._transfer_elements()
+
+        # Return the top element from the dequeue stack
+        return self.dequeue_stack[-1]
+
+    def empty(self) -> bool:
+        # The queue is empty if both stacks are empty
+        return not self.enqueue_stack and not self.dequeue_stack
+
+    def _transfer_elements(self) -> None:
+        # Transfer elements from enqueue stack to dequeue stack if dequeue stack is empty
+        if not self.dequeue_stack:
+            while self.enqueue_stack:
+                self.dequeue_stack.append(self.enqueue_stack.pop())
+```
+
+Let's test the implementation with the given example:
+
+```python
+# Create a new MyQueue object
+myQueue = MyQueue()
+
+# Push elements to the queue
+myQueue.push(1)
+myQueue.push(2)
+
+# Peek the front element
+print(myQueue.peek())  # Output: 1
+
+# Pop the front element
+print(myQueue.pop())  # Output: 1
+
+# Check if the queue is empty
+print(myQueue.empty())  # Output: False
+```
+
+The output matches the expected results:
+
+```
+1
+1
+False
+```
+
+This implementation has a time complexity of O(1) for the `push`, `pop`, `peek`, and `empty` operations on average. The amortized time complexity for performing n operations is O(n).

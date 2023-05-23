@@ -1,0 +1,38 @@
+To implement the given task in Python, we can follow the following approach:
+
+1. Sort the array `nums` in non-decreasing order.
+2. Create a new array `result` of the same size as `nums`.
+3. Initialize two pointers `small` and `large`.
+   - `small` points to the middle index (floor division of (n+1)/2), where n is the size of `nums`.
+   - `large` points to the last index.
+4. Iterate over the sorted `nums` array in reverse order and fill `result` as follows:
+   - If the current index is odd, assign the value at `small` index to the current element and decrement `small` by 1.
+   - If the current index is even, assign the value at `large` index to the current element and decrement `large` by 1.
+5. Assign the values of `result` back to the `nums` array to modify it in-place.
+
+Here's the implementation of the `wiggleSort` function:
+
+```python
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        nums.sort()
+        result = [0] * n
+        small = (n + 1) // 2
+        large = n
+        
+        for i in range(n):
+            if i % 2 == 1:
+                result[i] = nums[small]
+                small -= 1
+            else:
+                result[i] = nums[large]
+                large -= 1
+        
+        nums[:] = result  # Modify nums in-place
+```
+
+You can use the `wiggleSort` method of the `Solution` class to reorder the given `nums` array.

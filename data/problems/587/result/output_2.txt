@@ -1,0 +1,63 @@
+To solve the problem, we can use the Graham's scan algorithm to find the convex hull of the given points. The convex hull will represent the fence perimeter enclosing all the trees. 
+
+Here's the implementation of the `outerTrees` function using the Graham's scan algorithm:
+
+```python
+class Solution:
+    def outerTrees(self, trees: List[List[int]]) -> List[List[int]]:
+        def orientation(p: List[int], q: List[int], r: List[int]) -> int:
+            return (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+
+        def distance(p: List[int], q: List[int]) -> int:
+            return (q[1] - p[1]) ** 2 + (q[0] - p[0]) ** 2
+
+        def next_to_top(stack: List[List[int]]) -> List[int]:
+            return stack[-2]
+
+        n = len(trees)
+        if n <= 3:
+            return trees
+
+        trees.sort(key=lambda x: (x[0], x[1]))
+
+        hull = []
+        p = 0
+        q = 0
+
+        # Find the leftmost tree
+        leftmost = trees[0]
+        for i in range(1, n):
+            if trees[i][0] < leftmost[0]:
+                leftmost = trees[i]
+                p = i
+
+        # Traverse the array in counterclockwise direction
+        # to find the convex hull
+        while True:
+            hull.append(trees[p])
+            q = (p + 1) % n
+
+            for i in range(n):
+                # Check if trees[i] is more counterclockwise
+                # than current q, then update q
+                if orientation(trees[p], trees[i], trees[q]) < 0:
+                    q = i
+
+            # Check for collinear trees and select the one
+            # that is farthest from trees[p]
+            for i in range(n):
+                if (
+                    orientation(trees[p], trees[i], trees[q]) == 0
+                    and distance(trees[p], trees[i]) > 0
+                ):
+                    hull.append(trees[i])
+
+            p = q
+
+            if p == 0:
+                break
+
+        return hull
+```
+
+You can use the `Solution` class to create an instance and call the `outerTrees` function on your input. The function will return the coordinates of trees that are exactly located on the fence perimeter.

@@ -1,0 +1,35 @@
+To solve the task, we can iterate through the array of prices and keep track of the minimum price seen so far and the maximum profit we can achieve.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+class Solution:
+    def maxProfit(self, prices):
+        if not prices or len(prices) < 2:
+            return 0
+
+        min_price = prices[0]
+        max_profit = 0
+
+        for price in prices:
+            min_price = min(min_price, price)
+            max_profit = max(max_profit, price - min_price)
+
+        return max_profit
+```
+
+We initialize the `min_price` variable to the first price in the array and the `max_profit` variable to 0. Then, we iterate through the prices and update the `min_price` to the minimum between the current price and the previous `min_price`. We also update the `max_profit` to the maximum between the current profit (price - min_price) and the previous `max_profit`. Finally, we return the `max_profit` as the result.
+
+Let's test the code with the provided examples:
+
+```python
+solution = Solution()
+
+prices = [7, 1, 5, 3, 6, 4]
+print(solution.maxProfit(prices))  # Output: 5
+
+prices = [7, 6, 4, 3, 1]
+print(solution.maxProfit(prices))  # Output: 0
+```
+
+The code should produce the expected outputs for the given examples.

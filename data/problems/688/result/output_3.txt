@@ -1,0 +1,48 @@
+To solve this problem, we can use dynamic programming. We'll create a 3D matrix to store the probabilities of the knight being at each cell after a certain number of moves. The dimensions of the matrix will be n x n x (k+1), where the third dimension represents the number of moves.
+
+Here's the implementation:
+
+```python
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        # Possible moves for the knight
+        moves = [
+            (1, 2), (2, 1), (2, -1), (1, -2),
+            (-1, -2), (-2, -1), (-2, 1), (-1, 2)
+        ]
+        
+        # Initialize the 3D matrix with all cells having a probability of 0
+        dp = [[[0] * n for _ in range(n)] for _ in range(k+1)]
+        
+        # Set the initial probability of the knight being at the starting cell as 1
+        dp[0][row][column] = 1
+        
+        # Iterate over the number of moves
+        for move in range(1, k+1):
+            # Iterate over each cell on the board
+            for r in range(n):
+                for c in range(n):
+                    # Iterate over the possible moves for the knight
+                    for dr, dc in moves:
+                        nr, nc = r + dr, c + dc
+                        # Check if the new position is still on the board
+                        if 0 <= nr < n and 0 <= nc < n:
+                            # Update the probability of the knight being at the new position
+                            dp[move][r][c] += dp[move-1][nr][nc] / 8.0
+        
+        # Calculate the overall probability of the knight being on the board
+        probability = sum(sum(row) for row in dp[k])
+        
+        return probability
+```
+
+Let's test the code with the given examples:
+
+```python
+solution = Solution()
+
+print(solution.knightProbability(3, 2, 0, 0))  # Output: 0.0625
+print(solution.knightProbability(1, 0, 0, 0))  # Output: 1.0
+```
+
+The output matches the expected results. The code calculates the probability of the knight remaining on the board after making a given number of moves.

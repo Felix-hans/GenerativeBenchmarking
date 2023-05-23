@@ -1,0 +1,41 @@
+To solve this problem, we can use a combination of brute force and optimization techniques. Here's one possible implementation:
+
+```python
+from typing import List
+import random
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        def match(word1: str, word2: str) -> int:
+            count = 0
+            for c1, c2 in zip(word1, word2):
+                if c1 == c2:
+                    count += 1
+            return count
+
+        def reduceWordsList(words: List[str], guess: str, matches: int) -> List[str]:
+            return [word for word in words if match(word, guess) == matches]
+
+        def getGuess(words: List[str]) -> str:
+            return random.choice(words)
+
+        guesses = 0
+        while guesses < 10:
+            guess = getGuess(words)
+            matches = master.guess(guess)
+            if matches == 6:
+                print("You guessed the secret word correctly.")
+                return
+            words = reduceWordsList(words, guess, matches)
+            guesses += 1
+
+        print("Either you took too many guesses, or you did not find the secret word.")
+```
+
+In this implementation, we have a helper function `match` that counts the number of matching characters between two words. The `reduceWordsList` function filters the words based on the number of matches with the current guess. The `getGuess` function selects a random word from the remaining words.
+
+The main logic is inside the `findSecretWord` method. We start with an initial guess and keep reducing the word list based on the matches until we find the secret word or exhaust the maximum number of allowed guesses.
+
+Note that this implementation assumes that the maximum number of allowed guesses is fixed at 10. If you want to make it dynamic based on the input parameter `allowedGuesses`, you can modify the condition in the `while` loop accordingly.
+
+Also, make sure to replace `print` statements with the appropriate handling of the output according to the problem requirements.

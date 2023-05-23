@@ -1,0 +1,53 @@
+To find the nth magical number, we can use the concept of the least common multiple (LCM) between two numbers a and b. The LCM of a and b is the smallest positive integer that is divisible by both a and b.
+
+Let's assume the LCM of a and b is lcm. In every lcm numbers, there will be exactly a//gcd(a, b) numbers divisible by a and b//gcd(a, b) numbers divisible by b, where gcd(a, b) represents the greatest common divisor of a and b.
+
+To find the nth magical number, we can count the number of magical numbers in each lcm and adjust our search range based on the value of n.
+
+Here's the implementation of the `nthMagicalNumber` function in Python:
+
+```python
+class Solution:
+    def gcd(self, a: int, b: int) -> int:
+        # Calculate the greatest common divisor of a and b using the Euclidean algorithm
+        while b:
+            a, b = b, a % b
+        return a
+
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        mod = 10**9 + 7
+        lcm = (a * b) // self.gcd(a, b)
+        low = min(a, b)
+        high = n * low
+
+        while low < high:
+            mid = (low + high) // 2
+            magical_count = mid // a + mid // b - mid // lcm
+
+            if magical_count < n:
+                low = mid + 1
+            else:
+                high = mid
+
+        return low % mod
+```
+
+In the above implementation, we calculate the LCM of a and b as `lcm = (a * b) // self.gcd(a, b)`. We also define the modulo value as `mod = 10**9 + 7` to handle large numbers.
+
+We set the search range using `low` and `high` variables. The `low` starts from the minimum of a and b, and the `high` is initially set as `n * low` as an upper bound.
+
+We perform a binary search within this range to find the smallest magical number that satisfies the condition. We calculate the `magical_count` as the count of magical numbers in the range from `low` to `mid` using integer division.
+
+If the `magical_count` is less than n, it means the nth magical number is in the range `(mid+1, high)`. Otherwise, it is in the range `(low, mid)`. We adjust the search range accordingly and repeat the binary search until we find the correct magical number.
+
+Finally, we return `low % mod` as the result, which is the nth magical number modulo 10^9 + 7.
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+print(solution.nthMagicalNumber(1, 2, 3))  # Output: 2
+print(solution.nthMagicalNumber(4, 2, 3))  # Output: 6
+```
+
+The function produces the expected outputs for the given examples.

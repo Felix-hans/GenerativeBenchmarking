@@ -1,0 +1,54 @@
+To solve the task, you can iterate through each character in the first word and check if it exists in all other words. If a character is present in all words, you add it to the result list. To efficiently check for character occurrences in other words, you can use a dictionary to store the count of characters in the first word. Then, for each subsequent word, you decrement the count for each character found. Finally, you add the characters with a count of zero to the result list.
+
+Here's the implementation of the `commonChars` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        if not words:
+            return []
+
+        # Create a dictionary to store character counts
+        char_count = {}
+        for char in words[0]:
+            char_count[char] = char_count.get(char, 0) + 1
+
+        # Iterate through the remaining words
+        for word in words[1:]:
+            # Create a new dictionary for the current word
+            curr_count = {}
+            # Count characters in the current word
+            for char in word:
+                curr_count[char] = curr_count.get(char, 0) + 1
+
+            # Update the character count dictionary with minimum counts
+            for char in char_count:
+                if char in curr_count:
+                    char_count[char] = min(char_count[char], curr_count[char])
+                else:
+                    char_count[char] = 0
+
+        # Create a list of characters with count > 0
+        common_chars = []
+        for char, count in char_count.items():
+            common_chars.extend([char] * count)
+
+        return common_chars
+```
+
+Now, you can create an instance of the `Solution` class and call the `commonChars` function with your input array:
+
+```python
+solution = Solution()
+words = ["bella","label","roller"]
+result = solution.commonChars(words)
+print(result)  # Output: ["e", "l", "l"]
+
+words = ["cool","lock","cook"]
+result = solution.commonChars(words)
+print(result)  # Output: ["c", "o"]
+```
+
+The `commonChars` function returns the list of common characters in all strings within the `words` array.

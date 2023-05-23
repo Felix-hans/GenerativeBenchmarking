@@ -1,0 +1,52 @@
+To solve the problem, we can use the following approach:
+
+1. Initialize a variable `total_distance` to store the total distance of the circular route. Calculate it by summing up all the distances in the `distance` list.
+
+2. Check if the start and destination stops are the same. If they are, the shortest distance is 0, so return 0.
+
+3. If the start stop is greater than the destination stop, swap their values. This allows us to always assume that the start stop is smaller than the destination stop, simplifying the calculations.
+
+4. Initialize a variable `clockwise_distance` to store the distance traveled in the clockwise direction from the start stop to the destination stop. Initialize it as 0.
+
+5. Traverse the distances from the start stop to the destination stop in the clockwise direction. Add each distance to `clockwise_distance` by accessing `distance[i]`, where `i` ranges from `start` to `destination - 1`.
+
+6. Calculate the distance traveled in the counterclockwise direction from the start stop to the destination stop by subtracting `clockwise_distance` from `total_distance`.
+
+7. Return the minimum value between `clockwise_distance` and the counterclockwise distance as the shortest distance between the start and destination stops.
+
+Here's the implementation of the `distanceBetweenBusStops` method:
+
+```python
+from typing import List
+
+class Solution:
+    def distanceBetweenBusStops(self, distance: List[int], start: int, destination: int) -> int:
+        total_distance = sum(distance)
+        
+        if start == destination:
+            return 0
+        
+        if start > destination:
+            start, destination = destination, start
+        
+        clockwise_distance = 0
+        for i in range(start, destination):
+            clockwise_distance += distance[i]
+        
+        counterclockwise_distance = total_distance - clockwise_distance
+        
+        return min(clockwise_distance, counterclockwise_distance)
+```
+
+You can create an instance of the `Solution` class and call the `distanceBetweenBusStops` method with the given input to obtain the shortest distance between the start and destination stops. For example:
+
+```python
+solution = Solution()
+distance = [1, 2, 3, 4]
+start = 0
+destination = 1
+shortest_distance = solution.distanceBetweenBusStops(distance, start, destination)
+print(shortest_distance)  # Output: 1
+```
+
+You can repeat the same process with different input values to test the implementation.

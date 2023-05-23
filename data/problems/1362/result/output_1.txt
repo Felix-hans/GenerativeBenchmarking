@@ -1,0 +1,20 @@
+To solve this task, we can iterate from the square root of `num + 2` down to 1. For each number, we check if it is a divisor of `num + 1` or `num + 2`. If it is a divisor, we return the two divisors as the result.
+
+Here's the implementation of the `closestDivisors` function in Python:
+
+```python
+from math import isqrt
+
+class Solution:
+    def closestDivisors(self, num: int) -> List[int]:
+        num1 = num + 1
+        num2 = num + 2
+
+        for i in range(isqrt(num2), 0, -1):
+            if num1 % i == 0:
+                return [i, num1 // i]
+            if num2 % i == 0:
+                return [i, num2 // i]
+```
+
+This solution has a time complexity of O(sqrt(num)) since we iterate from the square root of `num + 2` down to 1.

@@ -1,0 +1,30 @@
+You can implement the given task in Python using the following code:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k == 1:
+            # If k is 1, we can try all possible rotations and return the lexicographically smallest string
+            rotations = [s[i:] + s[:i] for i in range(len(s))]
+            return min(rotations)
+        else:
+            # If k is greater than 1, we can sort the string directly to get the lexicographically smallest string
+            return ''.join(sorted(s))
+```
+
+Here's how you can use the `Solution` class to get the desired output:
+
+```python
+solution = Solution()
+s = "cba"
+k = 1
+result = solution.orderlyQueue(s, k)
+print(result)  # Output: "acb"
+
+s = "baaca"
+k = 3
+result = solution.orderlyQueue(s, k)
+print(result)  # Output: "aaabc"
+```
+
+In the `orderlyQueue` method, we check the value of `k`. If `k` is 1, we generate all possible rotations of the string `s` and return the lexicographically smallest rotation. If `k` is greater than 1, we simply sort the string `s` and return the sorted string as the lexicographically smallest string.

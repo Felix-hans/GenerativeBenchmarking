@@ -1,0 +1,47 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum points we can earn at each value. Here's the implementation of the `deleteAndEarn` function in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def deleteAndEarn(self, nums):
+        # Count the frequency of each number
+        num_freq = Counter(nums)
+        max_num = max(nums)
+        
+        # Create an array to store the maximum points at each value
+        dp = [0] * (max_num + 1)
+        
+        # Base cases
+        dp[1] = num_freq[1]
+        dp[2] = max(2 * num_freq[2], dp[1])
+        
+        # Fill in the DP array
+        for i in range(3, max_num + 1):
+            dp[i] = max(i * num_freq[i] + dp[i - 2], dp[i - 1])
+        
+        # Return the maximum points
+        return dp[max_num]
+```
+
+Here's how the code works:
+
+1. We use the `Counter` class from the `collections` module to count the frequency of each number in the input array `nums`.
+2. We find the maximum number in the array `nums` to determine the size of the DP array.
+3. We initialize the DP array `dp` with zeros.
+4. We set the base cases `dp[1]` and `dp[2]` based on the frequency of the numbers 1 and 2.
+5. We iterate from 3 to the maximum number and calculate the maximum points at each value using the recurrence relation: `dp[i] = max(i * num_freq[i] + dp[i - 2], dp[i - 1])`.
+6. Finally, we return the maximum points `dp[max_num]`.
+
+You can create an instance of the `Solution` class and call the `deleteAndEarn` function with the input array `nums` to test it:
+
+```python
+solution = Solution()
+nums = [3, 4, 2]
+print(solution.deleteAndEarn(nums))  # Output: 6
+
+nums = [2, 2, 3, 3, 3, 4]
+print(solution.deleteAndEarn(nums))  # Output: 9
+```
+
+The code will output the maximum number of points you can earn by performing the given operations on the input array.

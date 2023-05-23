@@ -1,0 +1,35 @@
+To implement the NumArray class and fulfill the given requirements, you can use the following code:
+
+```python
+class NumArray:
+    def __init__(self, nums):
+        self.nums = nums
+        self.prefix_sum = self.calculate_prefix_sum()
+
+    def calculate_prefix_sum(self):
+        prefix_sum = [0]
+        for num in self.nums:
+            prefix_sum.append(prefix_sum[-1] + num)
+        return prefix_sum
+
+    def sumRange(self, left, right):
+        return self.prefix_sum[right + 1] - self.prefix_sum[left]
+```
+
+Explanation:
+1. In the `__init__` method, we initialize the `nums` array and calculate the prefix sum of the array using the `calculate_prefix_sum` method. The prefix sum array will store the cumulative sum up to each index of `nums`, including index 0.
+
+2. The `calculate_prefix_sum` method iterates over the `nums` array and calculates the cumulative sum at each index, storing it in the `prefix_sum` array.
+
+3. In the `sumRange` method, we calculate the sum of elements between indices `left` and `right` (inclusive) by subtracting the prefix sum at index `left` from the prefix sum at index `right + 1`. This gives us the sum of elements from index 0 to `right`, and we subtract the sum of elements from index 0 to `left-1` to get the sum between indices `left` and `right`.
+
+Now, you can create a `NumArray` object and call the `sumRange` method as shown in the example:
+
+```python
+numArray = NumArray([-2, 0, 3, -5, 2, -1])
+print(numArray.sumRange(0, 2))  # Output: 1
+print(numArray.sumRange(2, 5))  # Output: -1
+print(numArray.sumRange(0, 5))  # Output: -3
+```
+
+The output will match the expected results mentioned in the example.

@@ -1,0 +1,38 @@
+You can implement the task in Python using the provided class and function as follows:
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        count = 0
+        for i in range(1, n+1):
+            if self.isGoodNumber(i):
+                count += 1
+        return count
+
+    def isGoodNumber(self, num: int) -> bool:
+        valid_nums = {'2', '5', '6', '9'}
+        invalid_nums = {'3', '4', '7'}
+        num_str = str(num)
+        has_valid_digit = False
+        for digit in num_str:
+            if digit in invalid_nums:
+                return False
+            if digit in valid_nums:
+                has_valid_digit = True
+        return has_valid_digit
+```
+
+The `rotatedDigits` function takes an integer `n` as input and returns the number of good integers in the range [1, n]. It iterates from 1 to `n` and calls the `isGoodNumber` function for each number to determine if it is a good number or not.
+
+The `isGoodNumber` function checks if a given number is a good number. It converts the number to a string and iterates over each digit. If any digit is in the set of invalid numbers (`3`, `4`, or `7`), the function immediately returns `False`. If any digit is in the set of valid numbers (`2`, `5`, `6`, or `9`), it sets a flag `has_valid_digit` to `True`. If no invalid digits are found and at least one valid digit is found, the function returns `True`. Otherwise, it returns `False`.
+
+You can create an instance of the `Solution` class and call the `rotatedDigits` function with the desired value of `n` to get the output. For example:
+
+```python
+solution = Solution()
+print(solution.rotatedDigits(10))  # Output: 4
+print(solution.rotatedDigits(1))   # Output: 0
+print(solution.rotatedDigits(2))   # Output: 1
+```
+
+Hope this helps!

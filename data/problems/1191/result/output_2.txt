@@ -1,0 +1,53 @@
+To solve the problem, we can follow the steps:
+
+1. Calculate the sum of the original array, `arr_sum`.
+2. Find the maximum subarray sum using Kadane's algorithm on the original array, `max_subarray_sum_original`.
+3. If `k` is less than or equal to 2, return the maximum of `max_subarray_sum_original` and 0 since there are no repeated arrays.
+4. Calculate the prefix sum array of the original array, `prefix_sum`.
+5. Calculate the suffix sum array of the original array, `suffix_sum`.
+6. Calculate the maximum subarray sum from the prefix sum array, `max_subarray_sum_prefix`.
+7. Calculate the maximum subarray sum from the suffix sum array, `max_subarray_sum_suffix`.
+8. Calculate the total sum of the original array multiplied by `k`, `total_sum`.
+9. If `total_sum` is positive, calculate the maximum subarray sum considering the prefix and suffix sum, `max_subarray_sum`.
+10. Return the maximum value among `max_subarray_sum`, `max_subarray_sum_original`, and 0 modulo 10^9 + 7.
+
+Here's the implementation of the `kConcatenationMaxSum` function in Python:
+
+```python
+class Solution:
+    def kConcatenationMaxSum(self, arr: List[int], k: int) -> int:
+        MOD = 10**9 + 7
+
+        def kadane(arr):
+            max_sum = 0
+            curr_sum = 0
+            for num in arr:
+                curr_sum = max(num, curr_sum + num)
+                max_sum = max(max_sum, curr_sum)
+            return max_sum
+
+        arr_sum = sum(arr)
+        max_subarray_sum_original = kadane(arr)
+
+        if k <= 2:
+            return max(max_subarray_sum_original, 0)
+
+        prefix_sum = [0] * len(arr)
+        suffix_sum = [0] * len(arr)
+        prefix_sum[0] = arr[0]
+        suffix_sum[-1] = arr[-1]
+
+        for i in range(1, len(arr)):
+            prefix_sum[i] = prefix_sum[i-1] + arr[i]
+            suffix_sum[-i-1] = suffix_sum[-i] + arr[-i-1]
+
+        max_subarray_sum_prefix = kadane(prefix_sum)
+        max_subarray_sum_suffix = kadane(suffix_sum)
+
+        total_sum = arr_sum * k
+        max_subarray_sum = max(max_subarray_sum_prefix + max_subarray_sum_suffix, 0) % MOD
+
+        return max(max_subarray_sum, max_subarray_sum_original, 0)
+```
+
+You can create an instance of the `Solution` class and call the `kConcatenationMaxSum` function with the given inputs to get the desired output.

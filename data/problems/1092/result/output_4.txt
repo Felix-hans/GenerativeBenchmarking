@@ -1,0 +1,59 @@
+To find the shortest string that has both `str1` and `str2` as subsequences, we can use a dynamic programming approach. Let's implement the `shortestCommonSupersequence` function based on the provided class signature:
+
+```python
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        m, n = len(str1), len(str2)
+
+        # Create a 2D table to store the lengths of the common supersequences
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+        # Fill the table using dynamic programming
+        for i in range(m + 1):
+            for j in range(n + 1):
+                if i == 0:
+                    dp[i][j] = j
+                elif j == 0:
+                    dp[i][j] = i
+                elif str1[i - 1] == str2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + 1
+
+        # Construct the shortest common supersequence using the table
+        i, j = m, n
+        scs = ""
+        while i > 0 and j > 0:
+            if str1[i - 1] == str2[j - 1]:
+                scs = str1[i - 1] + scs
+                i -= 1
+                j -= 1
+            elif dp[i - 1][j] < dp[i][j - 1]:
+                scs = str1[i - 1] + scs
+                i -= 1
+            else:
+                scs = str2[j - 1] + scs
+                j -= 1
+
+        while i > 0:
+            scs = str1[i - 1] + scs
+            i -= 1
+
+        while j > 0:
+            scs = str2[j - 1] + scs
+            j -= 1
+
+        return scs
+```
+
+Now, you can create an instance of the `Solution` class and call the `shortestCommonSupersequence` method to find the shortest common supersequence for the given `str1` and `str2`:
+
+```python
+solution = Solution()
+str1 = "abac"
+str2 = "cab"
+result = solution.shortestCommonSupersequence(str1, str2)
+print(result)  # Output: cabac
+```
+
+The output will be the shortest common supersequence that satisfies the given constraints.

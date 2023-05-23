@@ -1,0 +1,48 @@
+To solve this problem, we can follow the traditional binary addition algorithm with a few modifications to handle negative base -2 numbers.
+
+Here's the Python implementation of the `addNegabinary` function:
+
+```python
+class Solution:
+    def addNegabinary(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        result = []
+        carry = 0
+        i = len(arr1) - 1
+        j = len(arr2) - 1
+
+        while i >= 0 or j >= 0 or carry:
+            if i >= 0:
+                carry += arr1[i]
+                i -= 1
+            if j >= 0:
+                carry += arr2[j]
+                j -= 1
+
+            # Calculate the current digit and the carry for the next iteration
+            result.append(carry & 1)  # Append the least significant bit
+            carry = -(carry >> 1)    # Update the carry for the next iteration
+
+        # Remove leading zeros in the result array
+        while len(result) > 1 and result[-1] == 0:
+            result.pop()
+
+        # Reverse the result array to get the correct order
+        result.reverse()
+        return result
+```
+
+Explanation:
+1. Initialize an empty list `result` to store the result.
+2. Initialize a variable `carry` to keep track of the carry during addition. Initialize it to 0.
+3. Start iterating from the rightmost bit of both `arr1` and `arr2` (i.e., from the least significant bit).
+4. While iterating, perform the following steps:
+   - Add the corresponding bits of `arr1` and `arr2` to the `carry`.
+   - Append the least significant bit of the `carry` to the `result`.
+   - Update the `carry` for the next iteration by shifting it right by 1 and negating it.
+   - Decrement the indices `i` and `j` to move to the next bit of `arr1` and `arr2`, respectively.
+5. After the iteration, there might be a remaining carry. Add it to the `result`.
+6. Remove any leading zeros from the `result` array.
+7. Reverse the `result` array to get the correct order.
+8. Return the `result`.
+
+This algorithm handles the addition of negative base -2 numbers by using bitwise operations to calculate the digits and carries.

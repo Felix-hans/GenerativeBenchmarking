@@ -1,0 +1,38 @@
+To solve this problem, we can use a greedy approach. We need to delete characters from the string to make it balanced, which means we need to ensure that all 'a's appear before any 'b's. 
+
+We can iterate through the string and keep track of the count of 'b's encountered so far. Whenever we encounter an 'a', we check if there are any 'b's before it. If there are, we increment a counter variable indicating the number of deletions needed to balance the string.
+
+Here's the implementation of the `minimumDeletions` method in Python:
+
+```python
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        deletions = 0  # Count of deletions needed
+        b_count = 0    # Count of 'b's encountered
+        
+        for char in s:
+            if char == 'a':
+                if b_count > 0:
+                    # Delete the 'b' before this 'a'
+                    deletions += 1
+                    b_count -= 1
+            else:
+                # Count the number of 'b's encountered
+                b_count += 1
+        
+        return deletions
+```
+
+Now, we can create an instance of the `Solution` class and test it with the provided examples:
+
+```python
+solution = Solution()
+
+s = "aababbab"
+print(solution.minimumDeletions(s))  # Output: 2
+
+s = "bbaaaaabb"
+print(solution.minimumDeletions(s))  # Output: 2
+```
+
+The code will output the minimum number of deletions needed to make the string balanced for each example.

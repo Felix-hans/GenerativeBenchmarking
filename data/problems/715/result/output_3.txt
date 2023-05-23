@@ -1,0 +1,59 @@
+To implement the RangeModule class, we can use a list to store the ranges in sorted order. Each range can be represented as a tuple `(left, right)`. The key idea is to keep the list sorted so that we can efficiently perform operations like adding a range, querying a range, and removing a range.
+
+Here's the implementation of the RangeModule class:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.ranges = []
+
+    def addRange(self, left: int, right: int) -> None:
+        new_range = (left, right)
+        merged_ranges = []
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            merged_ranges.append(self.ranges[i])
+            i += 1
+        while i < len(self.ranges) and self.ranges[i][0] <= right:
+            new_range = (min(new_range[0], self.ranges[i][0]), max(new_range[1], self.ranges[i][1]))
+            i += 1
+        merged_ranges.append(new_range)
+        merged_ranges.extend(self.ranges[i:])
+        self.ranges = merged_ranges
+
+    def queryRange(self, left: int, right: int) -> bool:
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] <= left:
+            i += 1
+        if i < len(self.ranges) and self.ranges[i][0] <= left:
+            return self.ranges[i][1] >= right
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+        new_ranges = []
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            new_ranges.append(self.ranges[i])
+            i += 1
+        while i < len(self.ranges) and self.ranges[i][0] < right:
+            if self.ranges[i][0] < left:
+                new_ranges.append((self.ranges[i][0], left))
+            if self.ranges[i][1] > right:
+                new_ranges.append((right, self.ranges[i][1]))
+            i += 1
+        new_ranges.extend(self.ranges[i:])
+        self.ranges = new_ranges
+```
+
+We can test the implementation using the example provided:
+
+```python
+rangeModule = RangeModule()
+rangeModule.addRange(10, 20)
+rangeModule.removeRange(14, 16)
+print(rangeModule.queryRange(10, 14))  # Output: True
+print(rangeModule.queryRange(13, 15))  # Output: False
+print(rangeModule.queryRange(16, 17))  # Output: True
+```
+
+The output matches the expected results `[True, False, True]`, indicating that the implementation is correct.

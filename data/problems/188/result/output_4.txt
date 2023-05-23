@@ -1,0 +1,45 @@
+To solve this problem, we can use dynamic programming. We'll define a 2D array `dp` to store the maximum profit for each day and transaction. The dimensions of `dp` will be `(k + 1) x n`, where `k` is the maximum number of transactions and `n` is the number of days.
+
+Here's the Python implementation for the `maxProfit` function:
+
+```python
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+        if n <= 1 or k == 0:
+            return 0
+
+        # If k >= n/2, we can perform unlimited transactions
+        if k >= n // 2:
+            return self.maxProfitUnlimited(prices)
+
+        # Initialize dp array
+        dp = [[0] * n for _ in range(k + 1)]
+
+        for i in range(1, k + 1):
+            maxDiff = -prices[0]
+            for j in range(1, n):
+                dp[i][j] = max(dp[i][j - 1], prices[j] + maxDiff)
+                maxDiff = max(maxDiff, dp[i - 1][j] - prices[j])
+
+        return dp[k][n - 1]
+
+    def maxProfitUnlimited(self, prices: List[int]) -> int:
+        maxProfit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                maxProfit += prices[i] - prices[i - 1]
+        return maxProfit
+```
+
+In the above implementation, the `maxProfit` function takes in the maximum number of transactions `k` and the stock prices as input. It first checks for some base cases where the number of days is less than or equal to 1, or `k` is 0, and returns 0 in those cases.
+
+If `k` is greater than or equal to half the number of days, we can perform unlimited transactions, so we call the `maxProfitUnlimited` function to calculate the maximum profit in that case.
+
+Otherwise, we initialize the `dp` array and use two nested loops to iterate through the days and transactions. We update the `dp` array using the recurrence relation `dp[i][j] = max(dp[i][j - 1], prices[j] + maxDiff)` where `maxDiff` represents the maximum difference obtained by buying the stock on a previous day and selling it on the current day.
+
+Finally, we return the maximum profit stored in `dp[k][n - 1]`, which represents the maximum profit achievable with `k` transactions on the last day.
+
+The `maxProfitUnlimited` function calculates the maximum profit for unlimited transactions by simply summing up the positive differences between consecutive stock prices.
+
+Note: Please ensure that you import the `List` class from the `typing` module at the beginning of your code.

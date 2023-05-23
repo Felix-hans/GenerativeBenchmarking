@@ -1,0 +1,36 @@
+Here's an implementation of the `twoSum` function in Python that solves the problem:
+
+```python
+class Solution:
+    def twoSum(self, nums, target):
+        # Create a dictionary to store the complement of each number
+        complement_map = {}
+        
+        for i, num in enumerate(nums):
+            # Check if the complement of the current number exists in the map
+            complement = target - num
+            if complement in complement_map:
+                # If found, return the indices
+                return [complement_map[complement], i]
+            
+            # Otherwise, add the current number to the map
+            complement_map[num] = i
+        
+        # If no solution is found, return an empty list
+        return []
+```
+
+You can use this `Solution` class to create an instance and call the `twoSum` method on it, passing the `nums` and `target` as arguments. It will return a list of indices that add up to the target value.
+
+Here's an example of how you can use it:
+
+```python
+nums = [2, 7, 11, 15]
+target = 9
+
+solution = Solution()
+result = solution.twoSum(nums, target)
+print(result)  # Output: [0, 1]
+```
+
+The solution has a time complexity of O(n) since we iterate through the array once and perform constant time operations for each element.

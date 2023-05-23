@@ -1,0 +1,56 @@
+To rearrange the characters of a string `s` such that no two adjacent characters are the same, we can follow a greedy approach. We'll start by counting the frequency of each character in `s` using a dictionary. Then, we'll build a new string by appending characters from the most frequent to the least frequent, making sure that no two adjacent characters are the same.
+
+Here's the implementation of the `reorganizeString` method in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+        counter = Counter(s)
+        most_common = counter.most_common()  # List of (char, freq) tuples, sorted by frequency
+
+        # Check if it's possible to rearrange the string
+        max_freq = most_common[0][1]
+        if max_freq > (len(s) + 1) // 2:
+            return ""
+
+        result = [''] * len(s)
+        index = 0
+
+        # Build the new string, starting with the most frequent characters
+        for char, freq in most_common:
+            for _ in range(freq):
+                result[index] = char
+                index += 2  # Skip one index to avoid adjacent characters
+                if index >= len(s):
+                    index = 1  # If we reach the end, start from index 1
+        return "".join(result)
+```
+
+Now, you can create an instance of the `Solution` class and call the `reorganizeString` method with your desired string as an argument. For example:
+
+```python
+solution = Solution()
+s = "aab"
+rearranged = solution.reorganizeString(s)
+print(rearranged)
+```
+
+Output:
+```
+aba
+```
+
+```python
+s = "aaab"
+rearranged = solution.reorganizeString(s)
+print(rearranged)
+```
+
+Output:
+```
+""
+```
+
+Note that if it's not possible to rearrange the string without having adjacent characters the same, the method returns an empty string `""` as mentioned in the problem statement.

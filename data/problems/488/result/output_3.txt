@@ -1,0 +1,81 @@
+To solve the problem, we can use a recursive approach. Here's the implementation of the `findMinStep` function:
+
+```python
+from collections import Counter
+
+class Solution:
+    def findMinStep(self, board: str, hand: str) -> int:
+        # Helper function to remove consecutive groups of balls from the board
+        def removeGroups(board):
+            i, n = 0, len(board)
+            while i < n:
+                j = i
+                while j < n and board[j] == board[i]:
+                    j += 1
+                if j - i >= 3:
+                    # Remove the group of balls from the board
+                    board = board[:i] + board[j:]
+                    n = len(board)
+                    i = max(0, i - 2)
+                else:
+                    i = j
+            return board
+        
+        # Recursive function to find the minimum number of balls to clear the board
+        def dfs(board, hand):
+            if not board:
+                return 0  # Board is already empty
+            
+            if not hand:
+                return -1  # No more balls to insert
+            
+            minBalls = float('inf')  # Initialize with a large value
+            
+            for i in range(len(hand)):
+                for j in range(len(board) + 1):
+                    # Insert ball from hand into the board
+                    newBoard = board[:j] + hand[i] + board[j:]
+                    
+                    # Remove consecutive groups of balls from the board
+                    newBoard = removeGroups(newBoard)
+                    
+                    # Recursively find the minimum number of balls to clear the remaining board
+                    res = dfs(newBoard, hand[:i] + hand[i+1:])
+                    
+                    if res != -1:
+                        # Update the minimum number of balls required
+                        minBalls = min(minBalls, 1 + res)
+            
+            return minBalls if minBalls != float('inf') else -1
+
+        # Count the number of balls in the hand
+        handCount = Counter(hand)
+        
+        # Call the recursive function
+        minBalls = dfs(board, handCount)
+        
+        return minBalls if minBalls != float('inf') else -1
+```
+
+Now, we can create an instance of the `Solution` class and test it with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+board = "WRRBBW"
+hand = "RB"
+print(solution.findMinStep(board, hand))  # Output: -1
+
+# Example 2
+board = "WWRRBBWW"
+hand = "WRBRW"
+print(solution.findMinStep(board, hand))  # Output: 2
+
+# Example 3
+board = "G"
+hand = "GGGGG"
+print(solution.findMinStep(board, hand))  # Output: 2
+```
+
+The code will output the expected results for the given examples.

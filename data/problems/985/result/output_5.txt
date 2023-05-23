@@ -1,0 +1,34 @@
+Here's the implementation of the `sumEvenAfterQueries` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        result = []
+        even_sum = sum(num for num in nums if num % 2 == 0)
+
+        for val, index in queries:
+            if nums[index] % 2 == 0:
+                even_sum -= nums[index]
+            nums[index] += val
+            if nums[index] % 2 == 0:
+                even_sum += nums[index]
+            result.append(even_sum)
+
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `sumEvenAfterQueries` method with the `nums` and `queries` input. It will return the list `answer` containing the answer to each query.
+
+Here's an example usage:
+
+```python
+nums = [1, 2, 3, 4]
+queries = [[1, 0], [-3, 1], [-4, 0], [2, 3]]
+solution = Solution()
+answer = solution.sumEvenAfterQueries(nums, queries)
+print(answer)  # Output: [8, 6, 2, 4]
+```
+
+Note that this solution iterates over the `nums` array to calculate the initial sum of even values. If the input array `nums` is large, and the number of queries is relatively small, it might be more efficient to calculate the initial sum of even values once and update it incrementally as the queries are processed. However, for the given problem constraints, the solution provided should work efficiently.

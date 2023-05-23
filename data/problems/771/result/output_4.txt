@@ -1,0 +1,33 @@
+Here's the implementation of the `numJewelsInStones` function in Python:
+
+```python
+class Solution:
+    def numJewelsInStones(self, jewels: str, stones: str) -> int:
+        count = 0
+        for stone in stones:
+            if stone in jewels:
+                count += 1
+        return count
+```
+
+You can create an instance of the `Solution` class and call the `numJewelsInStones` method, passing the `jewels` and `stones` strings as arguments. It will return the number of stones that are also jewels.
+
+Example usage:
+```python
+solution = Solution()
+jewels = "aA"
+stones = "aAAbbbb"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 3
+```
+
+In the first example, there are three stones ('a', 'A', 'A') that are also jewels.
+
+```python
+jewels = "z"
+stones = "ZZ"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 0
+```
+
+In the second example, there are no stones that match the jewel type ('z').

@@ -1,0 +1,45 @@
+To solve this problem, we can use a dictionary to count the number of rabbits with each answer. We iterate through the answers array and increment the count for each answer in the dictionary.
+
+For each key (answer) in the dictionary, we calculate the number of groups of rabbits with that answer. If the count of rabbits with that answer is smaller or equal to the answer + 1, it means all rabbits with that answer can be in the same group. Otherwise, we need multiple groups to accommodate all rabbits with that answer.
+
+Finally, we sum up the total number of rabbits by adding the counts for each answer group.
+
+Here's the implementation of the `numRabbits` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numRabbits(self, answers: List[int]) -> int:
+        counts = {}  # Dictionary to store the counts of each answer
+        
+        # Count the number of rabbits for each answer
+        for ans in answers:
+            if ans not in counts:
+                counts[ans] = 1
+            else:
+                counts[ans] += 1
+        
+        total_rabbits = 0
+        
+        # Calculate the total number of rabbits
+        for ans, count in counts.items():
+            # Calculate the number of groups for rabbits with the same answer
+            groups = count // (ans + 1)
+            if count % (ans + 1) != 0:
+                groups += 1
+            total_rabbits += groups * (ans + 1)
+        
+        return total_rabbits
+```
+
+Now you can create an instance of the `Solution` class and call the `numRabbits` method with your input array to get the minimum number of rabbits in the forest. For example:
+
+```python
+solution = Solution()
+answers = [1, 1, 2]
+minimum_rabbits = solution.numRabbits(answers)
+print(minimum_rabbits)  # Output: 5
+```
+
+I hope this helps! Let me know if you have any further questions.

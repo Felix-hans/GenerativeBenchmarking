@@ -1,0 +1,21 @@
+Certainly! Here's the Python code that implements the given task:
+
+```python
+class Solution:
+    def checkIfExist(self, arr):
+        seen = set()
+        for num in arr:
+            if num * 2 in seen or num / 2 in seen:
+                return True
+            seen.add(num)
+        return False
+```
+
+Explanation:
+1. We initialize an empty set called `seen` to keep track of the numbers we have encountered so far.
+2. We iterate through each number `num` in the given array `arr`.
+3. For each number, we check if either `num * 2` or `num / 2` is present in the `seen` set. If so, we have found a pair of indices (`i` and `j`) that satisfy the conditions, and we return `True`.
+4. If neither `num * 2` nor `num / 2` is found in the `seen` set, we add `num` to the set and continue to the next number.
+5. If we finish iterating through the entire array without finding a pair that satisfies the conditions, we return `False`.
+
+Note: The `Solution` class and the method signature `checkIfExist(self, arr)` are given based on the provided template, assuming you're using it for a specific purpose. If you're not using the class or method signature, you can remove them and directly use the code inside the `checkIfExist` method.

@@ -1,0 +1,24 @@
+Here's the implementation of the `matrixReshape` function in Python:
+
+```python
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        m = len(mat)
+        n = len(mat[0])
+        
+        # Check if reshape is possible
+        if m * n != r * c:
+            return mat
+        
+        # Flatten the matrix
+        flattened = [num for row in mat for num in row]
+        
+        # Reshape the matrix
+        reshaped = [flattened[i:i+c] for i in range(0, len(flattened), c)]
+        
+        return reshaped
+```
+
+You can create an instance of the `Solution` class and call the `matrixReshape` method with the input matrix `mat`, number of rows `r`, and number of columns `c`. The function will return the reshaped matrix if the reshape operation is possible and legal; otherwise, it will return the original matrix.
+
+Note that the code assumes the availability of the `List` type from the `typing` module.

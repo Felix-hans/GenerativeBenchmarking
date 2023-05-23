@@ -1,0 +1,36 @@
+To maximize the sum of the minimum elements in pairs, we need to pair the smallest elements together. Sorting the array in ascending order will ensure that the smaller elements are paired together.
+
+Here's the implementation of the `arrayPairSum` function in Python:
+
+```python
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        nums.sort()  # Sort the array in ascending order
+        max_sum = 0
+        
+        # Iterate through the array and add the minimum element in each pair to the max_sum
+        for i in range(0, len(nums), 2):
+            max_sum += nums[i]
+        
+        return max_sum
+```
+
+You can use this `Solution` class to solve the problem. Instantiate an object of the `Solution` class and call the `arrayPairSum` method, passing the `nums` array as the argument. The method will return the maximum sum of the minimum elements in pairs.
+
+Example usage:
+
+```python
+solution = Solution()
+nums = [1, 4, 3, 2]
+max_sum = solution.arrayPairSum(nums)
+print(max_sum)  # Output: 4
+```
+
+```python
+solution = Solution()
+nums = [6, 2, 6, 5, 1, 2]
+max_sum = solution.arrayPairSum(nums)
+print(max_sum)  # Output: 9
+```
+
+The time complexity of this solution is O(n log n), where n is the length of the `nums` array, due to the sorting operation.

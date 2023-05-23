@@ -1,0 +1,52 @@
+To solve this problem, we can use a greedy algorithm combined with a priority queue (min heap). Here's an implementation of the `maxPerformance` function:
+
+```python
+import heapq
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = zip(efficiency, speed)  # Combine efficiency and speed of engineers
+        engineers = sorted(engineers, reverse=True)  # Sort engineers by decreasing efficiency
+
+        speed_sum = 0
+        performance = 0
+        min_heap = []
+
+        for eff, spd in engineers:
+            heapq.heappush(min_heap, spd)  # Add the current engineer's speed to the min heap
+            speed_sum += spd
+
+            if len(min_heap) > k:
+                speed_sum -= heapq.heappop(min_heap)  # Remove the engineer with the minimum speed
+
+            performance = max(performance, speed_sum * eff)  # Calculate the current performance
+
+        return performance % (10**9 + 7)
+```
+
+The algorithm works as follows:
+1. First, we combine the efficiency and speed of each engineer into tuples and sort them in descending order of efficiency. This ensures that when we iterate through the engineers, we process the engineers with higher efficiency first.
+2. We initialize variables `speed_sum` and `performance` to keep track of the sum of speeds and the maximum performance achieved so far.
+3. We use a min heap (`min_heap`) to store the speeds of the engineers in the current team. The min heap ensures that we always have the engineers with the minimum speeds at the top.
+4. We iterate through the engineers, starting with the one with the highest efficiency.
+   - For each engineer, we add their speed to the `speed_sum` and push it onto the min heap.
+   - If the size of the min heap exceeds `k`, we remove the engineer with the minimum speed from the heap and subtract their speed from the `speed_sum`.
+   - We calculate the performance of the current team by multiplying the `speed_sum` with the efficiency of the current engineer.
+   - If the current performance is greater than the maximum performance so far, we update the maximum performance.
+5. Finally, we return the maximum performance modulo 10^9 + 7.
+
+You can create an instance of the `Solution` class and call the `maxPerformance` method with the given inputs to get the desired output. For example:
+
+```python
+n = 6
+speed = [2, 10, 3, 1, 5, 8]
+efficiency = [5, 4, 3, 9, 7, 2]
+k = 2
+
+solution = Solution()
+max_perf = solution.maxPerformance(n, speed, efficiency, k)
+print(max_perf)  # Output: 60
+```
+
+You can do the same for the other test cases as well.

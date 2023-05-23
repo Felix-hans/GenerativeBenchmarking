@@ -1,0 +1,36 @@
+To find the maximum product of three numbers in the given array, we can follow these steps:
+
+1. Sort the input array `nums` in ascending order.
+2. Calculate the product of the last three elements in the sorted array. This will give us the maximum possible product of three numbers.
+3. Calculate the product of the first two elements and the last element in the sorted array. This will account for the possibility of having negative numbers in the input array, which can result in a larger product.
+4. Compare the products obtained in steps 2 and 3 and return the maximum of the two.
+
+Here's the implementation of the `maximumProduct` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        nums.sort()  # Step 1: Sort the input array
+        
+        # Step 2: Calculate the product of the last three elements
+        product1 = nums[-1] * nums[-2] * nums[-3]
+        
+        # Step 3: Calculate the product of the first two elements and the last element
+        product2 = nums[0] * nums[1] * nums[-1]
+        
+        # Step 4: Return the maximum of the two products
+        return max(product1, product2)
+```
+
+Now you can create an instance of the `Solution` class and call the `maximumProduct` function with your input array. For example:
+
+```python
+nums = [1, 2, 3]
+solution = Solution()
+result = solution.maximumProduct(nums)
+print(result)  # Output: 6
+```
+
+This code will output the maximum product of three numbers from the given array.

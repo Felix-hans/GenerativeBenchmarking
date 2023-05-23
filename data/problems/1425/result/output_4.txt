@@ -1,0 +1,33 @@
+Here's the implementation of the `constrainedSubsetSum` function in Python:
+
+```python
+from collections import deque
+
+class Solution:
+    def constrainedSubsetSum(self, nums, k):
+        n = len(nums)
+        dp = [0] * n
+        deque_ = deque()
+        max_sum = float('-inf')
+
+        for i in range(n):
+            if deque_ and i - deque_[0] > k:
+                deque_.popleft()
+
+            dp[i] = nums[i] + max(0, dp[deque_[0]]) if deque_ else nums[i]
+            
+            while deque_ and dp[i] >= dp[deque_[-1]]:
+                deque_.pop()
+
+            deque_.append(i)
+
+            max_sum = max(max_sum, dp[i])
+
+        return max_sum
+```
+
+The function takes an input array `nums` and an integer `k` as parameters and returns the maximum sum of a non-empty subsequence that satisfies the given condition.
+
+The algorithm uses dynamic programming to track the maximum sum of subsequences. It maintains a deque (double-ended queue) to keep track of the indices of potential elements in the subsequence. The deque is used to efficiently find the maximum sum within the allowed range `k`.
+
+The time complexity of this solution is O(n), where n is the length of the input array `nums`.

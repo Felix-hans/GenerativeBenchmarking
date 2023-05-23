@@ -1,0 +1,31 @@
+You can implement the task in Python using the given class and method as follows:
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1:
+            return 1
+        else:
+            fib_prev = 0
+            fib_current = 1
+            for _ in range(2, n + 1):
+                fib_next = fib_prev + fib_current
+                fib_prev = fib_current
+                fib_current = fib_next
+            return fib_current
+```
+
+This implementation follows the Fibonacci sequence definition and uses a loop to calculate the Fibonacci number for the given input `n`. The initial Fibonacci numbers `F(0)` and `F(1)` are handled separately, and then the loop iterates from `2` to `n`, calculating each Fibonacci number iteratively.
+
+To use this implementation, you can create an instance of the `Solution` class and call the `fib` method, passing the desired value of `n`. Here's an example of how you can use it:
+
+```python
+solution = Solution()
+n = 6
+result = solution.fib(n)
+print(result)
+```
+
+In this example, the input `n` is set to `6`, and the Fibonacci number `F(6)` will be calculated and printed.

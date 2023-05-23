@@ -1,0 +1,36 @@
+To solve the given task, we can follow these steps:
+
+1. Create a dictionary to store the frequency count of each number in the array.
+2. Iterate through the array and update the frequency count in the dictionary.
+3. Sort the array based on the frequency count and the values.
+4. Return the sorted array.
+
+Here's the implementation of the `frequencySort` function:
+
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        frequency = Counter(nums)
+        return sorted(nums, key=lambda x: (frequency[x], -x))
+```
+
+We use the `Counter` class from the `collections` module to count the frequency of each number in the array. Then we sort the array based on the frequency count and the values using the `sorted` function. The `key` parameter in the `sorted` function allows us to specify the sorting criteria. In this case, we sort first based on the frequency count (`frequency[x]`) in ascending order and then based on the values (`-x`) in descending order.
+
+Now you can create an instance of the `Solution` class and call the `frequencySort` method with your input array to get the sorted array. For example:
+
+```python
+solution = Solution()
+nums = [1, 1, 2, 2, 2, 3]
+sorted_nums = solution.frequencySort(nums)
+print(sorted_nums)
+```
+
+Output:
+```
+[3, 1, 1, 2, 2, 2]
+```
+
+The output will be the sorted array according to the specified sorting criteria.

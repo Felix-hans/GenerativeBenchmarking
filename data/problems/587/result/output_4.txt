@@ -1,0 +1,78 @@
+To solve the problem, we can use the Graham's scan algorithm, which is commonly used for finding the convex hull of a set of points. In this case, we want to find the points on the fence perimeter, which is equivalent to finding the convex hull of the given tree locations.
+
+Here's the implementation of the `outerTrees` function using the Graham's scan algorithm:
+
+```python
+class Solution:
+    def outerTrees(self, trees):
+        def orientation(p, q, r):
+            # Returns the orientation of three points (p, q, r)
+            # -1 if clockwise, 0 if collinear, 1 if counterclockwise
+            return (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+
+        def distance(p, q):
+            # Returns the squared Euclidean distance between two points (p, q)
+            return (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2
+
+        def next_to_top(stack):
+            # Returns the second top element from the stack
+            return stack[-2]
+
+        # Sort the trees based on their x-coordinates (in case of a tie, sort by y-coordinates)
+        trees.sort(key=lambda p: (p[0], p[1]))
+
+        n = len(trees)
+        if n <= 2:
+            # If there are 2 or fewer trees, all of them are on the fence perimeter
+            return trees
+
+        # Initialize the stack for storing the points on the convex hull
+        stack = []
+        p0 = trees[0]  # The leftmost tree
+
+        # Find the next point in the sorted array that is not collinear with p0 and p1
+        p1 = trees[1]
+        i = 2
+        while i < n:
+            if orientation(p0, p1, trees[i]) != 0:
+                break
+            i += 1
+
+        # Add the first two points to the stack
+        stack.append(p0)
+        stack.append(p1)
+
+        # Process the remaining trees
+        for j in range(i, n):
+            while len(stack) >= 2 and orientation(next_to_top(stack), stack[-1], trees[j]) > 0:
+                stack.pop()  # Remove points that make a clockwise turn
+
+            stack.append(trees[j])
+
+        # Find the point with the maximum x-coordinate (rightmost point)
+        max_x = max(trees, key=lambda p: p[0])
+
+        # Add any points on the fence perimeter that are above the rightmost point
+        upper = []
+        for tree in trees:
+            if tree != max_x and orientation(max_x, stack[-1], tree) == 0:
+                upper.append(tree)
+
+        # Reverse the stack
+        stack.reverse()
+
+        # Add any points on the fence perimeter that are below the rightmost point
+        lower = []
+        for tree in trees:
+            if tree != max_x and orientation(max_x, stack[-1], tree) == 0:
+                lower.append(tree)
+
+        # Combine the points from upper and lower with the points on the convex hull
+        result = set(map(tuple, stack + upper + lower))
+
+        return list(result)
+```
+
+The `outerTrees` function takes the list of tree locations (`trees`) as input and returns a list of tree locations that are on the fence perimeter. The function uses helper functions `orientation`, `distance`, and `next_to_top` to perform various operations.
+
+You can create an instance of the `Solution

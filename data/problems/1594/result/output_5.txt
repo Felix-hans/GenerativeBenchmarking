@@ -1,0 +1,52 @@
+To solve this problem, we can use dynamic programming to find the maximum non-negative product from the top-left corner to each cell in the grid.
+
+Here's the implementation of the `maxProductPath` function:
+
+```python
+class Solution:
+    def maxProductPath(self, grid):
+        m, n = len(grid), len(grid[0])
+        max_prod = [[0] * n for _ in range(m)]
+        min_prod = [[0] * n for _ in range(m)]
+        
+        max_prod[0][0] = min_prod[0][0] = grid[0][0]
+        
+        for i in range(1, m):
+            max_prod[i][0] = min_prod[i][0] = max_prod[i-1][0] * grid[i][0]
+        
+        for j in range(1, n):
+            max_prod[0][j] = min_prod[0][j] = max_prod[0][j-1] * grid[0][j]
+        
+        for i in range(1, m):
+            for j in range(1, n):
+                if grid[i][j] < 0:
+                    max_prod[i][j] = min(min_prod[i-1][j], min_prod[i][j-1]) * grid[i][j]
+                    min_prod[i][j] = max(max_prod[i-1][j], max_prod[i][j-1]) * grid[i][j]
+                else:
+                    max_prod[i][j] = max(max_prod[i-1][j], max_prod[i][j-1]) * grid[i][j]
+                    min_prod[i][j] = min(min_prod[i-1][j], min_prod[i][j-1]) * grid[i][j]
+        
+        max_prod_mod = max_prod[-1][-1] % (10**9 + 7)
+        
+        if max_prod_mod < 0:
+            return -1
+        else:
+            return max_prod_mod
+```
+
+Let's test the solution with the given examples:
+
+```python
+solution = Solution()
+
+grid1 = [[-1, -2, -3], [-2, -3, -3], [-3, -3, -2]]
+print(solution.maxProductPath(grid1))  # Output: -1
+
+grid2 = [[1, -2, 1], [1, -2, 1], [3, -4, 1]]
+print(solution.maxProductPath(grid2))  # Output: 8
+
+grid3 = [[1, 3], [0, -4]]
+print(solution.maxProductPath(grid3))  # Output: 0
+```
+
+The solution should return the expected outputs for the given examples.

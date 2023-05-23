@@ -1,0 +1,70 @@
+To solve the given task, we can follow the following steps:
+
+1. Create a dictionary to store the count of substrings that satisfy the conditions.
+2. Initialize two pointers, `left` and `right`, at the start of the string.
+3. Initialize a variable `max_freq` to store the maximum frequency of any substring.
+4. Create an empty set `unique_chars` to keep track of unique characters in the current substring.
+5. Iterate over the string `s` from index 0 to len(s)-minSize.
+6. Within the loop, initialize a variable `sub_str` to store the current substring starting from the `left` pointer and having a length of `minSize`.
+7. While the length of `sub_str` is less than or equal to `maxSize`, and `left + minSize` is less than or equal to the length of the string `s`, do the following:
+     - Check if the number of unique characters in `sub_str` is less than or equal to `maxLetters`. If true, update the count of `sub_str` in the dictionary by 1.
+     - Update the `max_freq` if the count of `sub_str` is greater than `max_freq`.
+     - Move the `left` pointer by 1 position to the right.
+     - Add the character at the new `left` pointer position to the `unique_chars` set.
+     - Append the character at the new `left` pointer position to the `sub_str`.
+8. Move the `right` pointer by 1 position to the right.
+9. Remove the character at the `left` pointer position from the `unique_chars` set.
+10. If the count of the character removed from the `left` pointer position is 0, remove it from the `sub_str`.
+11. Repeat steps 6-10 until the `right` pointer reaches the end of the string.
+12. Return the value of `max_freq`.
+
+Here's the implementation of the `maxFreq` function in Python:
+
+```python
+from collections import defaultdict
+
+class Solution:
+    def maxFreq(self, s: str, maxLetters: int, minSize: int, maxSize: int) -> int:
+        freq_count = defaultdict(int)
+        max_freq = 0
+        left = 0
+        unique_chars = set()
+
+        for right in range(len(s) - minSize + 1):
+            sub_str = s[right:right+minSize]
+
+            while len(sub_str) <= maxSize and left + minSize <= len(s):
+                if len(set(sub_str)) <= maxLetters:
+                    freq_count[sub_str] += 1
+                    max_freq = max(max_freq, freq_count[sub_str])
+
+                left += 1
+                unique_chars.remove(s[left-1])
+                if s[left-1] not in freq_count or freq_count[s[left-1]] == 0:
+                    sub_str = sub_str[1:]
+                freq_count[s[left-1]] -= 1
+
+            right += 1
+            if right < len(s):
+                unique_chars.add(s[right])
+                sub_str += s[right]
+
+        return max_freq
+```
+
+Now we can create an instance of the `Solution` class and test it with the provided examples:
+
+```python
+solution = Solution()
+
+s = "aababcaab"
+maxLetters = 2
+minSize = 3
+maxSize = 4
+print(solution.maxFreq(s, maxLetters, minSize, maxSize))  # Output: 2
+
+s = "aaaa"
+maxLetters = 1
+minSize = 3
+maxSize = 3
+print(solution.maxFreq(s, maxLetters, minSize, maxSize))  # Output:

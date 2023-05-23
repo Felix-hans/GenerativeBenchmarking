@@ -1,0 +1,19 @@
+To solve the given task in Python, you can use the following implementation:
+
+```python
+class Solution:
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return 0
+        else:
+            return (num - 1) % 9 + 1
+```
+
+Explanation:
+- The solution follows a mathematical pattern to find the result without any loop or recursion.
+- If the input number `num` is 0, the result will be 0.
+- For any non-zero number, the result will be `(num - 1) % 9 + 1`.
+- This formula is derived from the fact that the digital root (result of repeatedly adding digits) of a positive number `num` is equal to `num % 9` if `num` is not divisible by 9. However, if `num` is divisible by 9, the digital root will be 9.
+- By applying `(num - 1) % 9 + 1`, we handle the case when `num` is divisible by 9, ensuring that the result is always a single digit.
+
+This implementation has a runtime complexity of O(1) as it directly calculates the result based on the input number `num`.

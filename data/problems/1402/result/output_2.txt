@@ -1,0 +1,47 @@
+To solve the given task, we can use a dynamic programming approach. Let's go through the steps to implement the `maxSatisfaction` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        n = len(satisfaction)
+        satisfaction.sort()  # Sort the dishes in ascending order
+
+        max_coefficient = 0
+        total_time = 0
+        for i in range(n - 1, -1, -1):
+            total_time += satisfaction[i]  # Add the current dish to the total time
+            if total_time < 0:
+                break  # If adding the current dish makes the total time negative, stop adding more dishes
+            max_coefficient += total_time  # Add the like-time coefficient of the current dish to the maximum coefficient
+
+        return max_coefficient
+```
+
+Here's how the solution works:
+
+1. We start by sorting the dishes in ascending order. Sorting allows us to process the dishes from the lowest satisfaction level to the highest, maximizing the like-time coefficient.
+2. We initialize `max_coefficient` and `total_time` to zero.
+3. We iterate over the sorted dishes in reverse order, starting from the highest satisfaction level. This allows us to add dishes with higher satisfaction levels to the total time first.
+4. In each iteration, we add the current dish's satisfaction level to `total_time`. This represents the time taken to cook the current dish and all previous dishes.
+5. If adding the current dish makes the `total_time` negative, we break the loop because adding more dishes will only decrease the like-time coefficient. Since the dishes are sorted, any subsequent dishes will have even lower satisfaction levels, resulting in negative contributions to the coefficient.
+6. Finally, we add the current `total_time` to the `max_coefficient` and move on to the next iteration.
+7. Once the loop is complete, we return the `max_coefficient`, which represents the maximum sum of the like-time coefficients.
+
+Let's test the implementation with the provided examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The outputs match the expected results, so the implementation appears to be correct.

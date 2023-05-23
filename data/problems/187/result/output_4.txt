@@ -1,0 +1,37 @@
+Sure! Here's the implementation of the `findRepeatedDnaSequences` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        seen = set()
+        repeated = set()
+
+        for i in range(len(s) - 9):
+            sequence = s[i:i+10]
+            if sequence in seen:
+                repeated.add(sequence)
+            else:
+                seen.add(sequence)
+
+        return list(repeated)
+```
+
+You can create an instance of the `Solution` class and call the `findRepeatedDnaSequences` function, passing the DNA sequence as the argument. It will return a list of all the 10-letter-long sequences that occur more than once in the DNA molecule.
+
+Here's an example usage:
+
+```python
+solution = Solution()
+s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+result = solution.findRepeatedDnaSequences(s)
+print(result)
+```
+
+Output:
+```
+['CCCCCAAAAA', 'AAAAACCCCC']
+```
+
+Note that the order of the output may vary since it is not specified in the problem statement.

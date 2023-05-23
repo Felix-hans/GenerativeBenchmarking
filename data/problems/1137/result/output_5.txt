@@ -1,0 +1,35 @@
+To implement the Tribonacci sequence in Python, we can use a simple iterative approach. Here's the implementation of the `tribonacci` function:
+
+```python
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        if n == 1 or n == 2:
+            return 1
+        
+        t0, t1, t2 = 0, 1, 1
+        
+        for _ in range(3, n+1):
+            tn = t0 + t1 + t2
+            t0, t1, t2 = t1, t2, tn
+        
+        return t2
+```
+
+This solution initializes the variables `t0`, `t1`, and `t2` with the initial values of the Tribonacci sequence. Then, it iterates from `3` to `n`, updating the variables at each step according to the Tribonacci formula: `tn = t0 + t1 + t2`. Finally, it returns `t2`, which represents the value of Tn.
+
+You can create an instance of the `Solution` class and call the `tribonacci` function with the desired value of `n` to obtain the corresponding Tribonacci number. For example:
+
+```python
+solution = Solution()
+n = 4
+result = solution.tribonacci(n)
+print(result)  # Output: 4
+
+n = 25
+result = solution.tribonacci(n)
+print(result)  # Output: 1389537
+```
+
+The solution handles the given constraints, and the answer is guaranteed to fit within a 32-bit integer.

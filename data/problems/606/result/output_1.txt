@@ -1,0 +1,29 @@
+To construct a string consisting of parentheses and integers from a binary tree using the preorder traversal, we can recursively traverse the tree while building the string representation. The algorithm follows these steps:
+
+1. If the root node is None, return an empty string.
+2. If the root has no children (left and right), return the string representation of its value.
+3. If the root has only a right child (and no left child), return the string representation of its value followed by an empty set of parentheses and the recursive call on its right child.
+4. Otherwise, construct the string by concatenating the string representation of the root's value with an opening parenthesis.
+5. Recursively call the function on the left child and append its result to the constructed string.
+6. If the root has a right child, append an empty set of parentheses followed by the recursive call on the right child and close the parentheses.
+7. Close the opening parenthesis of the root.
+8. Return the constructed string.
+
+Here's the implementation of the `tree2str` function:
+
+```python
+class Solution:
+    def tree2str(self, root: Optional[TreeNode]) -> str:
+        if root is None:
+            return ""
+
+        if root.left is None and root.right is None:
+            return str(root.val)
+
+        if root.right is None:
+            return str(root.val) + "(" + self.tree2str(root.left) + ")"
+
+        return str(root.val) + "(" + self.tree2str(root.left) + ")(" + self.tree2str(root.right) + ")"
+```
+
+You can now use this solution to convert a binary tree into a string representation using the preorder traversal.

@@ -1,0 +1,36 @@
+To solve the given task, we can follow the process of adding numbers in base -2, which involves carrying over values when the sum exceeds 1 and adjusting the digits accordingly.
+
+Here's the Python implementation for the given task:
+
+```python
+class Solution:
+    def addNegabinary(self, arr1, arr2):
+        i, j = len(arr1) - 1, len(arr2) - 1
+        carry = 0
+        result = []
+        
+        while i >= 0 or j >= 0 or carry:
+            if i >= 0:
+                carry += arr1[i]
+                i -= 1
+            if j >= 0:
+                carry += arr2[j]
+                j -= 1
+            
+            result.append(carry & 1)
+            carry = -(carry >> 1)
+        
+        # Remove leading zeros
+        while len(result) > 1 and result[-1] == 0:
+            result.pop()
+        
+        return result[::-1]
+```
+
+In the above implementation, we start from the least significant bit and iterate through both input arrays (`arr1` and `arr2`) simultaneously. We add the corresponding bits along with the carry and update the carry value accordingly.
+
+The result is stored in the `result` list, with the least significant bit at the beginning. After the loop, we remove any leading zeros from the result, except for the case when the result is zero.
+
+Finally, we return the result list reversed to obtain the correct order of the bits.
+
+You can use the `Solution` class to call the `addNegabinary` method with the given input arrays and get the desired output.

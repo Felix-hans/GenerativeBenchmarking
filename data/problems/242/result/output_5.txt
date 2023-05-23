@@ -1,0 +1,15 @@
+To check if one string is an anagram of another, we can compare the sorted versions of both strings. If the sorted strings are equal, then the two strings are anagrams of each other.
+
+Here's the implementation of the `isAnagram` function in Python:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s) == sorted(t)
+```
+
+This solution has a time complexity of O(n log n), where n is the length of the input strings, due to the sorting operation.
+
+If the inputs can contain Unicode characters, we can still use the same approach. The `sorted` function in Python supports sorting strings with Unicode characters correctly.
+
+Note that the `Solution` class and the `isAnagram` method are not necessary for this particular task. They are provided to match the format you provided, but you can also implement the function without using a class.

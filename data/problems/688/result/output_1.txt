@@ -1,0 +1,40 @@
+To solve this problem, we can use dynamic programming to calculate the probability of the knight staying on the board after each move. We can create a 3-dimensional grid of size (n x n x (k+1)) to store the probabilities.
+
+Here's the Python implementation for the `knightProbability` method:
+
+```python
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        # Define the possible moves of a knight
+        moves = [(2, 1), (1, 2), (-1, 2), (-2, 1), (-2, -1), (-1, -2), (1, -2), (2, -1)]
+        
+        # Initialize a 3-dimensional grid to store the probabilities
+        dp = [[[0] * n for _ in range(n)] for _ in range(k + 1)]
+        
+        # Set the initial probability for the starting position
+        dp[0][row][column] = 1
+        
+        # Iterate for each move
+        for m in range(1, k + 1):
+            for r in range(n):
+                for c in range(n):
+                    # Calculate the probability for the current position
+                    for move in moves:
+                        prev_r, prev_c = r - move[0], c - move[1]
+                        if 0 <= prev_r < n and 0 <= prev_c < n:
+                            dp[m][r][c] += dp[m-1][prev_r][prev_c] / 8.0
+        
+        # Calculate the total probability of staying on the board
+        probability = sum(sum(row) for row in dp[k])
+        return probability
+```
+
+Now you can create an instance of the `Solution` class and call the `knightProbability` method to solve the problem. For example:
+
+```python
+solution = Solution()
+result = solution.knightProbability(3, 2, 0, 0)
+print(result)  # Output: 0.0625
+```
+
+Similarly, you can test other inputs by calling the `knightProbability` method with appropriate arguments.

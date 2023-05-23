@@ -1,0 +1,44 @@
+To solve the given task, we can follow the following steps:
+
+1. Count the frequency of each task using a dictionary.
+2. Find the task with the maximum frequency. Let's say the maximum frequency is `max_freq`.
+3. Calculate the number of idle slots between the tasks using the formula: `(max_freq - 1) * (n + 1)`.
+   - Explanation: After placing the tasks with the maximum frequency, we need to insert idle slots between them. The number of idle slots required is `(max_freq - 1) * (n + 1)`.
+4. Calculate the total number of slots required using the formula: `len(tasks) + number of idle slots`.
+5. Return the maximum of `total slots` and `length of tasks`.
+
+Here's the implementation of the `leastInterval` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        task_counts = [0] * 26  # To store the frequency of each task
+        for task in tasks:
+            task_counts[ord(task) - ord('A')] += 1
+        
+        max_freq = max(task_counts)  # Maximum frequency of any task
+        max_freq_count = task_counts.count(max_freq)  # Number of tasks with maximum frequency
+        
+        # Calculate the number of idle slots between tasks
+        # If n is less than the number of tasks with maximum frequency - 1,
+        # then the number of idle slots should be at least (max_freq - 1) * (n + 1)
+        idle_slots = max((max_freq - 1) * (n + 1), 0)
+        
+        # Calculate the total number of slots required
+        total_slots = idle_slots + max_freq_count
+        
+        # Return the maximum of total slots and the length of tasks
+        return max(total_slots, len(tasks))
+```
+
+You can create an instance of the `Solution` class and call the `leastInterval` method with the appropriate inputs to get the desired output. For example:
+
+```python
+solution = Solution()
+tasks = ["A","A","A","B","B","B"]
+n = 2
+result = solution.leastInterval(tasks, n)
+print(result)  # Output: 8
+```

@@ -1,0 +1,36 @@
+To solve this problem, we can use a simple approach known as "buy and sell" strategy. We iterate over the prices array and compare each price with the previous one. If the current price is higher than the previous one, we can make a profit by buying on the previous day and selling on the current day.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        max_profit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i-1]:
+                max_profit += prices[i] - prices[i-1]
+        return max_profit
+```
+
+We initialize `max_profit` to 0 and iterate over the prices array starting from the second element (index 1). If the current price is greater than the previous one, we add the difference to the `max_profit` variable. This way, we accumulate the profits from all the upward price movements.
+
+Finally, we return the `max_profit` as the result.
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+prices = [7, 1, 5, 3, 6, 4]
+print(solution.maxProfit(prices))  # Output: 7
+
+prices = [1, 2, 3, 4, 5]
+print(solution.maxProfit(prices))  # Output: 4
+
+prices = [7, 6, 4, 3, 1]
+print(solution.maxProfit(prices))  # Output: 0
+```
+
+The function returns the expected outputs for the given examples.

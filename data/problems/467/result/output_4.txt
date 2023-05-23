@@ -1,0 +1,31 @@
+You can solve this problem by using dynamic programming to keep track of the longest contiguous substring ending at each letter. Here's the implementation of the `findSubstringInWraproundString` function:
+
+```python
+class Solution:
+    def findSubstringInWraproundString(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        # Initialize the dp array with all zeros
+        dp = [0] * 26
+        
+        # Store the length of the longest contiguous substring ending at each letter
+        dp[ord(s[0]) - ord('a')] = 1
+        curr_length = 1
+        
+        for i in range(1, len(s)):
+            if (ord(s[i]) - ord(s[i-1])) % 26 == 1:
+                curr_length += 1
+            else:
+                curr_length = 1
+            
+            # Update the length of the longest contiguous substring ending at the current letter
+            dp[ord(s[i]) - ord('a')] = max(dp[ord(s[i]) - ord('a')], curr_length)
+        
+        # Sum up the lengths of the longest contiguous substrings ending at each letter
+        return sum(dp)
+```
+
+This implementation uses an array `dp` to store the lengths of the longest contiguous substrings ending at each letter of the alphabet. The `ord` function is used to convert characters to their corresponding ASCII values. The modulo operator `%` is used to handle the wraparound effect.
+
+The time complexity of this solution is O(n), where n is the length of the input string.

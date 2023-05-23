@@ -1,0 +1,18 @@
+To solve the problem, we can use the concept of a digital root. The digital root of a non-negative integer is the result obtained by summing the digits of the number until a single-digit number is obtained.
+
+Here's the implementation of the `addDigits` function in Python:
+
+```python
+class Solution:
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return 0
+        elif num % 9 == 0:
+            return 9
+        else:
+            return num % 9
+```
+
+In this implementation, we handle the special case when `num` is 0, as it is the only number that returns 0. For other non-zero numbers, we use the property that the digital root of a number `n` is equal to `n % 9` unless `n` is divisible by 9. In the latter case, the digital root is 9.
+
+This solution has a constant runtime of O(1) since it doesn't require any loops or recursion.

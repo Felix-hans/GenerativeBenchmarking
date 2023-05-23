@@ -1,0 +1,33 @@
+To find the closest two integers whose product equals `num + 1` or `num + 2`, we can iterate from the square root of `num + 2` down to 1. For each divisor `i` found, we check if it divides `num + 1` or `num + 2`. If it does, we return `[i, (num + 1) // i]` or `[i, (num + 2) // i]`, respectively.
+
+Here's the implementation of the `closestDivisors` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def closestDivisors(self, num: int) -> List[int]:
+        target1 = num + 1
+        target2 = num + 2
+        
+        def find_divisors(target):
+            for i in range(int(target**0.5), 0, -1):
+                if target % i == 0:
+                    return [i, target // i]
+        
+        divisors1 = find_divisors(target1)
+        divisors2 = find_divisors(target2)
+        
+        return divisors1 if abs(divisors1[0] - divisors1[1]) < abs(divisors2[0] - divisors2[1]) else divisors2
+```
+
+Now you can create an instance of the `Solution` class and call the `closestDivisors` method with the input number. Here's an example usage:
+
+```python
+solution = Solution()
+num = 8
+result = solution.closestDivisors(num)
+print(result)  # Output: [3, 3]
+```
+
+You can try different input values by changing the `num` variable to test the function.

@@ -1,0 +1,38 @@
+To implement the given task in Python, we can follow the following steps:
+
+1. Sort the input array `nums` in ascending order.
+2. Create a new array `result` of the same length as `nums`.
+3. Initialize two pointers, `left` and `right`, pointing to the middle of the array. If the length of `nums` is odd, `left` should start at index `n//2`, and `right` should start at index `n//2 + 1`. If the length of `nums` is even, `left` should start at index `n//2 - 1`, and `right` should start at index `n//2`.
+4. Iterate through the sorted `nums` array in reverse order:
+   - If the index `i` is even, assign the value at index `i` to `result[left]` and decrement `left` by 1.
+   - If the index `i` is odd, assign the value at index `i` to `result[right]` and decrement `right` by 1.
+5. Assign the values from `result` back to `nums` to modify it in-place.
+
+Here's the implementation of the `wiggleSort` function:
+
+```python
+from typing import List
+
+class Solution:
+    def wiggleSort(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        nums.sort()  # Step 1
+        n = len(nums)
+        result = [0] * n
+        left = n // 2 - 1 if n % 2 == 0 else n // 2
+        right = n - 1
+
+        for i in range(n-1, -1, -1):  # Step 4
+            if i % 2 == 0:
+                result[left] = nums[i]
+                left -= 1
+            else:
+                result[right] = nums[i]
+                right -= 1
+
+        nums[:] = result  # Step 5
+```
+
+You can use the above solution as a class method `wiggleSort` in the `Solution` class. Instantiate an object of the `Solution` class and call the `wiggleSort` method passing the input array `nums` as an argument. The input array `nums` will be modified in-place with the desired ordering.

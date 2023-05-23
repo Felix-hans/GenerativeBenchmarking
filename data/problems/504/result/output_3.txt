@@ -1,0 +1,37 @@
+Certainly! Here's the implementation of the `convertToBase7` function in Python:
+
+```python
+class Solution:
+    def convertToBase7(self, num: int) -> str:
+        if num == 0:
+            return "0"
+        
+        is_negative = False
+        if num < 0:
+            is_negative = True
+            num = abs(num)
+        
+        result = ""
+        while num > 0:
+            result = str(num % 7) + result
+            num //= 7
+        
+        if is_negative:
+            result = "-" + result
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `convertToBase7` method with the desired `num` value. Here's an example usage:
+
+```python
+solution = Solution()
+print(solution.convertToBase7(100))  # Output: "202"
+print(solution.convertToBase7(-7))   # Output: "-10"
+```
+
+The `convertToBase7` function first checks if `num` is zero and returns "0" if it is. Then, it handles negative numbers by setting a flag and converting `num` to its absolute value. 
+
+Next, the function performs the base conversion algorithm. It repeatedly divides `num` by 7 and keeps track of the remainders. The remainders are concatenated to the left of the result string. The process continues until `num` becomes zero.
+
+Finally, if the input number was negative, the function prepends a "-" sign to the result before returning it.

@@ -1,0 +1,40 @@
+Here's an implementation of the `mostCommonWord` function in Python:
+
+```python
+from typing import List
+import re
+from collections import Counter
+
+class Solution:
+    def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
+        # Convert the paragraph to lowercase and split into words
+        words = re.findall(r'\w+', paragraph.lower())
+
+        # Create a counter of non-banned words
+        word_counts = Counter(word for word in words if word not in banned)
+
+        # Find the most common word
+        most_common_word = word_counts.most_common(1)[0][0]
+
+        return most_common_word
+```
+
+Explanation:
+1. We import the necessary modules: `re` for regular expressions and `Counter` from `collections` to count the occurrences of words.
+2. We define the `mostCommonWord` function that takes the `paragraph` string and the `banned` list as inputs and returns the most frequent word that is not banned.
+3. We use regular expressions to extract all the words from the paragraph, converting them to lowercase in the process. The `re.findall(r'\w+', paragraph.lower())` expression matches all word characters (`\w`) and returns a list of words.
+4. We create a counter called `word_counts` that counts the occurrences of each non-banned word in the `words` list. We use a generator expression to iterate over the `words` list and filter out the banned words.
+5. Finally, we use the `most_common` method of the `Counter` object to find the most common word. Since there is at least one word that is not banned and the answer is unique, we can safely use `most_common(1)` to retrieve the most frequent word. We then access the word itself with `[0][0]`.
+6. The function returns the most common word that is not banned.
+
+You can create an instance of the `Solution` class and call the `mostCommonWord` function with the appropriate arguments to test it out. For example:
+
+```python
+solution = Solution()
+paragraph = "Bob hit a ball, the hit BALL flew far after it was hit."
+banned = ["hit"]
+result = solution.mostCommonWord(paragraph, banned)
+print(result)  # Output: "ball"
+```
+
+Note that the function assumes that the `paragraph` input follows the specified constraints.

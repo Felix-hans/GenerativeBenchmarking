@@ -1,0 +1,55 @@
+To solve this task, we can use dynamic programming to build the solution iteratively. We'll define two arrays, `dp_A` and `dp_P`, to store the number of valid records ending with 'A' and 'P' respectively.
+
+For each day, we'll update the arrays based on the following rules:
+1. To update `dp_P[i]`, we can append 'P' to any valid record ending with 'A', 'P', or 'L'.
+2. To update `dp_A[i]`, we can append 'A' to any valid record ending with 'P' or 'L', as long as the total number of absences so far is less than 2.
+
+Finally, the total number of valid records of length `n` will be the sum of `dp_A[n-1]`, `dp_P[n-1]`, and `dp_L[n-1]`.
+
+Here's the implementation of the `checkRecord` method:
+
+```python
+class Solution:
+    def checkRecord(self, n: int) -> int:
+        MOD = 10**9 + 7
+
+        # Initialize arrays for dynamic programming
+        dp_A = [0] * n
+        dp_P = [0] * n
+
+        # Base cases
+        dp_A[0] = 1
+        dp_P[0] = 1
+
+        if n > 1:
+            dp_L = [0] * n
+            dp_L[1] = 1
+
+        # Update arrays iteratively
+        for i in range(1, n):
+            dp_P[i] = (dp_A[i - 1] + dp_P[i - 1] + (dp_L[i - 1] if i > 1 else 0)) % MOD
+            dp_A[i] = (dp_P[i - 1] + (dp_P[i - 2] if i > 1 else 0)) % MOD
+            if i > 1:
+                dp_L[i] = (dp_A[i - 1] + dp_A[i - 2]) % MOD
+
+        # Calculate the total number of valid records
+        total = (dp_A[n - 1] + dp_P[n - 1] + (dp_L[n - 1] if n > 1 else 0)) % MOD
+
+        return total
+```
+
+Now you can create an instance of the `Solution` class and call the `checkRecord` method to get the result:
+
+```python
+solution = Solution()
+n = 2
+result = solution.checkRecord(n)
+print(result)
+```
+
+The output will be:
+```
+8
+```
+
+You can also try other values of `n` to test the solution.

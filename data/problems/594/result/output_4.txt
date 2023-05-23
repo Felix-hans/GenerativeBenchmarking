@@ -1,0 +1,26 @@
+Here's the Python implementation of the task:
+
+```python
+from typing import List
+
+class Solution:
+    def findLHS(self, nums: List[int]) -> int:
+        num_counts = {}
+        max_length = 0
+        
+        # Count the frequency of each number
+        for num in nums:
+            num_counts[num] = num_counts.get(num, 0) + 1
+        
+        # Check each number and its adjacent numbers
+        for num in num_counts:
+            if num + 1 in num_counts:
+                length = num_counts[num] + num_counts[num + 1]
+                max_length = max(max_length, length)
+        
+        return max_length
+```
+
+This solution uses a dictionary `num_counts` to store the frequency count of each number in the input list `nums`. It then iterates through the numbers in `num_counts` and checks if the current number and its adjacent number (i.e., current number + 1) are both present in `num_counts`. If they are, it calculates the length of the harmonious subsequence formed by these two numbers and updates `max_length` if necessary.
+
+Finally, it returns the `max_length`, which represents the length of the longest harmonious subsequence in the input list.

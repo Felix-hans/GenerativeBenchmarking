@@ -1,0 +1,33 @@
+Here's an implementation of the `getMaximumGenerated` function in Python that solves the given task:
+
+```python
+class Solution:
+    def getMaximumGenerated(self, n: int) -> int:
+        if n == 0:
+            return 0
+        
+        nums = [0] * (n + 1)
+        nums[1] = 1
+        maximum = 1
+        
+        for i in range(2, n + 1):
+            if i % 2 == 0:
+                nums[i] = nums[i // 2]
+            else:
+                nums[i] = nums[i // 2] + nums[i // 2 + 1]
+            
+            maximum = max(maximum, nums[i])
+        
+        return maximum
+```
+
+The implementation follows the given rules to generate the `nums` array. We start with an array of zeros with length `n + 1` and set `nums[1] = 1`. Then, for each index `i` from 2 to `n`, we calculate `nums[i]` based on the given rules:
+
+- If `i` is even, `nums[i]` is equal to `nums[i // 2]`.
+- If `i` is odd, `nums[i]` is equal to `nums[i // 2] + nums[i // 2 + 1]`.
+
+While calculating `nums[i]`, we also update the `maximum` variable to keep track of the maximum value encountered so far.
+
+Finally, we return the `maximum` value as the result.
+
+You can create an instance of the `Solution` class and call the `getMaximumGenerated` method with the desired `n` value to test the implementation.

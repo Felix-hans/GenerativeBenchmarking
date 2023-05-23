@@ -1,0 +1,36 @@
+To solve the given task, we can use dynamic programming to count the number of binary trees we can make.
+
+Here's the implementation of the `numFactoredBinaryTrees` function in Python:
+
+```python
+class Solution:
+    def numFactoredBinaryTrees(self, arr):
+        MOD = 10**9 + 7
+        arr.sort()  # Sort the array in ascending order
+        n = len(arr)
+        dp = [1] * n  # Initialize the dynamic programming array with 1's
+
+        # Create a dictionary to store the index of each number in the array
+        index = {num: i for i, num in enumerate(arr)}
+
+        for i in range(n):
+            for j in range(i):
+                # Check if arr[i] is divisible by arr[j]
+                if arr[i] % arr[j] == 0:
+                    # Calculate the complement of arr[i] / arr[j]
+                    complement = arr[i] // arr[j]
+                    # If the complement exists in the array, update the dynamic programming array
+                    if complement in index:
+                        dp[i] += dp[j] * dp[index[complement]]
+                        dp[i] %= MOD
+
+        # Sum up all the counts in the dynamic programming array
+        total_count = sum(dp) % MOD
+        return total_count
+```
+
+The solution uses a dynamic programming array `dp` to store the count of binary trees we can make for each number in the array. The idea is to iterate over each number and its divisors to calculate the count.
+
+By sorting the array in ascending order, we ensure that when we process a number `arr[i]`, all its divisors `arr[j]` (where `j < i`) have already been processed. This way, we can use the counts stored in `dp` for the divisors to calculate the count for `arr[i]`.
+
+The time complexity of this solution is O(n^2), where n is the length of the input array. This is because, in the worst case, we iterate over each number and its divisors. Since n can be up to 1000, this solution is efficient enough to handle the given constraints.

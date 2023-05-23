@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 7/57 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 25: KeyError: \'R\'\n  \xe2\x9c\x98 Error: KeyError: \'R\'\n    hand_freq[board[i]] -= balls_removed\nLine 25 in backtrack (Solution.py)\n    min_steps = min(min_steps, balls_removed + backtrack(remaining_board, hand_freq))\nLine 28 in backtrack (Solution.py)\n    min_steps = backtrack(board, hand_freq)\nLine 36 in findMinStep (Solution.py)\n    ret = Solution().findMinStep(param_1, param_2)\nLine 62 in _driver (Solution.py)\n    _driver()\nLine 73 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: "RRWWRRW"\n"W"\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: -1\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:96595) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

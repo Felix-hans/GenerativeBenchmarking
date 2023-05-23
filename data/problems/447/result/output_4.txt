@@ -1,0 +1,38 @@
+Here's the implementation of the `numberOfBoomerangs` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        count = 0
+        
+        for i in range(len(points)):
+            distances = {}
+            
+            for j in range(len(points)):
+                if i != j:
+                    distance = self.calculateDistance(points[i], points[j])
+                    if distance in distances:
+                        distances[distance] += 1
+                    else:
+                        distances[distance] = 1
+            
+            for distance in distances.values():
+                count += distance * (distance - 1)
+        
+        return count
+    
+    def calculateDistance(self, point1: List[int], point2: List[int]) -> int:
+        x1, y1 = point1
+        x2, y2 = point2
+        return (x1 - x2) ** 2 + (y1 - y2) ** 2
+```
+
+In this solution, we iterate over each point and calculate the distance between that point and all other points. We keep track of the count of distances in a dictionary `distances`, where the keys are the distances and the values are the counts. For each distance, we calculate the number of possible boomerangs using the formula `distance * (distance - 1)` and add it to the `count` variable.
+
+The `calculateDistance` function calculates the squared Euclidean distance between two points using the formula `distance = (x1 - x2) ** 2 + (y1 - y2) ** 2`. Note that we don't need to calculate the square root because we only need to compare distances.
+
+Finally, we return the `count` as the result.
+
+You can create an instance of the `Solution` class and call the `numberOfBoomerangs` method with your input points to get the desired output.

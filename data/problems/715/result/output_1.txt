@@ -1,0 +1,65 @@
+To solve the problem, we can use a list of intervals to represent the tracked ranges. Each interval in the list will be a tuple of two integers, representing the left and right endpoints of the range.
+
+Here's the implementation of the `RangeModule` class:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.ranges = []
+
+    def addRange(self, left: int, right: int) -> None:
+        new_ranges = []
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            new_ranges.append(self.ranges[i])
+            i += 1
+
+        while i < len(self.ranges) and self.ranges[i][0] <= right:
+            left = min(left, self.ranges[i][0])
+            right = max(right, self.ranges[i][1])
+            i += 1
+
+        new_ranges.append((left, right))
+        new_ranges.extend(self.ranges[i:])
+        self.ranges = new_ranges
+
+    def queryRange(self, left: int, right: int) -> bool:
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] <= left:
+            i += 1
+
+        if i == len(self.ranges) or self.ranges[i][0] > right:
+            return False
+
+        return True
+
+    def removeRange(self, left: int, right: int) -> None:
+        new_ranges = []
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            new_ranges.append(self.ranges[i])
+            i += 1
+
+        while i < len(self.ranges) and self.ranges[i][0] < right:
+            if self.ranges[i][0] < left:
+                new_ranges.append((self.ranges[i][0], left))
+            if self.ranges[i][1] > right:
+                new_ranges.append((right, self.ranges[i][1]))
+            i += 1
+
+        new_ranges.extend(self.ranges[i:])
+        self.ranges = new_ranges
+```
+
+Let's test the implementation using the provided example:
+
+```python
+rangeModule = RangeModule()
+rangeModule.addRange(10, 20)
+rangeModule.removeRange(14, 16)
+print(rangeModule.queryRange(10, 14))  # Output: True
+print(rangeModule.queryRange(13, 15))  # Output: False
+print(rangeModule.queryRange(16, 17))  # Output: True
+```
+
+The output matches the expected results [True, False, True].

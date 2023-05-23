@@ -1,0 +1,66 @@
+Here's an implementation of the `MyHashMap` class in Python:
+
+```python
+class ListNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.next = None
+
+
+class MyHashMap:
+    def __init__(self):
+        self.size = 1000
+        self.bucket = [None] * self.size
+
+    def _hash(self, key):
+        return key % self.size
+
+    def put(self, key, value):
+        index = self._hash(key)
+        if self.bucket[index] is None:
+            self.bucket[index] = ListNode(key, value)
+        else:
+            curr = self.bucket[index]
+            while True:
+                if curr.key == key:
+                    curr.value = value
+                    return
+                if curr.next is None:
+                    break
+                curr = curr.next
+            curr.next = ListNode(key, value)
+
+    def get(self, key):
+        index = self._hash(key)
+        curr = self.bucket[index]
+        while curr:
+            if curr.key == key:
+                return curr.value
+            curr = curr.next
+        return -1
+
+    def remove(self, key):
+        index = self._hash(key)
+        curr = prev = self.bucket[index]
+        if not curr:
+            return
+        if curr.key == key:
+            self.bucket[index] = curr.next
+        else:
+            curr = curr.next
+            while curr:
+                if curr.key == key:
+                    prev.next = curr.next
+                    break
+                else:
+                    curr, prev = curr.next, prev.next
+```
+
+This implementation uses an array of linked lists to handle collisions. Each index in the `bucket` array represents a hash value. When inserting a new key-value pair, if there is no collision, a new `ListNode` is created and added to the corresponding index. If there is a collision, the linked list at that index is traversed until the key is found or a new node is appended.
+
+To retrieve a value for a given key, the hash value is computed, and the linked list at that index is traversed until the key is found or the end of the list is reached.
+
+To remove a key-value pair, the hash value is computed, and the linked list at that index is searched for the key. If found, the node is removed from the list by adjusting the pointers of the previous and next nodes.
+
+Note: This implementation uses a fixed size of 1000 for the hash table. If you expect a larger number of key-value pairs, you may need to adjust the size accordingly to ensure better performance.

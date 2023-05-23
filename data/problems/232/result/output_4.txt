@@ -1,0 +1,50 @@
+To implement a FIFO queue using two stacks, we can use one stack to store the elements in the order they are pushed, and another stack to reverse the order of the elements when necessary.
+
+Here's the implementation of the `MyQueue` class in Python:
+
+```python
+class MyQueue:
+    def __init__(self):
+        self.stack1 = []
+        self.stack2 = []
+
+    def push(self, x: int) -> None:
+        while self.stack1:
+            self.stack2.append(self.stack1.pop())
+        self.stack1.append(x)
+        while self.stack2:
+            self.stack1.append(self.stack2.pop())
+
+    def pop(self) -> int:
+        return self.stack1.pop()
+
+    def peek(self) -> int:
+        return self.stack1[-1]
+
+    def empty(self) -> bool:
+        return len(self.stack1) == 0
+```
+
+The `push` method works as follows:
+1. Move all elements from `stack1` to `stack2` to reverse their order.
+2. Add the new element `x` to `stack1`.
+3. Move all elements from `stack2` back to `stack1` to restore the original order.
+
+The `pop` method simply removes and returns the top element from `stack1`.
+
+The `peek` method returns the top element of `stack1` without removing it.
+
+The `empty` method checks if `stack1` is empty and returns `True` or `False` accordingly.
+
+Here's an example of how you can use the `MyQueue` class:
+
+```python
+myQueue = MyQueue()
+myQueue.push(1)
+myQueue.push(2)
+print(myQueue.peek())  # Output: 1
+print(myQueue.pop())   # Output: 1
+print(myQueue.empty()) # Output: False
+```
+
+This implementation has a time complexity of O(1) for push, pop, peek, and empty operations, and an amortized time complexity of O(1) for each operation.

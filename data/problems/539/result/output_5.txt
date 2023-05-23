@@ -1,0 +1,33 @@
+To find the minimum minutes difference between any two time points in the given list, you can follow the steps below:
+
+1. Convert each time point from the "HH:MM" format to minutes.
+2. Sort the list of time points in ascending order.
+3. Initialize a variable `min_diff` to store the minimum difference, and set it to a large value initially.
+4. Iterate through the sorted list of time points.
+     - Calculate the difference between the current time point and the next time point in minutes.
+     - If the calculated difference is smaller than `min_diff`, update `min_diff` with the new value.
+     - If the current time point is the last one in the list, calculate the difference between the last and the first time points.
+5. Return the minimum difference `min_diff`.
+
+Here's the implementation of the `findMinDifference` function:
+
+```python
+from typing import List
+
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        def time_to_minutes(time_str):
+            hours, minutes = map(int, time_str.split(':'))
+            return hours * 60 + minutes
+
+        time_points = sorted(map(time_to_minutes, timePoints))
+        min_diff = float('inf')
+
+        for i in range(len(time_points)):
+            diff = time_points[(i + 1) % len(time_points)] - time_points[i]
+            min_diff = min(min_diff, diff)
+
+        return min_diff
+```
+
+You can create an instance of the `Solution` class and call the `findMinDifference` method with the `timePoints` list as the argument to get the minimum minutes difference.

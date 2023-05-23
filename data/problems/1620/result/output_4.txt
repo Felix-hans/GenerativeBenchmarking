@@ -1,0 +1,49 @@
+To solve this task, we can follow the given steps:
+
+1. Create a helper function `calculate_quality` that takes the tower's coordinates, quality factor, and a coordinate (x, y) as parameters. This function calculates and returns the signal quality of the tower at the given coordinate.
+
+2. Initialize variables `max_quality` and `best_coordinate` to keep track of the maximum network quality and the best coordinate found so far. Set `max_quality` to 0 and `best_coordinate` to None initially.
+
+3. Iterate over all possible coordinates within the range defined by the radius. We can start from x = 0 and y = 0 and go up to x = 50 and y = 50.
+
+4. For each coordinate, iterate over all the towers and calculate the signal quality of each tower at the current coordinate using the `calculate_quality` helper function. Sum up these signal qualities to get the network quality at the current coordinate.
+
+5. If the current network quality is greater than the maximum quality (`network_quality > max_quality`), update `max_quality` and `best_coordinate` to the current network quality and coordinate.
+
+6. If the current network quality is equal to the maximum quality (`network_quality == max_quality`), compare the current coordinate with the best coordinate lexicographically. If the current coordinate is lexicographically smaller, update `best_coordinate` to the current coordinate.
+
+7. After the loops, return the `best_coordinate` as the result.
+
+Here's the implementation of the `bestCoordinate` function:
+
+```python
+from typing import List
+
+class Solution:
+    def bestCoordinate(self, towers: List[List[int]], radius: int) -> List[int]:
+        def calculate_quality(x1, y1, quality, x2, y2):
+            distance = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+            return quality // (1 + distance)
+
+        max_quality = 0
+        best_coordinate = None
+
+        for x in range(51):
+            for y in range(51):
+                network_quality = 0
+                for tower in towers:
+                    tower_x, tower_y, quality = tower
+                    if ((tower_x - x) ** 2 + (tower_y - y) ** 2) ** 0.5 <= radius:
+                        network_quality += calculate_quality(tower_x, tower_y, quality, x, y)
+
+                if network_quality > max_quality:
+                    max_quality = network_quality
+                    best_coordinate = [x, y]
+                elif network_quality == max_quality:
+                    if best_coordinate is None or (x < best_coordinate[0]) or (x == best_coordinate[0] and y < best_coordinate[1]):
+                        best_coordinate = [x, y]
+
+        return best_coordinate
+```
+
+Now, you can create an instance of the `Solution` class and call the `bestCoordinate` method with the input towers and radius to obtain the result.

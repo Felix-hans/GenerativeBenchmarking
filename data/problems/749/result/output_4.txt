@@ -1,0 +1,79 @@
+To solve this problem, we can use a combination of graph traversal, greedy algorithm, and simulation.
+
+Here's the implementation of the `containVirus` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def containVirus(self, isInfected: List[List[int]]) -> int:
+        m, n = len(isInfected), len(isInfected[0])
+        walls = 0
+
+        def dfs(i, j):
+            # Helper function to perform depth-first search to identify the infected region
+
+            if i < 0 or i >= m or j < 0 or j >= n or isInfected[i][j] != 1:
+                return 0
+
+            # Mark the cell as visited
+            isInfected[i][j] = -1
+
+            count = 1  # Count the number of infected cells in the region
+
+            # Recursively visit all adjacent cells (up, down, left, right)
+            count += dfs(i + 1, j)
+            count += dfs(i - 1, j)
+            count += dfs(i, j + 1)
+            count += dfs(i, j - 1)
+
+            return count
+
+        def build_walls(i, j):
+            # Helper function to build walls around the infected region
+
+            if i < 0 or i >= m or j < 0 or j >= n or isInfected[i][j] != -1:
+                return
+
+            # Mark the cell as walled
+            isInfected[i][j] = -2
+
+            # Recursively build walls around all adjacent cells (up, down, left, right)
+            build_walls(i + 1, j)
+            build_walls(i - 1, j)
+            build_walls(i, j + 1)
+            build_walls(i, j - 1)
+
+        while True:
+            regions = []  # List to store information about each infected region
+            visited = [[False] * n for _ in range(m)]  # Visited matrix to track visited cells
+
+            # Step 1: Identify all infected regions and their sizes
+            for i in range(m):
+                for j in range(n):
+                    if isInfected[i][j] == 1 and not visited[i][j]:
+                        region_size = dfs(i, j)
+                        regions.append((region_size, i, j))
+
+            if not regions:
+                # If no infected regions are found, all cells are infected, so return the total number of walls
+                return walls
+
+            # Step 2: Quarantine the region that threatens the most uninfected cells
+            regions.sort(reverse=True)  # Sort regions in descending order of size
+            region_size, i, j = regions[0]  # Select the region with the maximum size
+            walls += build_walls(i, j)  # Build walls around the selected region
+
+            # Step 3: Simulate the spread of the virus to the adjacent cells
+            infected_cells = []  # List to store information about newly infected cells
+            for i in range(m):
+                for j in range(n):
+                    if isInfected[i][j] == 1:
+                        if i > 0 and isInfected[i - 1][j] == 0:
+                            # Spread virus up
+                            infected_cells.append((i - 1, j))
+                        if i < m - 1 and isInfected[i + 1][j] == 0:
+                            # Spread virus down
+                            infected_cells.append((i + 1, j))
+                        if j > 0 and isInfected[i][j - 1] == 0:
+                            #

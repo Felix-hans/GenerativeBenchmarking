@@ -1,0 +1,42 @@
+To solve the problem, we can follow these steps:
+
+1. Calculate the maximum subarray sum of a single instance of the array `arr` using Kadane's algorithm. Let's call this value `max_subarray`.
+2. Calculate the total sum of the array `arr` and store it in the variable `total_sum`.
+3. If `total_sum` is negative and `k` is less than or equal to 2, return `max_subarray`.
+4. If `total_sum` is positive, calculate the maximum subarray sum considering the concatenation of `arr` `k` times. There are two possibilities:
+   a. If `k` is greater than 2, the maximum subarray sum will be the maximum value among:
+      - `max_subarray`, which is the maximum subarray sum of a single instance of `arr`.
+      - `max_subarray + (k - 2) * total_sum`, which accounts for the additional repetitions of `arr` after the first instance.
+   b. If `k` is equal to 2, the maximum subarray sum will be the maximum value among:
+      - `max_subarray`, which is the maximum subarray sum of a single instance of `arr`.
+      - `max_subarray + total_sum`, which accounts for the concatenation of `arr` twice.
+5. Return the maximum subarray sum modulo 10^9 + 7.
+
+Here's the implementation of the `kConcatenationMaxSum` function in Python:
+
+```python
+class Solution:
+    def kConcatenationMaxSum(self, arr: List[int], k: int) -> int:
+        max_subarray = self.maxSubarraySum(arr)
+        total_sum = sum(arr)
+        
+        if total_sum < 0 and k <= 2:
+            return max_subarray % (10**9 + 7)
+        
+        if k > 2:
+            return max(max_subarray, (max_subarray + (k - 2) * total_sum) % (10**9 + 7))
+        
+        return max(max_subarray, (max_subarray + total_sum) % (10**9 + 7))
+    
+    def maxSubarraySum(self, arr: List[int]) -> int:
+        max_sum = float('-inf')
+        current_sum = 0
+        
+        for num in arr:
+            current_sum = max(num, current_sum + num)
+            max_sum = max(max_sum, current_sum)
+        
+        return max_sum
+```
+
+You can create an instance of the `Solution` class and call the `kConcatenationMaxSum` method with the given `arr` and `k` values to get the maximum subarray sum.

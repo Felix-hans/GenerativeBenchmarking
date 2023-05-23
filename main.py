@@ -60,7 +60,8 @@ def code_generation(model, step):
     # root dir of the dataset, model name, step name (generate, table, length)
     if step=='generate':
         gen=GenerationUtil(model)
-        gen.generate_all(True, True)
+        # gen.generate_all(True, True)
+        gen.generate_selection(True,True)
     elif step=='table':
         table1, table2=get_latex_tables()
         with open('./tables.tex', 'w') as f:
@@ -350,7 +351,7 @@ if __name__ == '__main__':
     elif arg1 == 'eval':
         step = arg2
         model = arg3
-        LeetCodeUtil().run_leetcode_test(model)
+        LeetCodeUtil().run_leetcode_pipeline()
         
 
 

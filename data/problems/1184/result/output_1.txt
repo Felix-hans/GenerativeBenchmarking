@@ -1,0 +1,44 @@
+To solve this task, we can follow the following steps:
+
+1. Calculate the total distance of the circular route by summing up all the distances in the `distance` list.
+2. Calculate the clockwise distance from the `start` stop to the `destination` stop by iterating from `start` to `destination` and summing up the distances in between. If `start` is greater than `destination`, we need to wrap around to the beginning of the `distance` list.
+3. Calculate the counterclockwise distance from the `start` stop to the `destination` stop by iterating from `start` to `destination` and summing up the distances in between. If `start` is smaller than `destination`, we need to wrap around to the end of the `distance` list.
+4. Return the minimum of the clockwise distance and the counterclockwise distance.
+
+Here's the implementation of the `distanceBetweenBusStops` method:
+
+```python
+from typing import List
+
+class Solution:
+    def distanceBetweenBusStops(self, distance: List[int], start: int, destination: int) -> int:
+        n = len(distance)
+        total_distance = sum(distance)
+        clockwise_distance = 0
+        counterclockwise_distance = 0
+
+        # Calculate clockwise distance
+        if start <= destination:
+            clockwise_distance = sum(distance[start:destination])
+        else:
+            clockwise_distance = sum(distance[start:]) + sum(distance[:destination])
+
+        # Calculate counterclockwise distance
+        if start >= destination:
+            counterclockwise_distance = sum(distance[destination:start])
+        else:
+            counterclockwise_distance = sum(distance[destination:]) + sum(distance[:start])
+
+        return min(clockwise_distance, counterclockwise_distance)
+```
+
+You can create an instance of the `Solution` class and call the `distanceBetweenBusStops` method with the appropriate arguments to test it out. For example:
+
+```python
+solution = Solution()
+distance = [1, 2, 3, 4]
+start = 0
+destination = 1
+result = solution.distanceBetweenBusStops(distance, start, destination)
+print(result)  # Output: 1
+```

@@ -1,0 +1,36 @@
+To solve this task, we can use a greedy approach. We need to count the number of 'b's that appear after each 'a' in the string. For each 'a', we have two options: either delete the 'a' or delete the 'b's that come after it. We want to minimize the number of deletions, so we choose the option that requires deleting the fewest characters.
+
+Here's the implementation of the `minimumDeletions` function in Python:
+
+```python
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        deletions = 0  # variable to count the deletions
+        b_count = 0  # variable to count the number of 'b's after each 'a'
+
+        for char in s:
+            if char == 'a':
+                # If we encounter 'a', we have two options:
+                # 1. Delete this 'a'
+                # 2. Delete the 'b's that come after this 'a'
+                # We choose the option that requires deleting the fewest characters
+                deletions = min(deletions + 1, b_count)
+            else:
+                # If we encounter 'b', we increment the count of 'b's
+                b_count += 1
+
+        return deletions
+```
+
+Now, we can create an instance of the `Solution` class and test the function:
+
+```python
+solution = Solution()
+s = "aababbab"
+print(solution.minimumDeletions(s))  # Output: 2
+
+s = "bbaaaaabb"
+print(solution.minimumDeletions(s))  # Output: 2
+```
+
+The function returns the minimum number of deletions needed to make the string balanced.

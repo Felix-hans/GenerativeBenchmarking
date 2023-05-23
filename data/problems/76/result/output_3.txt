@@ -1,0 +1,65 @@
+To solve the problem, we can use the sliding window technique. Here's the implementation of the `minWindow` function:
+
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        # Initialize a dictionary to store the character frequencies in string t
+        target_freq = {}
+        for char in t:
+            target_freq[char] = target_freq.get(char, 0) + 1
+        
+        # Initialize variables for the sliding window
+        window_start = 0
+        window_end = 0
+        window_freq = {}
+        formed = 0  # Number of characters in t that have been formed in the window
+        
+        # Initialize variables for tracking the minimum window substring
+        min_window_length = float('inf')
+        min_window_start = 0
+        
+        while window_end < len(s):
+            # Expand the window by including the current character
+            char = s[window_end]
+            window_freq[char] = window_freq.get(char, 0) + 1
+            
+            # If the current character is in t and its frequency in the window
+            # matches or exceeds its frequency in t, increment the formed count
+            if char in target_freq and window_freq[char] <= target_freq[char]:
+                formed += 1
+            
+            # Try to minimize the window by contracting from the left
+            while formed == len(t):
+                # Update the minimum window substring if necessary
+                if window_end - window_start + 1 < min_window_length:
+                    min_window_length = window_end - window_start + 1
+                    min_window_start = window_start
+                
+                # Contract the window from the left
+                char = s[window_start]
+                window_freq[char] -= 1
+                
+                # If the character is in t and its frequency in the window
+                # becomes less than its frequency in t, decrement the formed count
+                if char in target_freq and window_freq[char] < target_freq[char]:
+                    formed -= 1
+                
+                window_start += 1  # Move the window start to the right
+            
+            window_end += 1  # Move the window end to the right
+        
+        if min_window_length == float('inf'):
+            return ""
+        
+        return s[min_window_start:min_window_start + min_window_length]
+```
+
+The algorithm works by maintaining two windows: the overall window (defined by `window_start` and `window_end`) and the minimum window substring (defined by `min_window_start` and `min_window_length`). 
+
+We iterate through the string `s` using the `window_end` pointer. At each step, we expand the window by including the current character. If the current character is in `t` and its frequency in the window matches or exceeds its frequency in `t`, we increment the `formed` count.
+
+If the `formed` count equals the length of `t`, it means we have a potential window that includes all characters from `t`. We then try to minimize this window by contracting it from the left using the `window_start` pointer. While the window still satisfies the condition of including all characters from `t`, we keep contracting it and update the minimum window substring if necessary.
+
+Finally, we return the minimum window substring, or an empty string if no such substring exists.
+
+The time complexity of this algorithm is O(m + n), where m and n are the lengths of strings `s` and `t`, respectively. This is because we iterate through both strings once, and the two pointers (`window_start` and `window_end`) traverse the string `s` only once.

@@ -1,0 +1,39 @@
+The problem you described can be solved using dynamic programming. Here's the Python code that implements the solution:
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n <= 2:
+            return n
+        
+        dp = [0] * (n + 1)
+        dp[1] = 1
+        dp[2] = 2
+        
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
+```
+
+In this code, we initialize a dynamic programming array `dp` with size `n + 1`, where `dp[i]` represents the number of distinct ways to climb `i` steps. We set the base cases `dp[1] = 1` and `dp[2] = 2` since there's only one way to climb 1 step and two ways to climb 2 steps.
+
+Then, we iterate from 3 to `n`, filling in the `dp` array using the recurrence relation `dp[i] = dp[i - 1] + dp[i - 2]`. This relation states that the number of ways to climb `i` steps is equal to the sum of the number of ways to climb `i - 1` steps and the number of ways to climb `i - 2` steps, since we can either take one step from `i - 1` or two steps from `i - 2`.
+
+Finally, we return `dp[n]`, which represents the number of distinct ways to climb `n` steps.
+
+You can create an instance of the `Solution` class and call the `climbStairs` method with the desired `n` value to get the result. For example:
+
+```python
+solution = Solution()
+n = 3
+distinct_ways = solution.climbStairs(n)
+print(distinct_ways)
+```
+
+Output:
+```
+3
+```
+
+This means that there are three distinct ways to climb 3 steps.

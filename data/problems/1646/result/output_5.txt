@@ -1,0 +1,43 @@
+Here's the implementation of the given task in Python:
+
+```python
+class Solution:
+    def getMaximumGenerated(self, n: int) -> int:
+        if n == 0:
+            return 0
+
+        nums = [0] * (n + 1)
+        nums[1] = 1
+        maximum = 1
+
+        for i in range(2, n + 1):
+            if i % 2 == 0:
+                nums[i] = nums[i // 2]
+            else:
+                nums[i] = nums[i // 2] + nums[i // 2 + 1]
+
+            maximum = max(maximum, nums[i])
+
+        return maximum
+```
+
+The `getMaximumGenerated` function takes an integer `n` as input and returns the maximum integer in the generated array `nums`.
+
+We initialize `nums` as a list of size `n + 1` with all elements set to 0. Then, we set `nums[1] = 1` since it's given in the problem statement.
+
+Next, we iterate from `i = 2` to `n` and fill in `nums[i]` according to the given rules. For even indices, `nums[i]` is equal to `nums[i // 2]`, and for odd indices, `nums[i]` is equal to `nums[i // 2] + nums[i // 2 + 1]`.
+
+During each iteration, we update the `maximum` variable to keep track of the maximum value encountered so far.
+
+Finally, we return the `maximum` value as the result.
+
+You can create an instance of the `Solution` class and call the `getMaximumGenerated` function on it to test the implementation. For example:
+
+```python
+solution = Solution()
+print(solution.getMaximumGenerated(7))  # Output: 3
+print(solution.getMaximumGenerated(2))  # Output: 1
+print(solution.getMaximumGenerated(3))  # Output: 2
+```
+
+This will print the outputs for the given examples in the problem statement.

@@ -1,0 +1,41 @@
+To solve this problem, we can use dynamic programming to keep track of the minimum cost to reach each step. We'll start from the bottom and work our way up to the top.
+
+Here's the Python code to implement the solution:
+
+```python
+from typing import List
+
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        dp = [0] * n  # dp[i] represents the minimum cost to reach step i
+
+        # Base cases
+        dp[0] = cost[0]
+        dp[1] = cost[1]
+
+        for i in range(2, n):
+            # The minimum cost to reach step i is the cost of the current step plus
+            # the minimum cost of reaching the previous two steps.
+            dp[i] = cost[i] + min(dp[i-1], dp[i-2])
+
+        # The minimum cost to reach the top can be either from the second-to-last step or the last step.
+        return min(dp[n-1], dp[n-2])
+```
+
+Now, you can create an instance of the `Solution` class and call the `minCostClimbingStairs` method with the input array `cost` to get the minimum cost to reach the top floor.
+
+Example usage:
+```python
+solution = Solution()
+cost = [10, 15, 20]
+minimum_cost = solution.minCostClimbingStairs(cost)
+print(minimum_cost)  # Output: 15
+```
+
+```python
+solution = Solution()
+cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+minimum_cost = solution.minCostClimbingStairs(cost)
+print(minimum_cost)  # Output: 6
+```

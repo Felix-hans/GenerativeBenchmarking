@@ -1,0 +1,38 @@
+You can implement the given task in Python using the provided code snippet:
+
+```python
+from typing import List
+
+class Solution:
+    def dominantIndex(self, nums: List[int]) -> int:
+        largest = max(nums)
+        index = nums.index(largest)
+        
+        for num in nums:
+            if num != largest and num * 2 > largest:
+                return -1
+        
+        return index
+```
+
+Here's how the code works:
+
+1. We define a class `Solution` with a method `dominantIndex` that takes in an integer array `nums` and returns an integer.
+2. We find the largest element in the array using the `max` function and store it in the variable `largest`.
+3. We find the index of the largest element using the `index` method of the list.
+4. We iterate through each element `num` in the array.
+5. If `num` is not equal to the largest element and `num * 2` is greater than the largest element, we return -1, as the condition is not satisfied.
+6. If the loop completes without returning -1, it means the largest element is at least twice as much as every other number. In this case, we return the index of the largest element.
+
+You can create an instance of the `Solution` class and call the `dominantIndex` method to test the implementation:
+
+```python
+solution = Solution()
+nums = [3, 6, 1, 0]
+print(solution.dominantIndex(nums))  # Output: 1
+
+nums = [1, 2, 3, 4]
+print(solution.dominantIndex(nums))  # Output: -1
+```
+
+This will give you the expected output for the given examples.

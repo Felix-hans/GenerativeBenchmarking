@@ -1,0 +1,27 @@
+To solve this task, we can follow these steps:
+
+1. Count the frequency of each value in the `nums` array and store it in a dictionary.
+2. Sort the values of the dictionary based on their frequency in increasing order. If multiple values have the same frequency, sort them in decreasing order.
+3. Create an empty result array.
+4. Iterate over the sorted values of the dictionary. For each value, repeat it by its frequency and append it to the result array.
+5. Return the result array.
+
+Here's the implementation of the `frequencySort` method in Python:
+
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        frequency = Counter(nums)
+        sorted_values = sorted(frequency, key=lambda x: (frequency[x], -x))
+        result = []
+        
+        for value in sorted_values:
+            result.extend([value] * frequency[value])
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `frequencySort` method with the `nums` array to obtain the sorted array based on the frequency of the values.

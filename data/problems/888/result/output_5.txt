@@ -1,0 +1,24 @@
+To solve the given task, we can follow the following approach:
+
+1. Calculate the total number of candies Alice and Bob have.
+2. Find the difference between the total number of candies Alice has and the total number of candies Bob has. Let's call this difference "diff".
+3. Iterate over the candies in Alice's boxes and for each candy, check if there is a candy in Bob's boxes that, when swapped, would result in the difference "diff" being divided by 2.
+4. If such a candy is found, return the indices of the candies to be swapped.
+
+Here's the implementation of the `fairCandySwap` method using the provided code:
+
+```python
+class Solution:
+    def fairCandySwap(self, aliceSizes, bobSizes):
+        total_alice = sum(aliceSizes)
+        total_bob = sum(bobSizes)
+        diff = (total_alice - total_bob) // 2
+
+        bob_set = set(bobSizes)
+
+        for candy in aliceSizes:
+            if candy - diff in bob_set:
+                return [candy, candy - diff]
+```
+
+This solution has a time complexity of O(n+m), where n and m are the lengths of the input arrays `aliceSizes` and `bobSizes`, respectively.

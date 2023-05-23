@@ -1,0 +1,61 @@
+To solve this problem, we can use dynamic programming. We'll define a 2D array, `dp`, where `dp[i][j]` represents the maximum profit that can be achieved by making at most `i` transactions on the first `j` days.
+
+Here's the implementation of the `maxProfit` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+        
+        # If k is greater than or equal to half the number of days,
+        # we can make transactions every day to maximize the profit.
+        if k >= n // 2:
+            return self.maxProfitUnlimited(prices)
+        
+        # Initialize the dp array
+        dp = [[0] * n for _ in range(k + 1)]
+        
+        for i in range(1, k + 1):
+            maxDiff = -prices[0]  # Max difference between buying and selling on day 0
+            
+            for j in range(1, n):
+                # Calculate the maximum profit for the current day
+                dp[i][j] = max(dp[i][j - 1], prices[j] + maxDiff)
+                
+                # Update the max difference
+                maxDiff = max(maxDiff, dp[i - 1][j] - prices[j])
+        
+        return dp[k][n - 1]
+    
+    def maxProfitUnlimited(self, prices: List[int]) -> int:
+        # If transactions are unlimited, we can buy on each day
+        # as long as the price increases on the next day.
+        profit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                profit += prices[i] - prices[i - 1]
+        
+        return profit
+```
+
+Now, you can create an instance of the `Solution` class and call the `maxProfit` method with the given inputs:
+
+```python
+k = 2
+prices = [2, 4, 1]
+solution = Solution()
+max_profit = solution.maxProfit(k, prices)
+print(max_profit)  # Output: 2
+```
+
+```python
+k = 2
+prices = [3, 2, 6, 5, 0, 3]
+solution = Solution()
+max_profit = solution.maxProfit(k, prices)
+print(max_profit)  # Output: 7
+```
+
+The code handles the constraints mentioned in the problem statement.

@@ -1,0 +1,38 @@
+You can implement the task as follows in Python:
+
+```python
+from typing import List
+
+class OrderedStream:
+    def __init__(self, n: int):
+        self.stream = [None] * n  # Initialize the stream with None values
+        self.ptr = 0  # Pointer to keep track of the next available index
+
+    def insert(self, idKey: int, value: str) -> List[str]:
+        idKey -= 1  # Convert idKey to 0-based index
+        self.stream[idKey] = value  # Insert the value at the corresponding index
+
+        if idKey == self.ptr:  # If the inserted idKey is the next expected one
+            chunk = []
+            while self.ptr < len(self.stream) and self.stream[self.ptr]:
+                # Collect all the values from the current index onwards until a None value is encountered
+                chunk.append(self.stream[self.ptr])
+                self.ptr += 1  # Move the pointer to the next index
+
+            return chunk
+
+        return []  # If the inserted idKey is not the next expected one, return an empty list
+
+
+# Example usage:
+os = OrderedStream(5)
+print(os.insert(3, "ccccc"))  # Output: []
+print(os.insert(1, "aaaaa"))  # Output: ["aaaaa"]
+print(os.insert(2, "bbbbb"))  # Output: ["bbbbb", "ccccc"]
+print(os.insert(5, "eeeee"))  # Output: []
+print(os.insert(4, "ddddd"))  # Output: ["ddddd", "eeeee"]
+```
+
+This implementation maintains an internal list called `stream` of size `n` to store the inserted values. The `ptr` variable keeps track of the next available index. When `insert` is called, it inserts the value at the corresponding index in the `stream` list. If the inserted idKey is the next expected one (determined by comparing it with the current value of `ptr`), it collects all the values from the current index onwards until a `None` value is encountered, and returns that chunk. Otherwise, it returns an empty list.
+
+The example usage demonstrates how to create an instance of the `OrderedStream` class and call the `insert` method with different idKey and value pairs. The corresponding chunks are printed as output.

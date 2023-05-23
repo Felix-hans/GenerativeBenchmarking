@@ -1,0 +1,35 @@
+To count the number of stones that are also jewels, we can iterate through each stone in the "stones" string and check if it exists in the "jewels" string. If it does, we increment a counter variable. Finally, we return the value of the counter.
+
+Here's the implementation of the `numJewelsInStones` method in Python:
+
+```python
+class Solution:
+    def numJewelsInStones(self, jewels: str, stones: str) -> int:
+        count = 0
+        for stone in stones:
+            if stone in jewels:
+                count += 1
+        return count
+```
+
+You can create an instance of the `Solution` class and call the `numJewelsInStones` method with the given inputs to get the desired output. Here's an example usage:
+
+```python
+solution = Solution()
+jewels = "aA"
+stones = "aAAbbbb"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 3
+```
+
+Similarly, you can test the second example:
+
+```python
+solution = Solution()
+jewels = "z"
+stones = "ZZ"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 0
+```
+
+The code iterates through each stone character in the "stones" string and checks if it exists in the "jewels" string. If it does, the counter is incremented. Finally, the value of the counter is returned as the result.

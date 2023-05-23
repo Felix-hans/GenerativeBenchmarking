@@ -1,0 +1,35 @@
+To solve the problem, we can iterate over the given points and calculate the time required to move from one point to the next point in the given order. We will calculate the time based on the maximum difference between the x-coordinates and y-coordinates of consecutive points. Let's implement the solution in Python:
+
+```python
+class Solution:
+    def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
+        total_time = 0
+        
+        for i in range(len(points) - 1):
+            x1, y1 = points[i]
+            x2, y2 = points[i+1]
+            
+            # Calculate the absolute differences
+            dx = abs(x2 - x1)
+            dy = abs(y2 - y1)
+            
+            # Calculate the diagonal movement time
+            diagonal_time = min(dx, dy)
+            
+            # Calculate the remaining horizontal or vertical movement time
+            remaining_time = max(dx, dy) - diagonal_time
+            
+            # Calculate the total time for this segment
+            segment_time = diagonal_time * sqrt(2) + remaining_time
+            
+            # Add the segment time to the total time
+            total_time += segment_time
+        
+        return int(total_time)
+```
+
+This solution iterates over the given points from the first point to the second-to-last point. For each pair of consecutive points, it calculates the absolute differences in the x-coordinates and y-coordinates. It then calculates the diagonal movement time by taking the minimum of the two differences. The remaining time is calculated by subtracting the diagonal movement time from the maximum of the two differences. The segment time is calculated by multiplying the diagonal movement time by sqrt(2) (as mentioned in the problem statement) and adding the remaining time. Finally, the segment time is added to the total time.
+
+Note: The `sqrt` function used in the code refers to the square root function. You can import it from the math module like this: `from math import sqrt`.
+
+You can create an instance of the `Solution` class and call the `minTimeToVisitAllPoints` method with the input points to get the minimum time required to visit all the points in the given order.

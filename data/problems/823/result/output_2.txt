@@ -1,0 +1,47 @@
+To solve this problem, we can use dynamic programming. We'll define a dp array to store the number of binary trees we can make for each number in arr.
+
+Here's the implementation of the Solution class with the numFactoredBinaryTrees function:
+
+```python
+class Solution:
+    def numFactoredBinaryTrees(self, arr):
+        MOD = 10**9 + 7
+        arr.sort()  # Sort the array in ascending order
+
+        n = len(arr)
+        dp = [1] * n  # Initialize the dp array with 1 (each number can form a tree by itself)
+
+        index = {x: i for i, x in enumerate(arr)}  # Map each number to its index for quick lookup
+
+        for i, x in enumerate(arr):
+            for j in range(i):
+                # Check if x is divisible by any number before it in the sorted array
+                if x % arr[j] == 0:
+                    y = x // arr[j]  # Calculate the other factor
+                    if y in index:
+                        dp[i] += dp[j] * dp[index[y]]  # Add the product of the number of trees for both factors
+
+            dp[i] %= MOD  # Take the modulo to avoid overflow
+
+        return sum(dp) % MOD  # Return the sum of all counts modulo 10^9 + 7
+```
+
+Now you can create an instance of the Solution class and call the numFactoredBinaryTrees function, passing the array arr as the argument. It will return the number of binary trees that can be formed.
+
+Example usage:
+
+```python
+arr = [2, 4]
+solution = Solution()
+result = solution.numFactoredBinaryTrees(arr)
+print(result)  # Output: 3
+```
+
+```python
+arr = [2, 4, 5, 10]
+solution = Solution()
+result = solution.numFactoredBinaryTrees(arr)
+print(result)  # Output: 7
+```
+
+The solution uses a time complexity of O(n^2), where n is the length of the input array arr.

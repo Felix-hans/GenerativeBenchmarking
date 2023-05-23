@@ -1,0 +1,44 @@
+Here's the implementation of the RandomizedCollection class in Python:
+
+```python
+import random
+from collections import defaultdict
+
+class RandomizedCollection:
+
+    def __init__(self):
+        self.nums = []
+        self.indexes = defaultdict(set)
+
+    def insert(self, val: int) -> bool:
+        self.nums.append(val)
+        self.indexes[val].add(len(self.nums) - 1)
+        return len(self.indexes[val]) == 1
+
+    def remove(self, val: int) -> bool:
+        if self.indexes[val]:
+            idx = self.indexes[val].pop()
+            last = self.nums[-1]
+            self.nums[idx] = last
+            self.indexes[last].add(idx)
+            self.indexes[last].discard(len(self.nums) - 1)
+            self.nums.pop()
+            return True
+        return False
+
+    def getRandom(self) -> int:
+        return random.choice(self.nums)
+```
+
+The RandomizedCollection class uses two data structures: `nums` and `indexes`. 
+
+- The `nums` list stores all the numbers in the collection in the order of their insertion.
+- The `indexes` defaultdict is used to store the indexes of each number in the `nums` list. It maps each number to a set of indexes where it occurs.
+
+The `insert` method adds a new element to the collection. It appends the element to the `nums` list and adds its index to the corresponding set in `indexes`. It returns `True` if the number is not already present in the collection (i.e., the size of the set is 1), otherwise it returns `False`.
+
+The `remove` method removes an element from the collection. It checks if the number exists in the `indexes` dictionary. If it does, it pops an index from the set and replaces the element at that index with the last element in the `nums` list. Then it updates the indexes of the last element accordingly. Finally, it removes the last element from the `nums` list and returns `True`. If the number is not found in the `indexes` dictionary, it returns `False`.
+
+The `getRandom` method returns a random element from the `nums` list using the `random.choice()` function.
+
+Please note that the code assumes that `getRandom` will only be called when there is at least one item in the collection, as stated in the problem description.

@@ -1,0 +1,41 @@
+To solve the problem, we can preprocess the tree to store the ancestors of each node up to a certain level. Then, when querying for the k-th ancestor of a node, we can use the preprocessed information to find the answer efficiently.
+
+Here's the implementation of the `TreeAncestor` class in Python:
+
+```python
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.max_level = 16  # Assuming the maximum height of the tree is 16 (can be adjusted based on constraints)
+        self.ancestors = [[-1] * self.max_level for _ in range(n)]
+
+        # Preprocess the ancestors array
+        for i in range(n):
+            self.ancestors[i][0] = parent[i]
+
+        for level in range(1, self.max_level):
+            for node in range(n):
+                if self.ancestors[node][level - 1] != -1:
+                    parent = self.ancestors[node][level - 1]
+                    self.ancestors[node][level] = self.ancestors[parent][level - 1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        level = self.max_level - 1
+
+        while node != -1 and k > 0:
+            if k & 1:
+                node = self.ancestors[node][level]
+            level -= 1
+            k >>= 1
+
+        return node
+```
+
+Explanation:
+1. In the `__init__` method, we initialize the `ancestors` array with the same dimensions as the input array `parent`. The `ancestors` array will store the ancestors of each node up to a certain level.
+2. We populate the first column of the `ancestors` array with the direct parents of each node.
+3. Then, we iterate over each level from 1 to `max_level` and fill the `ancestors` array using the previously calculated values. The value `self.ancestors[node][level]` represents the 2^level-th ancestor of node `node`.
+4. In the `getKthAncestor` method, we start with the highest level (`self.max_level - 1`) and iteratively move to lower levels until we reach level 0 or the value of `k` becomes 0.
+5. In each iteration, if the current bit of `k` is set (i.e., `k & 1` is true), we update the `node` to its `level`-th ancestor. We also decrement `k` by dividing it by 2 (right shift operation).
+6. Finally, we return the resulting `node`.
+
+Note: The code assumes that the height of the tree is at most 16. If the maximum height can be larger, you can adjust the `self.max_level` value accordingly.

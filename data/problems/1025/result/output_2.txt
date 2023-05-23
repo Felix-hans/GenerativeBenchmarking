@@ -1,0 +1,32 @@
+To solve the given problem, we can use a dynamic programming approach. We'll create an array dp of size n+1, where dp[i] will represent whether Alice wins when the number on the chalkboard is i. We'll initialize all elements of dp to False.
+
+Next, we'll iterate from 2 to n and calculate the value of dp[i] based on the values of dp[j] where j is a divisor of i. If we find any divisor j such that dp[i-j] is False, it means Alice can choose j and force Bob to a losing position. In that case, we set dp[i] to True.
+
+Finally, we return the value of dp[n], which will indicate whether Alice wins when the number on the chalkboard is n.
+
+Here's the implementation of the Solution class with the divisorGame method:
+
+```python
+class Solution:
+    def divisorGame(self, n: int) -> bool:
+        dp = [False] * (n + 1)
+        
+        for i in range(2, n + 1):
+            for j in range(1, i):
+                if i % j == 0 and not dp[i - j]:
+                    dp[i] = True
+                    break
+        
+        return dp[n]
+```
+
+You can create an instance of the Solution class and call the divisorGame method to test it with different values of n:
+
+```python
+solution = Solution()
+
+print(solution.divisorGame(2))  # Output: True
+print(solution.divisorGame(3))  # Output: False
+```
+
+The output for the provided examples will be as expected.

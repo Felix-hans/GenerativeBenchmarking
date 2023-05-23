@@ -1,0 +1,52 @@
+To solve the given task, we can use a sliding window approach. We'll initialize three pointers, `left`, `right`, and `count`, and a dictionary `char_count` to keep track of the count of characters in the current window.
+
+The `left` pointer will represent the left boundary of the window, the `right` pointer will move to the right, and the `count` variable will store the number of substrings found so far.
+
+We'll iterate through the string using the `right` pointer and expand the window until we find a substring that contains at least one occurrence of all three characters: 'a', 'b', and 'c'. Once we find such a substring, we'll count all the valid substrings that end at the `right` pointer and update the `count` variable.
+
+Then, we'll move the `left` pointer to the right until we reach a point where the substring no longer contains all three characters. We'll count all the valid substrings again, update the `count` variable, and continue this process until we reach the end of the string.
+
+Here's the implementation of the `numberOfSubstrings` method based on the provided skeleton:
+
+```python
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        n = len(s)
+        char_count = {'a': 0, 'b': 0, 'c': 0}
+        left, right, count = 0, 0, 0
+        result = 0
+        
+        while right < n:
+            char_count[s[right]] += 1
+            
+            while all(char_count.values()):
+                char_count[s[left]] -= 1
+                left += 1
+            
+            count += left
+            
+            right += 1
+            result += count
+        
+        return result
+```
+
+Let's test the code with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+s1 = "abcabc"
+print(solution.numberOfSubstrings(s1))  # Output: 10
+
+# Example 2
+s2 = "aaacb"
+print(solution.numberOfSubstrings(s2))  # Output: 3
+
+# Example 3
+s3 = "abc"
+print(solution.numberOfSubstrings(s3))  # Output: 1
+```
+
+The code should produce the expected outputs for the given examples.

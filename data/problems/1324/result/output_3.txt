@@ -1,0 +1,36 @@
+Here's the implementation of the `printVertically` function in Python:
+
+```python
+class Solution:
+    def printVertically(self, s: str) -> List[str]:
+        words = s.split()  # Split the string into individual words
+        max_length = max(len(word) for word in words)  # Find the maximum length among all words
+        
+        result = []
+        for i in range(max_length):
+            vertical_word = ""
+            for word in words:
+                if i < len(word):
+                    vertical_word += word[i]
+                else:
+                    vertical_word += " "
+            
+            vertical_word = vertical_word.rstrip()  # Remove trailing spaces
+            result.append(vertical_word)
+        
+        return result
+```
+
+This solution first splits the input string `s` into individual words using the `split()` method. It then finds the maximum length among all the words to determine the number of columns needed. 
+
+Next, it iterates over each column index (`i`) from 0 to `max_length - 1` and constructs the vertical word by taking the `i`-th character from each word. If the word is shorter than `i`, a space is added instead. The resulting vertical word is appended to the `result` list.
+
+Finally, any trailing spaces are removed from each vertical word using the `rstrip()` method before returning the `result` list.
+
+You can create an instance of the `Solution` class and call the `printVertically` method on it to test the implementation:
+
+```python
+solution = Solution()
+s = "HOW ARE YOU"
+print(solution.printVertically(s))  # Output: ["HAY", "ORO", "WEU"]
+```

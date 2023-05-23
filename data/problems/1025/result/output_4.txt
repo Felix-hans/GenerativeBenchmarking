@@ -1,0 +1,42 @@
+To solve this problem, we can use dynamic programming to determine the winner of the game. We'll create a list, `dp`, of size `n + 1` to store the game results for each number from 0 to `n`.
+
+The base cases are as follows:
+- `dp[0] = False` since there are no moves to be made and Alice loses.
+- `dp[1] = False` since Alice cannot make a move and loses.
+
+For each number `i` from 2 to `n`, we'll iterate through all possible values of `x` that are factors of `i`. If `i % x == 0`, it means Alice can make a move by choosing `x` and replacing `i` with `i - x`.
+
+We'll check if `dp[i - x]` is `False`, indicating that Bob loses when the number on the chalkboard is `i - x`. In that case, Alice can choose `x` and win the game. Therefore, we set `dp[i] = True`.
+
+If none of the possible moves results in Alice winning, we set `dp[i] = False`, indicating that Alice loses.
+
+Finally, we return the value of `dp[n]`, which represents whether Alice wins the game when the number on the chalkboard is `n`.
+
+Here's the implementation of the `divisorGame` function:
+
+```python
+class Solution:
+    def divisorGame(self, n: int) -> bool:
+        dp = [False] * (n + 1)
+        dp[0] = False
+        dp[1] = False
+
+        for i in range(2, n + 1):
+            for x in range(1, i):
+                if i % x == 0 and not dp[i - x]:
+                    dp[i] = True
+                    break
+
+        return dp[n]
+```
+
+Now, we can create an instance of the `Solution` class and test the function:
+
+```python
+solution = Solution()
+
+print(solution.divisorGame(2))  # Output: True
+print(solution.divisorGame(3))  # Output: False
+```
+
+The first example returns `True` because Alice can choose `x = 1`, and Bob has no moves left. In the second example, Alice chooses `x = 1`, then Bob chooses `x = 1`, and Alice has no more moves, so the output is `False`.

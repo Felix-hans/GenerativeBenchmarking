@@ -1,0 +1,38 @@
+To solve the task, we can use the following algorithm:
+
+1. Initialize a set `possible` with all the words from the given list `words`.
+2. Repeat the following steps until the length of `possible` is greater than zero or the number of allowed guesses is exceeded:
+   - Select a word from `possible` as a guess.
+   - Call `Master.guess(guess)`.
+   - Update `possible` by removing all words that have a different number of matches with the guess.
+3. If the length of `possible` is still greater than zero, it means we have found the secret word. Otherwise, we have exceeded the number of allowed guesses.
+4. Return the corresponding message based on the outcome.
+
+Here's the implementation of the `findSecretWord` function:
+
+```python
+from typing import List
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        def get_matches(word1: str, word2: str) -> int:
+            return sum(c1 == c2 for c1, c2 in zip(word1, word2))
+
+        def remove_word(word: str, possible: set):
+            possible.discard(word)
+
+        possible = set(words)
+        guesses = 0
+
+        while possible and guesses < 10:
+            guess = possible.pop()
+            matches = master.guess(guess)
+            if matches == 6:
+                return "You guessed the secret word correctly."
+            possible = {word for word in possible if get_matches(guess, word) == matches}
+            guesses += 1
+
+        return "Either you took too many guesses, or you did not find the secret word."
+```
+
+Please note that this solution assumes that the `Master` class and its `guess` method are already implemented correctly.

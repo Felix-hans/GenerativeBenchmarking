@@ -1,0 +1,21 @@
+To check if two strings, `s` and `t`, are anagrams, we can compare their sorted forms. Anagrams have the same characters but in a different order. If we sort both strings and they are equal, then `t` is an anagram of `s`.
+
+Here's the implementation of the `isAnagram` function in Python:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s) == sorted(t)
+```
+
+To handle Unicode characters, we can use the `sorted` function with the `key` parameter set to `ord`. This will sort the characters based on their Unicode code points.
+
+Here's an updated implementation that can handle Unicode characters:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s, key=ord) == sorted(t, key=ord)
+```
+
+This updated solution will work correctly for both ASCII and Unicode characters, as it sorts them based on their respective code points.

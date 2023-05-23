@@ -1,0 +1,49 @@
+To solve this problem, we can use a dynamic programming approach. Let's go through the steps to implement the `maxProfit` function in Python:
+
+```python
+class Solution:
+    def maxProfit(self, prices, fee):
+        n = len(prices)
+        if n < 2:
+            return 0
+        
+        # Initialize variables for holding the maximum profit
+        # at each step of the process
+        cash = 0  # maximum profit if we don't own any stock
+        hold = -prices[0]  # maximum profit if we own a stock
+        
+        # Iterate through the prices array
+        for i in range(1, n):
+            # Calculate the maximum profit if we sell the stock on the current day
+            cash = max(cash, hold + prices[i] - fee)
+            
+            # Calculate the maximum profit if we buy the stock on the current day
+            hold = max(hold, cash - prices[i])
+        
+        # Return the maximum profit without owning any stock
+        return cash
+```
+
+Now, you can create an instance of the `Solution` class and call the `maxProfit` function on the instance with the given input to obtain the maximum profit:
+
+```python
+prices = [1, 3, 2, 8, 4, 9]
+fee = 2
+
+solution = Solution()
+max_profit = solution.maxProfit(prices, fee)
+print(max_profit)  # Output: 8
+```
+
+Similarly, you can test the second example:
+
+```python
+prices = [1, 3, 7, 5, 10, 3]
+fee = 3
+
+solution = Solution()
+max_profit = solution.maxProfit(prices, fee)
+print(max_profit)  # Output: 6
+```
+
+The `maxProfit` function uses the concept of "buying" and "selling" to calculate the maximum profit. It keeps track of the maximum profit if we don't own any stock (`cash`) and the maximum profit if we own a stock (`hold`). At each step, it updates these variables based on whether it is more profitable to sell or buy the stock. Finally, it returns the maximum profit without owning any stock (`cash`).

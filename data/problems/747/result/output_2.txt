@@ -1,0 +1,27 @@
+Here's the implementation of the `dominantIndex` function in Python to solve the given task:
+
+```python
+from typing import List
+
+class Solution:
+    def dominantIndex(self, nums: List[int]) -> int:
+        max_num = max(nums)  # Find the largest element in the array
+        max_index = nums.index(max_num)  # Get the index of the largest element
+
+        for num in nums:
+            if num != max_num and num * 2 > max_num:
+                return -1  # The largest element is not at least twice as much as every other number
+
+        return max_index  # Return the index of the largest element
+
+
+# Example usage:
+solution = Solution()
+nums = [3, 6, 1, 0]
+result = solution.dominantIndex(nums)
+print(result)  # Output: 1
+```
+
+The `dominantIndex` function takes an input `nums` which is a list of integers. It finds the largest element in the array, and then iterates over all the numbers in the array. If any number (other than the largest element) is found to be greater than half the value of the largest element, it returns -1 indicating that the largest element is not at least twice as much as every other number. Otherwise, it returns the index of the largest element.
+
+You can create an instance of the `Solution` class and call the `dominantIndex` method with your input array to get the desired output.

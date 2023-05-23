@@ -1,0 +1,48 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum points we can earn at each number. Let's define an array `dp` of size 10,001 (to cover the range of possible numbers from 1 to 10,000), where `dp[i]` represents the maximum points we can earn using numbers up to `i`.
+
+We can iterate over the given `nums` array and count the frequency of each number. Then, we can populate the `dp` array as follows:
+
+```
+dp[0] = 0
+dp[1] = freq[1] * 1  # If we pick 1, we earn freq[1] points
+dp[i] = max(dp[i-1], dp[i-2] + freq[i] * i)  # If we pick i, we earn freq[i] * i points
+```
+
+Finally, the maximum number of points we can earn is given by `dp[10000]`.
+
+Here's the implementation of the `deleteAndEarn` function:
+
+```python
+from typing import List
+
+class Solution:
+    def deleteAndEarn(self, nums: List[int]) -> int:
+        freq = [0] * 10001  # Initialize frequency array
+        
+        # Count the frequency of each number
+        for num in nums:
+            freq[num] += num
+        
+        dp = [0] * 10001  # Initialize dp array
+        
+        dp[0] = 0
+        dp[1] = freq[1]
+        
+        for i in range(2, 10001):
+            dp[i] = max(dp[i-1], dp[i-2] + freq[i])
+        
+        return dp[10000]
+```
+
+Now, we can create an instance of the `Solution` class and call the `deleteAndEarn` function with the input array `nums` to test it:
+
+```python
+solution = Solution()
+nums = [3, 4, 2]
+print(solution.deleteAndEarn(nums))  # Output: 6
+
+nums = [2, 2, 3, 3, 3, 4]
+print(solution.deleteAndEarn(nums))  # Output: 9
+```
+
+The function should return the expected output for the given examples.

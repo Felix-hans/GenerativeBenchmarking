@@ -1,0 +1,54 @@
+To solve the problem, we can use backtracking to generate all possible palindrome partitions of the given string. Here's the implementation of the `Solution` class in Python:
+
+```python
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        def is_palindrome(substring):
+            return substring == substring[::-1]
+
+        def backtrack(start, path):
+            if start == len(s):
+                result.append(path[:])
+                return
+
+            for i in range(start, len(s)):
+                substring = s[start:i+1]
+                if is_palindrome(substring):
+                    path.append(substring)
+                    backtrack(i + 1, path)
+                    path.pop()
+
+        result = []
+        backtrack(0, [])
+        return result
+```
+
+In the above code, we define a nested function `is_palindrome` to check if a substring is a palindrome. The `backtrack` function recursively generates all possible partitions of the string `s`. It starts from the `start` index and considers substrings starting from that index and ending at different positions. If a substring is a palindrome, it adds it to the `path` and calls itself recursively with the updated `start` index. After reaching the end of the string, it adds the current `path` to the `result`.
+
+To use the `Solution` class, you can create an instance and call the `partition` method, passing the input string as an argument. Here's an example usage:
+
+```python
+s = "aab"
+solution = Solution()
+result = solution.partition(s)
+print(result)
+```
+
+Output:
+```
+[["a", "a", "b"], ["aa", "b"]]
+```
+
+```
+s = "a"
+solution = Solution()
+result = solution.partition(s)
+print(result)
+```
+
+Output:
+```
+[["a"]]
+```
+
+The `partition` method returns a list of lists, where each inner list represents a palindrome partition of the input string `s`.

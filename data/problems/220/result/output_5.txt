@@ -1,0 +1,54 @@
+To solve this problem, we can iterate through the array `nums` and maintain a sliding window of size `indexDiff`. For each element `nums[i]`, we check if there exists any element within the sliding window that satisfies the condition `abs(nums[i] - nums[j]) <= valueDiff`. If such a pair exists, we return `True`. Otherwise, we continue iterating through the array.
+
+Here's the implementation of the `containsNearbyAlmostDuplicate` function:
+
+```python
+from typing import List
+
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
+        n = len(nums)
+        if n <= 1:
+            return False
+        
+        window = {}  # Sliding window of size indexDiff
+        
+        for i in range(n):
+            # Check if there is an element in the window that satisfies the condition
+            for j in range(max(0, i - indexDiff), i):
+                if abs(nums[i] - window[j]) <= valueDiff:
+                    return True
+            
+            # Add the current element to the window
+            window[i] = nums[i]
+            
+            # Remove the element that falls outside the window
+            if i >= indexDiff:
+                del window[i - indexDiff]
+        
+        return False
+```
+
+Now you can create an instance of the `Solution` class and call the `containsNearbyAlmostDuplicate` function with the given inputs:
+
+```python
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+
+solution = Solution()
+result = solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff)
+print(result)  # Output: True
+```
+
+```python
+nums = [1, 5, 9, 1, 5, 9]
+indexDiff = 2
+valueDiff = 3
+
+solution = Solution()
+result = solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff)
+print(result)  # Output: False
+```
+
+The first example will return `True` because there exists a pair of indices `(0, 3)` that satisfies the given conditions. The second example will return `False` as there is no such pair.

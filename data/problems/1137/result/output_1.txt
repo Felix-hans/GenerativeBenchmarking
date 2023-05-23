@@ -1,0 +1,31 @@
+To solve this task, we can use a simple iterative approach where we calculate the Tribonacci sequence up to the desired index `n`. We start with the base cases T0 = 0, T1 = 1, and T2 = 1, and then use a loop to calculate Tn+3 based on the previous three terms.
+
+Here's the implementation of the `tribonacci` function in Python:
+
+```python
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1 or n == 2:
+            return 1
+
+        t0, t1, t2 = 0, 1, 1
+
+        for _ in range(n - 2):
+            tn = t0 + t1 + t2
+            t0, t1, t2 = t1, t2, tn
+
+        return t2
+```
+
+You can create an instance of the `Solution` class and call the `tribonacci` method, passing the desired value of `n`, to get the result. Here's an example usage:
+
+```python
+solution = Solution()
+n = 4
+result = solution.tribonacci(n)
+print(result)  # Output: 4
+```
+
+Hope this helps!

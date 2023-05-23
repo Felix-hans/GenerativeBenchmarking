@@ -1,0 +1,79 @@
+To implement the LRUCache class, we can use a combination of a dictionary and a doubly linked list. The dictionary will provide fast lookup for key-value pairs, while the doubly linked list will maintain the order of recently used items.
+
+Here's the implementation in Python:
+
+```python
+class ListNode:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = ListNode()
+        self.tail = ListNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+
+        node = ListNode(key, value)
+        self.cache[key] = node
+        self._add(node)
+
+        if len(self.cache) > self.capacity:
+            lru_node = self.head.next
+            self._remove(lru_node)
+            del self.cache[lru_node.key]
+
+    def _add(self, node: ListNode) -> None:
+        prev_node = self.tail.prev
+        prev_node.next = node
+        node.prev = prev_node
+        node.next = self.tail
+        self.tail.prev = node
+
+    def _remove(self, node: ListNode) -> None:
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+```
+
+The LRUCache class maintains a dictionary `cache` to store key-node pairs. The nodes are instances of the `ListNode` class, which contains the key, value, and links to the previous and next nodes.
+
+When accessing a key-value pair with the `get` method, we check if the key exists in the cache. If it does, we move the corresponding node to the end of the linked list (to indicate it was recently used) and return the value. If the key is not found, we return -1.
+
+When adding or updating a key-value pair with the `put` method, we first check if the key already exists in the cache. If it does, we remove the corresponding node from the linked list. Then, we create a new node with the given key and value, add it to the end of the linked list, and update the cache. If the cache exceeds its capacity, we remove the least recently used node (the one at the beginning of the linked list) and delete its key from the cache.
+
+The `_add` and `_remove` methods are helper functions to manipulate the doubly linked list. They handle the proper adjustment of the links when adding or removing a node.
+
+You can create an instance of the LRUCache class and call the `get` and `put` methods as shown in the example provided:
+
+```python
+cache = LRUCache(2)
+cache.put(1, 1)
+cache.put(2, 2)
+cache.get(1)  # returns 1
+cache.put(3, 3)  # evicts key 2
+cache.get(2)  # returns -1
+cache.put(4, 4)  # evicts key 1
+cache.get(1)  # returns -1
+cache.get(3)  # returns 3
+cache.get

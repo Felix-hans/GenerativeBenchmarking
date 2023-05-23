@@ -1,0 +1,46 @@
+To solve the given task, we can use a similar approach to adding numbers in base 10. However, we need to consider the negabinary representation and perform carry operations accordingly.
+
+Here's the implementation of the `addNegabinary` function in Python:
+
+```python
+class Solution:
+    def addNegabinary(self, arr1: List[int], arr2: List[int]) -> List[int]:
+        result = []
+        carry = 0
+        i = len(arr1) - 1
+        j = len(arr2) - 1
+
+        while i >= 0 or j >= 0 or carry:
+            if i >= 0:
+                carry += arr1[i]
+                i -= 1
+            if j >= 0:
+                carry += arr2[j]
+                j -= 1
+
+            result.append(carry & 1)  # Get the current bit
+            carry = -(carry >> 1)     # Update the carry value
+
+        # Remove leading zeros if any
+        while len(result) > 1 and result[-1] == 0:
+            result.pop()
+
+        result.reverse()
+        return result
+```
+
+Let's go through the code:
+
+1. We initialize an empty list `result` to store the final negabinary representation.
+2. We initialize `carry` to 0, which will hold the carry value during addition.
+3. We initialize two pointers `i` and `j` to the last indices of `arr1` and `arr2` respectively.
+4. We iterate while `i` or `j` is greater than or equal to 0, or if there is any carry value.
+5. Inside the loop, we add the corresponding digits from `arr1` and `arr2` to the `carry` variable.
+6. We append the current bit (carry & 1) to the `result` list.
+7. We update the `carry` value by shifting it one bit to the right and taking its negation.
+   - This operation effectively performs the carry operation in negabinary addition.
+8. After the loop, we remove any leading zeros from the `result` list by iterating from the end and popping elements until we reach a non-zero element or the length becomes 1.
+9. Finally, we reverse the `result` list to obtain the correct order of bits.
+10. We return the `result` list as the negabinary representation of the sum.
+
+You can create an instance of the `Solution` class and call the `addNegabinary` method with the input arrays to get the desired output.

@@ -1,0 +1,44 @@
+To reorder the array `nums` such that `nums[0] < nums[1] > nums[2] < nums[3]...`, we can use the following approach:
+
+1. Sort the array `nums` in non-decreasing order.
+2. Create two pointers, `left` and `right`, initially pointing to the middle two elements of the sorted array. If the length of `nums` is odd, `left` will point to the middle element, and `right` will point to the element next to it. If the length is even, `left` will point to the second middle element, and `right` will point to the element after it.
+3. Create an auxiliary array, `result`, of the same length as `nums`.
+4. Iterate over the indices `i` of `result`:
+   - If `i` is even, set `result[i]` to `nums[left]` and move `left` one step to the left.
+   - If `i` is odd, set `result[i]` to `nums[right]` and move `right` one step to the left.
+5. Overwrite the elements of `nums` with the corresponding elements from `result`.
+
+Here's the implementation of the `wiggleSort` function in Python:
+
+```python
+class Solution:
+    def wiggleSort(self, nums):
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        # Sort the array in non-decreasing order
+        nums.sort()
+
+        # Find the middle two elements
+        mid = len(nums) // 2
+        left = mid - 1 if len(nums) % 2 == 0 else mid
+        right = len(nums) - 1
+
+        # Create an auxiliary array
+        result = [0] * len(nums)
+
+        # Reorder the elements
+        for i in range(len(result)):
+            if i % 2 == 0:
+                result[i] = nums[left]
+                left -= 1
+            else:
+                result[i] = nums[right]
+                right -= 1
+
+        # Overwrite the elements of nums
+        for i in range(len(nums)):
+            nums[i] = result[i]
+```
+
+This implementation has a time complexity of O(n log n) due to the sorting operation, where n is the length of the `nums` array.

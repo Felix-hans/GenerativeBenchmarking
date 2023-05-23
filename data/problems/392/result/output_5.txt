@@ -1,0 +1,66 @@
+To solve the given task, you can iterate through the characters of both strings, comparing them. If the characters match, you move to the next character of the subsequence. If they don't match, you move to the next character of the main string. If you reach the end of the subsequence string, it means it is a subsequence of the main string.
+
+Here's the implementation of the `isSubsequence` function in Python:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        subsequence_length = len(s)
+        main_length = len(t)
+
+        subsequence_index = 0
+        main_index = 0
+
+        while subsequence_index < subsequence_length and main_index < main_length:
+            if s[subsequence_index] == t[main_index]:
+                subsequence_index += 1
+            main_index += 1
+
+        return subsequence_index == subsequence_length
+```
+
+To handle the follow-up scenario where you have multiple incoming subsequence strings, you can pre-process the main string `t` to create an index mapping of each character to its indices in `t`. This index mapping will allow you to quickly check if a character exists in `t` and find its next occurrence efficiently.
+
+Here's an updated implementation that handles the follow-up scenario:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        char_indices = {}
+
+        # Pre-process t to create the index mapping
+        for i, char in enumerate(t):
+            if char not in char_indices:
+                char_indices[char] = []
+            char_indices[char].append(i)
+
+        subsequence_length = len(s)
+        main_length = len(t)
+
+        main_index = 0
+
+        for char in s:
+            if char not in char_indices:
+                return False
+
+            indices = char_indices[char]
+
+            # Binary search for the next occurrence of char in t
+            left = 0
+            right = len(indices) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if indices[mid] <= main_index:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+            if left == len(indices):
+                return False
+
+            main_index = indices[left] + 1
+
+        return True
+```
+
+This updated solution will provide efficient subsequence checks for multiple incoming subsequence strings, even when dealing with a large number of queries.

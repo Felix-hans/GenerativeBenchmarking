@@ -1,0 +1,44 @@
+To solve the problem, we can use dynamic programming to keep track of the longest contiguous substring ending at each character in the string `s`. We will also maintain a count of unique substrings that are present in the `base` string.
+
+Here's the implementation of the `findSubstringInWraproundString` function in Python:
+
+```python
+class Solution:
+    def findSubstringInWraproundString(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        # Initialize the count for each character to be at least 1
+        char_counts = [0] * 26
+        # Keep track of the length of the longest contiguous substring ending at each character
+        lengths = [0] * 26
+        
+        # Update the count and length for each character in the string
+        for i in range(len(s)):
+            # Calculate the index of the character in the 'base' string
+            index = ord(s[i]) - ord('a')
+            
+            # If the current character is the next character in the 'base' string,
+            # increment the length of the contiguous substring ending at this character.
+            if i > 0 and (ord(s[i]) - ord(s[i-1]) == 1 or ord(s[i-1]) - ord(s[i]) == 25):
+                lengths[index] = max(lengths[index], lengths[(index - 1) % 26] + 1)
+            else:
+                lengths[index] = 1
+            
+            # Update the count for the current character to be at least the length of the longest
+            # contiguous substring ending at this character.
+            char_counts[index] = max(char_counts[index], lengths[index])
+        
+        # Sum up the counts for all characters to get the total number of unique substrings
+        return sum(char_counts)
+```
+
+You can create an instance of the `Solution` class and call the `findSubstringInWraproundString` method with the input string `s` to get the desired output. Here's an example usage:
+
+```python
+solution = Solution()
+s = "zab"
+print(solution.findSubstringInWraproundString(s))  # Output: 6
+```
+
+The code will output the number of unique non-empty substrings of `s` that are present in the `base` string.

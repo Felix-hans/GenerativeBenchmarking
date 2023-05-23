@@ -1,0 +1,31 @@
+To solve this task, we can start by finding the square root of `num + 2` and `num + 1`. We will iterate backward from the square root until we find a number that divides `num + 2` or `num + 1` without a remainder. The first number we find will be one of the divisors, and the other divisor will be the quotient of `(num + 2) // divisor` or `(num + 1) // divisor`.
+
+Here's the implementation of the `closestDivisors` function in Python:
+
+```python
+from math import isqrt
+
+class Solution:
+    def closestDivisors(self, num: int) -> List[int]:
+        for i in range(isqrt(num + 2), 0, -1):
+            if (num + 2) % i == 0:
+                return [i, (num + 2) // i]
+            if (num + 1) % i == 0:
+                return [i, (num + 1) // i]
+```
+
+Now you can create an instance of the `Solution` class and call the `closestDivisors` method with the desired `num` value to obtain the closest divisors. For example:
+
+```python
+solution = Solution()
+result = solution.closestDivisors(8)
+print(result)  # Output: [3, 3]
+
+result = solution.closestDivisors(123)
+print(result)  # Output: [5, 25]
+
+result = solution.closestDivisors(999)
+print(result)  # Output: [40, 25]
+```
+
+Note: The code assumes that the `List` type is imported from the `typing` module.

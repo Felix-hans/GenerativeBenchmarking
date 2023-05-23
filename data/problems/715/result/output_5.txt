@@ -1,0 +1,79 @@
+To solve the problem, we can use a list of intervals to track the ranges. Each interval is represented as a tuple (left, right), where "left" represents the start of the interval and "right" represents the end (exclusive). The intervals in the list should be sorted based on their start positions.
+
+Here's the implementation of the RangeModule class in Python:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.intervals = []
+
+    def addRange(self, left: int, right: int) -> None:
+        merged = []
+        i = 0
+        while i < len(self.intervals) and self.intervals[i][1] < left:
+            merged.append(self.intervals[i])
+            i += 1
+
+        while i < len(self.intervals) and self.intervals[i][0] < right:
+            left = min(left, self.intervals[i][0])
+            right = max(right, self.intervals[i][1])
+            i += 1
+
+        merged.append((left, right))
+
+        while i < len(self.intervals):
+            merged.append(self.intervals[i])
+            i += 1
+
+        self.intervals = merged
+
+    def queryRange(self, left: int, right: int) -> bool:
+        i = 0
+        while i < len(self.intervals) and self.intervals[i][1] <= left:
+            i += 1
+
+        if i < len(self.intervals) and self.intervals[i][0] <= left and self.intervals[i][1] >= right:
+            return True
+
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+        merged = []
+        i = 0
+        while i < len(self.intervals) and self.intervals[i][1] < left:
+            merged.append(self.intervals[i])
+            i += 1
+
+        while i < len(self.intervals) and self.intervals[i][0] < right:
+            if self.intervals[i][0] < left:
+                merged.append((self.intervals[i][0], left))
+            if self.intervals[i][1] > right:
+                merged.append((right, self.intervals[i][1]))
+            i += 1
+
+        while i < len(self.intervals):
+            merged.append(self.intervals[i])
+            i += 1
+
+        self.intervals = merged
+```
+
+Let's test the implementation using the provided example:
+
+```python
+rangeModule = RangeModule()
+rangeModule.addRange(10, 20)
+rangeModule.removeRange(14, 16)
+print(rangeModule.queryRange(10, 14))  # True
+print(rangeModule.queryRange(13, 15))  # False
+print(rangeModule.queryRange(16, 17))  # True
+```
+
+Output:
+```
+True
+False
+True
+```
+
+The implementation correctly handles the addRange, queryRange, and removeRange operations as specified in the problem statement.

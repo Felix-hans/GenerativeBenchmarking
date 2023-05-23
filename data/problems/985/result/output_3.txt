@@ -1,0 +1,20 @@
+Here's an implementation of the given task in Python:
+
+```python
+class Solution:
+    def sumEvenAfterQueries(self, nums, queries):
+        result = []
+        even_sum = sum(num for num in nums if num % 2 == 0)
+        
+        for val, index in queries:
+            if nums[index] % 2 == 0:
+                even_sum -= nums[index]
+            nums[index] += val
+            if nums[index] % 2 == 0:
+                even_sum += nums[index]
+            result.append(even_sum)
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `sumEvenAfterQueries` method, passing in the `nums` and `queries` arrays as arguments. The method will return the resulting array `answer` as described in the problem statement.

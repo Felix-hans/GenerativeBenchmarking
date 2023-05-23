@@ -1,0 +1,41 @@
+To solve this problem, we can use dynamic programming to calculate the probability of the knight staying on the board after each move. We can create a 3D array to store the probabilities.
+
+Here's the Python code that implements the solution:
+
+```python
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        # Define the eight possible moves for the knight
+        moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+        
+        # Initialize a 3D array to store the probabilities
+        dp = [[[0] * n for _ in range(n)] for _ in range(k+1)]
+        
+        # Set the initial position probability to 1
+        dp[0][row][column] = 1
+        
+        # Iterate for each move
+        for step in range(1, k+1):
+            for r in range(n):
+                for c in range(n):
+                    # Iterate over the eight possible moves
+                    for dr, dc in moves:
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < n and 0 <= nc < n:
+                            dp[step][r][c] += dp[step-1][nr][nc] / 8
+        
+        # Calculate the total probability of staying on the board
+        prob = sum(sum(row) for row in dp[k])
+        
+        return prob
+```
+
+You can create an instance of the `Solution` class and call the `knightProbability` method with the desired inputs to get the result. For example:
+
+```python
+solution = Solution()
+print(solution.knightProbability(3, 2, 0, 0))  # Output: 0.0625
+print(solution.knightProbability(1, 0, 0, 0))  # Output: 1.0
+```
+
+The solution uses dynamic programming to calculate the probability of staying on the board after each move. It iterates over the number of moves and the positions on the board, considering all eight possible moves for each position. Finally, it sums up the probabilities after k moves to get the total probability of staying on the board.

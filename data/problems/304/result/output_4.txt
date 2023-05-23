@@ -1,0 +1,55 @@
+To implement the `NumMatrix` class and achieve constant time complexity for the `sumRegion` operation, we can use the concept of a cumulative sum matrix.
+
+The idea is to precalculate the cumulative sums for each position in the original matrix. Then, when computing the sum of a region, we can use the cumulative sums to quickly calculate the desired result.
+
+Here's the implementation:
+
+```python
+class NumMatrix:
+    def __init__(self, matrix):
+        if not matrix or not matrix[0]:
+            self.cumulative_sums = None
+        else:
+            m, n = len(matrix), len(matrix[0])
+            self.cumulative_sums = [[0] * (n + 1) for _ in range(m + 1)]
+
+            # Compute cumulative sums
+            for i in range(1, m + 1):
+                for j in range(1, n + 1):
+                    self.cumulative_sums[i][j] = (
+                        matrix[i - 1][j - 1]
+                        + self.cumulative_sums[i - 1][j]
+                        + self.cumulative_sums[i][j - 1]
+                        - self.cumulative_sums[i - 1][j - 1]
+                    )
+
+    def sumRegion(self, row1, col1, row2, col2):
+        if self.cumulative_sums is None:
+            return 0
+
+        return (
+            self.cumulative_sums[row2 + 1][col2 + 1]
+            - self.cumulative_sums[row2 + 1][col1]
+            - self.cumulative_sums[row1][col2 + 1]
+            + self.cumulative_sums[row1][col1]
+        )
+```
+
+Let's test it with the given example:
+
+```python
+numMatrix = NumMatrix(
+    [
+        [3, 0, 1, 4, 2],
+        [5, 6, 3, 2, 1],
+        [1, 2, 0, 1, 5],
+        [4, 1, 0, 1, 7],
+        [1, 0, 3, 0, 5],
+    ]
+)
+print(numMatrix.sumRegion(2, 1, 4, 3))  # Output: 8
+print(numMatrix.sumRegion(1, 1, 2, 2))  # Output: 11
+print(numMatrix.sumRegion(1, 2, 2, 4))  # Output: 12
+```
+
+The output matches the expected results. The `sumRegion` operation has a constant time complexity of O(1) due to the precomputation of the cumulative sums.

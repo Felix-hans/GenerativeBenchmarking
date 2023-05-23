@@ -1,0 +1,27 @@
+To solve the problem, we can use a hashmap (dictionary in Python) to store the elements of the array and their corresponding indices. 
+
+Here's the implementation of the `twoSum` function:
+
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        num_indices = {}  # dictionary to store numbers and their indices
+        
+        # Iterate through the array and check if the complement of the current number exists in the dictionary
+        for i, num in enumerate(nums):
+            complement = target - num
+            
+            # If the complement exists in the dictionary, return its index and the current index
+            if complement in num_indices:
+                return [num_indices[complement], i]
+            
+            # Otherwise, add the current number to the dictionary with its index
+            num_indices[num] = i
+        
+        # If no solution is found, return an empty list
+        return []
+```
+
+This solution has a time complexity of O(n) since we iterate through the array once, and a space complexity of O(n) to store the dictionary of numbers and indices.
+
+You can create an instance of the `Solution` class and call the `twoSum` method with the given inputs to obtain the desired output.

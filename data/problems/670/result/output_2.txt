@@ -1,0 +1,46 @@
+You can use the following implementation to solve the given task in Python:
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        # Convert the number to a list of digits
+        digits = list(str(num))
+        
+        # Find the index of the maximum digit
+        max_digit_idx = 0
+        for i in range(len(digits)):
+            if digits[i] > digits[max_digit_idx]:
+                max_digit_idx = i
+        
+        # If the maximum digit is already at the leftmost position, no swap is needed
+        if max_digit_idx == 0:
+            return num
+        
+        # Find the first occurrence of a digit smaller than the maximum digit from the left
+        for i in range(len(digits)):
+            if digits[i] < digits[max_digit_idx]:
+                # Swap the digits
+                digits[i], digits[max_digit_idx] = digits[max_digit_idx], digits[i]
+                break
+        
+        # Convert the list of digits back to an integer and return it
+        return int(''.join(digits))
+```
+
+You can create an instance of the `Solution` class and call the `maximumSwap` method, passing the input number as an argument, to get the maximum valued number. For example:
+
+```python
+solution = Solution()
+input_num = 2736
+result = solution.maximumSwap(input_num)
+print(result)  # Output: 7236
+```
+
+```python
+solution = Solution()
+input_num = 9973
+result = solution.maximumSwap(input_num)
+print(result)  # Output: 9973
+```
+
+Note that the implementation assumes that the input number `num` is within the constraints specified in the problem statement.

@@ -1,0 +1,40 @@
+To solve the given task, we can use a dictionary to count the occurrences of each card value in the hand. Then, we can iterate over the hand array and for each card, check if it is the start of a new group. If it is, we check if there are enough consecutive cards available to form a group of size groupSize. If there are, we decrement the counts of those cards in the dictionary. If there aren't enough consecutive cards, or if the current card is not the start of a new group, we return False.
+
+Here's the implementation of the `isNStraightHand` function:
+
+```python
+from typing import List
+
+class Solution:
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        if len(hand) % groupSize != 0:
+            return False
+        
+        count = {}
+        for card in hand:
+            count[card] = count.get(card, 0) + 1
+        
+        hand.sort()
+        
+        for i in range(len(hand)):
+            if count[hand[i]] > 0:
+                for j in range(groupSize):
+                    if count.get(hand[i] + j, 0) <= 0:
+                        return False
+                    count[hand[i] + j] -= 1
+        
+        return True
+```
+
+Now, you can create an instance of the `Solution` class and call the `isNStraightHand` function with the given inputs to obtain the result. For example:
+
+```python
+hand = [1, 2, 3, 6, 2, 3, 4, 7, 8]
+groupSize = 3
+
+solution = Solution()
+result = solution.isNStraightHand(hand, groupSize)
+print(result)  # Output: True
+```
+
+The implementation handles the constraints mentioned in the problem statement, such as the length of the hand array, the card values, and the groupSize.

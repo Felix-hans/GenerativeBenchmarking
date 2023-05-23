@@ -1,0 +1,55 @@
+Sure! Here's the implementation of the `commonChars` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        # Initialize a list to store the common characters
+        common_chars = []
+
+        # Count the frequency of characters in the first word
+        char_count = {}
+        for char in words[0]:
+            char_count[char] = char_count.get(char, 0) + 1
+
+        # Iterate through the remaining words
+        for word in words[1:]:
+            # Count the frequency of characters in the current word
+            curr_count = {}
+            for char in word:
+                curr_count[char] = curr_count.get(char, 0) + 1
+
+            # Update the common character counts
+            for char in char_count.keys():
+                if char in curr_count:
+                    # Update the count with the minimum occurrence
+                    char_count[char] = min(char_count[char], curr_count[char])
+                else:
+                    # If the character is not present in the current word, remove it from the common character counts
+                    char_count[char] = 0
+
+        # Append the common characters to the result list
+        for char, count in char_count.items():
+            common_chars.extend([char] * count)
+
+        return common_chars
+```
+
+You can create an instance of the `Solution` class and call the `commonChars` method with the input array to get the desired output. Here's an example usage:
+
+```python
+solution = Solution()
+words = ["bella", "label", "roller"]
+result = solution.commonChars(words)
+print(result)  # Output: ['e', 'l', 'l']
+```
+
+```python
+solution = Solution()
+words = ["cool", "lock", "cook"]
+result = solution.commonChars(words)
+print(result)  # Output: ['c', 'o']
+```
+
+The `commonChars` function uses a dictionary to count the frequency of characters in the first word. Then, it iterates through the remaining words and updates the character counts based on the minimum occurrence in each word. Finally, it appends the common characters to the `common_chars` list and returns the result.

@@ -1,0 +1,56 @@
+Here's the implementation of the TimeMap class in Python:
+
+```python
+from collections import defaultdict
+import bisect
+
+class TimeMap:
+
+    def __init__(self):
+        self.data = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.data:
+            return ""
+        
+        values = self.data[key]
+        
+        # Perform binary search to find the value with the largest timestamp
+        index = bisect.bisect_right(values, (timestamp, chr(127)))
+        
+        if index > 0:
+            return values[index-1][1]
+        else:
+            return ""
+```
+
+Explanation:
+1. We use a defaultdict to store the data, where each key maps to a list of (timestamp, value) pairs.
+2. The `set` method appends a new (timestamp, value) pair to the list corresponding to the given key.
+3. The `get` method performs a binary search using the `bisect_right` function to find the index of the first pair with a timestamp greater than the given timestamp.
+4. If the index is greater than 0, we return the value associated with the pair at index-1. Otherwise, we return an empty string if there are no values for the given key or if the given timestamp is earlier than all stored timestamps.
+
+Here's an example usage:
+
+```python
+timeMap = TimeMap()
+timeMap.set("foo", "bar", 1)
+print(timeMap.get("foo", 1))  # Output: "bar"
+print(timeMap.get("foo", 3))  # Output: "bar"
+timeMap.set("foo", "bar2", 4)
+print(timeMap.get("foo", 4))  # Output: "bar2"
+print(timeMap.get("foo", 5))  # Output: "bar2"
+```
+
+Output:
+```
+bar
+bar
+bar2
+bar2
+```
+
+Note: The implementation assumes that the timestamps passed to the `get` method will be within the range of the timestamps provided in the `set` method.

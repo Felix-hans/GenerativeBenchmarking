@@ -1,0 +1,50 @@
+To solve the champagne tower problem, we can simulate the pouring process and keep track of the amount of champagne in each glass. We can use a 2D array to represent the tower of glasses and update the champagne levels accordingly.
+
+Here's the implementation of the `champagneTower` function in Python:
+
+```python
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        # Initialize the tower with all glasses empty
+        tower = [[0.0] * (row + 1) for row in range(query_row + 1)]
+        tower[0][0] = poured  # Pour champagne into the top glass
+        
+        for row in range(query_row):
+            for col in range(row + 1):
+                # Calculate the excess champagne in the current glass
+                excess = (tower[row][col] - 1.0) / 2
+                
+                # Check if the current glass overflows to the glasses below it
+                if excess > 0:
+                    tower[row + 1][col] += excess
+                    tower[row + 1][col + 1] += excess
+        
+        # Return the champagne level in the requested glass
+        return min(1.0, tower[query_row][query_glass])
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+poured = 1
+query_row = 1
+query_glass = 1
+print(solution.champagneTower(poured, query_row, query_glass))  # Output: 0.0
+
+# Example 2
+poured = 2
+query_row = 1
+query_glass = 1
+print(solution.champagneTower(poured, query_row, query_glass))  # Output: 0.5
+
+# Example 3
+poured = 100000009
+query_row = 33
+query_glass = 17
+print(solution.champagneTower(poured, query_row, query_glass))  # Output: 1.0
+```
+
+The function correctly computes the amount of champagne in the requested glass based on the poured amount.

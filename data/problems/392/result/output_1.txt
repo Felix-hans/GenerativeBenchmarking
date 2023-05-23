@@ -1,0 +1,51 @@
+To check if string `s` is a subsequence of string `t`, we can iterate through both strings simultaneously and keep track of the indices of `s` and `t`. We start with indices `i` and `j` pointing to the beginning of `s` and `t`, respectively.
+
+For each character in `t`, if it matches the character in `s` at index `i`, we increment `i`. Finally, if `i` reaches the length of `s`, it means we have found all the characters of `s` in `t` in the same order, and thus `s` is a subsequence of `t`. If we reach the end of `t` without finding all characters of `s`, `s` is not a subsequence of `t`.
+
+Here's the implementation of the `isSubsequence` method in Python:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        i, j = 0, 0  # indices for s and t
+        while i < len(s) and j < len(t):
+            if s[i] == t[j]:
+                i += 1
+            j += 1
+        return i == len(s)
+```
+
+To handle the follow-up scenario where we have multiple `s` strings to check against the same `t`, we can preprocess `t` to create an index mapping of characters to their positions. This allows us to quickly jump to the next occurrence of a character in `t` when iterating through `s`.
+
+Here's an updated version of the code to handle the follow-up scenario efficiently:
+
+```python
+from collections import defaultdict
+
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        indices = defaultdict(list)  # store the indices of characters in t
+        for i, ch in enumerate(t):
+            indices[ch].append(i)
+
+        j = 0  # index for t
+        for ch in s:
+            if ch not in indices:
+                return False
+            # Binary search for the next occurrence of ch in t
+            next_idx_list = indices[ch]
+            left, right = 0, len(next_idx_list) - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if next_idx_list[mid] > j:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            if left == len(next_idx_list):
+                return False
+            j = next_idx_list[left] + 1
+
+        return True
+```
+
+This updated code reduces the time complexity for each `s` string from O(len(t)) to approximately O(len(s) + log(len(t))) by using binary search to find the next occurrence of a character in `t`.

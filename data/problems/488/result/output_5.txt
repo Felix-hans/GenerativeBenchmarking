@@ -1,0 +1,71 @@
+To solve this task, we can use a recursive backtracking approach. The main idea is to try all possible combinations of inserting balls from the hand into the board and recursively check if it leads to a solution.
+
+Here's the implementation of the `findMinStep` function:
+
+```python
+class Solution:
+    def findMinStep(self, board: str, hand: str) -> int:
+        hand_count = self.countBalls(hand)
+        return self.backtrack(board, hand_count)
+    
+    def countBalls(self, balls: str) -> dict:
+        count = {}
+        for ball in balls:
+            count[ball] = count.get(ball, 0) + 1
+        return count
+    
+    def backtrack(self, board: str, hand_count: dict) -> int:
+        if not board:
+            return 0  # All balls cleared, return 0
+        
+        min_steps = float('inf')  # Initialize with a large value
+        
+        i = 0
+        while i < len(board):
+            j = i
+            while j < len(board) and board[j] == board[i]:
+                j += 1
+            
+            color = board[i]
+            needed = 3 - (j - i)  # Number of balls needed to form a group of 3
+            
+            if hand_count.get(color, 0) >= needed:
+                hand_count[color] -= needed
+                new_board = self.removeBalls(board[:i] + board[j:])
+                
+                # Recursive call to check if remaining board can be cleared
+                steps = self.backtrack(new_board, hand_count)
+                if steps != -1:
+                    min_steps = min(min_steps, steps + needed)
+                
+                hand_count[color] += needed
+            
+            i = j
+        
+        return min_steps if min_steps != float('inf') else -1
+    
+    def removeBalls(self, board: str) -> str:
+        i = 0
+        while i < len(board):
+            j = i
+            while j < len(board) and board[j] == board[i]:
+                j += 1
+            if j - i >= 3:
+                return self.removeBalls(board[:i] + board[j:])
+            i = j
+        return board
+```
+
+We define a helper function `countBalls` to count the number of balls of each color in the hand. This function returns a dictionary where the keys are the ball colors and the values are their counts.
+
+The `backtrack` function is the main recursive function that performs the backtracking process. It takes the current board state and the counts of balls in the hand as parameters. The base case is when the board is empty, in which case we return 0 to indicate that all balls have been cleared.
+
+We iterate over the board and find consecutive groups of the same color. For each group, we calculate the number of balls needed to form a group of 3 (needed = 3 - (j - i)). If we have enough balls of that color in the hand, we deduct the needed count from the hand count and remove the group from the board. Then we make a recursive call to check if the remaining board can be cleared. If a solution is found, we update the `min_steps` variable with the minimum number of steps required.
+
+After trying all possible combinations, we return the `min_steps` value if it's not infinity (indicating a solution was found), otherwise, we return -1 to indicate that it's not possible to clear all the balls from the board.
+
+Now we can create an instance of the `Solution` class and call the `findMinStep` function with the given inputs:
+
+```python
+solution = Solution()
+board = "WRRBB

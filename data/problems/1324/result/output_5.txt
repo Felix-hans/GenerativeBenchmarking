@@ -1,0 +1,53 @@
+To solve the task, we can follow the following steps:
+
+1. Split the string `s` into a list of words using the space delimiter.
+2. Find the maximum length among the words in the list. This will determine the number of columns in the final output.
+3. Initialize a result list to store the vertically arranged words.
+4. Iterate over the words in the list and pad each word with spaces at the end to match the maximum length.
+5. Iterate over each character position from 0 to the maximum length.
+6. For each character position, iterate over the words and append the character at that position to a temporary string.
+7. Add the temporary string to the result list.
+8. Return the result list.
+
+Here's the implementation of the `printVertically` method:
+
+```python
+from typing import List
+
+class Solution:
+    def printVertically(self, s: str) -> List[str]:
+        words = s.split()
+        max_length = max(len(word) for word in words)
+        result = []
+
+        for i in range(max_length):
+            temp_str = ''
+            for word in words:
+                if i < len(word):
+                    temp_str += word[i]
+                else:
+                    temp_str += ' '
+            result.append(temp_str.rstrip())
+
+        return result
+```
+
+Let's test the implementation with the given examples:
+
+```python
+solution = Solution()
+
+s = "HOW ARE YOU"
+print(solution.printVertically(s))
+# Output: ["HAY", "ORO", "WEU"]
+
+s = "TO BE OR NOT TO BE"
+print(solution.printVertically(s))
+# Output: ["TBONTB", "OEROOE", "   T"]
+
+s = "CONTEST IS COMING"
+print(solution.printVertically(s))
+# Output: ["CIC", "OSO", "N M", "T I", "E N", "S G", "T"]
+```
+
+The code should produce the expected outputs for the given examples.

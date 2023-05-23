@@ -1,0 +1,39 @@
+To find the shortest distance between two bus stops in a circular route, we can consider two scenarios: when the route is traversed clockwise and when it is traversed counterclockwise. We'll calculate the distance for both scenarios and return the minimum distance.
+
+Here's the implementation of the `distanceBetweenBusStops` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def distanceBetweenBusStops(self, distance: List[int], start: int, destination: int) -> int:
+        # Calculate total distance of the circular route
+        total_distance = sum(distance)
+        
+        # Calculate the distance in clockwise direction
+        if start <= destination:
+            clockwise_distance = sum(distance[start:destination])
+        else:
+            clockwise_distance = sum(distance[destination:start])
+        
+        # Calculate the distance in counterclockwise direction
+        counterclockwise_distance = total_distance - clockwise_distance
+        
+        # Return the minimum distance
+        return min(clockwise_distance, counterclockwise_distance)
+```
+
+You can create an instance of the `Solution` class and call the `distanceBetweenBusStops` method with the appropriate parameters to get the result.
+
+Here's an example usage:
+
+```python
+solution = Solution()
+distance = [1, 2, 3, 4]
+start = 0
+destination = 1
+result = solution.distanceBetweenBusStops(distance, start, destination)
+print(result)  # Output: 1
+```
+
+Feel free to replace the `distance`, `start`, and `destination` variables with different values to test the function with other inputs.

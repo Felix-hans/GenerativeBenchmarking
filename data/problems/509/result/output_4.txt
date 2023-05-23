@@ -1,0 +1,33 @@
+Here's the Python implementation of the Fibonacci sequence using a recursive approach:
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n <= 1:
+            return n
+        else:
+            return self.fib(n - 1) + self.fib(n - 2)
+```
+
+This solution uses a recursive function to calculate the Fibonacci number for a given input `n`. The base case checks if `n` is 0 or 1, in which case it directly returns `n`. Otherwise, it recursively calls the `fib()` function for `n - 1` and `n - 2` and sums the results to calculate the Fibonacci number for `n`.
+
+However, this recursive solution has exponential time complexity since it recalculates the Fibonacci number for the same value multiple times. To improve the performance, we can use dynamic programming with memoization. Here's an optimized version:
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        memo = {}
+
+        def fib_helper(n):
+            if n <= 1:
+                return n
+            elif n in memo:
+                return memo[n]
+            else:
+                memo[n] = fib_helper(n - 1) + fib_helper(n - 2)
+                return memo[n]
+
+        return fib_helper(n)
+```
+
+In this optimized solution, we use a dictionary (`memo`) to store the Fibonacci numbers calculated so far. Before calculating the Fibonacci number for a value `n`, we check if it already exists in the memo. If it does, we return the stored value instead of recalculating it. This technique ensures that each Fibonacci number is computed only once, resulting in improved time complexity.

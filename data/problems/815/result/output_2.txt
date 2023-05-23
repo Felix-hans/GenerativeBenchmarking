@@ -1,0 +1,79 @@
+To solve the problem, we can use a breadth-first search (BFS) algorithm. We can treat each bus stop as a node in a graph and each bus route as an edge connecting the bus stops.
+
+Here's the Python implementation of the `numBusesToDestination` function:
+
+```python
+from typing import List, Dict, Set
+from collections import deque
+
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        if source == target:
+            return 0
+
+        # Build a graph where each bus stop is a node and each route is an edge
+        graph = self.buildGraph(routes)
+
+        # Initialize a queue for BFS and a set to track visited bus stops
+        queue = deque([(source, 0)])
+        visited = set([source])
+
+        while queue:
+            curr_stop, bus_count = queue.popleft()
+
+            if curr_stop == target:
+                return bus_count
+
+            for neighbor in graph[curr_stop]:
+                for bus in graph[curr_stop][neighbor]:
+                    if bus not in visited:
+                        visited.add(bus)
+                        queue.append((neighbor, bus_count + 1))
+
+        return -1
+
+    def buildGraph(self, routes: List[List[int]]) -> Dict[int, Dict[int, Set[int]]]:
+        graph = {}
+
+        for bus, route in enumerate(routes):
+            for stop in route:
+                if stop not in graph:
+                    graph[stop] = {}
+
+                for neighbor in route:
+                    if neighbor != stop:
+                        if neighbor not in graph[stop]:
+                            graph[stop][neighbor] = set()
+
+                        graph[stop][neighbor].add(bus)
+
+        return graph
+```
+
+The `numBusesToDestination` function takes in the `routes` list, `source`, and `target` as parameters and returns the least number of buses needed to travel from `source` to `target`. It performs a breadth-first search on the bus stops, starting from the `source` stop and considering neighboring stops along the bus routes.
+
+The `buildGraph` function is a helper function that constructs a graph representation of the bus routes. It returns a dictionary where each bus stop is a key, and its value is another dictionary. The inner dictionary represents the neighboring stops and the set of buses that connect them.
+
+The main function initializes a queue with the `source` stop and a bus count of 0. It also keeps track of visited stops using a set. The BFS loop continues until the queue is empty. In each iteration, it dequeues a stop and checks if it is the `target`. If so, it returns the current bus count. Otherwise, it explores the neighboring stops by looking up the graph. If a neighboring stop has not been visited, it is added to the queue with an incremented bus count.
+
+If the BFS completes without finding the `target`, the function returns -1 to indicate that it is not possible to reach the destination.
+
+You can create an instance of the `Solution` class and call the `numBusesToDestination` function with the given input to test it:
+
+```python
+routes = [[1, 2, 7], [3, 6, 7]]
+source = 1
+target = 6
+
+solution = Solution()
+result = solution.numBusesToDestination(routes, source, target)
+print(result)  # Output: 2
+```
+
+```python
+routes = [[7, 12], [4, 5, 15], [6], [15, 19], [9, 12, 13]]
+source = 15
+target = 12
+
+solution = Solution()
+result = solution.numBusesToDestination(routes, source, target)

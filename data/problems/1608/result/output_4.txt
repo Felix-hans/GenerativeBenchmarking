@@ -1,0 +1,31 @@
+To solve the given task, you can iterate over the range of possible values for x and count the numbers in the array that are greater than or equal to x. If the count matches the current value of x, you return that value. If no such value is found, you return -1. Here's the implementation of the `specialArray` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        n = len(nums)
+        for x in range(n+1):
+            count = sum(num >= x for num in nums)
+            if count == x:
+                return x
+        return -1
+```
+
+You can create an instance of the `Solution` class and call the `specialArray` method, passing the input array as an argument. Here's an example of how to use it:
+
+```python
+nums = [3, 5]
+solution = Solution()
+result = solution.specialArray(nums)
+print(result)
+```
+
+This will output:
+
+```
+2
+```
+
+You can repeat the same process with other examples and arrays to find the corresponding output.

@@ -1,0 +1,47 @@
+To solve this problem, we can use dynamic programming. We'll create a frequency map to count the occurrences of each number in the array `nums`. Then, we'll use two variables, `prev` and `curr`, to keep track of the maximum points earned at the previous and current steps, respectively.
+
+Here's the implementation of the `deleteAndEarn` function in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def deleteAndEarn(self, nums):
+        # Create a frequency map of the numbers
+        freq_map = Counter(nums)
+
+        # Get the maximum number in the array
+        max_num = max(nums)
+
+        # Initialize variables for the previous and current points
+        prev = curr = 0
+
+        # Iterate over each number up to the maximum number
+        for num in range(max_num + 1):
+            # Calculate the points earned for the current number
+            points = num * freq_map[num]
+
+            # Update the previous and current points
+            prev, curr = curr, max(prev + points, curr)
+
+        # Return the maximum points earned
+        return curr
+```
+
+You can create an instance of the `Solution` class and call the `deleteAndEarn` method with the `nums` array to get the maximum number of points earned. For example:
+
+```python
+nums = [3, 4, 2]
+solution = Solution()
+max_points = solution.deleteAndEarn(nums)
+print(max_points)  # Output: 6
+```
+
+```python
+nums = [2, 2, 3, 3, 3, 4]
+solution = Solution()
+max_points = solution.deleteAndEarn(nums)
+print(max_points)  # Output: 9
+```
+
+The time complexity of this solution is O(n + m), where n is the length of the `nums` array and m is the maximum number in the array.

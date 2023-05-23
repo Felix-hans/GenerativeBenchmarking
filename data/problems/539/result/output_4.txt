@@ -1,0 +1,48 @@
+You can use the following implementation to find the minimum minutes difference between any two time points in the given list:
+
+```python
+from typing import List
+
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        # Convert time points to minutes
+        minutes = []
+        for time in timePoints:
+            h, m = map(int, time.split(':'))
+            minutes.append(h * 60 + m)
+        
+        # Sort the minutes in ascending order
+        minutes.sort()
+        
+        min_diff = float('inf')
+        n = len(minutes)
+        
+        # Calculate the difference between adjacent time points
+        for i in range(1, n):
+            diff = minutes[i] - minutes[i - 1]
+            min_diff = min(min_diff, diff)
+        
+        # Calculate the difference between the first and last time points (considering the circular nature)
+        circular_diff = minutes[0] + (24 * 60) - minutes[n - 1]
+        min_diff = min(min_diff, circular_diff)
+        
+        return min_diff
+```
+
+Here's how you can use the `Solution` class to find the minimum minutes difference:
+
+```python
+timePoints = ["23:59","00:00"]
+solution = Solution()
+result = solution.findMinDifference(timePoints)
+print(result)  # Output: 1
+```
+
+```python
+timePoints = ["00:00","23:59","00:00"]
+solution = Solution()
+result = solution.findMinDifference(timePoints)
+print(result)  # Output: 0
+```
+
+The `findMinDifference` function converts the time points into minutes, sorts them, and then iterates through the sorted list to find the minimum difference between adjacent time points. It also considers the circular nature of time by calculating the difference between the first and last time points. Finally, it returns the minimum difference.

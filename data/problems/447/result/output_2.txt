@@ -1,0 +1,41 @@
+To solve this task, we can iterate through each point and calculate the distance to all other points. We'll store the distances in a dictionary, where the key is the distance and the value is the count of points with that distance.
+
+For each point, we'll iterate through all other points and calculate the distance using the distance formula:
+
+distance = sqrt((x2 - x1)^2 + (y2 - y1)^2)
+
+Once we have the distances, we can iterate through the dictionary and for each distance, count the number of boomerangs that can be formed using the formula:
+
+num_boomerangs = count * (count - 1)
+
+Finally, we'll sum up the number of boomerangs for each distance and return the total count.
+
+Here's the implementation of the `numberOfBoomerangs` function:
+
+```python
+from typing import List
+from collections import defaultdict
+
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        def calculate_distance(p1, p2):
+            x1, y1 = p1
+            x2, y2 = p2
+            return (x2 - x1) ** 2 + (y2 - y1) ** 2
+
+        num_boomerangs = 0
+
+        for i, p1 in enumerate(points):
+            distances = defaultdict(int)
+            for j, p2 in enumerate(points):
+                if i != j:
+                    distance = calculate_distance(p1, p2)
+                    distances[distance] += 1
+
+            for count in distances.values():
+                num_boomerangs += count * (count - 1)
+
+        return num_boomerangs
+```
+
+You can create an instance of the `Solution` class and call the `numberOfBoomerangs` method with the `points` list to get the desired output.

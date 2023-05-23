@@ -1,0 +1,42 @@
+Here's the implementation of the `transpose` function in Python:
+
+```python
+class Solution:
+    def transpose(self, matrix):
+        # Get the dimensions of the matrix
+        m = len(matrix)
+        n = len(matrix[0])
+        
+        # Create a new matrix with swapped dimensions
+        transposed = [[0] * m for _ in range(n)]
+        
+        # Populate the transposed matrix
+        for i in range(m):
+            for j in range(n):
+                transposed[j][i] = matrix[i][j]
+        
+        return transposed
+```
+
+You can use this `Solution` class to create an instance and call the `transpose` method with the matrix as the input. Here's an example usage:
+
+```python
+# Create an instance of the Solution class
+solution = Solution()
+
+# Define the input matrix
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+# Call the transpose method
+result = solution.transpose(matrix)
+
+# Print the transposed matrix
+print(result)
+```
+
+Output:
+```
+[[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+```
+
+The code works by creating a new matrix `transposed` with dimensions `n` (number of columns in the original matrix) by `m` (number of rows in the original matrix). Then, it iterates over the original matrix and assigns each element to the corresponding position in the transposed matrix by swapping the row and column indices. Finally, it returns the transposed matrix.

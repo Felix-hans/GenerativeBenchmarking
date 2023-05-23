@@ -1,0 +1,61 @@
+To solve the problem, we can use a sliding window approach to find the two non-overlapping subarrays with a sum equal to the target. Here's the implementation of the `minSumOfLengths` method:
+
+```python
+from typing import List
+
+class Solution:
+    def minSumOfLengths(self, arr: List[int], target: int) -> int:
+        prefix_sums = self.calculatePrefixSums(arr)
+        subarray_sums = {}  # Stores the minimum subarray length for each sum
+
+        left_subarray_length = float('inf')
+        result = float('inf')
+
+        current_sum = 0
+        for right, num in enumerate(arr):
+            current_sum += num
+
+            if current_sum - target in subarray_sums:
+                left = subarray_sums[current_sum - target]
+                left_subarray_length = min(left_subarray_length, right - left + 1)
+
+            if current_sum in subarray_sums:
+                subarray_sums[current_sum] = min(subarray_sums[current_sum], right)
+            else:
+                subarray_sums[current_sum] = right
+
+            if current_sum - target in prefix_sums:
+                result = min(result, prefix_sums[current_sum - target] + left_subarray_length)
+
+        return result if result != float('inf') else -1
+
+    def calculatePrefixSums(self, arr: List[int]) -> dict:
+        prefix_sums = {}
+        current_sum = 0
+        for i, num in enumerate(arr):
+            current_sum += num
+            if current_sum not in prefix_sums:
+                prefix_sums[current_sum] = i + 1  # Store the prefix sum up to index i
+        return prefix_sums
+```
+
+The `minSumOfLengths` method takes the input array `arr` and the target value `target` and returns the minimum sum of the lengths of the two required subarrays. If no such subarrays exist, it returns -1.
+
+The algorithm works as follows:
+
+1. Initialize `prefix_sums` as a dictionary to store the prefix sum up to each index of the array.
+2. Initialize an empty dictionary `subarray_sums` to store the minimum subarray length for each sum encountered.
+3. Initialize `left_subarray_length` and `result` as positive infinity.
+4. Iterate through the array using a sliding window approach:
+   - Calculate the current sum by adding the current element to the running sum.
+   - Check if there exists a subarray with sum `current_sum - target` in the `subarray_sums` dictionary.
+     - If it exists, update `left` as the index stored in `subarray_sums[current_sum - target]`.
+     - Update `left_subarray_length` as the minimum length between `left_subarray_length` and the length of the current subarray.
+   - Check if the current sum exists in the `subarray_sums` dictionary.
+     - If it exists, update the index of the current sum in `subarray_sums` if the new index is smaller.
+     - Otherwise, store the index of the current sum in `subarray_sums`.
+   - Check if `current_sum - target` exists in the `prefix_sums` dictionary.
+     - If it exists, update `result` as the minimum between `result` and the sum of the length of the subarray with sum `current_sum - target` in `prefix_sums` and `left_subarray_length`.
+5. Finally, return the `result` if it is not positive infinity. Otherwise, return -1.
+
+This algorithm has a time complexity of O(n), where n is the length of the input array `arr

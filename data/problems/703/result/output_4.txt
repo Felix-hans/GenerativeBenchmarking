@@ -1,0 +1,36 @@
+Sure! Here's the implementation of the `KthLargest` class in Python:
+
+```python
+import heapq
+
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        self.k = k
+        self.heap = []
+        for num in nums:
+            self.add(num)
+
+    def add(self, val: int) -> int:
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+```
+
+The `KthLargest` class uses a min-heap to keep track of the `k` largest elements seen so far. The constructor initializes the `k` value and the heap. It then iterates over the `nums` list and adds each element using the `add` method.
+
+The `add` method first adds the new element to the heap using `heappush`. If the size of the heap exceeds `k`, it removes the smallest element using `heappop`. Finally, it returns the smallest element in the heap, which represents the `k`th largest element.
+
+You can use the class as follows:
+
+```python
+kthLargest = KthLargest(3, [4, 5, 8, 2])
+print(kthLargest.add(3))  # Output: 4
+print(kthLargest.add(5))  # Output: 5
+print(kthLargest.add(10))  # Output: 5
+print(kthLargest.add(9))  # Output: 8
+print(kthLargest.add(4))  # Output: 8
+```
+
+I hope this helps! Let me know if you have any further questions.

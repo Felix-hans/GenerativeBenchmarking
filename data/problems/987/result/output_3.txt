@@ -1,0 +1,75 @@
+To solve this task, we can perform a breadth-first search (BFS) traversal of the binary tree while keeping track of the column index for each node. We'll use a queue to store the nodes and their corresponding column indices. Additionally, we'll use a dictionary to group nodes by their column index.
+
+Here's the implementation of the `verticalTraversal` function:
+
+```python
+from typing import List, Optional
+from collections import defaultdict
+from queue import Queue
+from itertools import groupby
+
+# Definition for a binary tree node
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        # Dictionary to store nodes by column index
+        columns = defaultdict(list)
+        # Queue to perform breadth-first search
+        queue = Queue()
+        # Enqueue the root node with column index 0
+        queue.put((root, 0))
+
+        # Perform breadth-first search
+        while not queue.empty():
+            size = queue.qsize()
+            column_nodes = defaultdict(list)
+
+            for _ in range(size):
+                node, col = queue.get()
+
+                # Store the node in the corresponding column
+                column_nodes[col].append(node.val)
+
+                # Enqueue the left child with column index col - 1
+                if node.left:
+                    queue.put((node.left, col - 1))
+
+                # Enqueue the right child with column index col + 1
+                if node.right:
+                    queue.put((node.right, col + 1))
+
+            # Merge the column nodes into the main dictionary
+            for col, nodes in column_nodes.items():
+                columns[col].extend(sorted(nodes))
+
+        # Sort the columns by their indices
+        sorted_columns = sorted(columns.items(), key=lambda x: x[0])
+
+        # Collect the nodes for each column
+        vertical_traversal = [nodes for _, nodes in sorted_columns]
+
+        return vertical_traversal
+```
+
+You can create an instance of the `Solution` class and call the `verticalTraversal` function with the root of the binary tree to obtain the vertical order traversal.
+
+Here's an example usage:
+
+```python
+root = TreeNode(3)
+root.left = TreeNode(9)
+root.right = TreeNode(20)
+root.right.left = TreeNode(15)
+root.right.right = TreeNode(7)
+
+solution = Solution()
+result = solution.verticalTraversal(root)
+print(result)  # Output: [[9], [3, 15], [20], [7]]
+```
+
+This will output `[[9], [3, 15], [20], [7]]`, which is the vertical order traversal of the binary tree.

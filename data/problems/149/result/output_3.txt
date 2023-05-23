@@ -1,0 +1,59 @@
+To solve this problem, we can use a brute-force approach. We iterate through all pairs of points and calculate the slope between them. The maximum number of points lying on the same straight line will be the maximum frequency of any slope.
+
+Here's the implementation of the `maxPoints` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxPoints(self, points: List[List[int]]) -> int:
+        if len(points) < 3:
+            return len(points)
+
+        max_points = 0
+
+        for i in range(len(points)):
+            slopes = {}
+            duplicate_points = 1
+            x1, y1 = points[i]
+
+            for j in range(i + 1, len(points)):
+                x2, y2 = points[j]
+
+                # Calculate the slope between the two points
+                if x1 == x2 and y1 == y2:
+                    duplicate_points += 1
+                    continue
+
+                if x1 == x2:
+                    slope = float('inf')
+                else:
+                    slope = (y2 - y1) / (x2 - x1)
+
+                # Increment the frequency of the slope
+                if slope in slopes:
+                    slopes[slope] += 1
+                else:
+                    slopes[slope] = 1
+
+            # Update the maximum number of points
+            max_points = max(max_points, duplicate_points + max(slopes.values(), default=0))
+
+        return max_points
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+points = [[1, 1], [2, 2], [3, 3]]
+print(solution.maxPoints(points))  # Output: 3
+
+# Example 2
+points = [[1, 1], [3, 2], [5, 3], [4, 1], [2, 3], [1, 4]]
+print(solution.maxPoints(points))  # Output: 4
+```
+
+The function should return the correct outputs for the given examples.

@@ -1,0 +1,52 @@
+To solve this task, we can follow the steps below:
+
+1. Define a helper function, `gcd(a, b)`, that calculates the greatest common divisor of two numbers `a` and `b`. We will use this function to simplify the fractions.
+
+2. Initialize `numerator` and `denominator` variables to keep track of the running total of the fractions.
+
+3. Iterate over the expression and split it into individual fractions. We can split the expression using the '+' and '-' characters as delimiters.
+
+4. For each fraction in the expression:
+    - Split the fraction into its numerator and denominator.
+    - Convert the numerator and denominator from strings to integers.
+    - Update the running total of the numerator and denominator by adding or subtracting the current fraction based on the operator '+' or '-'.
+    - Simplify the resulting fraction by calculating the greatest common divisor (gcd) of the numerator and denominator, and dividing both by the gcd.
+
+5. Finally, return the running total as a string in the format "numerator/denominator".
+
+Here's the implementation of the `fractionAddition` method:
+
+```python
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        def gcd(a, b):
+            while b:
+                a, b = b, a % b
+            return a
+        
+        numerator, denominator = 0, 1
+        
+        fractions = expression.split('+')
+        for fraction in fractions:
+            if '-' in fraction:
+                parts = fraction.split('-')
+                sign = -1
+            else:
+                parts = fraction.split('/')
+                sign = 1
+            
+            curr_numerator = int(parts[0]) * sign
+            curr_denominator = int(parts[1])
+            
+            numerator = numerator * curr_denominator + curr_numerator * denominator
+            denominator *= curr_denominator
+            
+        # Simplify the resulting fraction
+        common_divisor = gcd(abs(numerator), denominator)
+        numerator //= common_divisor
+        denominator //= common_divisor
+        
+        return str(numerator) + '/' + str(denominator)
+```
+
+You can create an instance of the `Solution` class and call the `fractionAddition` method, passing the expression as an argument to get the desired result.

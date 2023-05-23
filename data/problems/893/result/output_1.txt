@@ -1,0 +1,36 @@
+To solve this problem, we can iterate through each word in the given list and normalize them by sorting the characters at even and odd indices separately. We can then use a set to keep track of the normalized words, as sets only store unique elements. Finally, we return the size of the set as the number of groups of special-equivalent strings.
+
+Here's the implementation of the `numSpecialEquivGroups` method:
+
+```python
+from typing import List
+
+class Solution:
+    def numSpecialEquivGroups(self, words: List[str]) -> int:
+        groups = set()
+        for word in words:
+            even_chars = sorted(word[::2])
+            odd_chars = sorted(word[1::2])
+            normalized_word = ''.join(even_chars) + ''.join(odd_chars)
+            groups.add(normalized_word)
+        
+        return len(groups)
+```
+
+Now you can create an instance of the `Solution` class and call the `numSpecialEquivGroups` method with the input to get the desired output:
+
+```python
+solution = Solution()
+words = ["abcd","cdab","cbad","xyzz","zzxy","zzyx"]
+num_groups = solution.numSpecialEquivGroups(words)
+print(num_groups)  # Output: 3
+```
+
+```python
+solution = Solution()
+words = ["abc","acb","bac","bca","cab","cba"]
+num_groups = solution.numSpecialEquivGroups(words)
+print(num_groups)  # Output: 3
+```
+
+The code will output the number of groups of special-equivalent strings based on the given input.

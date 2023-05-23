@@ -1,0 +1,37 @@
+To solve this problem, we can use a greedy approach. The key idea is to sort the dishes in descending order based on their satisfaction levels. Then, we iterate over the sorted dishes and calculate the like-time coefficient for each dish, considering only the dishes with positive coefficients.
+
+Here's the implementation of the `maxSatisfaction` function:
+
+```python
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort dishes in descending order
+
+        total_time = 0
+        max_coefficient = 0
+
+        for sat in satisfaction:
+            if total_time + sat <= 0:
+                break
+            total_time += sat
+            max_coefficient += total_time
+
+        return max_coefficient
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The function returns the expected results for the provided examples.

@@ -1,0 +1,35 @@
+To solve this task, you can follow the steps below:
+
+1. Create a dictionary to store the relative order of elements in arr2. The keys will be the elements, and the values will be their corresponding indices.
+2. Create two separate lists, `included` and `excluded`, to store the elements that are included in arr2 and those that are not, respectively.
+3. Iterate through arr1 and do the following:
+   - If the element is in arr2, append it to the `included` list.
+   - If the element is not in arr2, append it to the `excluded` list.
+4. Sort the `excluded` list in ascending order.
+5. Define a custom sorting key function that will be used to sort the `included` list based on the relative order dictionary created in step 1. The sorting key function will return the index of the element in arr2.
+6. Sort the `included` list using the custom sorting key function defined in step 5.
+7. Return the concatenation of the `included` and sorted `excluded` lists.
+
+Here's the implementation of the `relativeSortArray` method:
+
+```python
+class Solution:
+    def relativeSortArray(self, arr1, arr2):
+        relative_order = {num: index for index, num in enumerate(arr2)}
+        included = []
+        excluded = []
+
+        for num in arr1:
+            if num in relative_order:
+                included.append(num)
+            else:
+                excluded.append(num)
+
+        excluded.sort()
+
+        included.sort(key=lambda x: relative_order[x])
+
+        return included + excluded
+```
+
+You can create an instance of the `Solution` class and call the `relativeSortArray` method with the input arrays `arr1` and `arr2` to obtain the sorted array.

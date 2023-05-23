@@ -1,0 +1,35 @@
+To solve the given task in Python, you can use a simple approach that involves iterating through the array and checking if there exists a pair of indices `i` and `j` such that `arr[i] == 2 * arr[j]`. Here's the implementation of the `checkIfExist` function:
+
+```python
+from typing import List
+
+class Solution:
+    def checkIfExist(self, arr: List[int]) -> bool:
+        seen = set()  # to store the visited elements
+        for num in arr:
+            if 2 * num in seen or num % 2 == 0 and num // 2 in seen:
+                return True
+            seen.add(num)
+        return False
+```
+
+Explanation:
+1. Create an empty set called `seen` to store the visited elements.
+2. Iterate through each number in the `arr`.
+3. Inside the loop, check if either `2 * num` or `num // 2` exists in the `seen` set. If either of them exists, return `True` as the condition is satisfied.
+   - If `2 * num` exists in `seen`, it means there is a pair `(i, j)` where `arr[i] == 2 * arr[j]`.
+   - If `num` is even and `num // 2` exists in `seen`, it means there is a pair `(i, j)` where `arr[i] == 2 * arr[j]`.
+4. If no satisfying pair is found after iterating through all numbers, return `False`.
+
+Now you can create an instance of the `Solution` class and call the `checkIfExist` function with the given input to test it:
+
+```python
+solution = Solution()
+arr = [10, 2, 5, 3]
+print(solution.checkIfExist(arr))  # Output: True
+
+arr = [3, 1, 7, 11]
+print(solution.checkIfExist(arr))  # Output: False
+```
+
+The output will be as expected, based on the examples provided in the task.

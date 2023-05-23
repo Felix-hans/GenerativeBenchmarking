@@ -1,0 +1,42 @@
+Here's the implementation of the `distributeCandies` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        distribution = [0] * num_people  # Initialize the distribution array
+        give_candies = 1  # Number of candies to give in each turn
+        index = 0  # Index of the person to receive the candies
+
+        while candies > 0:
+            # Give candies to the current person
+            distribution[index] += min(candies, give_candies)
+            candies -= give_candies
+
+            # Move to the next person and increment the number of candies to give
+            index = (index + 1) % num_people
+            give_candies += 1
+
+        return distribution
+```
+
+You can create an instance of the `Solution` class and call the `distributeCandies` method with the desired number of candies and number of people to get the final distribution of candies. For example:
+
+```python
+solution = Solution()
+candies = 7
+num_people = 4
+result = solution.distributeCandies(candies, num_people)
+print(result)  # Output: [1, 2, 3, 1]
+```
+
+```python
+solution = Solution()
+candies = 10
+num_people = 3
+result = solution.distributeCandies(candies, num_people)
+print(result)  # Output: [5, 2, 3]
+```
+
+The `distributeCandies` function uses a while loop to distribute the candies until there are no more candies left. It keeps track of the current person using the `index` variable and gives them the minimum of the remaining candies and the number of candies to give in the current turn. The `index` is incremented using modulo arithmetic to loop back to the start of the row when reaching the end. The number of candies to give is incremented after each turn. Finally, it returns the distribution array.

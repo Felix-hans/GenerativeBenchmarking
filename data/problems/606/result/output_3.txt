@@ -1,0 +1,49 @@
+To solve this problem, we can use a recursive approach. We'll traverse the binary tree in preorder fashion and construct the string representation.
+
+Here's the implementation of the `tree2str` function:
+
+```python
+class Solution:
+    def tree2str(self, root: Optional[TreeNode]) -> str:
+        if not root:
+            return ""
+        
+        # Helper function to construct the string representation
+        def construct_string(node):
+            if not node:
+                return ""
+            
+            # Convert the current node's value to a string
+            current = str(node.val)
+            
+            # Check if the current node has any children
+            if not node.left and not node.right:
+                return current  # Leaf node, return only the value
+            
+            left = construct_string(node.left)  # Recursively construct the string for the left subtree
+            right = construct_string(node.right)  # Recursively construct the string for the right subtree
+            
+            # Construct the string representation
+            if not right:
+                return current + "(" + left + ")"  # No right subtree, omit the empty parenthesis pair for the right child
+            else:
+                return current + "(" + left + ")" + "(" + right + ")"  # Include both left and right subtrees
+        
+        return construct_string(root)
+```
+
+In this solution, we first check if the `root` node is `None`. If it is, we return an empty string since there is no tree to construct a string from.
+
+We define a helper function called `construct_string` that takes a `node` as an argument. Inside this function, we perform the following steps:
+
+1. If the `node` is `None`, we return an empty string.
+2. Convert the current node's value to a string and assign it to the `current` variable.
+3. Check if the current node is a leaf node (i.e., it has no left or right child). If it is, we return only the value of the current node.
+4. Recursively call the `construct_string` function on the left subtree and assign the result to the `left` variable.
+5. Recursively call the `construct_string` function on the right subtree and assign the result to the `right` variable.
+6. Construct the string representation based on the presence of the left and right subtrees. If there is no right subtree, we omit the empty parenthesis pair for the right child. Otherwise, we include both the left and right subtrees.
+7. Finally, we return the result of the `construct_string` function called on the `root` node.
+
+This solution ensures that unnecessary empty parenthesis pairs are omitted while constructing the string representation of the binary tree in preorder traversal.
+
+You can create an instance of the `Solution` class and call the `tree2str` function with the root of the binary tree to get the desired string representation.

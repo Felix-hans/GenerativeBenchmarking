@@ -1,0 +1,36 @@
+To solve this problem, we can use a dynamic programming approach. We'll create a separate matrix to store the length of the longest increasing path starting from each cell in the input matrix. We'll initialize this matrix with all zeros.
+
+Here's the Python code to solve the problem:
+
+```python
+class Solution:
+    def longestIncreasingPath(self, matrix):
+        if not matrix:
+            return 0
+
+        rows, cols = len(matrix), len(matrix[0])
+        longest_path = 0
+        dp = [[0] * cols for _ in range(rows)]
+
+        def dfs(row, col):
+            if dp[row][col] != 0:
+                return dp[row][col]
+
+            directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+            max_path = 1
+            for dx, dy in directions:
+                new_row, new_col = row + dx, col + dy
+                if 0 <= new_row < rows and 0 <= new_col < cols and matrix[new_row][new_col] > matrix[row][col]:
+                    max_path = max(max_path, dfs(new_row, new_col) + 1)
+
+            dp[row][col] = max_path
+            return max_path
+
+        for i in range(rows):
+            for j in range(cols):
+                longest_path = max(longest_path, dfs(i, j))
+
+        return longest_path
+```
+
+You can create an instance of the `Solution` class and call the `longestIncreasingPath` method, passing the input matrix as an argument. It will return the length of the longest increasing path in the matrix.

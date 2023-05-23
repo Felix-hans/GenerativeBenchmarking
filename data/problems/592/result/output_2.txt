@@ -1,0 +1,58 @@
+To solve the problem, we can follow these steps:
+
+1. Initialize the numerator and denominator as 0/1, which represents the initial fraction value.
+2. Split the expression string into individual fractions using the '+' and '-' signs as delimiters.
+3. For each fraction, extract the numerator and denominator.
+4. To handle the negative sign, check if the fraction starts with a '-'. If it does, multiply the numerator by -1.
+5. Calculate the new numerator and denominator by cross-multiplying.
+   - Multiply the numerator of the first fraction by the denominator of the second fraction.
+   - Multiply the denominator of the first fraction by the numerator of the second fraction.
+   - Add the two results together.
+   - Multiply the two denominators together.
+6. Update the numerator and denominator values with the new values calculated in step 5.
+7. Repeat steps 3-6 for all fractions in the expression.
+8. After processing all the fractions, find the greatest common divisor (GCD) of the numerator and denominator using the Euclidean algorithm.
+9. Divide both the numerator and denominator by their GCD to obtain the irreducible fraction.
+10. Return the final result as a string in the format "numerator/denominator".
+
+Here's the implementation of the `fractionAddition` method in Python:
+
+```python
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        def gcd(a, b):
+            while b != 0:
+                a, b = b, a % b
+            return a
+
+        def lcm(a, b):
+            return abs(a * b) // gcd(a, b)
+
+        numer = 0
+        denom = 1
+
+        fractions = expression.split('+')
+
+        for fraction in fractions:
+            if '-' in fraction:
+                sign = -1
+                fraction = fraction[1:]
+            else:
+                sign = 1
+
+            num, den = map(int, fraction.split('/'))
+
+            numer = numer * den + sign * num * denom
+            denom *= den
+
+        if numer == 0:
+            return '0/1'
+
+        divisor = gcd(numer, denom)
+        numer //= divisor
+        denom //= divisor
+
+        return str(numer) + '/' + str(denom)
+```
+
+You can create an instance of the `Solution` class and call the `fractionAddition` method with the expression string to get the desired result.

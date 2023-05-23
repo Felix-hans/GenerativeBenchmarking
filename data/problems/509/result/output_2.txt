@@ -1,0 +1,34 @@
+To calculate the Fibonacci number for a given value of n, you can use a recursive approach or an iterative approach. Here's the implementation of the Fibonacci sequence using an iterative approach in Python:
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1:
+            return 1
+        
+        prev1 = 0
+        prev2 = 1
+        curr = 0
+        
+        for i in range(2, n + 1):
+            curr = prev1 + prev2
+            prev1 = prev2
+            prev2 = curr
+        
+        return curr
+```
+
+The `fib` function takes an integer `n` as input and returns the Fibonacci number corresponding to `n`. It uses three variables: `prev1`, `prev2`, and `curr`. Initially, `prev1` is set to 0 and `prev2` is set to 1. Then, using a loop, it calculates the Fibonacci number iteratively by updating the values of `prev1`, `prev2`, and `curr` in each iteration. Finally, it returns the value of `curr` as the result.
+
+You can create an instance of the `Solution` class and call the `fib` function on it to test the implementation, like this:
+
+```python
+solution = Solution()
+print(solution.fib(2))  # Output: 1
+print(solution.fib(3))  # Output: 2
+print(solution.fib(4))  # Output: 3
+```
+
+This will give you the expected outputs for the provided examples.

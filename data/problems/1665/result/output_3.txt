@@ -1,0 +1,21 @@
+To solve this problem, we can sort the tasks in descending order based on the difference between actuali and minimumi. This way, we prioritize tasks with larger energy requirements. We will start with an initial energy of 0 and iterate through the sorted tasks. If our current energy is less than the minimum required for a task, we increase the initial energy by the difference between the minimum and the current energy. We then update the current energy by subtracting the actual energy required for the task. Finally, we return the initial energy required to complete all the tasks. Here's the implementation:
+
+```python
+class Solution:
+    def minimumEffort(self, tasks: List[List[int]]) -> int:
+        tasks.sort(key=lambda x: x[1] - x[0], reverse=True)  # Sort tasks in descending order based on the difference
+        
+        initial_energy = 0
+        current_energy = 0
+        
+        for task in tasks:
+            actual_energy, minimum_energy = task
+            if current_energy < minimum_energy:
+                initial_energy += minimum_energy - current_energy
+                current_energy = minimum_energy
+            current_energy -= actual_energy
+        
+        return initial_energy
+```
+
+Now you can create an instance of the `Solution` class and call the `minimumEffort` function with the input tasks to get the minimum initial amount of energy required to finish all the tasks.

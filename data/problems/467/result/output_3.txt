@@ -1,0 +1,45 @@
+To solve the given task, we can use dynamic programming to keep track of the number of unique substrings ending at each letter in the alphabet. We'll create a list of length 26 (representing the 26 letters) to store these counts.
+
+Here's the implementation of the `findSubstringInWraproundString` function:
+
+```python
+class Solution:
+    def findSubstringInWraproundString(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        dp = [0] * 26  # Initialize counts for each letter
+        
+        length = 1  # Length of the current substring
+        dp[ord(s[0]) - ord('a')] = 1  # Update count for the first letter
+        
+        for i in range(1, len(s)):
+            if ord(s[i]) - ord(s[i-1]) == 1 or ord(s[i-1]) - ord(s[i]) == 25:
+                length += 1
+            else:
+                length = 1
+            
+            # Update count for the current letter if the substring is longer
+            letter_index = ord(s[i]) - ord('a')
+            dp[letter_index] = max(dp[letter_index], length)
+        
+        # Sum up all the counts to get the total number of unique substrings
+        return sum(dp)
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+s = "a"
+print(solution.findSubstringInWraproundString(s))  # Output: 1
+
+s = "cac"
+print(solution.findSubstringInWraproundString(s))  # Output: 2
+
+s = "zab"
+print(solution.findSubstringInWraproundString(s))  # Output: 6
+```
+
+The function should produce the expected outputs for the given examples.

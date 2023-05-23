@@ -1,0 +1,26 @@
+To solve the problem, we can iterate through the queries and perform the following steps for each query:
+
+1. Update the value at the specified index in the `nums` array by adding `vali`.
+2. Calculate the sum of even values in the updated `nums` array.
+3. Append the sum to the `answer` array.
+
+Here's the implementation of the `sumEvenAfterQueries` function in Python:
+
+```python
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        answer = []
+        even_sum = sum(num for num in nums if num % 2 == 0)
+
+        for val, index in queries:
+            if nums[index] % 2 == 0:
+                even_sum -= nums[index]
+            nums[index] += val
+            if nums[index] % 2 == 0:
+                even_sum += nums[index]
+            answer.append(even_sum)
+
+        return answer
+```
+
+You can use the above solution by creating an instance of the `Solution` class and calling the `sumEvenAfterQueries` method with the given `nums` and `queries` input. The function will return the `answer` array containing the sums of even values after each query.

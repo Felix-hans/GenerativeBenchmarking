@@ -1,0 +1,64 @@
+To solve the task, we can iterate over both strings, checking if each character in `s` is present in `t` in the correct order. If all characters in `s` are found in `t` in the correct order, `s` is a subsequence of `t`. Otherwise, it is not.
+
+Here's the implementation of the `isSubsequence` function in Python:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        i = 0  # Pointer for string s
+        j = 0  # Pointer for string t
+
+        while i < len(s) and j < len(t):
+            if s[i] == t[j]:
+                i += 1  # Move to the next character in s
+            j += 1  # Always move to the next character in t
+
+        # If we have reached the end of s, it is a subsequence of t
+        return i == len(s)
+```
+
+Regarding the follow-up question, if we have multiple strings `s1, s2, ..., sk` and want to check each one against `t`, we can optimize the solution. We can preprocess `t` and create an index dictionary that maps each character to its positions in `t`. Then, for each `si` string, we can perform a binary search on the positions of its characters in `t` to ensure they appear in the correct order.
+
+Here's an updated version of the code that handles the follow-up scenario efficiently:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        index = {}  # Dictionary to store positions of characters in t
+
+        # Preprocess t and create the index dictionary
+        for i, char in enumerate(t):
+            if char not in index:
+                index[char] = []
+            index[char].append(i)
+
+        prev_pos = -1  # Previous position of character in t
+
+        # Check each character in s against t using binary search
+        for char in s:
+            if char not in index:
+                return False  # Character does not exist in t
+
+            positions = index[char]
+            found = False
+
+            # Perform binary search on the positions of char in t
+            left, right = 0, len(positions) - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if positions[mid] > prev_pos:
+                    found = True
+                    prev_pos = positions[mid]
+                    break
+                elif positions[mid] < prev_pos:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+            if not found:
+                return False  # Character not found in the correct order
+
+        return True  # All characters in s found in the correct order in t
+```
+
+This optimized approach reduces the time complexity of checking multiple `si` strings against `t` by preprocessing `t` and performing efficient binary searches.

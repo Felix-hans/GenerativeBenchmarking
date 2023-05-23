@@ -1,0 +1,36 @@
+To solve this problem, we can sort the tasks in descending order based on the difference between actual energy and minimum energy required for each task. This way, we prioritize tasks that require more energy.
+
+We can then iterate through the sorted tasks and keep track of the current energy. If the current energy is not enough to start a task, we update the required initial energy accordingly. Otherwise, we subtract the actual energy spent on the task from the current energy.
+
+Here's the implementation of the `minimumEffort` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def minimumEffort(self, tasks: List[List[int]]) -> int:
+        tasks.sort(key=lambda x: x[1] - x[0], reverse=True)  # Sort tasks based on energy difference
+        initial_energy = 0
+        current_energy = 0
+        
+        for task in tasks:
+            actual_energy, min_energy = task
+            if current_energy < min_energy:
+                diff = min_energy - current_energy
+                initial_energy += diff
+                current_energy += diff
+            current_energy -= actual_energy
+        
+        return initial_energy
+```
+
+Now, you can create an instance of the `Solution` class and call the `minimumEffort` function, passing the tasks as an argument:
+
+```python
+solution = Solution()
+tasks = [[1,2],[2,4],[4,8]]
+result = solution.minimumEffort(tasks)
+print(result)  # Output: 8
+```
+
+You can test the function with the provided examples or additional test cases to verify its correctness.

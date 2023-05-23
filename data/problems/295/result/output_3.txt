@@ -1,0 +1,83 @@
+Here's the implementation of the `MedianFinder` class in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.min_heap = []
+        self.max_heap = []
+
+    def addNum(self, num: int) -> None:
+        if len(self.min_heap) == len(self.max_heap):
+            # Add the number to the max heap (left side)
+            # To ensure the max heap stores the smaller half of the numbers
+            heapq.heappush(self.max_heap, -num)
+            
+            # Move the largest element from the max heap to the min heap
+            # To ensure the min heap stores the larger half of the numbers
+            heapq.heappush(self.min_heap, -heapq.heappop(self.max_heap))
+        else:
+            # Add the number to the min heap (right side)
+            # To ensure the min heap stores the larger half of the numbers
+            heapq.heappush(self.min_heap, num)
+            
+            # Move the smallest element from the min heap to the max heap
+            # To ensure the max heap stores the smaller half of the numbers
+            heapq.heappush(self.max_heap, -heapq.heappop(self.min_heap))
+
+    def findMedian(self) -> float:
+        if len(self.min_heap) == len(self.max_heap):
+            # If the number of elements is even, calculate the median
+            return (self.min_heap[0] - self.max_heap[0]) / 2.0
+        else:
+            # If the number of elements is odd, the median is in the min heap
+            return float(self.min_heap[0])
+
+# Test the MedianFinder class
+medianFinder = MedianFinder()
+medianFinder.addNum(1)
+medianFinder.addNum(2)
+print(medianFinder.findMedian())  # Output: 1.5
+medianFinder.addNum(3)
+print(medianFinder.findMedian())  # Output: 2.0
+```
+
+To optimize the solution when all integer numbers from the stream are in the range [0, 100], you can use an array of size 101 to keep track of the frequency of each number. When adding a number, you increment its corresponding index in the array. Finding the median can be done by calculating the cumulative sum of the frequencies until reaching the middle element(s).
+
+Here's an optimized version for the case when all numbers are in the range [0, 100]:
+
+```python
+class MedianFinder:
+    def __init__(self):
+        self.freq = [0] * 101
+        self.count = 0
+
+    def addNum(self, num: int) -> None:
+        self.freq[num] += 1
+        self.count += 1
+
+    def findMedian(self) -> float:
+        if self.count % 2 == 0:
+            # For even count, find the two middle elements
+            middle1, middle2 = self.count // 2, self.count // 2 + 1
+            num1, num2 = None, None
+            for i in range(101):
+                middle1 -= self.freq[i]
+                middle2 -= self.freq[i]
+                if middle1 <= 0 and num1 is None:
+                    num1 = i
+                if middle2 <= 0:
+                    num2 = i
+                    break
+            return (num1 + num2) / 2
+        else:
+            # For odd count, find the middle element
+            middle = self.count // 2 + 1
+            for i in range(101):
+                middle -= self.freq[i]
+                if middle <= 0:
+                    return i
+```
+
+The optimized solution avoids using heaps and directly calculates the median

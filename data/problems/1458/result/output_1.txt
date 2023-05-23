@@ -1,0 +1,39 @@
+To solve the given task, we can use dynamic programming to find the maximum dot product between non-empty subsequences of `nums1` and `nums2` with the same length.
+
+Here's the implementation of the `maxDotProduct` function in Python:
+
+```python
+class Solution:
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+        m, n = len(nums1), len(nums2)
+        
+        # Create a 2D dynamic programming table with dimensions (m+1) x (n+1)
+        dp = [[float('-inf')] * (n + 1) for _ in range(m + 1)]
+        
+        # Initialize the base case values
+        dp[0][0] = 0
+        
+        # Fill the dynamic programming table
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # Calculate the dot product of subsequences up to the current indices
+                dot_product = nums1[i - 1] * nums2[j - 1]
+                
+                # Update the maximum dot product at the current indices
+                dp[i][j] = max(dot_product, dp[i - 1][j - 1] + dot_product, dp[i][j - 1], dp[i - 1][j])
+        
+        # Return the maximum dot product
+        return dp[m][n]
+```
+
+You can create an instance of the `Solution` class and call the `maxDotProduct` method with the given `nums1` and `nums2` arrays to obtain the maximum dot product.
+
+```python
+solution = Solution()
+nums1 = [2, 1, -2, 5]
+nums2 = [3, 0, -6]
+result = solution.maxDotProduct(nums1, nums2)
+print(result)  # Output: 18
+```
+
+Similarly, you can test the function with other examples by providing appropriate input arrays.

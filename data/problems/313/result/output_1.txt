@@ -1,0 +1,49 @@
+To solve this problem, we can use a dynamic programming approach. We'll initialize an array called `ugly` with size `n` and set the first element as 1 since 1 is always considered a super ugly number.
+
+We'll also create another array called `pointers` to keep track of the current index for each prime number in the `primes` array. Initially, all pointers will be set to 0.
+
+Then, we'll iterate from 1 to `n-1` and for each index `i`, we'll update `ugly[i]` as the minimum value among the products of `ugly[pointers[j]]` and `primes[j]`, where `j` iterates over the range of `primes`. After updating `ugly[i]`, we'll increment the corresponding pointer `pointers[j]` if the product matches with `ugly[i]`.
+
+Finally, we'll return the last element in the `ugly` array, which represents the `n`-th super ugly number.
+
+Here's the implementation of the `nthSuperUglyNumber` function:
+
+```python
+from typing import List
+
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        ugly = [1] * n
+        pointers = [0] * len(primes)
+        
+        for i in range(1, n):
+            min_val = float('inf')
+            for j in range(len(primes)):
+                min_val = min(min_val, ugly[pointers[j]] * primes[j])
+            
+            ugly[i] = min_val
+            
+            for j in range(len(primes)):
+                if ugly[i] == ugly[pointers[j]] * primes[j]:
+                    pointers[j] += 1
+        
+        return ugly[-1]
+```
+
+Now, you can create an instance of the `Solution` class and call the `nthSuperUglyNumber` function with the desired inputs:
+
+```python
+n = 12
+primes = [2, 7, 13, 19]
+
+solution = Solution()
+result = solution.nthSuperUglyNumber(n, primes)
+print(result)
+```
+
+Output:
+```
+32
+```
+
+Note: The above code has a time complexity of O(n * k), where n is the given input and k is the length of the `primes` array.

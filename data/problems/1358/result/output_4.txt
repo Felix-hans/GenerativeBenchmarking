@@ -1,0 +1,39 @@
+To solve this task, we can use a sliding window approach to count the number of substrings containing at least one occurrence of all three characters 'a', 'b', and 'c'. Here's the implementation of the `numberOfSubstrings` function:
+
+```python
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        counts = [0, 0, 0]  # count of 'a', 'b', 'c'
+        num_substrings = 0
+        left = 0
+
+        for right in range(len(s)):
+            counts[ord(s[right]) - ord('a')] += 1
+
+            # Shrink the window from the left until we have at least one occurrence of each character
+            while all(counts):
+                counts[ord(s[left]) - ord('a')] -= 1
+                left += 1
+
+            # At each step, we add the length of the window to the total number of substrings
+            num_substrings += left
+
+        return num_substrings
+```
+
+Let's test the code with the provided examples:
+
+```python
+solution = Solution()
+
+s = "abcabc"
+print(solution.numberOfSubstrings(s))  # Output: 10
+
+s = "aaacb"
+print(solution.numberOfSubstrings(s))  # Output: 3
+
+s = "abc"
+print(solution.numberOfSubstrings(s))  # Output: 1
+```
+
+The code should produce the correct outputs for the given examples.

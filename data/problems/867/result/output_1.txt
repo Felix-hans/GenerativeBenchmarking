@@ -1,0 +1,34 @@
+To transpose a matrix, we can simply swap the elements at each pair of indices (i, j) and (j, i), where i and j are the row and column indices, respectively. Here's the implementation of the `transpose` function in Python:
+
+```python
+class Solution:
+    def transpose(self, matrix):
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        # Create a new matrix with swapped dimensions
+        transposed = [[0 for _ in range(rows)] for _ in range(cols)]
+        
+        # Iterate over the original matrix and swap elements
+        for i in range(rows):
+            for j in range(cols):
+                transposed[j][i] = matrix[i][j]
+        
+        return transposed
+```
+
+You can use this `Solution` class to create an instance and call the `transpose` method with your input matrix. Here's an example usage:
+
+```python
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+solution = Solution()
+result = solution.transpose(matrix)
+print(result)
+```
+
+Output:
+```
+[[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+```
+
+This code will correctly transpose the matrix and return the desired output.

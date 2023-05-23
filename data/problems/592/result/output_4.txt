@@ -1,0 +1,61 @@
+To solve this task, we can follow these steps:
+
+1. Initialize variables `numerator` and `denominator` to 0.
+2. Iterate through the expression and extract each fraction.
+   - Initialize variables `num` and `den` to store the numerator and denominator of the current fraction.
+   - If the current character is '-', set the sign of the fraction to negative and move to the next character.
+   - Read the numerator until '/' character is encountered, convert it to an integer, and assign it to `num`.
+   - Read the denominator after '/' character until either '+' or '-' is encountered, convert it to an integer, and assign it to `den`.
+   - If the sign is negative, negate `num`.
+   - Update `numerator` and `denominator` using the formula:
+     - `numerator = numerator * den + num * denominator`
+     - `denominator = denominator * den`
+3. Calculate the greatest common divisor (GCD) of `numerator` and `denominator` using the Euclidean algorithm.
+4. Divide both `numerator` and `denominator` by their GCD.
+5. Return the result as a string in the required format.
+
+Here's the implementation of the `fractionAddition` method:
+
+```python
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        numerator = 0
+        denominator = 1
+
+        i = 0
+        while i < len(expression):
+            sign = 1
+            if expression[i] == '-':
+                sign = -1
+                i += 1
+
+            num = 0
+            while i < len(expression) and expression[i] != '/':
+                num = num * 10 + int(expression[i])
+                i += 1
+
+            i += 1
+
+            den = 0
+            while i < len(expression) and expression[i] not in ['+', '-']:
+                den = den * 10 + int(expression[i])
+                i += 1
+
+            num *= sign
+            numerator = numerator * den + num * denominator
+            denominator *= den
+
+        # Calculate the greatest common divisor
+        def gcd(a, b):
+            while b != 0:
+                a, b = b, a % b
+            return a
+
+        common_divisor = gcd(abs(numerator), denominator)
+        numerator //= common_divisor
+        denominator //= common_divisor
+
+        return str(numerator) + '/' + str(denominator)
+```
+
+Now, you can create an instance of the `Solution` class and call the `fractionAddition` method with the input expression to obtain the result.

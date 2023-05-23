@@ -1,0 +1,35 @@
+To solve the task, you can use a custom sorting function that sorts the elements of `arr1` based on their relative ordering in `arr2`. Here's the implementation in Python:
+
+```python
+class Solution:
+    def relativeSortArray(self, arr1, arr2):
+        def custom_sort(x):
+            if x in arr2:
+                return (arr2.index(x), x)
+            else:
+                return (len(arr2), x)
+
+        return sorted(arr1, key=custom_sort)
+```
+
+In this solution, we define a custom sorting function `custom_sort` that takes an element `x` from `arr1` as input. The function checks if `x` is present in `arr2`. If it is, we return a tuple `(arr2.index(x), x)`, which gives the index of `x` in `arr2` as the primary sorting key and `x` itself as the secondary sorting key. If `x` is not present in `arr2`, we return a tuple `(len(arr2), x)` to ensure that elements not present in `arr2` are placed at the end of the sorted array.
+
+Finally, we use the `sorted` function with the `key` parameter set to `custom_sort` to sort `arr1` based on the custom sorting logic.
+
+You can create an instance of the `Solution` class and call the `relativeSortArray` method with your input arrays `arr1` and `arr2` to get the sorted array. Here's an example:
+
+```python
+arr1 = [2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19]
+arr2 = [2, 1, 4, 3, 9, 6]
+
+solution = Solution()
+output = solution.relativeSortArray(arr1, arr2)
+print(output)
+```
+
+Output:
+```
+[2, 2, 2, 1, 4, 3, 3, 9, 6, 7, 19]
+```
+
+You can follow the same steps to test the solution with the second example as well.

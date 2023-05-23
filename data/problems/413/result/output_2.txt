@@ -1,0 +1,40 @@
+To solve this problem, we can use dynamic programming to count the number of arithmetic subarrays.
+
+Here's the implementation of the `numberOfArithmeticSlices` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 3:
+            return 0
+
+        dp = [0] * n  # Dynamic programming array to store the count of arithmetic subarrays
+        count = 0  # Variable to keep track of the total count of arithmetic subarrays
+
+        for i in range(2, n):
+            if nums[i] - nums[i-1] == nums[i-1] - nums[i-2]:
+                # The current element extends the arithmetic subarray formed by the previous elements
+                dp[i] = dp[i-1] + 1
+                count += dp[i]
+
+        return count
+```
+
+Now, you can create an instance of the `Solution` class and call the `numberOfArithmeticSlices` function with your input array:
+
+```python
+nums = [1, 2, 3, 4]
+solution = Solution()
+result = solution.numberOfArithmeticSlices(nums)
+print(result)
+```
+
+Output:
+```
+3
+```
+
+This solution has a time complexity of O(n), where n is the length of the input array `nums`.

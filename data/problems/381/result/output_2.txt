@@ -1,0 +1,50 @@
+Here's the implementation of the `RandomizedCollection` class in Python:
+
+```python
+import random
+from collections import defaultdict
+
+
+class RandomizedCollection:
+
+    def __init__(self):
+        self.nums = []
+        self.positions = defaultdict(set)
+
+    def insert(self, val: int) -> bool:
+        self.nums.append(val)
+        self.positions[val].add(len(self.nums) - 1)
+        return len(self.positions[val]) == 1
+
+    def remove(self, val: int) -> bool:
+        if self.positions[val]:
+            last_element = self.nums[-1]
+            val_positions = self.positions[val]
+            last_position = len(self.nums) - 1
+
+            last_element_positions = self.positions[last_element]
+            replace_position = val_positions.pop()
+
+            self.nums[replace_position] = last_element
+            last_element_positions.remove(last_position)
+            if replace_position != last_position:
+                last_element_positions.add(replace_position)
+            if not val_positions:
+                del self.positions[val]
+            self.nums.pop()
+            return True
+        return False
+
+    def getRandom(self) -> int:
+        return random.choice(self.nums)
+```
+
+Explanation:
+- The `RandomizedCollection` class maintains two data structures:
+  - `nums`: a list to store the numbers in the collection.
+  - `positions`: a dictionary that maps a number to a set of positions where it occurs in the `nums` list.
+- The `insert` method adds a number to the `nums` list and updates the `positions` dictionary accordingly. It returns `True` if the number is not present before, `False` otherwise.
+- The `remove` method removes a number from the `nums` list and updates the `positions` dictionary. It returns `True` if the number is present and successfully removed, `False` otherwise.
+- The `getRandom` method uses the `random.choice` function to select a random element from the `nums` list and returns it.
+
+The implementation ensures an average time complexity of O(1) for the `insert`, `remove`, and `getRandom` operations.

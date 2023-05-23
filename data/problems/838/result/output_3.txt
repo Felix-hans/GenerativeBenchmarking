@@ -1,0 +1,62 @@
+To solve this task, we can simulate the process of dominoes falling by iterating through the dominoes string and updating their states based on the neighboring dominoes. Here's the implementation of the `pushDominoes` function in Python:
+
+```python
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        n = len(dominoes)
+        forces = [0] * n
+
+        # Calculate the forces exerted by the falling dominoes to the right
+        force = 0
+        for i in range(n):
+            if dominoes[i] == 'R':
+                force = n
+            elif dominoes[i] == 'L':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+            forces[i] += force
+
+        # Calculate the forces exerted by the falling dominoes to the left
+        force = 0
+        for i in range(n - 1, -1, -1):
+            if dominoes[i] == 'L':
+                force = n
+            elif dominoes[i] == 'R':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+            forces[i] -= force
+
+        # Update the dominoes based on the calculated forces
+        result = ""
+        for force in forces:
+            if force > 0:
+                result += 'R'
+            elif force < 0:
+                result += 'L'
+            else:
+                result += '.'
+
+        return result
+```
+
+This solution maintains an array `forces` to store the cumulative forces exerted on each domino. We iterate through the `dominoes` string twice, once from left to right to calculate the forces from falling dominoes to the right, and once from right to left to calculate the forces from falling dominoes to the left. After that, we update the `dominoes` string based on the calculated forces to get the final state.
+
+Let's test the solution using the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+dominoes = "RR.L"
+# No additional forces are exerted, so the dominoes remain the same.
+print(solution.pushDominoes(dominoes))  # Output: "RR.L"
+
+# Example 2
+dominoes = ".L.R...LR..L.."
+# After simulation, the final state is "LL.RR.LLRRLL..".
+print(solution.pushDominoes(dominoes))  # Output: "LL.RR.LLRRLL.."
+```
+
+The output matches the expected results for both examples.

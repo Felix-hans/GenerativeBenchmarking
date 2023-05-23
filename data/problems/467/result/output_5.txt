@@ -1,0 +1,38 @@
+To solve this task, we can utilize the concept of dynamic programming. We'll define an array `dp` of length 26 to store the maximum length of a substring ending at each letter of the alphabet. We'll iterate over the string `s` and update the corresponding values in `dp` accordingly. Finally, we'll sum up all the values in `dp` to get the total number of unique non-empty substrings present in `s` that are also present in the infinite wraparound string `base`. Here's the implementation:
+
+```python
+class Solution:
+    def findSubstringInWraproundString(self, s: str) -> int:
+        if not s:
+            return 0
+        
+        dp = [0] * 26  # Initialize an array to store the max length of substring ending at each letter
+        
+        # Initialize the first letter's count
+        dp[ord(s[0]) - ord('a')] = 1
+        length = 1  # Current max length of substring
+        
+        for i in range(1, len(s)):
+            # If the current letter is consecutive to the previous letter, increment the length
+            if (ord(s[i]) - ord(s[i-1])) % 26 == 1:
+                length += 1
+            else:
+                length = 1  # Reset length to 1 if not consecutive
+            
+            # Update the max length of substring ending at the current letter
+            dp[ord(s[i]) - ord('a')] = max(dp[ord(s[i]) - ord('a')], length)
+        
+        # Sum up all the values in dp to get the total count of unique substrings
+        return sum(dp)
+```
+
+Now you can create an instance of the `Solution` class and call the `findSubstringInWraproundString` method to solve the task. For example:
+
+```python
+s = "zab"
+solution = Solution()
+result = solution.findSubstringInWraproundString(s)
+print(result)  # Output: 6
+```
+
+The code above will output the correct result based on the provided examples.

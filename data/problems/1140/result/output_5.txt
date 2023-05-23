@@ -1,0 +1,54 @@
+To solve this task, we can use dynamic programming to find the maximum number of stones Alice can obtain.
+
+Here's the implementation of the `stoneGameII` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameII(self, piles: List[int]) -> int:
+        n = len(piles)
+        prefix_sum = [0] * (n + 1)
+        for i in range(n - 1, -1, -1):
+            prefix_sum[i] = prefix_sum[i+1] + piles[i]
+
+        memo = {}  # memoization dictionary
+
+        def dp(start, M):
+            if start + 2 * M >= n:  # can take all remaining stones
+                return prefix_sum[start]
+            if (start, M) in memo:
+                return memo[(start, M)]
+
+            max_stones = 0
+            for x in range(1, 2 * M + 1):
+                next_start = start + x
+                max_stones = max(max_stones, prefix_sum[start] - dp(next_start, max(M, x)))
+
+            memo[(start, M)] = max_stones
+            return max_stones
+
+        return dp(0, 1)
+```
+
+Explanation:
+1. We start by calculating the prefix sum of the piles in reverse order. This allows us to quickly compute the sum of any subarray.
+2. We define a recursive `dp` function that takes two parameters: `start` represents the starting index of the current subarray, and `M` represents the current value of `M`.
+3. Inside the `dp` function, we handle the base case where we can take all remaining stones. In this case, we return the sum of the remaining stones in the subarray.
+4. We check if the result for the current subproblem has already been memoized. If so, we return the memoized result.
+5. We iterate over all possible values of `X` from 1 to 2M. For each `X`, we calculate the maximum number of stones Alice can obtain by recursively calling `dp` with the next starting index `next_start` and the updated value of `M`.
+6. We update `max_stones` to store the maximum of the current result and the result obtained from the current value of `X`.
+7. Finally, we memoize the result for the current subproblem and return `max_stones` as the maximum number of stones Alice can obtain.
+
+Now, you can create an instance of the `Solution` class and call the `stoneGameII` function to solve the problem:
+
+```python
+solution = Solution()
+piles = [2, 7, 9, 4, 4]
+print(solution.stoneGameII(piles))  # Output: 10
+
+piles = [1, 2, 3, 4, 5, 100]
+print(solution.stoneGameII(piles))  # Output: 104
+```
+
+This will give you the maximum number of stones Alice can obtain for each test case.

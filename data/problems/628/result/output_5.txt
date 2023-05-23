@@ -1,0 +1,39 @@
+To solve this problem, we can use a greedy approach. The maximum product of three numbers can be obtained by either multiplying the three largest numbers or multiplying the two smallest (negative) numbers with the largest positive number.
+
+Here's the implementation of the `maximumProduct` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        # Sort the numbers in ascending order
+        nums.sort()
+        
+        # Get the product of the three largest numbers
+        product1 = nums[-1] * nums[-2] * nums[-3]
+        
+        # Get the product of the two smallest (negative) numbers and the largest positive number
+        product2 = nums[0] * nums[1] * nums[-1]
+        
+        # Return the maximum product
+        return max(product1, product2)
+```
+
+You can create an instance of the `Solution` class and call the `maximumProduct` method on it to find the maximum product of three numbers in the given array.
+
+Example usage:
+
+```python
+solution = Solution()
+nums = [1, 2, 3]
+print(solution.maximumProduct(nums))  # Output: 6
+
+nums = [1, 2, 3, 4]
+print(solution.maximumProduct(nums))  # Output: 24
+
+nums = [-1, -2, -3]
+print(solution.maximumProduct(nums))  # Output: -6
+```
+
+This implementation sorts the input array, which has a time complexity of O(n log n), where n is the length of the array.

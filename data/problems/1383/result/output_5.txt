@@ -1,0 +1,37 @@
+To solve this task, we can use a greedy approach combined with a priority queue (heapq) to efficiently select the engineers with the highest performance. Here's the Python implementation for the `maxPerformance` function:
+
+```python
+import heapq
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = zip(efficiency, speed)  # Combine efficiency and speed
+        engineers = sorted(engineers, reverse=True)  # Sort engineers by decreasing efficiency
+        team_speeds = []
+        total_speed = 0
+        max_performance = 0
+
+        for eff, spd in engineers:
+            heapq.heappush(team_speeds, spd)  # Add current engineer's speed to the heap
+            total_speed += spd
+
+            if len(team_speeds) > k:
+                total_speed -= heapq.heappop(team_speeds)  # Remove the engineer with the lowest speed
+
+            performance = total_speed * eff  # Calculate current performance
+            max_performance = max(max_performance, performance)
+
+        return max_performance % (10 ** 9 + 7)
+```
+
+In this implementation, we first combine the efficiency and speed of each engineer into a list of tuples and sort it in descending order based on efficiency. This allows us to always consider engineers with higher efficiency first.
+
+We then iterate through the sorted engineers and maintain a heap (`team_speeds`) that contains the speeds of the selected engineers. We also keep track of the total speed and the maximum performance seen so far.
+
+For each engineer, we add their speed to the heap and update the total speed. If the size of the heap exceeds `k`, we remove the engineer with the lowest speed from the heap and subtract their speed from the total speed.
+
+After updating the heap and total speed, we calculate the current performance as the product of the total speed and the efficiency of the current engineer. We update the maximum performance if necessary.
+
+Finally, we return the maximum performance modulo `10^9 + 7` as specified in the problem statement.
+
+Note: The code assumes that the `List` type is imported from `typing` module or defined elsewhere in the code.

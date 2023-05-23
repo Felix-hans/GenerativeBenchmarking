@@ -1,0 +1,28 @@
+To solve this problem, we can use dynamic programming. We'll start by sorting the input array `arr` in ascending order. Then, we'll initialize a dictionary `dp` to store the number of binary trees we can make for each element in `arr`.
+
+For each element `num` in `arr`, we'll iterate through all the previous elements `x` (which are smaller than `num`) and check if `num` is divisible by `x`. If it is, we'll calculate the other factor `y` as `num / x`. If both `x` and `y` exist in `arr`, we can form a binary tree with `num` as the root, `x` as the left child, and `y` as the right child. The number of binary trees formed by `num` will be the product of the number of binary trees formed by `x` and `y`.
+
+After iterating through all the elements in `arr`, we'll sum up the values in the `dp` dictionary and return the result modulo 10^9 + 7.
+
+Here's the implementation of the `numFactoredBinaryTrees` method:
+
+```python
+class Solution:
+    def numFactoredBinaryTrees(self, arr):
+        MOD = 10**9 + 7
+        arr.sort()
+        dp = {}
+
+        for i, num in enumerate(arr):
+            dp[num] = 1
+            for j in range(i):
+                if num % arr[j] == 0:
+                    other_factor = num // arr[j]
+                    if other_factor in dp:
+                        dp[num] += dp[arr[j]] * dp[other_factor]
+                        dp[num] %= MOD
+
+        return sum(dp.values()) % MOD
+```
+
+You can create an instance of the `Solution` class and call the `numFactoredBinaryTrees` method, passing in the `arr` list as the argument, to get the result.

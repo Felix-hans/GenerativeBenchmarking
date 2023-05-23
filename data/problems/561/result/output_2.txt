@@ -1,0 +1,31 @@
+To solve this task in Python, you can use the following implementation of the `arrayPairSum` function:
+
+```python
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        nums.sort()  # Sort the array in ascending order
+        result = 0
+        for i in range(0, len(nums), 2):
+            result += nums[i]  # Add the minimum value of each pair to the result
+        return result
+```
+
+This solution works by first sorting the `nums` array in ascending order. Then, it iterates over the sorted array with a step of 2, starting from index 0. In each iteration, it adds the value at the current index to the `result` variable. Since the array is sorted, the value at the even indices will always be the smaller value of each pair.
+
+Finally, it returns the `result` variable, which represents the maximum possible sum of the minimum values in the pairs.
+
+You can create an instance of the `Solution` class and call the `arrayPairSum` method on it with the given input to get the desired output:
+
+```python
+solution = Solution()
+nums = [1, 4, 3, 2]
+max_sum = solution.arrayPairSum(nums)
+print(max_sum)  # Output: 4
+```
+
+```python
+solution = Solution()
+nums = [6, 2, 6, 5, 1, 2]
+max_sum = solution.arrayPairSum(nums)
+print(max_sum)  # Output: 9
+```

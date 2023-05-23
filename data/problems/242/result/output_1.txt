@@ -1,0 +1,21 @@
+To solve the task, we can use a simple approach by comparing the sorted versions of the two strings. If the sorted strings are equal, then t is an anagram of s. Here's the implementation of the `isAnagram` function in Python:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s) == sorted(t)
+```
+
+This implementation works for strings containing only lowercase English letters, as mentioned in the constraints.
+
+If the inputs contain Unicode characters, we need to consider the Unicode code points of the characters for comparison instead of sorting the strings directly. We can achieve this by using the `sorted` function with a key argument that specifies the Unicode code point of each character. Here's an updated version of the `isAnagram` function that handles Unicode characters:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s, key=lambda x: ord(x)) == sorted(t, key=lambda x: ord(x))
+```
+
+In this updated implementation, the `key` argument in the `sorted` function is a lambda function that returns the Unicode code point (`ord`) of each character. This ensures that the characters are sorted based on their Unicode code points, regardless of their language or script.
+
+Note that the solution assumes that the strings only contain valid Unicode characters and do not require any normalization. Depending on the specific requirements, additional steps such as Unicode normalization may be necessary.

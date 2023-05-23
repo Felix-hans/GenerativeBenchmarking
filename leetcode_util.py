@@ -1,6 +1,8 @@
 import subprocess, glob, os, time, random
 from config import Config
 from tqdm import tqdm
+import pandas as pd
+import handleQuestionBank
 
 class LeetCodeUtil:
     def __init__(self):
@@ -160,11 +162,53 @@ class LeetCodeUtil:
         result_path=py_file_path.replace('.py','_result.txt')
         if os.path.exists(result_path): os.remove(result_path)
         
-    def run_leetcode_test(self, model_name):
+    def iterate_python_files(self, iter_list,error_exists ,error_total,error_cnt, prev_err,timeout, timeoutCount):
+        for py_file in tqdm(iter_list):
+            new_iter_list = iter_list.remove(py_file)
+                
+            py_result_file=py_file[:-3]+'_result.txt'
 
-        config=Config()
-        root_path=os.path.normpath(config.generation_path)
-        py_files=glob.glob(root_path+'/results/'+model_name+'/**/*output_*.py',recursive=True)
+            #Sometimes leetcode does not answer
+            try:
+                print('here')
+                p=subprocess.run(['leetcode','submit',py_file,'-l','python3'],capture_output=True, timeout=timeout)
+                print('DONE')
+            except subprocess.TimeoutExpired:
+                timeoutCount = timeoutCount +1
+                print('TIMEOUT')
+
+                if timeoutCount < 3:
+                    self.iterate_python_files(new_iter_list, timeout, timeoutCount= timeoutCount)
+                else:
+                    print("SESSION KEEPS TIMING OUT")
+                    break
+
+
+            if 'http error' in str(p.stdout) or "[ERROR] session expired" in str(p.stdout) or\
+                "[ERROR] Problem not found!" in str(p.stdout): 
+                error_exists=True
+                error_total+=1
+                if prev_err: error_cnt+=1
+                else: error_cnt=1
+                prev_err=True
+                if error_cnt>20: 
+                    print('Too many errors.')
+                    break
+            else:
+                prev_err=False
+                with open(py_result_file,'w',encoding='UTF8') as f:
+                    f.write('\n**stdout:**\n')
+                    f.write(str(p.stdout))
+                    f.write('\n**stderr:**\n')
+                    f.write(str(p.stderr))
+            # time.sleep(5)
+            # print('# of http error or session expired error: ',error_total)
+        return error_exists
+    
+    
+    def run_leetcode_test(self, py_files):
+
+
         def result_exists(result_file:str):
             if not os.path.exists(result_file): return False
             with open(result_file,'r',encoding='UTF8') as f:
@@ -187,29 +231,34 @@ class LeetCodeUtil:
             error_total=0
             iter_list=[p for p in py_files if not result_exists(p[:-3]+'_result.txt')]
 
-            for py_file in tqdm(iter_list):
-                print(py_file)
-                py_result_file=py_file[:-3]+'_result.txt'
-                p=subprocess.run(['leetcode','submit',py_file,'-l','python3'],capture_output=True)
-
-                if 'http error' in str(p.stdout) or "[ERROR] session expired" in str(p.stdout) or\
-                    "[ERROR] Problem not found!" in str(p.stdout): 
-                    error_exists=True
-                    error_total+=1
-                    if prev_err: error_cnt+=1
-                    else: error_cnt=1
-                    prev_err=True
-                    if error_cnt>20: 
-                        print('Too many errors.')
-                        break
-                else:
-                    prev_err=False
-                    with open(py_result_file,'w',encoding='UTF8') as f:
-                        f.write('\n**stdout:**\n')
-                        f.write(str(p.stdout))
-                        f.write('\n**stderr:**\n')
-                        f.write(str(p.stderr))
-                time.sleep(5)
-            print('# of http error or session expired error: ',error_total)
+            #iterate the x python files but restart if it takes too long
+            error_exists = self.iterate_python_files(iter_list, error_exists ,error_total,error_cnt,prev_err,timeout = 300, timeoutCount=0)
         
-                
+    def run_leetcode_pipeline(self):
+        config=Config()
+        root_path=os.path.normpath(config.generation_path)
+
+        #load all IDs that haven't been treated yet
+        folder_path_list = handleQuestionBank.validateQuestions(config.sampled_df_path, config.logFile)
+        
+        for folder_name in folder_path_list:
+
+            folder_name = str(folder_name)
+            print('--------------------------------------------------------')
+            print(folder_name)
+            #We don't want to iterate over hidden files such as .DS_Store
+            if folder_name.startswith('.'):
+                continue
+            
+            problem_folder_path = os.path.join(root_path, folder_name)
+
+            if not os.path.isdir(problem_folder_path):
+                print('ERROR with folders')
+                break
+
+            problem_result_folder_path = os.path.join(problem_folder_path, config.target_folder)
+            problem_solution_files_path = glob.glob(problem_result_folder_path + '/*.py')
+            self.run_leetcode_test(problem_solution_files_path)
+
+            handleQuestionBank.logQuestionValidation(folder_name,problem_result_folder_path,config.sampled_df_path, config.logFile)
+        

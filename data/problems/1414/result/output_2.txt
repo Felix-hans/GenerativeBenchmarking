@@ -1,0 +1,51 @@
+To solve the task, we can follow the following steps:
+
+1. Generate Fibonacci numbers up to the given constraint k.
+2. Initialize a count variable to keep track of the minimum number of Fibonacci numbers required.
+3. Start from the largest Fibonacci number and iterate until k becomes 0.
+4. If the current Fibonacci number is less than or equal to k, subtract the Fibonacci number from k and increment the count.
+5. Continue this process until k becomes 0.
+6. Return the count as the minimum number of Fibonacci numbers required to sum up to k.
+
+Here's the implementation of the `findMinFibonacciNumbers` function in Python:
+
+```python
+class Solution:
+    def findMinFibonacciNumbers(self, k: int) -> int:
+        # Generate Fibonacci numbers up to k
+        fib = [1, 1]
+        while fib[-1] < k:
+            fib.append(fib[-1] + fib[-2])
+
+        count = 0
+        index = len(fib) - 1
+
+        # Subtract Fibonacci numbers from k until it becomes 0
+        while k > 0:
+            if fib[index] <= k:
+                k -= fib[index]
+                count += 1
+            index -= 1
+
+        return count
+```
+
+You can test the implementation using the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+k = 7
+print(solution.findMinFibonacciNumbers(k))  # Output: 2
+
+# Example 2
+k = 10
+print(solution.findMinFibonacciNumbers(k))  # Output: 2
+
+# Example 3
+k = 19
+print(solution.findMinFibonacciNumbers(k))  # Output: 3
+```
+
+The output for the above test cases should match the expected results.

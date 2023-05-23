@@ -1,0 +1,35 @@
+To solve the given task, we can use a dynamic programming approach. We'll sort the dishes' satisfaction levels in descending order and then iterate through the sorted list. 
+
+In each iteration, we'll calculate the like-time coefficient for the current dish by multiplying its satisfaction level with the time taken for all previous dishes. We'll keep track of the maximum like-time coefficient obtained so far. 
+
+Here's the implementation of the `maxSatisfaction` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort dishes in descending order
+        n = len(satisfaction)
+        max_like_time = 0
+        curr_time = 0
+        
+        for i in range(n):
+            if curr_time + satisfaction[i] <= 0:
+                break  # Stop if adding the next dish makes the like-time coefficient negative
+            curr_time += satisfaction[i]
+            max_like_time += curr_time
+        
+        return max_like_time
+```
+
+Now, you can create an instance of the `Solution` class and call the `maxSatisfaction` function, passing the satisfaction list as the argument. For example:
+
+```python
+s = Solution()
+satisfaction = [-1, -8, 0, 5, -9]
+max_like_time = s.maxSatisfaction(satisfaction)
+print(max_like_time)  # Output: 14
+```
+
+I hope this helps! Let me know if you have any further questions.

@@ -1,0 +1,48 @@
+To solve this problem, we can use Kadane's algorithm to find the maximum subarray sum. However, since the array can be repeated k times, we need to consider a few cases:
+
+1. If the sum of all elements in the array is negative, it means that repeating the array k times will only make the sum smaller. In this case, we return 0 as the maximum subarray sum.
+2. If k is 1, we can simply apply Kadane's algorithm to find the maximum subarray sum in the original array.
+3. If k is greater than 1, we need to consider two cases:
+   a. If the maximum subarray sum in the original array is positive, it means that repeating the array will only increase the sum. In this case, we calculate the sum of the array and multiply it by k.
+   b. If the maximum subarray sum in the original array is negative, it means that repeating the array will decrease the sum. In this case, we concatenate two copies of the array and apply Kadane's algorithm to find the maximum subarray sum in the concatenated array.
+
+Here's the implementation of the `kConcatenationMaxSum` function:
+
+```python
+class Solution:
+    def kConcatenationMaxSum(self, arr: List[int], k: int) -> int:
+        mod = 10**9 + 7
+
+        # Calculate the sum of the array
+        array_sum = sum(arr)
+
+        # Case 1: Sum of all elements is negative
+        if array_sum < 0:
+            return 0
+
+        # Case 2: k is 1
+        if k == 1:
+            return self.maxSubarraySum(arr) % mod
+
+        # Case 3: k is greater than 1
+        max_subarray_sum = self.maxSubarraySum(arr + arr) % mod
+
+        # Case 3a: Maximum subarray sum in the original array is positive
+        if array_sum > 0:
+            return (max_subarray_sum + (k - 2) * array_sum) % mod
+
+        # Case 3b: Maximum subarray sum in the original array is negative
+        return max_subarray_sum
+
+    def maxSubarraySum(self, arr: List[int]) -> int:
+        max_sum = float('-inf')
+        current_sum = 0
+
+        for num in arr:
+            current_sum = max(num, current_sum + num)
+            max_sum = max(max_sum, current_sum)
+
+        return max_sum
+```
+
+Now, you can create an instance of the `Solution` class and call the `kConcatenationMaxSum` function with the given inputs to obtain the maximum subarray sum modulo 10^9 + 7.

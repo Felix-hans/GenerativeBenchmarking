@@ -1,0 +1,64 @@
+To check if a string `s` is a subsequence of string `t`, we can use a two-pointer approach. Here's the implementation of the `isSubsequence` function in Python:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        if len(s) == 0:
+            return True
+
+        i = 0  # Pointer for string s
+        j = 0  # Pointer for string t
+
+        while j < len(t):
+            if s[i] == t[j]:
+                i += 1
+                if i == len(s):
+                    return True
+            j += 1
+
+        return False
+```
+
+This implementation iterates over the characters of `t` and checks if each character matches the corresponding character in `s`. If a match is found, the pointer `i` for `s` is incremented. If all characters of `s` are found in order, it returns `True`, indicating that `s` is a subsequence of `t`. If we reach the end of `t` without finding all characters of `s`, it returns `False`.
+
+To address the follow-up scenario where we have multiple strings `s1, s2, ..., sk` to check against `t`, we can optimize the solution by precomputing an index mapping for the characters in `t`. This index mapping will allow us to quickly find the next occurrence of a character in `t` when processing subsequent strings.
+
+Here's an updated version of the code to handle the follow-up scenario efficiently:
+
+```python
+class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        # Precompute index mapping for characters in t
+        index_mapping = {}
+        for i, char in enumerate(t):
+            if char not in index_mapping:
+                index_mapping[char] = []
+            index_mapping[char].append(i)
+
+        j = 0  # Pointer for string t
+
+        for char in s:
+            if char not in index_mapping:
+                return False
+
+            indices = index_mapping[char]
+            # Binary search for the smallest index greater than or equal to j
+            left, right = 0, len(indices) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if indices[mid] < j:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+
+            if left == len(indices):
+                return False
+
+            j = indices[left] + 1
+
+        return True
+```
+
+In this updated version, we first precompute the index mapping for all characters in `t`. Then, for each character in `s`, we use binary search to find the smallest index in `t` that is greater than or equal to the current pointer `j`. If such an index is found, we update `j` to the next index and continue to the next character in `s`. If any character in `s` is not found or the indices are not in the correct order, it returns `False`. Otherwise, if all characters in `s` are found in order, it returns `True`.
+
+This optimized approach reduces the time complexity when processing subsequent strings, making it more efficient for large values of `k`.

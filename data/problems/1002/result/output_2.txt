@@ -1,0 +1,47 @@
+You can solve the problem by iterating through each character in the first word and checking if it appears in all other words. If a character is present in all words, you add it to the result list. Here's an implementation of the `commonChars` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        result = []
+        
+        # Create a list of character frequencies for the first word
+        char_count = [0] * 26  # Assuming only lowercase English letters
+        
+        for char in words[0]:
+            char_count[ord(char) - ord('a')] += 1
+        
+        # Iterate through the other words and update the character frequencies
+        for word in words[1:]:
+            curr_count = [0] * 26
+            
+            for char in word:
+                curr_count[ord(char) - ord('a')] += 1
+            
+            # Update the character frequencies to get the common characters
+            for i in range(26):
+                char_count[i] = min(char_count[i], curr_count[i])
+        
+        # Add the common characters to the result list
+        for i in range(26):
+            for _ in range(char_count[i]):
+                result.append(chr(i + ord('a')))
+        
+        return result
+```
+
+Here's how you can use the `Solution` class to solve the examples you provided:
+
+```python
+solution = Solution()
+
+words1 = ["bella", "label", "roller"]
+print(solution.commonChars(words1))  # Output: ["e", "l", "l"]
+
+words2 = ["cool", "lock", "cook"]
+print(solution.commonChars(words2))  # Output: ["c", "o"]
+```
+
+The solution uses an array `char_count` to keep track of the frequencies of characters in the first word. Then, it iterates through the other words, updates the frequencies in `char_count`, and finds the minimum count for each character. Finally, it constructs the result list based on the minimum counts.

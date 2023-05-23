@@ -1,0 +1,23 @@
+Here's the implementation of the `twoSum` function in Python:
+
+```python
+class Solution:
+    def twoSum(self, nums, target):
+        # Create a dictionary to store the complement of each number and its index
+        complement_dict = {}
+        
+        # Iterate through the input list
+        for i, num in enumerate(nums):
+            # Check if the complement of the current number exists in the dictionary
+            if num in complement_dict:
+                # Return the indices of the current number and its complement
+                return [complement_dict[num], i]
+            
+            # Store the complement of the current number and its index in the dictionary
+            complement_dict[target - num] = i
+        
+        # If no solution is found, return an empty list
+        return []
+```
+
+This solution has a time complexity of O(n) since we iterate through the list once, and a space complexity of O(n) to store the complement dictionary. The dictionary allows us to check for the complement of each number in constant time, resulting in an efficient solution.

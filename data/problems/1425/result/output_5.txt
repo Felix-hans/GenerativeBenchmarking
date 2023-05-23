@@ -1,0 +1,46 @@
+To solve this problem, we can use dynamic programming. We'll define an array dp where dp[i] represents the maximum sum of a non-empty subsequence ending at index i. 
+
+For each index i, we'll iterate from max(0, i-k) to i-1 to find the maximum sum ending at index i. We'll take the maximum value among these sums and add nums[i] to it to update dp[i]. 
+
+Finally, we'll return the maximum value in the dp array, which will represent the maximum sum of a non-empty subsequence satisfying the given condition.
+
+Here's the implementation of the `constrainedSubsetSum` function:
+
+```python
+from typing import List
+
+class Solution:
+    def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        dp = [0] * n
+        dp[0] = nums[0]
+        max_sum = nums[0]
+
+        for i in range(1, n):
+            # Find the maximum sum ending at index i within the window of size k
+            max_prev_sum = max(dp[max(0, i - k):i])
+            dp[i] = max(max_prev_sum, 0) + nums[i]  # Take the maximum sum and add nums[i]
+            max_sum = max(max_sum, dp[i])  # Update the maximum sum if necessary
+
+        return max_sum
+```
+
+Now, we can create an instance of the `Solution` class and test it with the provided examples:
+
+```python
+solution = Solution()
+
+nums = [10, 2, -10, 5, 20]
+k = 2
+print(solution.constrainedSubsetSum(nums, k))  # Output: 37
+
+nums = [-1, -2, -3]
+k = 1
+print(solution.constrainedSubsetSum(nums, k))  # Output: -1
+
+nums = [10, -2, -10, -5, 20]
+k = 2
+print(solution.constrainedSubsetSum(nums, k))  # Output: 23
+```
+
+The output matches the expected results for the given examples.

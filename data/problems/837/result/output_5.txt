@@ -1,0 +1,44 @@
+To solve this problem, we can use dynamic programming. Let's define dp[i] as the probability of Alice having i or fewer points. We will start from i = 0 and go up to n.
+
+At each point i, Alice can draw a number from 1 to maxPts. So, for each valid j (j = 1 to maxPts), Alice can draw j points. If i + j is less than or equal to n, then Alice can reach i + j points with probability dp[i]. We can add this probability to dp[i+j].
+
+We will also keep track of the sum of probabilities for the last k values of dp, which we will call the windowSum. This will help us calculate the probability of Alice stopping at or below k points.
+
+After calculating dp, the probability of Alice having n or fewer points is the sum of dp[i] for i ranging from 0 to n, excluding the probabilities of having more than k points (i > k).
+
+Here's the implementation of the `new21Game` method:
+
+```python
+class Solution:
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+        if k == 0 or n >= k + maxPts:
+            return 1.0
+        
+        dp = [0.0] * (n + 1)
+        dp[0] = 1.0
+        windowSum = 1.0
+        probability = 0.0
+        
+        for i in range(1, n + 1):
+            dp[i] = windowSum / maxPts
+            if i < k:
+                windowSum += dp[i]
+            else:
+                probability += dp[i]
+            
+            if i - maxPts >= 0:
+                windowSum -= dp[i - maxPts]
+        
+        return probability
+```
+
+Now, let's test the solution with the provided examples:
+
+```python
+solution = Solution()
+print(solution.new21Game(10, 1, 10))  # Output: 1.0
+print(solution.new21Game(6, 1, 10))   # Output: 0.6
+print(solution.new21Game(21, 17, 10)) # Output: 0.73278
+```
+
+The solution should produce the expected outputs for the given examples.

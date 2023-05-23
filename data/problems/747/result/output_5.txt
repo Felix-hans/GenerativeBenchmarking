@@ -1,0 +1,35 @@
+Here's the implementation of the `dominantIndex` function in Python to solve the given task:
+
+```python
+class Solution:
+    def dominantIndex(self, nums):
+        # Find the maximum element and its index
+        max_val = max(nums)
+        max_index = nums.index(max_val)
+        
+        # Check if the largest element is at least twice as much as every other number
+        for num in nums:
+            if num != max_val and max_val < 2 * num:
+                return -1
+        
+        return max_index
+```
+
+You can use this solution by creating an instance of the `Solution` class and calling the `dominantIndex` method, passing the `nums` list as the argument. It will return the index of the largest element if it is at least twice as much as every other number, or -1 otherwise.
+
+Example usage:
+```python
+solution = Solution()
+nums = [3, 6, 1, 0]
+result = solution.dominantIndex(nums)
+print(result)  # Output: 1
+```
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 4]
+result = solution.dominantIndex(nums)
+print(result)  # Output: -1
+```
+
+Note: The code assumes that the input `nums` is a valid list of integers, and the largest element is unique.

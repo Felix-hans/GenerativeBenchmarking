@@ -1,0 +1,43 @@
+To solve this problem, we can use dynamic programming to calculate the minimum cost to reach each step. We'll create an array, `dp`, where `dp[i]` represents the minimum cost to reach step `i`.
+
+We can calculate the minimum cost to reach step `i` by taking the minimum of the cost to reach step `i-1` and the cost to reach step `i-2`, and adding the cost of the current step. Since we can start from either step 0 or step 1, we'll initialize `dp[0]` and `dp[1]` to be the costs of the respective starting steps.
+
+Here's the implementation of the `minCostClimbingStairs` function:
+
+```python
+from typing import List
+
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        dp = [0] * n
+
+        # Initialize the first two steps
+        dp[0] = cost[0]
+        dp[1] = cost[1]
+
+        # Calculate the minimum cost for each step
+        for i in range(2, n):
+            dp[i] = min(dp[i-1], dp[i-2]) + cost[i]
+
+        # The minimum cost to reach the top is the minimum of the last two steps
+        return min(dp[n-1], dp[n-2])
+```
+
+Now, you can create an instance of the `Solution` class and call the `minCostClimbingStairs` function with the input array to get the minimum cost to reach the top floor. For example:
+
+```python
+cost = [10, 15, 20]
+solution = Solution()
+minimum_cost = solution.minCostClimbingStairs(cost)
+print(minimum_cost)  # Output: 15
+```
+
+```python
+cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+solution = Solution()
+minimum_cost = solution.minCostClimbingStairs(cost)
+print(minimum_cost)  # Output: 6
+```
+
+The time complexity of this solution is O(n), where n is the length of the input array `cost`.

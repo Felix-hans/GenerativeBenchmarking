@@ -1,0 +1,39 @@
+To solve the task, we can use dynamic programming to calculate the maximum dot product between subsequences of `nums1` and `nums2` with the same length.
+
+Here's the implementation of the `maxDotProduct` function in Python:
+
+```python
+class Solution:
+    def maxDotProduct(self, nums1: List[int], nums2: List[int]) -> int:
+        m, n = len(nums1), len(nums2)
+        dp = [[float('-inf')] * (n + 1) for _ in range(m + 1)]
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                dp[i][j] = max(
+                    nums1[i - 1] * nums2[j - 1],  # Include current elements
+                    dp[i - 1][j - 1] + nums1[i - 1] * nums2[j - 1],  # Extend previous subsequences
+                    dp[i - 1][j],  # Exclude current element from nums2
+                    dp[i][j - 1]  # Exclude current element from nums1
+                )
+                dp[i][j] = max(dp[i][j], dp[i - 1][j - 1])  # Check if previous subsequence is the maximum
+
+        return dp[m][n]
+```
+
+The function `maxDotProduct` takes `nums1` and `nums2` as input and returns the maximum dot product between subsequences.
+
+We initialize a 2D dynamic programming array `dp` with dimensions `(m+1) × (n+1)`, where `m` and `n` are the lengths of `nums1` and `nums2` respectively. The extra row and column are used for handling the case of empty subsequences.
+
+We then iterate over `i` and `j` from 1 to `m` and `n` respectively. For each combination of `i` and `j`, we calculate the maximum dot product by considering four possibilities:
+
+1. Include the current elements from both arrays: `nums1[i-1] * nums2[j-1]`
+2. Extend the previous subsequences by including the current elements: `dp[i-1][j-1] + nums1[i-1] * nums2[j-1]`
+3. Exclude the current element from `nums2` and consider the previous subsequence from `nums1`: `dp[i-1][j]`
+4. Exclude the current element from `nums1` and consider the previous subsequence from `nums2`: `dp[i][j-1]`
+
+We update `dp[i][j]` with the maximum value among these possibilities. Additionally, we compare `dp[i][j]` with `dp[i-1][j-1]` to check if the previous subsequence is the maximum dot product without extending it.
+
+Finally, we return `dp[m][n]`, which represents the maximum dot product between subsequences of `nums1` and `nums2` with the same length.
+
+Please note that you need to import the `List` class from the `typing` module to use it as a type hint for the function arguments.

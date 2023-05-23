@@ -1,0 +1,41 @@
+The task requires implementing the `clumsy` function in Python, which takes an integer `n` as input and returns the clumsy factorial of `n`. Here's the Python implementation for the given task:
+
+```python
+class Solution:
+    def clumsy(self, n: int) -> int:
+        if n <= 2:
+            return n
+        
+        operations = ['*', '/', '+', '-']
+        stack = [n]
+        operation_idx = 0
+        
+        for num in range(n-1, 0, -1):
+            operation = operations[operation_idx % 4]
+            
+            if operation == '*':
+                stack[-1] *= num
+            elif operation == '/':
+                stack[-1] = int(stack[-1] / num)  # Floor division
+            elif operation == '+':
+                stack.append(num)
+            else:  # '-'
+                stack.append(-num)
+            
+            operation_idx += 1
+        
+        return sum(stack)
+```
+
+You can create an instance of the `Solution` class and call the `clumsy` method on it to calculate the clumsy factorial for a given value of `n`. Here's an example:
+
+```python
+solution = Solution()
+n = 10
+result = solution.clumsy(n)
+print(result)  # Output: 12
+```
+
+The implementation follows the given requirements by using a stack to keep track of intermediate results and applying the operations in the specified order. It uses a modulo operator to cycle through the operations list and performs the corresponding operation based on the current operation index.
+
+Note: The code assumes Python 3 syntax and uses integer division (`//`) to perform floor division. If you are using Python 2, you can replace `int(stack[-1] / num)` with `stack[-1] // num`.

@@ -1,0 +1,35 @@
+Here's an implementation of the `isRobotBounded` function in Python:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Initial position and direction
+        x, y = 0, 0
+        dx, dy = 0, 1  # North direction
+
+        # Perform the instructions
+        for i in instructions:
+            if i == 'G':
+                x += dx
+                y += dy
+            elif i == 'L':
+                dx, dy = -dy, dx  # Rotate 90 degrees counter-clockwise
+            elif i == 'R':
+                dx, dy = dy, -dx  # Rotate 90 degrees clockwise
+
+        # After one iteration, if the robot is back to the initial position
+        # or if it's not facing north, it will form a circle
+        return (x, y) == (0, 0) or (dx, dy) != (0, 1)
+```
+
+You can create an instance of the `Solution` class and call the `isRobotBounded` method with the `instructions` string to check if the robot will stay within a circle. The method returns `True` if the robot forms a circle, and `False` otherwise.
+
+Example usage:
+```python
+solution = Solution()
+print(solution.isRobotBounded("GGLLGG"))  # True
+print(solution.isRobotBounded("GG"))  # False
+print(solution.isRobotBounded("GL"))  # True
+```
+
+Note: The solution works by simulating the robot's movements on an infinite plane. The robot will form a circle if it returns to the initial position and direction after one iteration of the instructions, or if it's not facing north.

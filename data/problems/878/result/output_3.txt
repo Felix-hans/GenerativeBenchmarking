@@ -1,0 +1,44 @@
+To find the nth magical number, we can use the concept of the least common multiple (LCM) between two numbers a and b.
+
+The LCM of two numbers is the smallest positive integer that is divisible by both a and b. In this case, it represents the interval between two consecutive magical numbers.
+
+To find the nth magical number, we can use binary search on the range [1, n * min(a, b)]. We can set the low value as 1 and the high value as n multiplied by the minimum of a and b. Then, we iteratively calculate the mid value as the average of low and high.
+
+For each mid value, we calculate the number of magical numbers within the range [1, mid] using the formula:
+
+count = mid // a + mid // b - mid // lcm(a, b)
+
+If the count is less than n, we update the low value as mid + 1. Otherwise, we update the high value as mid.
+
+Finally, when low becomes greater than high, we return the low value modulo 10^9 + 7 as the nth magical number.
+
+Here's the implementation of the given task in Python:
+
+```python
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        def gcd(x, y):
+            while y:
+                x, y = y, x % y
+            return x
+        
+        def lcm(x, y):
+            return x * y // gcd(x, y)
+        
+        MOD = 10**9 + 7
+        low = 1
+        high = n * min(a, b)
+        
+        while low < high:
+            mid = (low + high) // 2
+            count = mid // a + mid // b - mid // lcm(a, b)
+            
+            if count < n:
+                low = mid + 1
+            else:
+                high = mid
+        
+        return low % MOD
+```
+
+Now you can create an instance of the `Solution` class and call the `nthMagicalNumber` method with the given inputs to get the desired output.

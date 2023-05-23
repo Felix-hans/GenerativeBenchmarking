@@ -1,0 +1,62 @@
+Here's the implementation of the `shortestCommonSupersequence` function in Python:
+
+```python
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        m, n = len(str1), len(str2)
+        
+        # Create a table to store the lengths of the longest common subsequence
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        # Calculate the lengths of the longest common subsequence
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if str1[i - 1] == str2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        
+        # Construct the shortest common supersequence using the lengths of the longest common subsequence
+        superseq = ''
+        i, j = m, n
+        while i > 0 and j > 0:
+            if str1[i - 1] == str2[j - 1]:
+                superseq = str1[i - 1] + superseq
+                i -= 1
+                j -= 1
+            elif dp[i - 1][j] > dp[i][j - 1]:
+                superseq = str1[i - 1] + superseq
+                i -= 1
+            else:
+                superseq = str2[j - 1] + superseq
+                j -= 1
+        
+        # Add remaining characters from str1
+        while i > 0:
+            superseq = str1[i - 1] + superseq
+            i -= 1
+        
+        # Add remaining characters from str2
+        while j > 0:
+            superseq = str2[j - 1] + superseq
+            j -= 1
+        
+        return superseq
+```
+
+You can create an instance of the `Solution` class and call the `shortestCommonSupersequence` method to get the shortest common supersequence for the given input strings. Here's an example usage:
+
+```python
+solution = Solution()
+str1 = "abac"
+str2 = "cab"
+result = solution.shortestCommonSupersequence(str1, str2)
+print(result)
+```
+
+Output:
+```
+cabac
+```
+
+Note that there can be multiple valid shortest common supersequences, and this solution returns one of them.

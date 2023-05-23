@@ -1,0 +1,38 @@
+Here's an implementation of the `containsNearbyAlmostDuplicate` function in Python:
+
+```python
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums, indexDiff, valueDiff):
+        n = len(nums)
+        buckets = {}
+        
+        for i in range(n):
+            # Calculate the bucket index
+            bucket = nums[i] // (valueDiff + 1)
+            
+            # Check if the current bucket or neighboring buckets have a value within the valueDiff range
+            for j in range(bucket - 1, bucket + 2):
+                if j in buckets and abs(nums[i] - buckets[j]) <= valueDiff:
+                    return True
+            
+            # Update the bucket with the current value
+            buckets[bucket] = nums[i]
+            
+            # Remove the outdated bucket if the index difference exceeds indexDiff
+            if i >= indexDiff:
+                outdated_bucket = nums[i - indexDiff] // (valueDiff + 1)
+                del buckets[outdated_bucket]
+        
+        return False
+```
+
+Explanation:
+1. We initialize an empty dictionary `buckets` to store the bucket index as the key and the corresponding value as the value.
+2. We iterate through the input array `nums` using a for loop and perform the following steps:
+   - Calculate the bucket index by dividing the current element by `valueDiff + 1`.
+   - Check if the current bucket or neighboring buckets (within a range of ±1) have a value that satisfies the `valueDiff` condition. If we find a match, we return True.
+   - Update the bucket with the current element's value in the `buckets` dictionary.
+   - If the current index exceeds `indexDiff`, we remove the outdated bucket from the `buckets` dictionary to maintain a sliding window of size `indexDiff`.
+3. If we don't find any matching pairs that satisfy all the conditions, we return False.
+
+You can create an instance of the `Solution` class and call the `containsNearbyAlmostDuplicate` method to test it with different inputs.

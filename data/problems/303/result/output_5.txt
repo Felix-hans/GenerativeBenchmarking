@@ -1,0 +1,27 @@
+Sure! Here's the implementation of the `NumArray` class in Python:
+
+```python
+class NumArray:
+    def __init__(self, nums):
+        self.prefix_sum = [0]
+        for num in nums:
+            self.prefix_sum.append(self.prefix_sum[-1] + num)
+
+    def sumRange(self, left, right):
+        return self.prefix_sum[right + 1] - self.prefix_sum[left]
+```
+
+Explanation:
+- In the `__init__` method, we calculate the prefix sum of the given array `nums`. The prefix sum at index `i` represents the sum of elements from index 0 to index `i-1` in the `nums` array. We initialize `prefix_sum` with `[0]` as the prefix sum at index 0 is always 0.
+- In the `sumRange` method, we calculate the sum of elements between indices `left` and `right` (inclusive) using the prefix sum array. The sum is obtained by subtracting the prefix sum at index `left` from the prefix sum at index `right+1`.
+
+Example usage:
+```python
+nums = [-2, 0, 3, -5, 2, -1]
+obj = NumArray(nums)
+print(obj.sumRange(0, 2))  # Output: 1
+print(obj.sumRange(2, 5))  # Output: -1
+print(obj.sumRange(0, 5))  # Output: -3
+```
+
+Hope this helps! Let me know if you have any more questions.

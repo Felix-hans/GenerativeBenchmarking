@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Wrong Answer\n  \xe2\x9c\x98 27/74 cases passed (N/A)\n  \xe2\x9c\x98 Testcase: "0.(52)"\n"0.5(25)"\n  \xe2\x9c\x98 Answer: false\n  \xe2\x9c\x98 Expected Answer: true\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:93150) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

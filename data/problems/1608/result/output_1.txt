@@ -1,0 +1,23 @@
+Here's the implementation of the `specialArray` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        nums.sort()  # Sort the array in ascending order
+        n = len(nums)
+        
+        for i in range(n):
+            if nums[i] >= n - i:
+                if i == 0 or nums[i-1] < n - i:  # Check if the condition is satisfied
+                    return n - i
+        
+        return -1  # Return -1 if no special number is found
+```
+
+The function first sorts the given array `nums` in ascending order. Then it iterates over the sorted array and checks if the current number is greater than or equal to the number of remaining elements in the array. If it satisfies this condition, it checks if the previous number is strictly less than the number of remaining elements to ensure uniqueness. If both conditions are met, it returns the special number `n - i`, where `n` is the length of the array and `i` is the current index.
+
+If no special number is found during the iteration, it returns -1 to indicate that the array is not special.
+
+You can create an instance of the `Solution` class and call the `specialArray` function with your input array to test it.

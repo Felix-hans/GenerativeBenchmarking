@@ -1,0 +1,61 @@
+Here's the implementation of the given task in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Define directions for neighboring cells
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        
+        # Helper function to perform DFS search
+        def dfs(row, col, word, board):
+            # Check if word is found
+            if not word:
+                return True
+            
+            # Check if coordinates are out of bounds or letter doesn't match
+            if row < 0 or col < 0 or row >= len(board) or col >= len(board[0]) or board[row][col] != word[0]:
+                return False
+            
+            # Temporarily mark current cell as visited
+            temp = board[row][col]
+            board[row][col] = '#'
+            
+            # Recursively search in all four directions
+            for direction in directions:
+                newRow, newCol = row + direction[0], col + direction[1]
+                if dfs(newRow, newCol, word[1:], board):
+                    return True
+            
+            # Restore the cell's value and backtrack
+            board[row][col] = temp
+            return False
+        
+        # Initialize result list
+        result = []
+        
+        # Iterate through each word
+        for word in words:
+            # Iterate through each cell in the board
+            for row in range(len(board)):
+                for col in range(len(board[0])):
+                    if dfs(row, col, word, board):
+                        result.append(word)
+                        break
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `findWords` method with the given board and words to get the desired output. For example:
+
+```python
+board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
+words = ["oath","pea","eat","rain"]
+
+solution = Solution()
+output = solution.findWords(board, words)
+print(output)  # Output: ["eat", "oath"]
+```
+
+Note that this implementation uses a depth-first search (DFS) approach to find words on the board. It checks each word by iterating through each cell and recursively searching for the word in adjacent cells. If a word is found, it is added to the result list.

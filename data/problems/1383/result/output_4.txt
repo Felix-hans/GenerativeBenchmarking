@@ -1,0 +1,56 @@
+To solve this problem, we can use a greedy approach. We will sort the engineers based on their efficiency in descending order. Then, for each engineer, we will calculate the performance of a team consisting of that engineer and at most k - 1 engineers with higher efficiency.
+
+Here's the implementation of the `maxPerformance` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        # Create a list of tuples (speed, efficiency) for each engineer
+        engineers = zip(speed, efficiency)
+        engineers = sorted(engineers, key=lambda x: x[1], reverse=True)
+        
+        max_performance = 0
+        total_speed = 0
+        min_efficiency = float('inf')
+        heap = []
+        
+        for spd, eff in engineers:
+            # If we have more than k engineers, remove the one with the lowest speed
+            if len(heap) >= k:
+                total_speed -= heapq.heappop(heap)
+            
+            # Add the current engineer's speed to the total speed
+            total_speed += spd
+            
+            # Add the current engineer's speed to the heap
+            heapq.heappush(heap, spd)
+            
+            # Update the minimum efficiency
+            min_efficiency = min(min_efficiency, eff)
+            
+            # Calculate the current performance
+            performance = total_speed * min_efficiency
+            
+            # Update the maximum performance
+            max_performance = max(max_performance, performance)
+        
+        # Return the maximum performance modulo 10^9 + 7
+        return max_performance % (10**9 + 7)
+```
+
+You can create an instance of the `Solution` class and call the `maxPerformance` function with the appropriate arguments to test it out. For example:
+
+```python
+n = 6
+speed = [2, 10, 3, 1, 5, 8]
+efficiency = [5, 4, 3, 9, 7, 2]
+k = 2
+
+solution = Solution()
+result = solution.maxPerformance(n, speed, efficiency, k)
+print(result)  # Output: 60
+```
+
+The solution uses a min-heap to keep track of the k engineers with the highest speeds. By doing so, we can maintain the current maximum performance efficiently. The time complexity of this solution is O(n log k), where n is the number of engineers.

@@ -1,0 +1,38 @@
+To solve the given task, we can use a dynamic programming approach. We'll define a variable `count` to keep track of the total number of arithmetic subarrays found so far. Additionally, we'll use a variable `current` to track the number of arithmetic subarrays ending at the current index.
+
+Here's the implementation of the `numberOfArithmeticSlices` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        n = len(nums)
+        count = 0  # Total count of arithmetic subarrays
+        current = 0  # Count of arithmetic subarrays ending at current index
+        
+        for i in range(2, n):
+            if nums[i] - nums[i-1] == nums[i-1] - nums[i-2]:
+                current += 1
+                count += current
+            else:
+                current = 0
+        
+        return count
+```
+
+Let's test the implementation with the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+nums = [1, 2, 3, 4]
+print(solution.numberOfArithmeticSlices(nums))  # Output: 3
+
+# Example 2
+nums = [1]
+print(solution.numberOfArithmeticSlices(nums))  # Output: 0
+```
+
+The output matches the expected results for the given examples.

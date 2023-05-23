@@ -1,0 +1,40 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum profit at each day and at each possible number of transactions. Let's go through the code implementation:
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        if n < 2:
+            return 0
+        
+        # Initialize variables to track the maximum profit
+        buy1 = buy2 = -float('inf')  # Initial buy prices
+        sell1 = sell2 = 0  # Initial sell prices
+        
+        for price in prices:
+            # First transaction: buy at the lowest price
+            buy1 = max(buy1, -price)
+            
+            # First transaction: sell at the maximum profit
+            sell1 = max(sell1, buy1 + price)
+            
+            # Second transaction: buy after the first sell
+            buy2 = max(buy2, sell1 - price)
+            
+            # Second transaction: sell at the maximum profit
+            sell2 = max(sell2, buy2 + price)
+        
+        return sell2
+```
+
+Let's break down the code:
+
+- We initialize `buy1` and `buy2` as negative infinity to represent that we haven't bought any stocks yet. `sell1` and `sell2` are initialized as zero, representing no profit.
+- We iterate through each price in the `prices` array.
+- For the first transaction, we update `buy1` to the maximum value between the current `buy1` and the negative price (to represent buying at the lowest price).
+- For the first transaction, we update `sell1` to the maximum value between the current `sell1` and the sum of `buy1` and the current price (to represent selling at the maximum profit).
+- For the second transaction, we update `buy2` to the maximum value between the current `buy2` and the difference between `sell1` and the current price (to represent buying after the first sell).
+- For the second transaction, we update `sell2` to the maximum value between the current `sell2` and the sum of `buy2` and the current price (to represent selling at the maximum profit).
+- Finally, we return the value of `sell2`, which represents the maximum profit achievable with at most two transactions.
+
+This solution has a time complexity of O(n), where n is the length of the `prices` array, as we iterate through the array once.

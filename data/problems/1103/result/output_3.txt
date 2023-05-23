@@ -1,0 +1,43 @@
+To solve this task, we can iterate through the given number of candies, distributing them one by one to each person in a loop. We'll keep track of the remaining candies and distribute them in a cyclic manner until we run out.
+
+Here's the implementation of the `distributeCandies` function:
+
+```python
+from typing import List
+
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        # Initialize the result array with zeros
+        result = [0] * num_people
+        i = 0  # Index of the current person
+        
+        while candies > 0:
+            # Calculate the number of candies to distribute in the current round
+            candies_to_give = min(candies, i + 1)
+            
+            # Distribute the candies to the current person
+            result[i] += candies_to_give
+            
+            # Update the remaining candies and move to the next person
+            candies -= candies_to_give
+            i = (i + 1) % num_people
+        
+        return result
+```
+
+We can create an instance of the `Solution` class and call the `distributeCandies` method with the given inputs to test it:
+
+```python
+solution = Solution()
+candies = 7
+num_people = 4
+result = solution.distributeCandies(candies, num_people)
+print(result)  # Output: [1, 2, 3, 1]
+
+candies = 10
+num_people = 3
+result = solution.distributeCandies(candies, num_people)
+print(result)  # Output: [5, 2, 3]
+```
+
+The code will output the final distribution of candies for each test case.

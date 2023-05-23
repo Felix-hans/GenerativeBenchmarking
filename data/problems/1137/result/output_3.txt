@@ -1,0 +1,32 @@
+To solve the task of finding the Tribonacci sequence value for a given input `n` in Python, you can use a simple iterative approach. Here's the implementation of the `tribonacci` function:
+
+```python
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1 or n == 2:
+            return 1
+
+        a, b, c = 0, 1, 1
+        for _ in range(3, n + 1):
+            a, b, c = b, c, a + b + c
+
+        return c
+```
+
+The function starts by handling the base cases. If `n` is 0, it directly returns 0. If `n` is 1 or 2, it returns 1 since those are the initial values in the Tribonacci sequence.
+
+For `n` greater than 2, the function uses three variables (`a`, `b`, and `c`) to store the three most recent values in the sequence. It then iteratively calculates the next value by updating these variables based on the Tribonacci recurrence relation: `Tn+3 = Tn + Tn+1 + Tn+2`.
+
+After the loop completes, the function returns the value of `c`, which corresponds to the `n`th term in the Tribonacci sequence.
+
+Here's an example usage of the `tribonacci` function:
+
+```python
+solution = Solution()
+print(solution.tribonacci(4))  # Output: 4
+print(solution.tribonacci(25))  # Output: 1389537
+```
+
+The function should correctly compute the Tribonacci sequence value for the given input `n`.

@@ -1,0 +1,85 @@
+To implement the Skiplist class in Python, we can create several helper classes. Here's the implementation:
+
+```python
+import random
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.right = None
+        self.down = None
+
+class Skiplist:
+    def __init__(self):
+        self.head = Node(float('-inf'))
+        self.tail = Node(float('inf'))
+        self.head.right = self.tail
+        self.levels = 1
+    
+    def search(self, target: int) -> bool:
+        node = self.head
+        while node:
+            while node.right.val < target:
+                node = node.right
+            if node.right.val == target:
+                return True
+            node = node.down
+        return False
+    
+    def add(self, num: int) -> None:
+        nodes = []
+        node = self.head
+        while node:
+            while node.right.val < num:
+                node = node.right
+            nodes.append(node)
+            node = node.down
+        
+        insert_above = True
+        down = None
+        while insert_above and nodes:
+            node = nodes.pop()
+            new_node = Node(num)
+            new_node.down = down
+            down = new_node
+            new_node.right = node.right
+            node.right = new_node
+            insert_above = random.random() < 0.5
+            if insert_above:
+                new_up_node = Node(num)
+                new_up_node.down = down
+                down = new_up_node
+                new_up_node.right = node.right
+                node.right = new_up_node
+                node = new_up_node
+                if len(nodes) == 0:
+                    self.head = Node(float('-inf'))
+                    self.head.right = new_up_node
+                    self.head.down = self.tail
+                    self.tail = Node(float('inf'))
+                    self.tail.down = self.head
+                    self.tail.right = new_up_node
+                    self.levels += 1
+    
+    def erase(self, num: int) -> bool:
+        node = self.head
+        found = False
+        while node:
+            while node.right.val < num:
+                node = node.right
+            if node.right.val == num:
+                found = True
+                node.right = node.right.right
+            node = node.down
+        return found
+```
+
+This implementation maintains a skip list where each node has a `right` pointer to the next node in the same level and a `down` pointer to the corresponding node in the level below. The levels are created using a random coin flip, which determines whether a new level is added or not.
+
+The `search` method traverses the skip list starting from the top level and moves to the right until finding the target or reaching the end of the level. If the target is found, it returns `True`; otherwise, it moves down to the next level and continues the search. If the target is not found at the bottom level, it returns `False`.
+
+The `add` method first searches for the position to insert the new number by traversing the skip list from top to bottom. It keeps track of the nodes visited at each level. Then it uses a random coin flip to determine if a new level should be added for the new number. For each level visited during the search, it inserts the new number between the current node and its right neighbor. If a new level is added, it also creates new head and tail nodes for that level.
+
+The `erase` method searches for the target number in the skip list and removes it by updating the `right` pointer of the previous node to bypass the node containing the target number.
+
+Note that this implementation uses a random coin flip with a 50% probability to determine the levels. This

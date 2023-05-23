@@ -1,0 +1,46 @@
+To find the least number of units of time required to finish all the tasks, we can follow the following steps:
+
+1. Count the frequency of each task in the given list.
+2. Sort the frequency counts in descending order.
+3. Find the maximum frequency count, let's call it max_freq.
+4. Calculate the number of idle slots: (max_freq - 1) * n.
+5. Iterate through the frequency counts. For each count, reduce the idle slots by the minimum of count and max_freq - 1.
+6. After iterating through all the counts, if there are still idle slots remaining, add them to the total time.
+7. Return the total time, which is the sum of the number of tasks and any remaining idle slots.
+
+Here's the implementation of the `leastInterval` function:
+
+```python
+from typing import List
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        task_counts = [0] * 26  # Assuming uppercase English letters
+        
+        for task in tasks:
+            task_counts[ord(task) - ord('A')] += 1
+        
+        task_counts.sort(reverse=True)
+        
+        max_freq = task_counts[0]
+        idle_slots = (max_freq - 1) * n
+        
+        for count in task_counts[1:]:
+            idle_slots -= min(count, max_freq - 1)
+        
+        idle_slots = max(0, idle_slots)
+        
+        return len(tasks) + idle_slots
+```
+
+You can create an instance of the `Solution` class and call the `leastInterval` method with the given inputs to get the result. For example:
+
+```python
+solution = Solution()
+tasks = ["A", "A", "A", "B", "B", "B"]
+n = 2
+result = solution.leastInterval(tasks, n)
+print(result)  # Output: 8
+```
+
+The `leastInterval` method takes a list of tasks and the cooldown period `n` as input and returns the least number of units of time required to finish all the tasks.

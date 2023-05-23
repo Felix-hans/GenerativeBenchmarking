@@ -1,0 +1,51 @@
+To solve this task, we can use dynamic programming to precalculate the ancestors for each node in the tree. We can create a 2D array `ancestors` where `ancestors[node][k]` represents the k-th ancestor of the node.
+
+Here's the implementation of the `TreeAncestor` class:
+
+```python
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        # Calculate the maximum possible height of the tree
+        max_height = int(math.log2(n)) + 1
+
+        # Initialize the 2D array to store the ancestors
+        self.ancestors = [[-1] * max_height for _ in range(n)]
+
+        # Populate the first column with direct parents
+        for node in range(n):
+            self.ancestors[node][0] = parent[node]
+
+        # Fill the rest of the array using dynamic programming
+        for k in range(1, max_height):
+            for node in range(n):
+                if self.ancestors[node][k-1] != -1:
+                    self.ancestors[node][k] = self.ancestors[self.ancestors[node][k-1]][k-1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        # Iterate through the bits of k in binary representation
+        while k > 0 and node != -1:
+            # Find the highest set bit in k
+            highest_bit = int(math.log2(k))
+            
+            # Get the ancestor at the highest set bit position
+            node = self.ancestors[node][highest_bit]
+            
+            # Clear the highest bit of k
+            k -= 1 << highest_bit
+
+        return node
+```
+
+We initialize the `ancestors` array in the constructor by populating the first column with direct parents. Then, we fill the rest of the array using dynamic programming. In the `getKthAncestor` method, we iterate through the bits of `k` in its binary representation. At each step, we find the highest set bit in `k`, retrieve the ancestor at that position, and continue with the remaining bits of `k`.
+
+Here's how you can use the `TreeAncestor` class:
+
+```python
+# Example usage
+treeAncestor = TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2])
+print(treeAncestor.getKthAncestor(3, 1))  # Output: 1
+print(treeAncestor.getKthAncestor(5, 2))  # Output: 0
+print(treeAncestor.getKthAncestor(6, 3))  # Output: -1
+```
+
+This will create a `TreeAncestor` object with the given parent array and number of nodes. Then, it calls the `getKthAncestor` method to find the k-th ancestor of the specified node and prints the result.

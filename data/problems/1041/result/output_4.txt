@@ -1,0 +1,50 @@
+You can implement the task in Python by following the given steps:
+
+1. Create a variable `direction` and set it initially to 0. This variable represents the current direction the robot is facing, with 0 indicating north, 1 indicating east, 2 indicating south, and 3 indicating west.
+
+2. Create variables `x` and `y` and set them initially to 0. These variables represent the current coordinates of the robot on the plane.
+
+3. Create a variable `dx` and set it to the list `[0, 1, 0, -1]`. This list represents the change in x-coordinate when the robot moves in each of the four directions.
+
+4. Create a variable `dy` and set it to the list `[1, 0, -1, 0]`. This list represents the change in y-coordinate when the robot moves in each of the four directions.
+
+5. Iterate through each instruction in the `instructions` string.
+
+6. If the instruction is 'G', update the `x` and `y` coordinates by adding `dx[direction]` and `dy[direction]` respectively.
+
+7. If the instruction is 'L', decrement the `direction` by 1 (to turn 90 degrees anti-clockwise). If `direction` becomes -1, set it to 3 (wrapping around to west).
+
+8. If the instruction is 'R', increment the `direction` by 1 (to turn 90 degrees clockwise). If `direction` becomes 4, set it to 0 (wrapping around to north).
+
+9. After iterating through all the instructions, check if the robot is back at the origin (x = 0, y = 0) or if it's facing a direction other than north (direction != 0). If either of these conditions is true, return `True` as the robot will be bounded in a circle. Otherwise, return `False`.
+
+Here's the implementation of the `isRobotBounded` function:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        direction = 0
+        x = 0
+        y = 0
+        dx = [0, 1, 0, -1]
+        dy = [1, 0, -1, 0]
+
+        for instruction in instructions:
+            if instruction == 'G':
+                x += dx[direction]
+                y += dy[direction]
+            elif instruction == 'L':
+                direction = (direction - 1) % 4
+            elif instruction == 'R':
+                direction = (direction + 1) % 4
+
+        return (x == 0 and y == 0) or direction != 0
+```
+
+You can create an instance of the `Solution` class and call the `isRobotBounded` method, passing the instructions as an argument to check if the robot is bounded in a circle. For example:
+
+```python
+solution = Solution()
+instructions = "GGLLGG"
+print(solution.isRobotBounded(instructions))  # Output: True
+```

@@ -1,0 +1,51 @@
+To solve the problem, we can use a dynamic programming approach. We'll initialize a list, `ugly_nums`, with the first super ugly number, which is 1. We'll also initialize a list, `ptrs`, with the indices pointing to the current super ugly number for each prime factor. Initially, all pointers will be set to 0.
+
+We'll iterate `n-1` times, as we already have the first super ugly number. In each iteration, we'll calculate the next super ugly number by multiplying each prime factor with the corresponding current super ugly number and selecting the minimum among them. We'll update the pointers accordingly.
+
+Here's the implementation of the `nthSuperUglyNumber` function:
+
+```python
+from typing import List
+
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        ugly_nums = [1]  # Initialize with the first super ugly number, which is 1
+        ptrs = [0] * len(primes)  # Pointers for each prime factor
+        
+        for _ in range(n - 1):
+            next_ugly_num = float('inf')  # Initialize next ugly number as positive infinity
+            
+            # Find the next super ugly number
+            for i in range(len(primes)):
+                next_num = ugly_nums[ptrs[i]] * primes[i]
+                next_ugly_num = min(next_ugly_num, next_num)
+            
+            # Update the pointers
+            for i in range(len(primes)):
+                if ugly_nums[ptrs[i]] * primes[i] == next_ugly_num:
+                    ptrs[i] += 1
+            
+            ugly_nums.append(next_ugly_num)  # Add the next super ugly number to the list
+        
+        return ugly_nums[-1]  # Return the nth super ugly number
+```
+
+Now, we can create an instance of the `Solution` class and call the `nthSuperUglyNumber` method to test the implementation:
+
+```python
+solution = Solution()
+n = 12
+primes = [2, 7, 13, 19]
+result = solution.nthSuperUglyNumber(n, primes)
+print(result)  # Output: 32
+```
+
+```python
+solution = Solution()
+n = 1
+primes = [2, 3, 5]
+result = solution.nthSuperUglyNumber(n, primes)
+print(result)  # Output: 1
+```
+
+The code will output the expected results for the given examples.

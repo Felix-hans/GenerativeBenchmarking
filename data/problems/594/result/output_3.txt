@@ -1,0 +1,29 @@
+Here's an implementation of the given task in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def findLHS(self, nums):
+        num_counts = Counter(nums)
+        max_length = 0
+
+        for num in num_counts:
+            if num + 1 in num_counts:
+                length = num_counts[num] + num_counts[num + 1]
+                max_length = max(max_length, length)
+
+        return max_length
+```
+
+Explanation:
+1. We use the `Counter` class from the `collections` module to count the occurrences of each number in the `nums` list.
+2. We initialize `max_length` to 0, which will store the length of the longest harmonious subsequence.
+3. We iterate through each unique number in `num_counts`.
+4. For each number `num`, we check if `num + 1` is present in `num_counts`.
+5. If `num + 1` is present, it means we have a harmonious pair.
+6. We calculate the length of the harmonious subsequence by adding the counts of `num` and `num + 1`.
+7. We update `max_length` if the current length is greater than the previous maximum.
+8. Finally, we return `max_length`, which represents the length of the longest harmonious subsequence in `nums`.
+
+You can create an instance of the `Solution` class and call the `findLHS` method with the input array `nums` to get the desired result.

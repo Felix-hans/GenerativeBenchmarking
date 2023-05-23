@@ -1,0 +1,28 @@
+To construct a string representation of a binary tree using the preorder traversal method, we can utilize recursion. Here's one possible implementation in Python:
+
+```python
+class Solution:
+    def tree2str(self, root):
+        if not root:
+            return ""
+
+        left = self.tree2str(root.left)
+        right = self.tree2str(root.right)
+
+        if left and right:
+            return f"{root.val}({left})({right})"
+        elif left:
+            return f"{root.val}({left})"
+        elif right:
+            return f"{root.val}()({right})"
+        else:
+            return str(root.val)
+```
+
+The `tree2str` method takes the root of the binary tree as input and returns the constructed string representation. The base case is when the root is `None`, in which case an empty string is returned.
+
+In the recursive cases, we call `tree2str` recursively on the left and right children of the current node. We store the results in the `left` and `right` variables, respectively.
+
+Depending on whether the left and right children exist, we construct the string representation accordingly. If both children exist, we include the value of the current node followed by the left child in parentheses, followed by the right child in parentheses. If only the left child exists, we include the value of the current node followed by the left child in parentheses. If only the right child exists, we include the value of the current node followed by an empty pair of parentheses, followed by the right child in parentheses. Finally, if neither child exists, we simply return the string representation of the current node's value.
+
+This implementation ensures that unnecessary empty parenthesis pairs are omitted, as required by the problem statement.

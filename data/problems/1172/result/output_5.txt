@@ -1,0 +1,89 @@
+To implement the DinnerPlates class, we can use a list of stacks and keep track of the available stack indices for pushing values. Here's the implementation in Python:
+
+```python
+class DinnerPlates:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.stacks = []
+        self.available_stacks = []
+
+    def push(self, val: int) -> None:
+        if not self.available_stacks:
+            # Create a new stack if no available stack
+            new_stack = []
+            self.stacks.append(new_stack)
+            self.available_stacks.append(len(self.stacks) - 1)
+        stack_index = self.available_stacks[0]
+        stack = self.stacks[stack_index]
+        stack.append(val)
+        if len(stack) == self.capacity:
+            # Remove the stack from available stacks if it reaches capacity
+            self.available_stacks.pop(0)
+
+    def pop(self) -> int:
+        while self.stacks and not self.stacks[-1]:
+            # Remove empty stacks from the right
+            self.stacks.pop()
+        if not self.stacks:
+            return -1
+        stack = self.stacks[-1]
+        val = stack.pop()
+        if len(stack) < self.capacity:
+            # Add the stack to available stacks if it has space
+            self.available_stacks.insert(0, len(self.stacks) - 1)
+        return val
+
+    def popAtStack(self, index: int) -> int:
+        if index >= len(self.stacks) or not self.stacks[index]:
+            return -1
+        stack = self.stacks[index]
+        val = stack.pop()
+        if len(stack) < self.capacity:
+            # Add the stack to available stacks if it has space
+            self.available_stacks.insert(0, index)
+        return val
+```
+
+Here's an example of how you can use the DinnerPlates class based on the given test case:
+
+```python
+# Initialize the DinnerPlates object
+D = DinnerPlates(2)
+
+# Push values
+D.push(1)
+D.push(2)
+D.push(3)
+D.push(4)
+D.push(5)
+
+# Pop at stack index 0
+print(D.popAtStack(0))  # Output: 2
+
+# Push more values
+D.push(20)
+D.push(21)
+
+# Pop at stack index 0
+print(D.popAtStack(0))  # Output: 20
+
+# Pop at stack index 2
+print(D.popAtStack(2))  # Output: 21
+
+# Pop from the rightmost non-empty stack
+print(D.pop())  # Output: 5
+
+# Pop from the rightmost non-empty stack
+print(D.pop())  # Output: 4
+
+# Pop from the rightmost non-empty stack
+print(D.pop())  # Output: 3
+
+# Pop from the rightmost non-empty stack
+print(D.pop())  # Output: 1
+
+# Pop from an empty stack
+print(D.pop())  # Output: -1
+```
+
+The output should match the expected output provided in the task description.

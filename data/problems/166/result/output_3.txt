@@ -1,0 +1,51 @@
+Sure! Here's the implementation of the `fractionToDecimal` function in Python:
+
+```python
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        # Check if the result is negative
+        is_negative = (numerator < 0) != (denominator < 0)
+        numerator, denominator = abs(numerator), abs(denominator)
+        
+        # Calculate the integer part of the fraction
+        integer_part = numerator // denominator
+        remainder = numerator % denominator
+        
+        # If the remainder is zero, the result is an integer
+        if remainder == 0:
+            return str(integer_part) if not is_negative else "-" + str(integer_part)
+        
+        # Calculate the fractional part
+        fractional_part = []
+        remainder_map = {}
+        repeating_start = -1
+        
+        while remainder != 0:
+            if remainder in remainder_map:
+                repeating_start = remainder_map[remainder]
+                break
+            
+            remainder_map[remainder] = len(fractional_part)
+            remainder *= 10
+            fractional_part.append(str(remainder // denominator))
+            remainder = remainder % denominator
+        
+        result = str(integer_part) + "." + "".join(fractional_part)
+        
+        # If there is a repeating part, enclose it in parentheses
+        if repeating_start != -1:
+            result = result[:repeating_start + len(str(integer_part)) + 1] + "(" + result[repeating_start + len(str(integer_part)) + 1:] + ")"
+        
+        return result if not is_negative else "-" + result
+```
+
+You can create an instance of the `Solution` class and call the `fractionToDecimal` method with the numerator and denominator as arguments to get the desired output. Here's an example:
+
+```python
+solution = Solution()
+print(solution.fractionToDecimal(1, 2))  # Output: "0.5"
+print(solution.fractionToDecimal(2, 1))  # Output: "2"
+print(solution.fractionToDecimal(4, 333))  # Output: "0.(012)"
+```
+
+Please note that this is one possible implementation, and there may be other valid approaches to solve the problem as well.

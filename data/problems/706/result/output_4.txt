@@ -1,0 +1,69 @@
+Certainly! Here's the implementation of the `MyHashMap` class in Python:
+
+```python
+class ListNode:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.next = None
+
+
+class MyHashMap:
+    def __init__(self):
+        self.size = 1000
+        self.buckets = [None] * self.size
+
+    def _hash(self, key):
+        return key % self.size
+
+    def put(self, key, value):
+        hash_value = self._hash(key)
+        if self.buckets[hash_value] is None:
+            self.buckets[hash_value] = ListNode(key, value)
+        else:
+            curr = self.buckets[hash_value]
+            while True:
+                if curr.key == key:
+                    curr.value = value
+                    return
+                if curr.next is None:
+                    break
+                curr = curr.next
+            curr.next = ListNode(key, value)
+
+    def get(self, key):
+        hash_value = self._hash(key)
+        curr = self.buckets[hash_value]
+        while curr:
+            if curr.key == key:
+                return curr.value
+            curr = curr.next
+        return -1
+
+    def remove(self, key):
+        hash_value = self._hash(key)
+        curr = prev = self.buckets[hash_value]
+        if not curr:
+            return
+        if curr.key == key:
+            self.buckets[hash_value] = curr.next
+        else:
+            curr = curr.next
+            while curr:
+                if curr.key == key:
+                    prev.next = curr.next
+                    return
+                curr, prev = curr.next, prev.next
+```
+
+This implementation uses separate chaining to handle collisions. Each index in the `buckets` list stores a linked list of nodes to handle multiple values with the same hash value.
+
+The `_hash` method calculates the hash value of the key by using the modulo operation with the size of the hash map.
+
+The `put` method inserts a key-value pair into the hash map. If the bucket at the calculated hash value is empty, a new node is created and assigned to that bucket. If the bucket is not empty, the linked list is traversed to find the key. If the key is found, the corresponding value is updated. If the key is not found, a new node is added to the end of the linked list.
+
+The `get` method retrieves the value associated with a given key. It calculates the hash value and traverses the linked list at that index to find the key. If the key is found, the corresponding value is returned. If the key is not found, -1 is returned.
+
+The `remove` method removes a key-value pair from the hash map. It calculates the hash value and traverses the linked list at that index to find the key. If the key is found, the node is removed by updating the `next` pointers. If the key is not found, nothing is done.
+
+Please note that this implementation is a simplified version and does not include optimizations such as resizing the hash map.

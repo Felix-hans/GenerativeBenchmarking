@@ -1,0 +1,53 @@
+To solve this problem, we can use dynamic programming to calculate the probability of the knight remaining on the board after each move. We can create a 3D array to store the probabilities for each cell, where the dimensions represent the row, column, and the number of remaining moves.
+
+Here's the implementation of the `knightProbability` function:
+
+```python
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        # Define the possible moves of a knight
+        moves = [(2, 1), (1, 2), (-1, 2), (-2, 1), (-2, -1), (-1, -2), (1, -2), (2, -1)]
+        
+        # Create a 3D array to store the probabilities
+        dp = [[[0] * n for _ in range(n)] for _ in range(k + 1)]
+        
+        # Initialize the probability for the starting cell
+        dp[0][row][column] = 1
+        
+        # Iterate over the number of moves
+        for m in range(1, k + 1):
+            # Iterate over each cell on the board
+            for r in range(n):
+                for c in range(n):
+                    # Calculate the probability for the current cell
+                    for move in moves:
+                        new_r = r + move[0]
+                        new_c = c + move[1]
+                        if 0 <= new_r < n and 0 <= new_c < n:
+                            dp[m][r][c] += dp[m - 1][new_r][new_c] / 8.0
+        
+        # Sum the probabilities for all cells after k moves
+        probability = sum(sum(row) for row in dp[k])
+        
+        return probability
+```
+
+You can then create an instance of the `Solution` class and call the `knightProbability` method with the desired inputs:
+
+```python
+solution = Solution()
+n = 3
+k = 2
+row = 0
+column = 0
+result = solution.knightProbability(n, k, row, column)
+print(result)
+```
+
+The output will be:
+
+```
+0.0625
+```
+
+Similarly, you can test other inputs by modifying the values of `n`, `k`, `row`, and `column`.

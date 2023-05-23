@@ -1,0 +1,62 @@
+To solve this problem, we can use the Graham's scan algorithm, which is a well-known algorithm for finding the convex hull of a set of points. In this case, we want to find the points on the perimeter of the fence, which is equivalent to finding the convex hull of the given points.
+
+Here's the implementation of the `outerTrees` function using the Graham's scan algorithm:
+
+```python
+class Solution:
+    def orientation(self, p: List[int], q: List[int], r: List[int]) -> int:
+        # Calculate the orientation of three points (p, q, r)
+        # Returns 0 if they are collinear, 1 if clockwise, -1 if counterclockwise
+        val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+        if val == 0:
+            return 0  # Collinear
+        elif val > 0:
+            return 1  # Clockwise
+        else:
+            return -1  # Counterclockwise
+    
+    def outerTrees(self, trees: List[List[int]]) -> List[List[int]]:
+        if len(trees) <= 3:
+            return trees  # All points are on the perimeter
+        
+        def compare(p1: List[int], p2: List[int]) -> int:
+            # Custom comparison function for sorting points
+            # Sorts by x-coordinate in ascending order, then by y-coordinate in descending order
+            if p1[0] == p2[0]:
+                return p2[1] - p1[1]
+            return p1[0] - p2[0]
+        
+        # Find the leftmost point as the starting point for the convex hull
+        trees.sort(key=lambda p: (p[0], p[1]))
+        start_point = trees[0]
+        
+        # Sort the remaining points based on their polar angle with respect to the start_point
+        trees.sort(key=lambda p: self.orientation(start_point, p, [start_point[0], start_point[1]-1]))
+        
+        stack = [start_point]  # Initialize a stack to store the convex hull points
+        
+        # Iterate through the sorted points and build the convex hull
+        for i in range(1, len(trees)):
+            while len(stack) >= 2 and self.orientation(stack[-2], stack[-1], trees[i]) < 0:
+                stack.pop()  # Remove the top of the stack if the current point makes a non-left turn
+            stack.append(trees[i])  # Add the current point to the stack
+        
+        # Check for collinear points on the top of the stack
+        top_points = len(stack)
+        for i in range(len(trees)-2, -1, -1):
+            while len(stack) > top_points and self.orientation(stack[-2], stack[-1], trees[i]) == 0:
+                stack.pop()  # Remove collinear points from the top of the stack
+        
+        return stack
+```
+
+Now, you can create an instance of the `Solution` class and call the `outerTrees` function with the given input to obtain the coordinates of trees on the fence perimeter:
+
+```python
+solution = Solution()
+trees = [[1,1],[2,2],[2,0],[2,4],[3,3],[4,2]]
+result = solution.outerTrees(trees)
+print(result)
+```
+
+The output will be `[[1,1],[2,0],[4,2],[3,3],[2,4]]`, which are the coordinates of the trees located on the

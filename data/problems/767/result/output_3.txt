@@ -1,0 +1,41 @@
+To solve the task of rearranging the characters of a string `s` such that no two adjacent characters are the same, we can use a greedy approach.
+
+Here's the Python implementation of the `reorganizeString` function:
+
+```python
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+        # Count the frequency of each character
+        char_freq = {}
+        for char in s:
+            char_freq[char] = char_freq.get(char, 0) + 1
+
+        # Sort the characters by frequency in descending order
+        sorted_chars = sorted(char_freq, key=lambda x: char_freq[x], reverse=True)
+
+        # Check if the most frequent character exceeds half the length of the string
+        if char_freq[sorted_chars[0]] > (len(s) + 1) // 2:
+            return ""
+
+        # Create the rearranged string
+        rearranged = [''] * len(s)
+        idx = 0
+
+        # Assign the most frequent character to even indices
+        for char in sorted_chars:
+            while char_freq[char] > 0 and idx < len(s) and idx % 2 == 0:
+                rearranged[idx] = char
+                char_freq[char] -= 1
+                idx += 1
+
+        # Assign the remaining characters to odd indices
+        for char in sorted_chars:
+            while char_freq[char] > 0 and idx < len(s) and idx % 2 != 0:
+                rearranged[idx] = char
+                char_freq[char] -= 1
+                idx += 1
+
+        return ''.join(rearranged)
+```
+
+You can create an instance of the `Solution` class and call the `reorganizeString` function with the input string to get the desired rearrangement. If it is not possible to rearrange the string as required, an empty string (`""`) will be returned.

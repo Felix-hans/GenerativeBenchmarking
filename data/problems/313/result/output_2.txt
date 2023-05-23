@@ -1,0 +1,47 @@
+To solve this problem, we can use a dynamic programming approach. We'll maintain a list `ugly_nums` to store the super ugly numbers generated so far. Initially, the list will contain the first super ugly number, which is 1. We'll also maintain a list `ptrs` to track the indices for each prime factor in the `ugly_nums` list.
+
+We'll iterate `n-1` times since we already have the first super ugly number. In each iteration, we'll find the next super ugly number by multiplying each prime factor with the current super ugly number at its corresponding index in `ptrs`. We'll select the minimum value from these products and add it to the `ugly_nums` list. We'll update the `ptrs` list to point to the next index for each prime factor that contributes to the minimum value.
+
+Finally, we'll return the last element in the `ugly_nums` list, which is the `n`-th super ugly number.
+
+Here's the implementation of the `nthSuperUglyNumber` function:
+
+```python
+from typing import List
+
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        ugly_nums = [1]  # List to store super ugly numbers
+        ptrs = [0] * len(primes)  # Pointers for each prime factor
+        
+        for _ in range(n-1):
+            next_nums = [ugly_nums[ptrs[i]] * primes[i] for i in range(len(primes))]
+            min_num = min(next_nums)
+            ugly_nums.append(min_num)
+            
+            for i in range(len(primes)):
+                if next_nums[i] == min_num:
+                    ptrs[i] += 1
+        
+        return ugly_nums[-1]
+```
+
+You can create an instance of the `Solution` class and call the `nthSuperUglyNumber` method with the desired inputs:
+
+```python
+solution = Solution()
+n = 12
+primes = [2, 7, 13, 19]
+result = solution.nthSuperUglyNumber(n, primes)
+print(result)  # Output: 32
+```
+
+```python
+solution = Solution()
+n = 1
+primes = [2, 3, 5]
+result = solution.nthSuperUglyNumber(n, primes)
+print(result)  # Output: 1
+```
+
+The solution will provide the `n`-th super ugly number based on the given input.

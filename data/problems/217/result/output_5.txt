@@ -1,0 +1,22 @@
+Sure! Here's the Python code that implements the task you described:
+
+```python
+class Solution:
+    def containsDuplicate(self, nums):
+        # Create a set to store unique values
+        unique_nums = set()
+        
+        # Iterate through the array
+        for num in nums:
+            # If the number is already in the set, it's a duplicate
+            if num in unique_nums:
+                return True
+            # Otherwise, add the number to the set
+            else:
+                unique_nums.add(num)
+        
+        # No duplicates found
+        return False
+```
+
+You can create an instance of the `Solution` class and call the `containsDuplicate` method, passing in your input array `nums`, to get the desired result.

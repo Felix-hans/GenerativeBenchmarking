@@ -1,0 +1,54 @@
+To implement the RandomizedCollection class, we can use a combination of a list and a dictionary.
+
+Here's the implementation in Python:
+
+```python
+import random
+
+class RandomizedCollection:
+
+    def __init__(self):
+        self.collection = []
+        self.index_map = {}
+
+    def insert(self, val: int) -> bool:
+        self.collection.append(val)
+        if val in self.index_map:
+            self.index_map[val].add(len(self.collection) - 1)
+            return False
+        else:
+            self.index_map[val] = {len(self.collection) - 1}
+            return True
+
+    def remove(self, val: int) -> bool:
+        if val not in self.index_map:
+            return False
+
+        # Find the index of the value to remove
+        index = self.index_map[val].pop()
+        if not self.index_map[val]:
+            del self.index_map[val]
+
+        # Swap the value with the last element in the collection
+        last_val = self.collection[-1]
+        self.collection[index] = last_val
+        self.index_map[last_val].remove(len(self.collection) - 1)
+        self.index_map[last_val].add(index)
+
+        # Remove the last element
+        self.collection.pop()
+
+        return True
+
+    def getRandom(self) -> int:
+        return random.choice(self.collection)
+```
+
+Explanation:
+
+- In the `__init__` method, we initialize an empty list `collection` to store the elements and a dictionary `index_map` to store the indices of each value in the `collection` list.
+- The `insert` method appends the value to the `collection` list and updates the `index_map`. If the value is already present, it adds the new index to the existing set of indices in the `index_map`. If the value is not present, it creates a new set with the current index.
+- The `remove` method first checks if the value exists in the `index_map`. If not, it returns `False` to indicate that the value was not found. If the value exists, it removes the index from the set in the `index_map`. If the set becomes empty, it removes the key from the `index_map`. Then, it swaps the value to remove with the last element in the `collection` list. After the swap, it updates the indices in the `index_map` for the swapped value. Finally, it removes the last element from the `collection` list and returns `True` to indicate a successful removal.
+- The `getRandom` method uses the `random.choice` function to return a random element from the `collection` list.
+
+This implementation ensures that the `insert`, `remove`, and `getRandom` methods have an average time complexity of O(1).

@@ -1,0 +1,24 @@
+Here's the implementation of the task in Python:
+
+```python
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        triangle = []
+        for i in range(numRows):
+            row = [1] * (i + 1)
+            if i >= 2:
+                for j in range(1, i):
+                    row[j] = triangle[i-1][j-1] + triangle[i-1][j]
+            triangle.append(row)
+        return triangle
+```
+
+In this solution, we create an empty `triangle` list to store the rows of Pascal's triangle. We iterate `numRows` times, where each iteration corresponds to a row in the triangle.
+
+For each row, we create a new list called `row` and initialize it with `1` repeated `i + 1` times. This sets the first and last elements of each row to `1`.
+
+Then, if the current row index `i` is greater than or equal to `2`, we update the elements between the first and last elements of the `row` list. We do this by summing the corresponding elements from the previous row (`triangle[i-1]`) and storing the result in the current row.
+
+Finally, we append the `row` to the `triangle` list. After iterating through all the rows, we return the `triangle` as the result.
+
+Note: The `List` type used in the function signature should be imported from the `typing` module.
