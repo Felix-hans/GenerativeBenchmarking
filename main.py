@@ -59,7 +59,7 @@ def bug_detection(all_assignments, descriptions):
 def code_generation(model, step):
     # root dir of the dataset, model name, step name (generate, table, length)
     if step=='generate':
-        gen=GenerationUtil(model)
+        gen=GenerationUtil()
         # gen.generate_all(True, True)
         gen.generate_selection(True,True)
     elif step=='table':

@@ -41,7 +41,119 @@ class LeetCodeUtil:
                 with open(py_file_path,'w',encoding='UTF8') as fw:
                     fw.write(ans)
                 print('Generated',py_file_path)
-      
+                
+        elif model_name=='Codex':
+            
+            def remove_block_comment(code:str):
+                code=''.join(code.split("'''")[::2])
+                code=''.join(code.split('"""')[::2])
+                return code
+            def remove_line_comment(code:str):
+                return '\n'.join([l for l in code.split('\n') if not l.strip().startswith('#')])
+            def remove_empty_line(code:str):
+                return '\n'.join([l for l in code.split('\n') if l.strip()!=''])
+            # assume remove_block_comment, remove_line_comment, and remove_empty_line are called before
+            def extract_imports(code:str):
+                '''extract import statements from code'''
+                code_arr=code.split('\n')
+                import_lines=[]
+                for l in code_arr:
+                    if l.startswith('import') or l.startswith('from'):
+                        import_lines.append(l)
+                    else: break
+                imports, code='\n'.join(import_lines), '\n'.join(code_arr[len(import_lines):])
+                return imports, code
+            def remove_code_before(code:str, start:str):
+                '''remove code before start'''
+                code_arr=code.split('\n')
+                for i, l in enumerate(code_arr):
+                    if l.startswith(start):
+                        code='\n'.join(code_arr[i:])
+                        break
+                return code
+
+            with open(output_file,'r',encoding='UTF8') as f:
+                problem_id=os.path.basename(os.path.dirname(os.path.dirname(output_file))).split('-')[0]
+                test_num=os.path.basename(output_file).split('_')[-1].split('.')[0]
+                ans=f.read()
+                ans=remove_empty_line(remove_line_comment(remove_block_comment(ans)))
+                imports,ans=extract_imports(ans)
+                try: assert(ans.startswith('class '))
+                except: 
+                    print(f'Ans does not start with class Solution: {output_file}')
+                    ans=remove_code_before(ans, 'class ')
+                    print(ans)
+                ans_arr=ans.split('\n')
+                try: assert(ans_arr[1].startswith('    '))
+                except: print(f'Indentation format is not 4 spaces: {output_file}')
+                temp=[]
+                for l in ans_arr[1:]:
+                    if l.startswith('    ') or l.startswith('\t'): temp.append(l)
+                    else:  break
+                ans_arr=[ans_arr[0],]+temp
+                ans=imports+'\n'+'\n'.join(ans_arr)
+                ans=f'# @lc app=leetcode id={problem_id} lang=python3\n'+ans
+                py_file_path=os.path.join(os.path.dirname(output_file),f'{problem_id}.output_{test_num}.py')
+                with open(py_file_path,'w',encoding='UTF8') as fw:
+                    fw.write(ans)
+                print('Generated',py_file_path)
+
+        elif model_name=='CodeGen':
+            def remove_block_comment(code:str):
+                code=''.join(code.split("'''")[::2])
+                code=''.join(code.split('"""')[::2])
+                return code
+            def remove_line_comment(code:str):
+                return '\n'.join([l for l in code.split('\n') if not l.strip().startswith('#')])
+            def remove_empty_line(code:str):
+                return '\n'.join([l for l in code.split('\n') if l.strip()!=''])
+            # assume remove_block_comment, remove_line_comment, and remove_empty_line are called before
+            def extract_imports(code:str):
+                '''extract import statements from code'''
+                code_arr=code.split('\n')
+                import_lines=[]
+                for l in code_arr:
+                    if l.startswith('import') or l.startswith('from'):
+                        import_lines.append(l)
+                    else: break
+                imports, code='\n'.join(import_lines), '\n'.join(code_arr[len(import_lines):])
+                return imports, code
+            def remove_code_before(code:str, start:str):
+                '''remove code before start'''
+                code_arr=code.split('\n')
+                for i, l in enumerate(code_arr):
+                    if l.startswith(start):
+                        code='\n'.join(code_arr[i:])
+                        break
+                return code
+            
+            with open(output_file,'r',encoding='UTF8') as f:
+                problem_id=os.path.basename(os.path.dirname(os.path.dirname(output_file))).split('-')[0]
+                test_num=os.path.basename(output_file).split('_')[-1].split('.')[0]
+                ans=f.read()
+                ans=remove_empty_line(remove_line_comment(remove_block_comment(ans)))
+                imports,ans=extract_imports(ans)
+                try: assert(ans.startswith('class '))
+                except: 
+                    print(f'Ans does not start with class Solution: {output_file}')
+                    ans=remove_code_before(ans, 'class ')
+                    print(ans)
+                ans_arr=ans.split('\n')
+                try: assert(ans_arr[1].startswith('    '))
+                except: print(f'Indentation format is not 4 spaces: {output_file}')
+                temp=[]
+                for l in ans_arr[1:]:
+                    if l.startswith('    ') or l.startswith('\t'): temp.append(l)
+                    else:  break
+                ans_arr=[ans_arr[0],]+temp
+                ans=imports+'\n'+'\n'.join(ans_arr)
+                ans=f'# @lc app=leetcode id={problem_id} lang=python3\n'+ans
+                ans=ans.replace('<|endoftext|>','')
+                py_file_path=os.path.join(os.path.dirname(output_file),f'{problem_id}.output_{test_num}.py')
+                with open(py_file_path,'w',encoding='UTF8') as fw:
+                    fw.write(ans)
+                print('Generated',py_file_path)
+        
         else: assert(False, f'Unknown model_name: {model_name}')
         
         return py_file_path
@@ -123,7 +235,7 @@ class LeetCodeUtil:
             #iterate the x python files but restart if it takes too long
             error_exists = self.iterate_python_files(iter_list, error_exists ,error_total,error_cnt,prev_err,timeout = 300, timeoutCount=0)
         
-    def run_leetcode_pipeline(self, output_path):
+    def run_leetcode_pipeline(self):
         config=Config()
         root_path=os.path.normpath(config.generation_path)
 

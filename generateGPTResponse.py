@@ -8,7 +8,8 @@ def generate_chatgpt(chatbot, prompt):
         while 'Unusable response produced by ChatGPT, maybe its unavailable.' in resp:
             try:
                 resp=chatbot.ask(prompt)
-                chatbot.new_conversation() # To start a new conversation
+
+                # chatbot.new_conversation() # To start a new conversation
             except Exception as e:
                 resp='Unusable response produced by ChatGPT, maybe its unavailable.'
             if fail_cnt==0: pass
@@ -21,4 +22,6 @@ def generate_chatgpt(chatbot, prompt):
                 print("Wait for",2**(fail_cnt-1),"seconds.")
                 time.sleep(2**(fail_cnt-1))
             fail_cnt+=1
-        return resp
+
+        return resp,chatbot
+

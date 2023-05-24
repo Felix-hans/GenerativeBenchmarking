@@ -1,0 +1,46 @@
+To implement the `NumMatrix` class and support the `sumRegion` operation in O(1) time complexity, we can use the concept of prefix sums. The idea is to precompute the cumulative sums for each row in the input matrix and store them in a separate matrix.
+
+Here's the Python implementation:
+
+```python
+class NumMatrix:
+    def __init__(self, matrix):
+        if not matrix or not matrix[0]:
+            self.prefix_sums = None
+        else:
+            m, n = len(matrix), len(matrix[0])
+            self.prefix_sums = [[0] * (n + 1) for _ in range(m)]
+            
+            for i in range(m):
+                for j in range(n):
+                    self.prefix_sums[i][j + 1] = self.prefix_sums[i][j] + matrix[i][j]
+                    
+            for i in range(1, m):
+                for j in range(n + 1):
+                    self.prefix_sums[i][j] += self.prefix_sums[i - 1][j]
+    
+    def sumRegion(self, row1, col1, row2, col2):
+        if self.prefix_sums is None:
+            return 0
+        
+        upper_left = self.prefix_sums[row1 - 1][col1 - 1] if row1 > 0 and col1 > 0 else 0
+        upper_right = self.prefix_sums[row1 - 1][col2] if row1 > 0 else 0
+        lower_left = self.prefix_sums[row2][col1 - 1] if col1 > 0 else 0
+        lower_right = self.prefix_sums[row2][col2]
+        
+        return lower_right - upper_right - lower_left + upper_left
+```
+
+Let's go through the code:
+
+1. In the `__init__` method, we first check if the input matrix is empty or has empty rows. If so, we set `self.prefix_sums` to `None` to indicate an invalid matrix. Otherwise, we initialize `self.prefix_sums` as a 2D matrix of zeros with dimensions `(m + 1) x (n + 1)`, where `m` is the number of rows and `n` is the number of columns in the input matrix.
+
+2. Next, we compute the cumulative sums for each row in the input matrix and store them in `self.prefix_sums`. We iterate over each element in the input matrix and use the formula `prefix_sums[i][j + 1] = prefix_sums[i][j] + matrix[i][j]` to calculate the cumulative sum at each position.
+
+3. After computing the cumulative sums for each row, we perform one more pass to update `self.prefix_sums` to contain the cumulative sums of the rows as well. We iterate over the rows starting from index 1 and add the value of the previous row's cumulative sum to the current row's cumulative sum for each column.
+
+4. In the `sumRegion` method, we first check if `self.prefix_sums` is `None` to handle the case where an empty matrix was provided during initialization. In this case, we simply return 0.
+
+5. For the given rectangle defined by `(row1, col1)` as the upper left corner and `(row2, col2)` as the lower right corner, we compute the sum using the formula `sum = lower_right - upper_right - lower_left + upper_left`, where:
+   - `lower_right` represents the cumulative sum at the lower right corner of the rectangle.
+   - `upper_right` represents the cumulative sum at the upper right corner of the rectangle.
