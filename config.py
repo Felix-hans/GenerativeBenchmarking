@@ -6,7 +6,7 @@ class Config:
         
         # replace self.generation_path with the path to code_generation_dataset
         self.generation_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/problems'
-        self.target_folder = 'result'
+        self.target_folder = '2405_result_hard_design'
         # self.generation_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/code_generation_dataset'
         
         # update self.openai_api_key and self.openai_organization with your own key and organization

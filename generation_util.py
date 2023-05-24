@@ -186,6 +186,7 @@ class GenerationUtil:
                 continue
 
             output_dir=os.path.join(problem_folder_path, config.target_folder)
+            print(output_dir)
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
 

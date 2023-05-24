@@ -1,0 +1,80 @@
+Sure! Here's an implementation of the LRUCache class in Python:
+
+```python
+class Node:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node(0, 0)  # dummy head node
+        self.tail = Node(0, 0)  # dummy tail node
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self._remove(self.cache[key])
+        if len(self.cache) >= self.capacity:
+            self._remove(self.tail.prev)
+        new_node = Node(key, value)
+        self._add(new_node)
+        self.cache[key] = new_node
+
+    def _add(self, node: Node) -> None:
+        next_node = self.head.next
+        self.head.next = node
+        node.prev = self.head
+        node.next = next_node
+        next_node.prev = node
+
+    def _remove(self, node: Node) -> None:
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+        del self.cache[node.key]
+```
+
+Explanation:
+1. We define a `Node` class to represent each key-value pair in the cache. Each node has a key, value, previous node (`prev`), and next node (`next`).
+2. In the `LRUCache` class, we initialize the cache with the given capacity and create dummy head and tail nodes.
+3. The `get` method checks if the key exists in the cache. If it does, we move the corresponding node to the front of the cache by removing it and adding it again. Then we return the value. If the key is not found, we return -1.
+4. The `put` method first checks if the key exists in the cache. If it does, we remove the existing node and add the new node to the front of the cache. If the cache is already at its capacity, we remove the least recently used node (the one before the dummy tail node) before adding the new node. Finally, we update the cache dictionary.
+5. The `_add` method adds a node after the dummy head node in the cache.
+6. The `_remove` method removes a node from the cache by updating the previous and next nodes.
+
+This implementation ensures that both the `get` and `put` operations run in O(1) average time complexity.
+
+You can instantiate the `LRUCache` object and use the `get` and `put` methods as follows:
+
+```python
+obj = LRUCache(capacity)
+param_1 = obj.get(key)
+obj.put(key, value)
+```
+
+For example, to achieve the desired output from your example:
+
+```python
+lRUCache = LRUCache(2)
+lRUCache.put(1, 1)
+lRUCache.put(2, 2)
+print(lRUCache.get(1))  # Output: 1
+lRUCache.put(3, 3)
+print(lRUCache.get(2))  # Output: -1
+lR

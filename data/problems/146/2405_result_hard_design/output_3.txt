@@ -1,0 +1,77 @@
+To implement the LRU cache, we can use a combination of a doubly linked list and a dictionary. The doubly linked list will keep track of the most recently used keys, and the dictionary will provide fast access to the corresponding values.
+
+Here's the Python implementation for the LRUCache class:
+
+```python
+class ListNode:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = ListNode()
+        self.tail = ListNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._move_to_head(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._move_to_head(node)
+        else:
+            if len(self.cache) == self.capacity:
+                self._remove_tail()
+            new_node = ListNode(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)
+
+    def _move_to_head(self, node: ListNode) -> None:
+        self._remove_node(node)
+        self._add_to_head(node)
+
+    def _remove_node(self, node: ListNode) -> None:
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _add_to_head(self, node: ListNode) -> None:
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_tail(self) -> None:
+        tail_node = self.tail.prev
+        del self.cache[tail_node.key]
+        self._remove_node(tail_node)
+```
+
+This implementation maintains the order of the keys based on their usage. When a key is accessed through `get()` or `put()`, the corresponding node is moved to the head of the linked list, indicating it as the most recently used. When the cache is full and a new key-value pair is added, the least recently used key (at the tail of the linked list) is evicted.
+
+Note that the doubly linked list allows constant time operations for removing and adding nodes, which ensures that both `get()` and `put()` operations run in O(1) average time complexity.
+
+You can create an instance of the LRUCache class and test it with the provided example:
+
+```python
+lRUCache = LRUCache(2)
+lRUCache.put(1, 1)  # cache is {1=1}
+lRUCache.put(2, 2)  # cache is {1=1, 2=2}
+print(lRUCache.get(1))  # Output: 1
+lRUCache.put(3, 3)  # LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+print(lRUCache.get(2))  # Output: -1
+lRUCache.put(4, 4)  # LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+print(lRUCache.get(1))  # Output: -1
+print(lRUCache.get(3))  # Output:

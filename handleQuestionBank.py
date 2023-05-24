@@ -71,14 +71,10 @@ def removeGeneratedQuestions(sampled_df, log_df):
 
     config = Config()
 
-    if config.generated_name not in log_df.columns:
-        log_df[config.generated_name] = None
 
-    if config.validated_name not in log_df.columns:
-        log_df[config.validated_name] = None
 
     generated_ids = list(log_df[log_df[config.generated_name]==1]['ID'])
-    print(generated_ids)
+    print(generated_ids) 
 
     df = sampled_df[~sampled_df.ID.isin(generated_ids)]
     print(df)
@@ -155,6 +151,7 @@ def logQuestionValidation(folder_name,problem_result_folder_path,sampled_df_path
 
 def validateQuestions(sampled_df_path, logFile):
 
+    config = Config()
     sampled_df = pd.read_excel(sampled_df_path)
     log_df = pd.read_excel(logFile)
     generated_ids = list(log_df[log_df[config.validated_name]==1]['ID'])
@@ -167,21 +164,37 @@ def validateQuestions(sampled_df_path, logFile):
     #remove already validated questions
     return folder_path_list
 
+def createNewColumns(log_df):
+    
+    config = Config()
+    changed = False
+
+    if config.generated_name not in log_df.columns:
+        log_df[config.generated_name] = None
+        changed = True
+    
+    if config.validated_name not in log_df.columns:
+        log_df[config.validated_name] = None
+        changed = True
+
+    if changed:
+        log_df.to_excel(config.logFile, index=False)
+    
+    return log_df
 
 #This is the initial call of this part. If changes should be done at the beginning 
 #(like creating new columns, it should be done hre)
 def main(sampled_df_path, logFile):
 
     sampled_df = pd.read_excel(sampled_df_path)
-
     log_df = pd.read_excel(logFile)
+
+    #We need to create the missing columns in case they were not created yet
+    log_df = createNewColumns(log_df)
     
-
-
     #could be that we are re-starting because the chatgpt client stopped working
     #We want to make sure we quickly skip the questions we already answered
     df = removeGeneratedQuestions(sampled_df, log_df)
-    
 
     folder_path_list = df['ID']
 
