@@ -26,3 +26,6 @@ class Config:
         self.premium = False
         self.type_list = ['Dynamic_Programming','Math' ,'Design' ,'Simulation' ,'Array' ,'String' ,'Sorting' ,'Hash_Table']
         self.difficulty_dict = {'Easy': 5,'Medium': 5, 'Hard': 5}
+
+        #GPT configs
+        self.max_length = 1024

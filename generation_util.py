@@ -13,6 +13,7 @@ class GenerationUtil:
     def __init__(self):
         self.model_name = "ChatGPT"
         self.chatbot = ChatGPT()
+        self.config = Config()
 
   
     def generate(self, prompt, max_length=1024):
@@ -50,86 +51,108 @@ class GenerationUtil:
 
         return desc
 
+    def handlePathCreation(self,root_path,folder_name):
+
+        
+        problem_folder_path = os.path.join(root_path, folder_name)
+        
+        print()
+        print('HERE------------------------------------------------------------------')
+        print(problem_folder_path)
+
+        if not os.path.isdir(problem_folder_path):
+            print('ERROR with folders')
+            return 0
+
+        problem_instructions_file_path = os.path.join(problem_folder_path, "README.md")
+        try:
+            problem_template_file_path = glob.glob(problem_folder_path + '/*.py')[0]
+        except:
+            print('problem premium')
+            print(problem_folder_path)
+            return 0
+
+        output_dir=os.path.join(problem_folder_path, self.config.target_folder)
+        print(output_dir)
+
+        if not os.path.exists(output_dir): os.mkdir(output_dir)
+
+        return problem_instructions_file_path, problem_template_file_path,output_dir 
+    
+    
+    def output_exists(self, out_path:str):
+        if os.path.exists(out_path):
+            with open(out_path,'r',encoding='UTF8') as fr:
+                content=fr.read()
+                if content.strip()=='':
+                    return False
+                return True
+    
+    def executeEachRep(self,output_path,prompt, rep):
+        tryAgain = True
+
+        print(f'Asking {self.model_name}...')
+        curr_time=time.time()
+
+        response=self.generate(prompt, self.config.max_length)
+        time_used=time.time()-curr_time
+        print(f'{self.model_name} response received.')
+        with open(output_path,'w',encoding='UTF8') as f:
+            f.write(response)
+            print('Response written to',output_path)
+        print('Time used:',time_used)
+
+        #Generate the output file
+        py_file_path=LeetCodeUtil().generate_submit_file(output_path, self.model_name)
+
+        #submit test on leetcode, we try a couple of times before we stop trying
+        while tryAgain:
+            output = LeetCodeUtil().run_leetcode_pipeline(py_file_path,rep)
+            tryAgain, prompt = createPrompt.evaluateOutput(output)
+            print('pups')
+            response = self.generate(prompt, self.config.max_length)
+
+        return 0
+        
+    
     def generate_selection(self, with_examples:bool, with_constraints:bool, \
-        remarks='Implement the above task in Python.', max_length=1024, repetition=5):
+        remarks='Implement the above task in Python.', repetition=5):
         
-        def output_exists(out_path:str):
-            if os.path.exists(out_path):
-                with open(out_path,'r',encoding='UTF8') as fr:
-                    content=fr.read()
-                    if content.strip()=='':
-                        return False
-                    return True
-        
-        config=Config()
+        root_path=os.path.normpath(self.config.generation_path)
 
-        root_path=os.path.normpath(config.generation_path)
+        folder_path_list = handleQuestionBank.main(self.config.sampled_df_path, self.config.logFile)
 
-        folder_path_list = handleQuestionBank.main(config.sampled_df_path, config.logFile)
-
-        #we iterate over all folders (problems)in the path
+        #we iterate over all folders (problems) in the path
         for folder_name in folder_path_list:
-
+            
             folder_name = str(folder_name)
+
             #We don't want to iterate over hidden files such as .DS_Store
             if folder_name.startswith('.'):
                 continue
-            
-            problem_folder_path = os.path.join(root_path, folder_name)
-            
-            print()
-            print('HERE------------------------------------------------------------------')
-            print(problem_folder_path)
+            print(folder_name)
 
-            if not os.path.isdir(problem_folder_path):
-                print('ERROR with folders')
-                break
-
-            problem_instructions_file_path = os.path.join(problem_folder_path, "README.md")
             try:
-                problem_template_file_path = glob.glob(problem_folder_path + '/*.py')[0]
-            except:
-                print('problem premium')
-                print(problem_folder_path)
-                continue
-
-            output_dir=os.path.join(problem_folder_path, config.target_folder)
-            print(output_dir)
-            if not os.path.exists(output_dir):
-                os.makedirs(output_dir)
+                problem_instructions_file_path, problem_template_file_path,output_dir = self.handlePathCreation(root_path, folder_name)
+            except Exception as e:
+                print(e)
+                print('folder path creation failed')
 
             prompt=self.get_description(problem_instructions_file_path, problem_template_file_path, with_examples, with_constraints, remarks)
             
-            # response=self.generate(prompt, max_length)
-            
             #iterate x times over the problem (repeating experiment)
-            if not os.path.exists(output_dir): os.mkdir(output_dir)
             for i in range(1,repetition+1):
+
                 rep = '/output_'+str(i)+'.txt'
                 output_path=output_dir+rep
 
-                if output_exists(output_path): continue
-                print(f'Asking {self.model_name}...')
-                curr_time=time.time()
-                response=self.generate(prompt, max_length)
-                time_used=time.time()-curr_time
-                print(f'{self.model_name} response received.')
-                with open(output_path,'w',encoding='UTF8') as f:
-                    f.write(response)
-                    print('Response written to',output_path)
-                print('Time used:',time_used)
+                if self.output_exists(output_path): 
+                    continue
 
-                #Generate the output file
-                py_file_path=LeetCodeUtil().generate_submit_file(output_path, self.model_name)
-
-                #submit test on leetcode, we try a couple of times before we stop trying
-                while tryAgain:
-                    tryAgain, output = leetcode_util.run_leetcode_pipeline(output_dir,rep)
-                    prompt = createPrompt.evaluateOutput(output)
-                    response = self.generate(prompt, max_length)
-            
-            handleQuestionBank.logQuestionGeneration(config.logFile,folder_name)
+                self.executeEachRep(output_path,prompt, rep)
                 
-                # LeetCodeUtil().remove_leetcode_result(py_file_path)
+            handleQuestionBank.logQuestionGeneration(self.config.logFile,folder_name)
+                
+            # LeetCodeUtil().remove_leetcode_result(py_file_path)
 
 

@@ -123,12 +123,12 @@ class LeetCodeUtil:
             #iterate the x python files but restart if it takes too long
             error_exists = self.iterate_python_files(iter_list, error_exists ,error_total,error_cnt,prev_err,timeout = 300, timeoutCount=0)
         
-    def run_leetcode_pipeline(self, output_path):
+    def run_leetcode_pipeline(self, output_dir):
         config=Config()
         root_path=os.path.normpath(config.generation_path)
 
         #load all IDs that haven't been treated yet
-        folder_path_list = handleQuestionBank.validateQuestions(config.sampled_df_path, config.logFile)
+        #folder_path_list = handleQuestionBank.validateQuestions(config.sampled_df_path, config.logFile)
         
         for folder_name in folder_path_list:
 

@@ -1,2 +1,4 @@
 def evaluateOutput(output):
-    return 0
+    print(output)
+    tryAgain = False
+    return tryAgain, output
