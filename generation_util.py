@@ -124,39 +124,42 @@ class GenerationUtil:
         iteration = 0
         while tryAgain:
 
-            if iteration ==2:
-                break
-                
             output = LeetCodeUtil().run_leetcode_test(py_file_path)
             tryAgain, prompt = createPrompt.evaluateOutput(tryAgain, output)
-            
-            if tryAgain == False:
-                break
 
-            response = self.generate(prompt, self.config.max_length)
-            
-            # rename the old python file and result file
-            self.renameFile(py_file_path, iteration, 'py')
-            self.renameFile(py_file_path[:-3]+'_result.txt', iteration,'txt')
+            print('validating question')
+            handleQuestionBank.logQuestionValidation(folder_name,rep,output_dir,self.config.sampled_df_path, self.config.logFile, iteration,tryAgain)
 
-            with open(output_path,'w',encoding='UTF8') as f:
-                f.write(response)
-            print('Response written to',output_path)
+            #we try again if the result was not accepted
+            if tryAgain:
 
-            py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
+                response = self.generate(prompt, self.config.max_length)
+                print(response)
 
-            print(response)
+                #We name the current file "attempt" to not overwrite
+                self.renameFile(py_file_path, iteration, 'py')
+                self.renameFile(py_file_path[:-3]+'_result.txt', iteration,'txt')
+
+                with open(output_path,'w',encoding='UTF8') as f:
+                    f.write(response)
+                print('Response written to',output_path)
+
+                py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
+
             print(iteration)
-            iteration = iteration + 1
 
-        handleQuestionBank.logQuestionValidation(folder_name,rep,output_dir,self.config.sampled_df_path, self.config.logFile)
+            if iteration ==2 or tryAgain == False:
+                    break
+
+            iteration = iteration + 1
+     
         self.chatbot.new_conversation()
         
         return 0
         
     
     def generate_selection(self, with_examples:bool, with_constraints:bool, \
-        remarks='Implement the above task in Python.', repetition=5):
+        remarks='Implement the above task in Python.', repetition=1):
         
         root_path=os.path.normpath(self.config.generation_path)
 
@@ -196,7 +199,7 @@ class GenerationUtil:
                 if self.output_exists(output_path): 
                     continue
 
-                self.executeEachRep(output_dir,output_path,folder_name,prompt, rep)
+                self.executeEachRep(output_dir,output_path,folder_name,prompt, i)
                 
             handleQuestionBank.logQuestionGeneration(self.config.logFile,folder_name)
                 

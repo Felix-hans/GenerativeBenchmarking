@@ -85,7 +85,9 @@ def removeGeneratedQuestions(sampled_df, log_df):
 def getResultFiles(dir_path,rep):
     result_files = []
     for root, dirs, files in os.walk(dir_path):
-        for file in files:
+        for file in files: 
+            print('files here')
+            print(files)
             if file.endswith(f'output_{rep}_result.txt'):
                 result_files.append(os.path.join(root, file))
     return result_files
@@ -113,24 +115,41 @@ def parse_file(file_path):
 
         return status, cases_passed, total_cases, ratio_cases, runtime_performance, memory_performance
 
+def createStatistictsColumns(sampled_df, rep,iteration):
 
-def getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df,rep):
+    col = f'case_{rep}_attempt_{iteration}_ratio_cases'
+    if col not in sampled_df.columns:
+        sampled_df[f'case_{rep}_attempt_{iteration}_ratio_cases'] = None
+        sampled_df[f'case_{rep}_attempt_{iteration}_runtime_performance'] = None
+        sampled_df[f'case_{rep}_attempt_{iteration}_memory_performance'] = None
+
+    return sampled_df
+
+
+def getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df,rep,iteration):
 
     result_files_path = getResultFiles(problem_result_folder_path,rep)
+    print(problem_result_folder_path)
+    print(rep)
+    print(result_files_path)
 
     for i,file_path in enumerate(result_files_path):
+        print('validate here')
+        print(file_path)
         status, cases_passed, total_cases, ratio_cases, runtime_performance, memory_performance = parse_file(file_path)
+        
+        sampled_df = createStatistictsColumns(sampled_df, rep,iteration)
 
         sampled_df.loc[sampled_df['ID'] == int(folder_name), f'case_{i}_ratio_cases'] = ratio_cases
         sampled_df.loc[sampled_df['ID'] == int(folder_name), f'case_{i}_runtime_performance'] = runtime_performance
-        sampled_df.loc[sampled_df['ID'] == int(folder_name), f'case_{i}_rmemory_performance'] = memory_performance
+        sampled_df.loc[sampled_df['ID'] == int(folder_name), f'case_{i}_memory_performance'] = memory_performance
 
     
     return sampled_df
 
 
 
-def logQuestionValidation(folder_name,rep,problem_result_folder_path,sampled_df_path, logFile):
+def logQuestionValidation(folder_name,rep,problem_result_folder_path,sampled_df_path, logFile, iteration,tryAgain):
     
     config = Config()
     log_df = pd.read_excel(logFile)
@@ -139,9 +158,11 @@ def logQuestionValidation(folder_name,rep,problem_result_folder_path,sampled_df_
     print('-----------------------')
     print(folder_name)
 
-    sampled_df = getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df,rep)
 
-    log_df.loc[log_df['ID'] == int(folder_name), config.validated_name] = 1
+    sampled_df = getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df,rep,iteration)
+
+    if tryAgain == False:
+        log_df.loc[log_df['ID'] == int(folder_name), config.validated_name] = 1
 
     log_df.to_excel(logFile, index=False)
     sampled_df.to_excel(sampled_df_path, index=False)
@@ -189,6 +210,7 @@ def main(sampled_df_path, logFile):
 
     #We need to create the missing columns in case they were not created yet
     log_df = createNewColumns(log_df)
+    print('cols')
     
     #could be that we are re-starting because the chatgpt client stopped working
     #We want to make sure we quickly skip the questions we already answered
