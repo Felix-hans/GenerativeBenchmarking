@@ -1,0 +1,100 @@
+Sure! Here's the implementation of the circular double-ended queue (deque) in Python:
+
+```python
+class MyCircularDeque:
+
+    def __init__(self, k: int):
+        self.k = k
+        self.deque = []
+        
+
+    def insertFront(self, value: int) -> bool:
+        if len(self.deque) < self.k:
+            self.deque.insert(0, value)
+            return True
+        return False
+        
+
+    def insertLast(self, value: int) -> bool:
+        if len(self.deque) < self.k:
+            self.deque.append(value)
+            return True
+        return False
+        
+
+    def deleteFront(self) -> bool:
+        if self.deque:
+            self.deque.pop(0)
+            return True
+        return False
+        
+
+    def deleteLast(self) -> bool:
+        if self.deque:
+            self.deque.pop()
+            return True
+        return False
+        
+
+    def getFront(self) -> int:
+        if self.deque:
+            return self.deque[0]
+        return -1
+        
+
+    def getRear(self) -> int:
+        if self.deque:
+            return self.deque[-1]
+        return -1
+        
+
+    def isEmpty(self) -> bool:
+        return len(self.deque) == 0
+        
+
+    def isFull(self) -> bool:
+        return len(self.deque) == self.k
+```
+
+You can use the code as follows:
+
+```python
+# Create an instance of MyCircularDeque with a maximum size of 3
+obj = MyCircularDeque(3)
+
+# Insert elements into the deque
+print(obj.insertLast(1))  # True
+print(obj.insertLast(2))  # True
+print(obj.insertFront(3)) # True
+print(obj.insertFront(4)) # False (deque is full)
+
+# Get the rear element
+print(obj.getRear())      # 2
+
+# Check if the deque is full
+print(obj.isFull())       # True
+
+# Delete the last element
+print(obj.deleteLast())   # True
+
+# Insert an element at the front
+print(obj.insertFront(4)) # True
+
+# Get the front element
+print(obj.getFront())     # 4
+```
+
+Output:
+```
+True
+True
+True
+False
+2
+True
+True
+True
+4
+```
+
+The implementation maintains an internal list to store the elements of the deque. The `insertFront`, `insertLast`, `deleteFront`, and `deleteLast` methods perform the respective operations on the list. The `getFront` and `getRear` methods return the front and rear elements of the deque, respectively. The `isEmpty` method checks if the deque is empty, and the `isFull` method checks if the deque is full.

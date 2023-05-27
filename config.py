@@ -6,7 +6,9 @@ class Config:
         
         # replace self.generation_path with the path to code_generation_dataset
         self.generation_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/problems'
-        self.target_folder = '2405_result_hard_design'
+        self.run_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data'
+        self.target_folder = '2705_result_hard_questions'
+        
         # self.generation_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/code_generation_dataset'
         
         # update self.openai_api_key and self.openai_organization with your own key and organization
@@ -17,9 +19,9 @@ class Config:
         self.questionBank = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/Leetcode_question_bank_V01.xlsx'
         self.logFile = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/Leetcode_question_log.xlsx'
         # self.sampled_df_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/sampled_df.xlsx'
-        self.sampled_df_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/assess_hard_design.xlsx'
-        self.generated_name = 'generated_hard_design'
-        self.validated_name = 'validated_hard_design'
+        self.sampled_df_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/assess_hard_questions.xlsx'
+        self.generated_name = 'generated_hard_questions'
+        self.validated_name = 'validated_hard_questions'
         
         '''Question sampling parameters'''
         self.period = 'Before_2021'

@@ -1,0 +1,51 @@
+To implement the `NumMatrix` class and handle the given requirements, you can use a technique called prefix sum. The idea is to precompute the sum of all elements in the matrix up to each position and store it in a separate matrix. Then, you can use this prefix sum matrix to calculate the sum of elements in a given rectangle in constant time.
+
+Here's the implementation of the `NumMatrix` class in Python:
+
+```python
+class NumMatrix:
+
+    def __init__(self, matrix):
+        if not matrix or not matrix[0]:
+            self.prefix_sum = None
+        else:
+            m, n = len(matrix), len(matrix[0])
+            self.prefix_sum = [[0] * (n + 1) for _ in range(m + 1)]
+
+            # Compute the prefix sum matrix
+            for i in range(1, m + 1):
+                for j in range(1, n + 1):
+                    self.prefix_sum[i][j] = (
+                        matrix[i - 1][j - 1]
+                        + self.prefix_sum[i - 1][j]
+                        + self.prefix_sum[i][j - 1]
+                        - self.prefix_sum[i - 1][j - 1]
+                    )
+
+    def sumRegion(self, row1, col1, row2, col2):
+        if not self.prefix_sum:
+            return 0
+
+        # Add the sum of the rectangle by using the prefix sum matrix
+        return (
+            self.prefix_sum[row2 + 1][col2 + 1]
+            - self.prefix_sum[row2 + 1][col1]
+            - self.prefix_sum[row1][col2 + 1]
+            + self.prefix_sum[row1][col1]
+        )
+```
+
+Here's how you can use the `NumMatrix` class:
+
+```python
+matrix = [[3, 0, 1, 4, 2], [5, 6, 3, 2, 1], [1, 2, 0, 1, 5], [4, 1, 0, 1, 7], [1, 0, 3, 0, 5]]
+obj = NumMatrix(matrix)
+
+print(obj.sumRegion(2, 1, 4, 3))  # Output: 8
+print(obj.sumRegion(1, 1, 2, 2))  # Output: 11
+print(obj.sumRegion(1, 2, 2, 4))  # Output: 12
+```
+
+The `NumMatrix` class initializes the prefix sum matrix in the constructor using the provided `matrix`. Then, the `sumRegion` method calculates the sum of elements in the specified rectangle using the prefix sum matrix.
+
+Note: The implementation assumes that the `matrix` input is a valid 2D matrix, and the `row1`, `col1`, `row2`, `col2` inputs are within the matrix bounds. It also handles the case where the matrix is empty by setting the prefix sum matrix to `None`.

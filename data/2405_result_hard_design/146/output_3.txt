@@ -1,0 +1,68 @@
+To implement an LRU cache, we can use a combination of a dictionary and a doubly linked list. The dictionary will store the key-value pairs, allowing for O(1) access to the cache entries, while the doubly linked list will keep track of the most recently used items, allowing for efficient eviction of the least recently used item.
+
+Here's the implementation of the LRUCache class in Python:
+
+```python
+class Node:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = Node()
+        self.tail = Node()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+
+        node = Node(key, value)
+        self.cache[key] = node
+        self._add(node)
+
+        if len(self.cache) > self.capacity:
+            evicted_node = self.head.next
+            self._remove(evicted_node)
+            del self.cache[evicted_node.key]
+
+    def _add(self, node: Node) -> None:
+        prev_node = self.tail.prev
+        prev_node.next = node
+        node.prev = prev_node
+        node.next = self.tail
+        self.tail.prev = node
+
+    def _remove(self, node: Node) -> None:
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+```
+
+In this implementation, we define a `Node` class to represent the nodes in the doubly linked list. Each node contains a `key`, `value`, `prev` pointer, and `next` pointer.
+
+The `LRUCache` class has an `__init__` method that initializes the cache with the specified capacity. The cache is stored in a dictionary (`self.cache`) where the keys are the cache keys, and the values are the corresponding nodes.
+
+The `get` method retrieves the value for the given key from the cache. If the key exists, the corresponding node is moved to the end of the doubly linked list (indicating it was the most recently used item) using the `_remove` and `_add` helper methods.
+
+The `put` method updates the value for the given key or adds a new key-value pair to the cache. If the key already exists, the corresponding node is updated and moved to the end of the doubly linked list. If the cache exceeds its capacity after adding the new key-value pair, the least recently used item (the node at the front of the doubly linked list) is evicted by removing it from the cache and the doubly linked list.
+
+The `_add` method adds a node to the end of the doubly linked list, and the `_remove` method removes a node from the doubly linked list.
+
+With this implementation, both the `get` and `put` operations have an average time complexity of O(1) since dictionary operations and doubly linked list operations (addition, removal, and node movement) all have constant time complexity.

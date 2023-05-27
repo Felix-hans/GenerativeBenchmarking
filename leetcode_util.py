@@ -8,8 +8,8 @@ class LeetCodeUtil:
     def __init__(self):
         pass
     
-    def generate_submit_file(self, output_file, model_name):
-        
+    def generate_submit_file(self, output_file,problem_id, model_name):
+
         if model_name=='ChatGPT':
             def remove_import(ans:str)->str:
                 ans_arr=ans.split('\n')
@@ -22,7 +22,7 @@ class LeetCodeUtil:
             def remove_line_comment(code:str):
                 return '\n'.join([l for l in code.split('\n') if not l.strip().startswith('#')])
             with open(output_file,'r',encoding='UTF8') as f:
-                problem_id=os.path.basename(os.path.dirname(os.path.dirname(output_file))).split('-')[0]
+                # problem_id=os.path.basename(os.path.dirname(os.path.dirname(output_file))).split('-')[0]
                 test_num=os.path.basename(output_file).split('_')[-1].split('.')[0]
                 ans=f.read().strip()
                 ans=remove_line_comment(ans)
@@ -51,52 +51,51 @@ class LeetCodeUtil:
         if os.path.exists(result_path): os.remove(result_path)
         
     
-    def iterate_python_files(self, iter_list,error_exists ,error_total,error_cnt, prev_err,timeout, timeoutCount):
-        for py_file in tqdm(iter_list):
-            new_iter_list = iter_list.remove(py_file)
-                
-            py_result_file=py_file[:-3]+'_result.txt'
+    def iterate_python_files(self, python_file_path,error_exists ,error_total,error_cnt, prev_err,timeout, timeoutCount):
+            
+        py_result_file=python_file_path[:-3]+'_result.txt'
 
-            #Sometimes leetcode does not answer
-            try:
-                
-                p=subprocess.run(['leetcode','submit',py_file,'-l','python3'],capture_output=True, timeout=timeout)
-                print('DONE')
-            except subprocess.TimeoutExpired:
-                timeoutCount = timeoutCount +1
-                print('TIMEOUT')
+        #Sometimes leetcode does not answer
+        try:
+            
+            p=subprocess.run(['leetcode','submit',python_file_path,'-l','python3'],capture_output=True, timeout=timeout)
 
-                if timeoutCount < 3:
-                    self.iterate_python_files(new_iter_list, timeout, timeoutCount= timeoutCount)
-                else:
-                    print("SESSION KEEPS TIMING OUT")
-                    break
+        except subprocess.TimeoutExpired:
+            timeoutCount = timeoutCount +1
+            print('TIMEOUT')
 
-
-            if 'http error' in str(p.stdout) or "[ERROR] session expired" in str(p.stdout) or\
-                "[ERROR] Problem not found!" in str(p.stdout): 
-                error_exists=True
-                error_total+=1
-                if prev_err: error_cnt+=1
-                else: error_cnt=1
-                prev_err=True
-                if error_cnt>20: 
-                    print('Too many errors.')
-                    break
+            if timeoutCount < 3:
+                self.iterate_python_files(python_file_path, timeout, timeoutCount= timeoutCount)
             else:
-                prev_err=False
+                print("SESSION KEEPS TIMING OUT")
+                return False,False
 
-                with open(py_result_file,'w',encoding='UTF8') as f:
-                    f.write('\n**stdout:**\n')
-                    f.write(str(p.stdout))
-                    f.write('\n**stderr:**\n')
-                    f.write(str(p.stderr))
-            # time.sleep(5)
-            # print('# of http error or session expired error: ',error_total)
-        return error_exists
+
+        if 'http error' in str(p.stdout) or "[ERROR] session expired" in str(p.stdout) or\
+            "[ERROR] Problem not found!" in str(p.stdout): 
+            error_exists=True
+            error_total+=1
+            if prev_err: error_cnt+=1
+            else: error_cnt=1
+            prev_err=True
+            if error_cnt>20: 
+                print('Too many errors.')
+                return False,False
+        else:
+            prev_err=False
+
+            with open(py_result_file,'w',encoding='UTF8') as f:
+                f.write('\n**stdout:**\n')
+                f.write(str(p.stdout))
+                f.write('\n**stderr:**\n')
+                f.write(str(p.stderr))
+        # time.sleep(5)
+        # print('# of http error or session expired error: ',error_total)
+
+        return error_exists, str(p.stdout)
     
     
-    def run_leetcode_test(self, py_files):
+    def run_leetcode_test(self, python_file_path):
 
         def result_exists(result_file:str):
             if not os.path.exists(result_file): return False
@@ -118,10 +117,11 @@ class LeetCodeUtil:
             error_exists=False
             error_cnt=0
             error_total=0
-            iter_list=[p for p in py_files if not result_exists(p[:-3]+'_result.txt')]
 
             #iterate the x python files but restart if it takes too long
-            error_exists = self.iterate_python_files(iter_list, error_exists ,error_total,error_cnt,prev_err,timeout = 300, timeoutCount=0)
+            error_exists,stdout = self.iterate_python_files(python_file_path, error_exists ,error_total,error_cnt,prev_err,timeout = 300, timeoutCount=0)
+        
+        return stdout
         
     def run_leetcode_pipeline(self, output_dir):
         config=Config()

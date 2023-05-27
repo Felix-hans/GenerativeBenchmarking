@@ -1,0 +1,38 @@
+Sure! Here's the implementation of the `Cashier` class in Python:
+
+```python
+from typing import List
+
+class Cashier:
+    def __init__(self, n: int, discount: int, products: List[int], prices: List[int]):
+        self.n = n
+        self.discount = discount
+        self.products = products
+        self.prices = prices
+        self.customer_count = 0
+
+    def getBill(self, product: List[int], amount: List[int]) -> float:
+        self.customer_count += 1
+        subtotal = 0
+
+        for i in range(len(product)):
+            product_id = product[i]
+            product_amount = amount[i]
+            product_index = self.products.index(product_id)
+            subtotal += self.prices[product_index] * product_amount
+
+        if self.customer_count % self.n == 0:
+            subtotal = subtotal * ((100 - self.discount) / 100)
+
+        return subtotal
+```
+
+You can create an instance of the `Cashier` class and call the `getBill` method to calculate the final total of the bill with the discount applied. Here's an example of how to use the `Cashier` class:
+
+```python
+cashier = Cashier(3, 50, [1, 2, 3, 4, 5, 6, 7], [100, 200, 300, 400, 300, 200, 100])
+print(cashier.getBill([1, 2], [1, 2]))  # Output: 500.0
+print(cashier.getBill([3, 7], [10, 10]))  # Output: 4000.0
+```
+
+Hope this helps!

@@ -1,0 +1,81 @@
+Sure! Here's the implementation of the Skiplist class in Python:
+
+```python
+import random
+
+class ListNode:
+    def __init__(self, val=None):
+        self.val = val
+        self.right = None
+        self.down = None
+
+class Skiplist:
+    def __init__(self):
+        self.head = ListNode()
+        self.levels = [self.head]
+
+    def search(self, target: int) -> bool:
+        curr = self.head
+        while curr:
+            if curr.val == target:
+                return True
+            elif curr.right is None or curr.right.val > target:
+                curr = curr.down
+            else:
+                curr = curr.right
+        return False
+
+    def add(self, num: int) -> None:
+        nodes = []
+        curr = self.head
+        while curr:
+            if curr.right is None or curr.right.val > num:
+                nodes.append(curr)
+                curr = curr.down
+            else:
+                curr = curr.right
+
+        insert = True
+        down = None
+        while insert and nodes:
+            node = nodes.pop()
+            node.right = ListNode(num)
+            node.right.down = down
+            down = node.right
+            insert = random.random() < 0.5  # 50% chance to go up one level
+
+            if insert:
+                new_node = ListNode()
+                new_node.down = self.levels[-1]
+                self.levels.append(new_node)
+                node.right.right = new_node
+
+    def erase(self, num: int) -> bool:
+        found = False
+        curr = self.head
+        while curr:
+            if curr.right is None or curr.right.val > num:
+                curr = curr.down
+            elif curr.right.val == num:
+                found = True
+                curr.right = curr.right.right
+                curr = curr.down
+            else:
+                curr = curr.right
+        return found
+```
+
+This implementation uses a skip list with multiple levels. Each level is a sorted linked list, and the levels are connected using the `down` pointer. When searching for a target value, we traverse the levels and move to the right or down based on the comparisons with the current node's value.
+
+The `add` method inserts a new value into the skip list. It starts from the top level and moves down, inserting new nodes at each level. The `erase` method removes a value from the skip list by linking the previous node to the next node.
+
+You can create a `Skiplist` object and call the methods as follows:
+
+```python
+obj = Skiplist()
+param_1 = obj.search(target)
+obj.add(num)
+param_3 = obj.erase(num)
+```
+
+Note that this implementation uses a 50% probability for each level to promote nodes to the next level. This can be adjusted based on the desired performance characteristics.

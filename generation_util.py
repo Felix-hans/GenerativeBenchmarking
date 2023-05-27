@@ -72,10 +72,9 @@ class GenerationUtil:
             print(problem_folder_path)
             return 0
 
-        output_dir=os.path.join(problem_folder_path, self.config.target_folder)
-        print(output_dir)
-
+        output_dir= os.path.join(self.config.run_path, self.config.target_folder,folder_name)
         if not os.path.exists(output_dir): os.mkdir(output_dir)
+        print(output_dir)
 
         return problem_instructions_file_path, problem_template_file_path,output_dir 
     
@@ -88,7 +87,22 @@ class GenerationUtil:
                     return False
                 return True
     
-    def executeEachRep(self,output_path,prompt, rep):
+
+    def renameFile(self,old_name,iteration,type):
+        try:
+            path, filename = os.path.split(old_name)
+            new_filename = filename.rsplit('.', 1)[0] + f'_attempt_{iteration}.{type}'
+            new_name = os.path.join(path, new_filename)
+
+            os.rename(old_name, new_name)
+            print(f"File renamed from {old_name} to {new_name}")
+        except FileNotFoundError:
+            print(f"The file {old_name} does not exist.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+    
+    def executeEachRep(self,output_dir,output_path,folder_name,prompt, rep):
         tryAgain = True
 
         print(f'Asking {self.model_name}...')
@@ -103,15 +117,41 @@ class GenerationUtil:
         print('Time used:',time_used)
 
         #Generate the output file
-        py_file_path=LeetCodeUtil().generate_submit_file(output_path, self.model_name)
+        py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
+        print(py_file_path)
 
         #submit test on leetcode, we try a couple of times before we stop trying
+        iteration = 0
         while tryAgain:
-            output = LeetCodeUtil().run_leetcode_pipeline(py_file_path,rep)
-            tryAgain, prompt = createPrompt.evaluateOutput(output)
-            print('pups')
-            response = self.generate(prompt, self.config.max_length)
 
+            if iteration ==2:
+                break
+                
+            output = LeetCodeUtil().run_leetcode_test(py_file_path)
+            tryAgain, prompt = createPrompt.evaluateOutput(tryAgain, output)
+            
+            if tryAgain == False:
+                break
+
+            response = self.generate(prompt, self.config.max_length)
+            
+            # rename the old python file and result file
+            self.renameFile(py_file_path, iteration, 'py')
+            self.renameFile(py_file_path[:-3]+'_result.txt', iteration,'txt')
+
+            with open(output_path,'w',encoding='UTF8') as f:
+                f.write(response)
+            print('Response written to',output_path)
+
+            py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
+
+            print(response)
+            print(iteration)
+            iteration = iteration + 1
+
+        handleQuestionBank.logQuestionValidation(folder_name,rep,output_dir,self.config.sampled_df_path, self.config.logFile)
+        self.chatbot.new_conversation()
+        
         return 0
         
     
@@ -122,18 +162,25 @@ class GenerationUtil:
 
         folder_path_list = handleQuestionBank.main(self.config.sampled_df_path, self.config.logFile)
 
+        #We create the path where we run 
+        run_folder_path = os.path.join(self.config.run_path, self.config.target_folder)
+        if not os.path.exists(run_folder_path): os.mkdir(run_folder_path)
+
         #we iterate over all folders (problems) in the path
         for folder_name in folder_path_list:
             
             folder_name = str(folder_name)
+            print('-------------------------------------------------------------------------------------')
+            print(folder_name)
 
             #We don't want to iterate over hidden files such as .DS_Store
             if folder_name.startswith('.'):
                 continue
-            print(folder_name)
+            
 
             try:
                 problem_instructions_file_path, problem_template_file_path,output_dir = self.handlePathCreation(root_path, folder_name)
+
             except Exception as e:
                 print(e)
                 print('folder path creation failed')
@@ -149,7 +196,7 @@ class GenerationUtil:
                 if self.output_exists(output_path): 
                     continue
 
-                self.executeEachRep(output_path,prompt, rep)
+                self.executeEachRep(output_dir,output_path,folder_name,prompt, rep)
                 
             handleQuestionBank.logQuestionGeneration(self.config.logFile,folder_name)
                 

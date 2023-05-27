@@ -1,0 +1,76 @@
+To implement the LRU Cache in Python, we can use a combination of a dictionary and a doubly linked list. The dictionary will store the key-value pairs for quick lookup, and the doubly linked list will maintain the order of the recently used keys.
+
+Here's the implementation:
+
+```python
+class LRUCache:
+
+    class Node:
+        def __init__(self, key, value):
+            self.key = key
+            self.value = value
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self.Node(None, None)
+        self.tail = self.Node(None, None)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._remove(node)
+            self._add(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._remove(node)
+            self._add(node)
+        else:
+            if len(self.cache) == self.capacity:
+                del self.cache[self.head.next.key]
+                self._remove(self.head.next)
+            node = self.Node(key, value)
+            self.cache[key] = node
+            self._add(node)
+
+    def _add(self, node):
+        prev_tail = self.tail.prev
+        prev_tail.next = node
+        node.prev = prev_tail
+        node.next = self.tail
+        self.tail.prev = node
+
+    def _remove(self, node):
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+```
+
+In this implementation, the `_add` method adds a node to the end of the doubly linked list, and the `_remove` method removes a node from the linked list. The `get` method retrieves the value of a given key and updates the order of the accessed node. The `put` method updates the value of an existing key or adds a new key-value pair to the cache. If the cache exceeds its capacity, the least recently used node (the one at the head of the linked list) is removed.
+
+You can create an instance of the `LRUCache` class and test it with the given example:
+
+```python
+lru_cache = LRUCache(2)
+lru_cache.put(1, 1)
+lru_cache.put(2, 2)
+print(lru_cache.get(1))  # Output: 1
+lru_cache.put(3, 3)
+print(lru_cache.get(2))  # Output: -1
+lru_cache.put(4, 4)
+print(lru_cache.get(1))  # Output: -1
+print(lru_cache.get(3))  # Output: 3
+print(lru_cache.get(4))  # Output: 4
+```
+
+This implementation should provide O(1) average time complexity for the `get` and `put` operations.

@@ -82,11 +82,11 @@ def removeGeneratedQuestions(sampled_df, log_df):
 
     return df
 
-def getResultFiles(dir_path):
+def getResultFiles(dir_path,rep):
     result_files = []
     for root, dirs, files in os.walk(dir_path):
         for file in files:
-            if file.endswith('result.txt'):
+            if file.endswith(f'output_{rep}_result.txt'):
                 result_files.append(os.path.join(root, file))
     return result_files
 
@@ -95,9 +95,7 @@ def parse_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()
 
-        status = re.search(r"b'  \xe2\x9c\x94 s+(\w+)", content)
-        status = 0
-
+        status = re.search(r"b'  \\xe2\\x9c\\x9\d s+(\w+)", content)
 
         cases_passed = re.search(r'(\d+)(?=\/\d+ cases)', content)
         cases_passed = int(cases_passed.group()) if cases_passed else None
@@ -116,9 +114,9 @@ def parse_file(file_path):
         return status, cases_passed, total_cases, ratio_cases, runtime_performance, memory_performance
 
 
-def getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df):
+def getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df,rep):
 
-    result_files_path = getResultFiles(problem_result_folder_path)
+    result_files_path = getResultFiles(problem_result_folder_path,rep)
 
     for i,file_path in enumerate(result_files_path):
         status, cases_passed, total_cases, ratio_cases, runtime_performance, memory_performance = parse_file(file_path)
@@ -127,12 +125,12 @@ def getAndInsertValidationStatistics(folder_name,problem_result_folder_path,samp
         sampled_df.loc[sampled_df['ID'] == int(folder_name), f'case_{i}_runtime_performance'] = runtime_performance
         sampled_df.loc[sampled_df['ID'] == int(folder_name), f'case_{i}_rmemory_performance'] = memory_performance
 
-    print(sampled_df)
+    
     return sampled_df
 
 
 
-def logQuestionValidation(folder_name,problem_result_folder_path,sampled_df_path, logFile):
+def logQuestionValidation(folder_name,rep,problem_result_folder_path,sampled_df_path, logFile):
     
     config = Config()
     log_df = pd.read_excel(logFile)
@@ -141,7 +139,7 @@ def logQuestionValidation(folder_name,problem_result_folder_path,sampled_df_path
     print('-----------------------')
     print(folder_name)
 
-    sampled_df = getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df)
+    sampled_df = getAndInsertValidationStatistics(folder_name,problem_result_folder_path,sampled_df,rep)
 
     log_df.loc[log_df['ID'] == int(folder_name), config.validated_name] = 1
 

@@ -1,0 +1,85 @@
+To implement the RangeModule class, we can use a list to store the ranges as half-open intervals. Each interval can be represented as a tuple (left, right). The list will maintain the intervals in sorted order based on the left value.
+
+Here's the implementation of the RangeModule class:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.intervals = []
+    
+    def addRange(self, left: int, right: int) -> None:
+        new_intervals = []
+        i = 0
+        n = len(self.intervals)
+        
+        # Find the correct position to insert the new interval
+        while i < n and self.intervals[i][1] < left:
+            new_intervals.append(self.intervals[i])
+            i += 1
+        
+        # Merge intervals that overlap with the new interval
+        while i < n and self.intervals[i][0] <= right:
+            left = min(left, self.intervals[i][0])
+            right = max(right, self.intervals[i][1])
+            i += 1
+        
+        new_intervals.append((left, right))
+        new_intervals.extend(self.intervals[i:])
+        self.intervals = new_intervals
+    
+    def queryRange(self, left: int, right: int) -> bool:
+        # Perform binary search to find the interval that overlaps with the given range
+        left_index = self.findInterval(left)
+        
+        if left_index == -1 or self.intervals[left_index][1] < right:
+            return False
+        
+        return True
+    
+    def removeRange(self, left: int, right: int) -> None:
+        new_intervals = []
+        i = 0
+        n = len(self.intervals)
+        
+        # Add intervals that are entirely to the left of the removed range
+        while i < n and self.intervals[i][1] <= left:
+            new_intervals.append(self.intervals[i])
+            i += 1
+        
+        # Split or exclude intervals that overlap with the removed range
+        while i < n and self.intervals[i][0] < right:
+            if self.intervals[i][0] < left:
+                new_intervals.append((self.intervals[i][0], left))
+            if self.intervals[i][1] > right:
+                new_intervals.append((right, self.intervals[i][1]))
+            i += 1
+        
+        new_intervals.extend(self.intervals[i:])
+        self.intervals = new_intervals
+    
+    def findInterval(self, point: int) -> int:
+        # Perform binary search to find the interval that overlaps with the given point
+        left = 0
+        right = len(self.intervals) - 1
+        
+        while left <= right:
+            mid = (left + right) // 2
+            if self.intervals[mid][1] < point:
+                left = mid + 1
+            elif self.intervals[mid][0] > point:
+                right = mid - 1
+            else:
+                return mid
+        
+        return right
+
+# Test the implementation
+rangeModule = RangeModule()
+rangeModule.addRange(10, 20)
+rangeModule.removeRange(14, 16)
+print(rangeModule.queryRange(10, 14))  # Output: True
+print(rangeModule.queryRange(13, 15))  # Output: False
+print(rangeModule.queryRange(16, 17))  # Output: True
+```
+
+The output of the test matches the expected output [True, False, True] as mentioned in the example.

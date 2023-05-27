@@ -1,0 +1,55 @@
+Here's the implementation of the `TimeMap` class in Python:
+
+```python
+from collections import defaultdict
+
+
+class TimeMap:
+    def __init__(self):
+        self.data = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.data:
+            return ""
+
+        # Binary search to find the largest timestamp_prev <= timestamp
+        timestamps = self.data[key]
+        left, right = 0, len(timestamps) - 1
+
+        while left <= right:
+            mid = (left + right) // 2
+            if timestamps[mid][0] == timestamp:
+                return timestamps[mid][1]
+            elif timestamps[mid][0] < timestamp:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        if right >= 0:
+            return timestamps[right][1]
+        else:
+            return ""
+```
+
+The `TimeMap` class uses a dictionary (`self.data`) to store the key-value pairs. The values are stored as a list of tuples, where each tuple contains a timestamp and a value.
+
+The `set` method appends a new tuple `(timestamp, value)` to the list corresponding to the given key.
+
+The `get` method performs a binary search on the list of timestamps associated with the given key. It looks for the largest timestamp_prev that is less than or equal to the given `timestamp`. If a match is found, it returns the corresponding value. Otherwise, it returns an empty string.
+
+You can create an instance of the `TimeMap` class and use the `set` and `get` methods as shown in the example:
+
+```python
+timeMap = TimeMap()
+timeMap.set("foo", "bar", 1)
+print(timeMap.get("foo", 1))  # Output: "bar"
+print(timeMap.get("foo", 3))  # Output: "bar"
+timeMap.set("foo", "bar2", 4)
+print(timeMap.get("foo", 4))  # Output: "bar2"
+print(timeMap.get("foo", 5))  # Output: "bar2"
+```
+
+Hope this helps! Let me know if you have any further questions.

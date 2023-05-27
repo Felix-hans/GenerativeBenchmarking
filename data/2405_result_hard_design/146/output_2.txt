@@ -1,0 +1,78 @@
+To implement an LRU cache in Python, we can use a combination of a doubly linked list and a dictionary. The doubly linked list will help us keep track of the least recently used items, and the dictionary will allow for fast access to the cache items.
+
+Here's the implementation of the `LRUCache` class:
+
+```python
+class LRUCache:
+    class ListNode:
+        def __init__(self, key=None, value=None):
+            self.key = key
+            self.value = value
+            self.prev = None
+            self.next = None
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = self.ListNode()
+        self.tail = self.ListNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._move_to_front(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._move_to_front(node)
+        else:
+            if len(self.cache) == self.capacity:
+                self._evict_least_recent()
+            new_node = self.ListNode(key, value)
+            self.cache[key] = new_node
+            self._add_to_front(new_node)
+
+    def _add_to_front(self, node):
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node):
+        prev = node.prev
+        next = node.next
+        prev.next = next
+        next.prev = prev
+
+    def _move_to_front(self, node):
+        self._remove_node(node)
+        self._add_to_front(node)
+
+    def _evict_least_recent(self):
+        node_to_remove = self.tail.prev
+        self._remove_node(node_to_remove)
+        del self.cache[node_to_remove.key]
+```
+
+In the implementation, the `ListNode` class represents a node in the doubly linked list. The `LRUCache` class itself maintains the cache size, a dictionary for fast access to cache items, and the head and tail nodes of the doubly linked list.
+
+The `get` method checks if the key is present in the cache and returns the corresponding value. If the key is found, the method moves the corresponding node to the front of the list using the `_move_to_front` helper method.
+
+The `put` method updates the value of an existing key or adds a new key-value pair to the cache. If the cache is already at capacity, it evicts the least recently used item using the `_evict_least_recent` helper method. If the key already exists, the method updates the value and moves the corresponding node to the front of the list. If the key is new, a new node is created, added to the front of the list, and inserted into the cache dictionary.
+
+The helper methods `_add_to_front`, `_remove_node`, and `_move_to_front` are used to manipulate the doubly linked list.
+
+You can test the implementation using the example you provided:
+
+```python
+lRUCache = LRUCache(2)
+lRUCache.put(1, 1)  # cache is {1=1}
+lRUCache.put(2, 2)  # cache is {1=1, 2=2}
+print(lRUCache.get(1))  # returns 1
+lRUCache.put(3, 3)  #

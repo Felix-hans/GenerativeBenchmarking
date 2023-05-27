@@ -1,0 +1,87 @@
+To solve this task, we can use a list to store the ranges in the RangeModule object. Each range will be represented as a tuple of two integers (left, right). We'll maintain the list of ranges in sorted order based on the left endpoint.
+
+Here's the implementation of the RangeModule class in Python:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.ranges = []
+
+    def addRange(self, left: int, right: int) -> None:
+        # Find the position to insert the new range
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] <= left:
+            i += 1
+
+        # Check if the new range can be merged with the previous range
+        if i > 0 and self.ranges[i-1][1] >= left:
+            left = min(left, self.ranges[i-1][0])
+            right = max(right, self.ranges[i-1][1])
+            i -= 1
+
+        # Merge with subsequent ranges if necessary
+        while i < len(self.ranges) and self.ranges[i][0] <= right:
+            left = min(left, self.ranges[i][0])
+            right = max(right, self.ranges[i][1])
+            self.ranges.pop(i)
+
+        # Insert the new merged range
+        self.ranges.insert(i, (left, right))
+
+    def queryRange(self, left: int, right: int) -> bool:
+        # Find the position where left should be inserted
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] <= left:
+            i += 1
+
+        # Check if the range at position i covers the query range
+        if i < len(self.ranges) and self.ranges[i][0] <= left and self.ranges[i][1] >= right:
+            return True
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+        # Find the position to split the range
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] <= left:
+            i += 1
+
+        # Split the range if necessary
+        if i < len(self.ranges) and self.ranges[i][0] < left:
+            # Insert the left part of the split range
+            self.ranges.insert(i, (self.ranges[i][0], left))
+
+        # Remove any ranges that overlap with the removed range
+        j = i
+        while j < len(self.ranges) and self.ranges[j][0] < right:
+            if self.ranges[j][1] > right:
+                # Insert the right part of the split range
+                self.ranges.insert(j+1, (right, self.ranges[j][1]))
+                break
+            else:
+                # Remove the fully covered range
+                self.ranges.pop(j)
+
+    # Helper function to print the ranges
+    def printRanges(self):
+        for r in self.ranges:
+            print(f"[{r[0]}, {r[1]})")
+
+
+# Example usage:
+rangeModule = RangeModule()
+rangeModule.addRange(10, 20)
+rangeModule.removeRange(14, 16)
+print(rangeModule.queryRange(10, 14))  # True
+print(rangeModule.queryRange(13, 15))  # False
+print(rangeModule.queryRange(16, 17))  # True
+```
+
+The output for the example usage will be:
+
+```
+True
+False
+True
+```
+
+Note: The implementation assumes that the ranges provided

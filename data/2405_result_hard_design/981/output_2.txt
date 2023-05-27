@@ -1,0 +1,55 @@
+Here's an implementation of the `TimeMap` class in Python:
+
+```python
+from collections import defaultdict
+import bisect
+
+class TimeMap:
+
+    def __init__(self):
+        self.data = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.data:
+            return ""
+
+        values = self.data[key]
+        index = bisect.bisect_right(values, (timestamp, chr(127)))
+
+        if index == 0:
+            return ""
+        else:
+            return values[index - 1][1]
+```
+
+Explanation:
+
+1. The `TimeMap` class uses a `defaultdict` from the `collections` module to store the data. The keys of the dictionary are the keys provided in the `set` method, and the values are lists of tuples containing `(timestamp, value)` pairs.
+2. The `set` method simply appends the `(timestamp, value)` pair to the list of values associated with the given key.
+3. The `get` method first checks if the key exists in the dictionary. If not, it returns an empty string.
+4. If the key exists, it retrieves the list of values associated with the key.
+5. It then uses the `bisect.bisect_right` function to find the rightmost index in the list where the timestamp is less than or equal to the given timestamp.
+6. If the index is 0, it means there are no values with timestamps less than or equal to the given timestamp, so it returns an empty string.
+7. Otherwise, it returns the value corresponding to the index - 1 in the list.
+
+You can use the `TimeMap` class as follows:
+
+```python
+# Create a TimeMap object
+timeMap = TimeMap()
+
+# Store values for key "foo" at different timestamps
+timeMap.set("foo", "bar", 1)
+timeMap.set("foo", "bar2", 4)
+
+# Retrieve values for key "foo" at different timestamps
+print(timeMap.get("foo", 1))  # Output: "bar"
+print(timeMap.get("foo", 3))  # Output: "bar"
+print(timeMap.get("foo", 4))  # Output: "bar2"
+print(timeMap.get("foo", 5))  # Output: "bar2"
+```
+
+Hope this helps!
