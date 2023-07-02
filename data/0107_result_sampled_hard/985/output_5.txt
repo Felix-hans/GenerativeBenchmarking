@@ -1,0 +1,37 @@
+To solve the given task, you can follow the following steps:
+
+1. Initialize an empty list called `answer` to store the results.
+2. Initialize a variable called `even_sum` to keep track of the sum of even values in the `nums` array.
+3. Iterate over each query in the `queries` list.
+    - Retrieve the `vali` and `indexi` values from the query.
+    - Update the value at index `indexi` in the `nums` array by adding `vali` to it.
+    - Check if the updated value at index `indexi` is even.
+        - If it is even, add it to the `even_sum`.
+        - If it is not even, subtract the previous value at index `indexi` from the `even_sum`.
+    - Add the current value of `even_sum` to the `answer` list.
+4. Return the `answer` list.
+
+Here's the implementation of the `sumEvenAfterQueries` function:
+
+```python
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        answer = []
+        even_sum = sum(num for num in nums if num % 2 == 0)
+
+        for val, index in queries:
+            original_num = nums[index]
+            nums[index] += val
+
+            if original_num % 2 == 0:
+                even_sum -= original_num
+
+            if nums[index] % 2 == 0:
+                even_sum += nums[index]
+
+            answer.append(even_sum)
+
+        return answer
+```
+
+You can create an instance of the `Solution` class and call the `sumEvenAfterQueries` function with the input `nums` and `queries` to get the desired output.

@@ -1,0 +1,42 @@
+To solve this problem, we can use a greedy algorithm approach. We sort the satisfaction list in descending order and calculate the maximum like-time coefficient for each possible starting dish. We keep track of the maximum sum encountered so far and return it as the result.
+
+Here's the implementation of the `maxSatisfaction` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort satisfaction in descending order
+        max_sum = 0
+        total_time = 0
+        
+        for s in satisfaction:
+            if total_time + s > 0:
+                total_time += s
+                max_sum += total_time
+            else:
+                break
+        
+        return max_sum
+```
+
+Let's test the solution with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+# Example 2
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+# Example 3
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The output matches the expected results for the given examples.

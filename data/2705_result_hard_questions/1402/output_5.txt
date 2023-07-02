@@ -1,0 +1,41 @@
+To solve this problem, we can use a greedy algorithm. The key idea is to sort the dishes based on their satisfaction levels in descending order. This allows us to prioritize cooking the dishes with higher satisfaction levels early on.
+
+Here's the implementation of the `maxSatisfaction` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort dishes in descending order of satisfaction
+        
+        max_coefficient = 0  # Maximum like-time coefficient
+        total_time = 0  # Total time taken to cook the dishes
+        
+        for s in satisfaction:
+            if total_time + s <= 0:
+                break  # Stop cooking further dishes if adding the current dish decreases the coefficient
+            total_time += s
+            max_coefficient += total_time
+        
+        return max_coefficient
+```
+
+This implementation sorts the `satisfaction` list in descending order using `sort(reverse=True)`. Then, it iterates over the sorted list and checks if adding the current dish to the total time taken decreases the coefficient. If it does, the loop is stopped and the maximum coefficient obtained so far is returned.
+
+Let's test the implementation with the given examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The implementation should produce the correct results for the provided examples.

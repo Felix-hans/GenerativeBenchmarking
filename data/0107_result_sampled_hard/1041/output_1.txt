@@ -1,0 +1,42 @@
+To solve this problem, we can simulate the robot's movement on the plane and check if it ever returns to the initial position or if its direction changes after executing the given instructions.
+
+Here's the Python implementation for the `isRobotBounded` function:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Define the initial position and direction
+        x, y = 0, 0
+        dx, dy = 0, 1  # Initially facing north
+
+        # Simulate the robot's movement
+        for instruction in instructions:
+            if instruction == 'G':
+                x += dx
+                y += dy
+            elif instruction == 'L':
+                dx, dy = -dy, dx  # Rotate 90 degrees to the left
+            elif instruction == 'R':
+                dx, dy = dy, -dx  # Rotate 90 degrees to the right
+
+        # Check if the robot returns to the initial position or changes its direction
+        return (x, y) == (0, 0) or (dx, dy) != (0, 1)
+```
+
+We initialize the robot's position at `(0, 0)` and its direction as `(0, 1)` (facing north). We iterate over each instruction and update the position and direction accordingly.
+
+For `'G'`, we move one step forward in the current direction by updating the position `(x, y)`.
+
+For `'L'`, we rotate 90 degrees to the left by updating the direction `(dx, dy)` as `(-dy, dx)`.
+
+For `'R'`, we rotate 90 degrees to the right by updating the direction `(dx, dy)` as `(dy, -dx)`.
+
+After executing all the instructions, we check if the robot returns to the initial position `(0, 0)` or if its direction has changed from the initial direction `(0, 1)`. If either condition is satisfied, we return `True`, indicating that the robot can move in a circle. Otherwise, we return `False`.
+
+You can create an instance of the `Solution` class and call the `isRobotBounded` method with the input instructions to check the result. For example:
+
+```python
+solution = Solution()
+instructions = "GGLLGG"
+print(solution.isRobotBounded(instructions))  # Output: True
+```

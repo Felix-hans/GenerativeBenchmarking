@@ -1,0 +1,53 @@
+I apologize for the incorrect implementation. The previous solution has a time complexity of O(n^2), which can lead to time limit exceeded errors for large input sizes. We need to optimize the solution to meet the requirements efficiently.
+
+One way to solve this problem is by using a sliding window approach with a sorted data structure. We can maintain a sorted set or a sorted list of elements within the window of size `indexDiff`. By comparing the current element with the elements in the sorted data structure, we can find if there exists a pair that satisfies the conditions.
+
+Here's the updated implementation of the `containsNearbyAlmostDuplicate` function:
+
+```python
+from typing import List
+
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
+        n = len(nums)
+        sorted_set = []
+        
+        for i in range(n):
+            if i > indexDiff:
+                sorted_set.remove(nums[i - indexDiff - 1])
+            
+            # Find the index to insert the current element in the sorted set
+            left = 0
+            right = len(sorted_set) - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if abs(sorted_set[mid] - nums[i]) <= valueDiff:
+                    return True
+                elif sorted_set[mid] < nums[i]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            
+            sorted_set.insert(left, nums[i])
+        
+        return False
+```
+
+You can use the updated solution in the same way as before:
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+result = solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff)
+print(result)  # Output: True
+
+nums = [1, 5, 9, 1, 5, 9]
+indexDiff = 2
+valueDiff = 3
+result = solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff)
+print(result)  # Output: False
+```
+
+The updated solution should be able to handle larger inputs without encountering time limit exceeded errors.

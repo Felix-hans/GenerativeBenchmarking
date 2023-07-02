@@ -1,0 +1,85 @@
+To implement the Skiplist class in Python, we can use a combination of linked lists and randomization. Here's the implementation:
+
+```python
+import random
+
+class Node:
+    def __init__(self, val=None, right=None, down=None):
+        self.val = val
+        self.right = right
+        self.down = down
+
+class Skiplist:
+    def __init__(self):
+        self.head = Node()
+        
+    def search(self, target: int) -> bool:
+        curr = self.head
+        while curr:
+            while curr.right and curr.right.val < target:
+                curr = curr.right
+            if curr.right and curr.right.val == target:
+                return True
+            curr = curr.down
+        return False
+        
+    def add(self, num: int) -> None:
+        nodes = []
+        curr = self.head
+        while curr:
+            while curr.right and curr.right.val < num:
+                curr = curr.right
+            nodes.append(curr)
+            curr = curr.down
+        
+        insert = True
+        down = None
+        while insert and nodes:
+            curr = nodes.pop()
+            curr.right = Node(num, curr.right, down)
+            down = curr.right
+            insert = random.random() < 0.5
+        
+        if insert:
+            self.head = Node(None, Node(num, None, down), self.head)
+        
+    def erase(self, num: int) -> bool:
+        curr = self.head
+        erased = False
+        while curr:
+            while curr.right and curr.right.val < num:
+                curr = curr.right
+            if curr.right and curr.right.val == num:
+                curr.right = curr.right.right
+                erased = True
+            curr = curr.down
+        return erased
+```
+
+This implementation uses a bottom-up approach, where each node has a right pointer to the next node on the same level and a down pointer to the next node on the lower level. The `search` function traverses the skiplist from top to bottom, comparing the values until the target is found or the end of the skiplist is reached. The `add` function starts from the top level and randomly decides whether to insert the number at that level. If it decides to insert, it creates a new node and updates the pointers accordingly. The `erase` function performs a similar traversal as the `search` function and removes the node with the given value if found.
+
+Here's an example usage of the Skiplist class:
+
+```python
+skiplist = Skiplist()
+skiplist.add(1)
+skiplist.add(2)
+skiplist.add(3)
+print(skiplist.search(0))  # False
+skiplist.add(4)
+print(skiplist.search(1))  # True
+print(skiplist.erase(0))   # False
+print(skiplist.erase(1))   # True
+print(skiplist.search(1))  # False
+```
+
+The output will be:
+```
+False
+True
+False
+True
+False
+```
+
+The Skiplist class implements the required methods `__init__`, `search`, `add`, and `erase`. You can create an instance of the Skiplist class and call the methods as shown in the example above.

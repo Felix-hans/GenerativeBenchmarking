@@ -1,0 +1,31 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum profit we can achieve at each day. We will maintain four variables: `buy1`, `sell1`, `buy2`, and `sell2`. 
+
+Initially, `buy1` and `buy2` are set to negative infinity, and `sell1` and `sell2` are set to 0. These variables represent the maximum profit achieved after buying and selling at the corresponding points.
+
+We iterate through the prices array and update the variables as follows:
+
+1. Update `buy1` to be the maximum of its current value and the negative of the current price. This represents the maximum profit after buying the first stock.
+2. Update `sell1` to be the maximum of its current value and the sum of the current price and `buy1`. This represents the maximum profit after selling the first stock.
+3. Update `buy2` to be the maximum of its current value and the difference between `sell1` and the current price. This represents the maximum profit after buying the second stock.
+4. Update `sell2` to be the maximum of its current value and the sum of the current price and `buy2`. This represents the maximum profit after selling the second stock.
+
+Finally, we return `sell2`, which represents the maximum profit achievable after the two transactions.
+
+Here's the implementation of the `maxProfit` function:
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        buy1 = buy2 = float('-inf')
+        sell1 = sell2 = 0
+        
+        for price in prices:
+            buy1 = max(buy1, -price)
+            sell1 = max(sell1, buy1 + price)
+            buy2 = max(buy2, sell1 - price)
+            sell2 = max(sell2, buy2 + price)
+        
+        return sell2
+```
+
+Now, you can create an instance of the `Solution` class and call the `maxProfit` function, passing in the `prices` array as the argument, to get the maximum profit achievable with at most two transactions.

@@ -1,0 +1,33 @@
+Here's one possible implementation of the `isRobotBounded` function in Python:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Initial position and direction of the robot
+        x, y = 0, 0  # Position
+        dx, dy = 0, 1  # Direction (north)
+
+        # Execute the instructions for 4 cycles
+        for _ in range(4):
+            for instruction in instructions:
+                if instruction == 'G':
+                    x += dx
+                    y += dy
+                elif instruction == 'L':
+                    dx, dy = -dy, dx  # Rotate 90 degrees to the left
+                elif instruction == 'R':
+                    dx, dy = dy, -dx  # Rotate 90 degrees to the right
+
+        # Check if the robot returns to the initial position (0, 0)
+        return x == 0 and y == 0
+```
+
+You can create an instance of the `Solution` class and call the `isRobotBounded` method, passing the instructions as an argument to check if the robot stays within a circle. For example:
+
+```python
+solution = Solution()
+instructions = "GGLLGG"
+print(solution.isRobotBounded(instructions))  # Output: True
+```
+
+Note that this implementation executes the instructions for four cycles. Since the robot always returns to the initial position after at most four cycles, checking the position and direction after four cycles is sufficient to determine if the robot stays within a circle.

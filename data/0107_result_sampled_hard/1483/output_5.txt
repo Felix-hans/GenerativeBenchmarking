@@ -1,0 +1,42 @@
+To solve this task, we can use dynamic programming to precompute the ancestors of each node up to a certain level. Here's the implementation of the `TreeAncestor` class:
+
+```python
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.dp = [[-1] * 20 for _ in range(n)]  # 2^20 > 5 * 10^4
+
+        # Precompute ancestors using dynamic programming
+        for node in range(n):
+            self.dp[node][0] = parent[node]
+
+        for level in range(1, 20):
+            for node in range(n):
+                if self.dp[node][level - 1] != -1:
+                    self.dp[node][level] = self.dp[self.dp[node][level - 1]][level - 1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        for level in range(20):
+            if k & (1 << level):
+                node = self.dp[node][level]
+                if node == -1:
+                    break
+
+        return node
+```
+
+In the `TreeAncestor` class, we initialize a 2D array `dp` to store the ancestors of each node. Each row in `dp` represents a node, and each column represents a power of 2 (from 0 to 19). We use 20 columns because 2^20 is greater than 5 * 10^4, the maximum number of nodes allowed.
+
+In the constructor `__init__`, we populate the `dp` array by iterating over each node and its parent. For each node, we set its 0th ancestor to its immediate parent. Then, using dynamic programming, we compute the rest of the ancestors for each level from 1 to 19. The ancestor at `dp[node][level]` is set to the ancestor of the ancestor at `dp[node][level - 1]`.
+
+In the `getKthAncestor` method, we iterate over the binary representation of `k` from the least significant bit to the most significant bit. If the current bit is 1, we move up `2^level` ancestors. If the current node becomes `-1`, it means there is no such ancestor, so we break the loop. Finally, we return the node, which represents the k-th ancestor of the given node.
+
+Here's an example usage:
+
+```python
+treeAncestor = TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2])
+print(treeAncestor.getKthAncestor(3, 1))  # Output: 1
+print(treeAncestor.getKthAncestor(5, 2))  # Output: 0
+print(treeAncestor.getKthAncestor(6, 3))  # Output: -1
+```
+
+The output matches the expected results provided in the task description.

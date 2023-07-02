@@ -1,0 +1,34 @@
+To solve this task, we can use a dynamic programming approach. We'll sort the satisfaction values in descending order, and then iterate over them to calculate the maximum sum of like-time coefficients.
+
+Here's the implementation of the `maxSatisfaction` function in Python:
+
+```python
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort in descending order
+        
+        max_sum = 0
+        total_time = 0
+        
+        for s in satisfaction:
+            if total_time + s <= 0:
+                break
+            total_time += s
+            max_sum += total_time
+        
+        return max_sum
+```
+
+Let's go through the code step by step:
+
+1. We start by sorting the `satisfaction` list in descending order using the `sort` method. This is necessary because we want to process the dishes with higher satisfaction levels first.
+
+2. We initialize `max_sum` and `total_time` variables to keep track of the maximum sum of like-time coefficients and the total time taken.
+
+3. We iterate over each satisfaction value `s` in the sorted list. If adding `s` to `total_time` makes it negative or zero, we break out of the loop since it's not beneficial to continue processing further dishes.
+
+4. Otherwise, we add `s` to `total_time` and update `max_sum` by adding `total_time` to it. This accounts for the like-time coefficient of the current dish.
+
+5. After the loop ends, we return the final `max_sum` as the maximum sum of like-time coefficients that the chef can obtain.
+
+Now you can create an instance of the `Solution` class and call the `maxSatisfaction` function with your input to get the desired output.

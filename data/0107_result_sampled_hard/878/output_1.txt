@@ -1,0 +1,60 @@
+Apologies for the error. The issue is that the code is not correctly handling cases where `n` is smaller than the number of magical numbers in one complete cycle (`magical_numbers_per_cycle`). In such cases, the code should not calculate the complete cycles and should directly find the remaining number. Here's the corrected code:
+
+```python
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        MOD = 10**9 + 7
+
+        # Calculate the LCM of a and b
+        def gcd(a, b):
+            while b != 0:
+                a, b = b, a % b
+            return a
+
+        def lcm(a, b):
+            return (a * b) // gcd(a, b)
+
+        lcm_ab = lcm(a, b)
+
+        # Calculate the number of magical numbers in each LCM cycle
+        magical_numbers_per_cycle = lcm_ab // a + lcm_ab // b - 1
+
+        # Calculate the number of complete cycles and the remaining numbers
+        complete_cycles = n // magical_numbers_per_cycle
+        remaining_numbers = n % magical_numbers_per_cycle
+
+        # Calculate the result based on complete cycles and remaining numbers
+        result = (complete_cycles * lcm_ab) % MOD
+
+        if remaining_numbers == 0:
+            return result
+        else:
+            if complete_cycles == 0:
+                # If n is smaller than the number of magical numbers in one complete cycle,
+                # directly find the remaining number without calculating complete cycles
+                for i in range(1, min(a, b) + 1):
+                    if i % a == 0 or i % b == 0:
+                        remaining_numbers -= 1
+                        if remaining_numbers == 0:
+                            return i % MOD
+            else:
+                # Find the remaining number by iterating from 1 to min(a, b)
+                # and checking if each number is magical
+                for i in range(1, min(a, b) + 1):
+                    if i % a == 0 or i % b == 0:
+                        remaining_numbers -= 1
+                        if remaining_numbers == 0:
+                            return (result + i) % MOD
+
+        return result
+```
+
+Now, let's test the code again with the given examples:
+
+```python
+solution = Solution()
+print(solution.nthMagicalNumber(1, 2, 3))  # Output: 2
+print(solution.nthMagicalNumber(4, 2, 3))  # Output: 6
+```
+
+The code should now execute without errors and produce the correct results for the given examples.

@@ -1,0 +1,32 @@
+Here's the implementation of the `orderlyQueue` function in Python:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k == 1:
+            # If k is 1, we can only rotate the string
+            # to get the lexicographically smallest string.
+            # We try all possible rotations and return the smallest one.
+            n = len(s)
+            smallest = s
+            for _ in range(n):
+                s = s[1:] + s[0]
+                smallest = min(smallest, s)
+            return smallest
+        else:
+            # If k is greater than 1, we can select any character
+            # and move it to the end. Since we can make any number
+            # of moves, we can sort the string to get the lexicographically
+            # smallest string.
+            return ''.join(sorted(s))
+```
+
+You can create an instance of the `Solution` class and call the `orderlyQueue` function with the given inputs to get the desired output. For example:
+
+```python
+solution = Solution()
+print(solution.orderlyQueue("cba", 1))  # Output: "acb"
+print(solution.orderlyQueue("baaca", 3))  # Output: "aaabc"
+```
+
+Note that the implementation assumes the input constraints are satisfied, and it may not handle invalid inputs appropriately.

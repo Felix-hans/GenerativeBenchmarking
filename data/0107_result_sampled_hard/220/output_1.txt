@@ -1,0 +1,56 @@
+Apologies for the error in the previous code. The issue was with the brute-force approach used to check for the value difference condition. It caused the solution to exceed the time limit for large inputs.
+
+To optimize the solution, we can use a bucketing technique based on the pigeonhole principle. We divide the range of possible values into buckets and map each value to its corresponding bucket. If two values fall into the same bucket or adjacent buckets, their difference will be within the value difference constraint.
+
+Here's the updated implementation:
+
+```python
+from typing import List
+
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
+        if indexDiff <= 0 or valueDiff < 0:
+            return False
+        
+        buckets = {}  # Store the buckets and their corresponding values
+        
+        for i, num in enumerate(nums):
+            bucket_idx = num // (valueDiff + 1)  # Calculate the bucket index
+            
+            # Check if the value falls into the same bucket or adjacent buckets
+            for idx in range(bucket_idx - 1, bucket_idx + 2):
+                if idx in buckets and abs(buckets[idx] - num) <= valueDiff:
+                    return True
+            
+            buckets[bucket_idx] = num  # Store the current value
+            
+            # Remove the entry if the number of buckets exceeds indexDiff
+            if i >= indexDiff:
+                del buckets[nums[i - indexDiff] // (valueDiff + 1)]
+        
+        return False
+```
+
+Now, let's test the updated solution with the given examples:
+
+```python
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+
+solution = Solution()
+result = solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff)
+print(result)  # Output: True
+```
+
+```python
+nums = [1, 5, 9, 1, 5, 9]
+indexDiff = 2
+valueDiff = 3
+
+solution = Solution()
+result = solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff)
+print(result)  # Output: False
+```
+
+Both examples should now produce the correct outputs without exceeding the time limit.

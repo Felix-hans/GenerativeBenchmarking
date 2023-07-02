@@ -1,0 +1,53 @@
+Apologies for the mistake again. I see another issue in the code. The problem lies in the logic for updating the `even_sum` variable. We need to update it correctly based on the changes made to `nums` after each query.
+
+Here's the corrected code:
+
+```python
+class Solution:
+    def sumEvenAfterQueries(self, nums, queries):
+        # Initialize the sum of even values
+        even_sum = sum(num for num in nums if num % 2 == 0)
+
+        # Initialize the answer array
+        answer = []
+
+        for val, index in queries:
+            # Check if the original value at the specified index is even
+            is_even = nums[index] % 2 == 0
+
+            # Update the value at the specified index
+            nums[index] += val
+
+            # Check if the updated value is even
+            is_updated_even = nums[index] % 2 == 0
+
+            # Update even_sum based on the changes
+            if is_even:
+                # Subtract the original even value
+                even_sum -= nums[index] - val
+            if is_updated_even:
+                # Add the updated even value
+                even_sum += nums[index]
+
+            # Append the current sum of even values to the answer array
+            answer.append(even_sum)
+
+        return answer
+```
+
+Now you can run the code again with the same test case:
+
+```python
+nums = [1, 2, 3, 4]
+queries = [[1, 0], [-3, 1], [-4, 0], [2, 3]]
+solution = Solution()
+result = solution.sumEvenAfterQueries(nums, queries)
+print(result)
+```
+
+Output:
+```
+[8, 6, 2, 4]
+```
+
+Now the code should give the correct output.

@@ -1,0 +1,57 @@
+To solve the given task, we can use a combination of sorting and a priority queue. Here's the Python implementation for the `maxPerformance` function:
+
+```python
+from heapq import heappush, heappop
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        # Create a list of tuples (speed, efficiency) for each engineer
+        engineers = [(s, e) for s, e in zip(speed, efficiency)]
+
+        # Sort the engineers by their efficiency in descending order
+        engineers.sort(key=lambda x: x[1], reverse=True)
+
+        speed_sum = 0  # Running sum of speeds
+        performance = 0  # Maximum performance
+
+        # Create a min heap to store the k engineers with the lowest speeds
+        speed_heap = []
+
+        for engineer in engineers:
+            # Add the current engineer's speed to the speed sum
+            speed_sum += engineer[0]
+
+            # Push the current engineer's speed to the heap
+            heappush(speed_heap, engineer[0])
+
+            # If the heap size exceeds k, remove the engineer with the lowest speed
+            if len(speed_heap) > k:
+                min_speed = heappop(speed_heap)
+                speed_sum -= min_speed
+
+            # Calculate the performance with the current engineer as the minimum efficiency
+            performance = max(performance, speed_sum * engineer[1])
+
+        return performance % (10**9 + 7)
+```
+
+Now, you can create an instance of the `Solution` class and call the `maxPerformance` function with the given inputs:
+
+```python
+n = 6
+speed = [2, 10, 3, 1, 5, 8]
+efficiency = [5, 4, 3, 9, 7, 2]
+k = 2
+
+solution = Solution()
+result = solution.maxPerformance(n, speed, efficiency, k)
+print(result)
+```
+
+Running this code will give the output:
+```
+60
+```
+
+You can similarly test the other examples by changing the values of `n`, `speed`, `efficiency`, and `k`.

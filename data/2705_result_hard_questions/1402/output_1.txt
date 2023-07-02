@@ -1,0 +1,46 @@
+To solve this problem, we can use a greedy approach. The key idea is to sort the satisfaction values in descending order and then iterate over them to calculate the maximum sum of like-time coefficients.
+
+Here's the implementation of the `maxSatisfaction` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort in descending order
+        
+        max_sum = 0  # Maximum sum of like-time coefficients
+        total_time = 0  # Total time taken
+        
+        for s in satisfaction:
+            if total_time + s <= 0:
+                break  # If adding the current dish decreases the total time, stop adding more dishes
+            
+            total_time += s
+            max_sum += total_time
+        
+        return max_sum
+```
+
+We start by sorting the `satisfaction` list in descending order. Then, we initialize `max_sum` and `total_time` to 0. We iterate over the sorted satisfaction values and check if adding the current dish to the total time would decrease the overall time. If it does, we break the loop because further dishes would only decrease the sum.
+
+Otherwise, we update the `total_time` by adding the current satisfaction value, and update the `max_sum` by adding the product of `total_time` and `s`. This calculates the like-time coefficient for the current dish and adds it to the maximum sum.
+
+Finally, we return the `max_sum` as the result.
+
+Let's test the implementation with the given examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The output matches the expected results provided in the examples.

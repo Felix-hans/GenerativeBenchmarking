@@ -1,0 +1,45 @@
+To implement the `FreqStack` class, we can use a combination of a dictionary and a stack. Here's the Python code that implements the desired functionality:
+
+```python
+from collections import defaultdict
+
+class FreqStack:
+    def __init__(self):
+        self.freq = defaultdict(int)  # Dictionary to store the frequency of elements
+        self.stack = []  # Stack to store the elements
+        
+    def push(self, val: int) -> None:
+        self.freq[val] += 1  # Increment the frequency of the element
+        self.stack.append(val)  # Add the element to the stack
+        
+    def pop(self) -> int:
+        max_freq = max(self.freq.values())  # Find the maximum frequency
+        
+        # Iterate through the stack in reverse order and find the element with the maximum frequency
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.freq[self.stack[i]] == max_freq:
+                self.freq[self.stack[i]] -= 1  # Decrement the frequency of the element
+                return self.stack.pop(i)  # Remove and return the element
+        
+        return None  # Return None if the stack is empty
+```
+
+Now you can create a `FreqStack` object and test it using the provided example:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The implementation maintains a dictionary `self.freq` to keep track of the frequency of each element in the stack. The `push` method increments the frequency of the element and adds it to the stack. The `pop` method finds the element with the maximum frequency by iterating through the stack in reverse order and returns the element closest to the top among the elements with the maximum frequency.
+
+Note that in case the stack is empty when `pop` is called, the method returns `None`.

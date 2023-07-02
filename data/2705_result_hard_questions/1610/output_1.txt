@@ -1,0 +1,59 @@
+Apologies for the mistake. The issue in the code is that we need to consider both the positive and negative angles when sorting the points. Additionally, we need to handle the case when the point is at the same location as the given location.
+
+Here's the updated implementation:
+
+```python
+from typing import List
+import math
+
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        polar_points = []
+        location_x, location_y = location[0], location[1]
+        same_location = 0  # Number of points at the same location as the given location
+        
+        for point in points:
+            point_x, point_y = point[0], point[1]
+            dx, dy = point_x - location_x, point_y - location_y
+            
+            # Handle points at the same location as the given location
+            if dx == 0 and dy == 0:
+                same_location += 1
+                continue
+            
+            polar_angle = math.atan2(dy, dx) * (180 / math.pi)
+            polar_points.append(polar_angle)
+            polar_points.append(polar_angle + 360)  # Consider both positive and negative angles
+        
+        polar_points.sort()
+        
+        max_points_seen = 0
+        current_points_seen = 0
+        start_index = 0
+        
+        for i in range(len(polar_points)):
+            current_points_seen += 1
+            
+            while polar_points[i] - polar_points[start_index] > angle:
+                current_points_seen -= 1
+                start_index += 1
+            
+            max_points_seen = max(max_points_seen, current_points_seen)
+        
+        return max_points_seen + same_location
+```
+
+Now, the code handles points at the same location as the given location and considers both positive and negative angles when sorting the points.
+
+Let's test the updated code with the given example:
+
+```python
+solution = Solution()
+points = [[2, 1], [2, 2], [3, 3]]
+angle = 90
+location = [1, 1]
+result = solution.visiblePoints(points, angle, location)
+print(result)  # Output: 3
+```
+
+The updated code should now produce the correct output for the given example.

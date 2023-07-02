@@ -1,0 +1,43 @@
+Apologies for the oversight. The issue in the code is that we are sorting the tasks based on the difference between the minimum and actual energy requirements, but we should actually sort them in reverse order. This way, we prioritize tasks with higher actual energy requirements, as they are more likely to consume the leftover energy from previous tasks.
+
+Here's the corrected implementation of the `minimumEffort` function:
+
+```python
+from typing import List
+
+class Solution:
+    def minimumEffort(self, tasks: List[List[int]]) -> int:
+        tasks.sort(key=lambda x: (x[1] - x[0]), reverse=True)  # Sort tasks in reverse order of difference between minimum and actual energy
+
+        initial_energy = 0
+        total_energy = 0
+
+        for task in tasks:
+            actual_energy, minimum_energy = task
+            if initial_energy < minimum_energy:
+                energy_required = minimum_energy - initial_energy
+                initial_energy = minimum_energy
+                total_energy += energy_required
+            initial_energy -= actual_energy
+
+        return total_energy
+```
+
+In the corrected code, we include the `reverse=True` parameter in the `sort` function to sort the tasks in reverse order. This ensures that tasks with higher actual energy requirements are executed first, allowing us to maximize the utilization of leftover energy.
+
+Let's test the function again with the given examples:
+
+```python
+solution = Solution()
+
+tasks = [[1, 2], [2, 4], [4, 8]]
+print(solution.minimumEffort(tasks))  # Output: 8
+
+tasks = [[1, 3], [2, 4], [10, 11], [10, 12], [8, 9]]
+print(solution.minimumEffort(tasks))  # Output: 32
+
+tasks = [[1, 7], [2, 8], [3, 9], [4, 10], [5, 11], [6, 12]]
+print(solution.minimumEffort(tasks))  # Output: 27
+```
+
+Now the function should produce the correct outputs for all the given examples.

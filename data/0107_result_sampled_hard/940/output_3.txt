@@ -1,0 +1,61 @@
+To solve this problem, we can use dynamic programming. Let's go through the steps to implement the solution in Python:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        MOD = 10**9 + 7  # Modulo value
+
+        # Initialize an array to store the count of distinct subsequences
+        dp = [0] * (len(s) + 1)
+
+        # Initialize the base case
+        dp[0] = 1
+
+        # Initialize a dictionary to store the last occurrence of each character
+        last_occurrence = {}
+
+        # Iterate over the characters in the string
+        for i, c in enumerate(s, start=1):
+            dp[i] = (2 * dp[i - 1]) % MOD  # Double the previous count
+
+            if c in last_occurrence:
+                # Subtract the count of subsequences ending at the last occurrence
+                dp[i] -= dp[last_occurrence[c] - 1]
+
+            # Update the last occurrence of the character
+            last_occurrence[c] = i
+
+            # Ensure the count remains non-negative
+            dp[i] %= MOD
+
+        # Return the count of distinct subsequences modulo MOD
+        return (dp[-1] - 1) % MOD
+```
+
+Let's analyze the solution:
+
+- We initialize the `dp` array to store the count of distinct subsequences. The size of `dp` is `len(s) + 1` to include the empty subsequence.
+- We set the base case `dp[0] = 1` to represent the empty subsequence.
+- We initialize the `last_occurrence` dictionary to store the last occurrence index of each character in the string.
+- We iterate over the characters in the string using the `enumerate` function. The index `i` starts from 1 since we already set the base case.
+- For each character `c`, we double the previous count `dp[i-1]` to account for the subsequences without including `c`.
+- If `c` has occurred before, we subtract the count of subsequences ending at the last occurrence `dp[last_occurrence[c] - 1]`. This step removes the duplicate subsequences that include the same character.
+- We update the `last_occurrence` dictionary with the current index `i`.
+- We ensure that the count `dp[i]` remains non-negative by taking the modulo `MOD`.
+- Finally, we return the count of distinct subsequences modulo `MOD`.
+
+Now, you can create an instance of the `Solution` class and call the `distinctSubseqII` function with the input string to obtain the desired result. For example:
+
+```python
+s = "abc"
+solution = Solution()
+distinct_subsequences = solution.distinctSubseqII(s)
+print(distinct_subsequences)
+```
+
+This will output:
+```
+7
+```
+
+Similarly, you can test the function with other input strings as well.

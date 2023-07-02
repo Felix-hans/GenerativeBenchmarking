@@ -1,0 +1,26 @@
+Apologies for the error in the previous code. It seems there was an issue when dealing with the case where the non-repeating part is empty. To fix the problem, we need to handle this case separately.
+
+Here's the updated implementation of the `convert_to_decimal` function:
+
+```python
+def convert_to_decimal(num_str):
+    integer_part, decimal_part = num_str.split('.')
+    decimal_value = int(integer_part)
+
+    if decimal_part.startswith('('):  # Repeating part exists
+        repeating_part = decimal_part[1:-1]
+        non_repeating_part = decimal_part[:decimal_part.index('(')]
+
+        decimal_value += int(non_repeating_part) if non_repeating_part else 0
+        decimal_value += int(repeating_part) / (10 ** len(non_repeating_part))
+        decimal_value += int(repeating_part) / (10 ** (len(non_repeating_part) + len(repeating_part)))  # To account for repeating part
+
+    elif decimal_part:  # Only non-repeating part exists
+        decimal_value += int(decimal_part) / (10 ** len(decimal_part))
+
+    return decimal_value
+```
+
+Now the code should handle the case when the non-repeating part is empty. You can use the updated code and test it with the provided test cases or additional inputs.
+
+Let me know if you have any further questions!

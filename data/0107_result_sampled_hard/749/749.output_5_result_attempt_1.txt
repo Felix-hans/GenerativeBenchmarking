@@ -1,0 +1,5 @@
+
+**stdout:**
+b"  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/32 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 74: SyntaxError: '(' was never closed\n  \xe2\x9c\x98 Error: SyntaxError: '(' was never closed\n                               ^\n    m, n = len(isInfected), len(isInf\nLine 74  (Solution.py)\n  \xe2\x9c\x98 Testcase: [[0,1,0,0,0,0,0,1],[0,1,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0]]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 10\n  \xe2\x9c\x98 Stdout: \n"
+**stderr:**
+b"- Sending code to judge\n(node:77941) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

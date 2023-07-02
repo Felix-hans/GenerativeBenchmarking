@@ -1,0 +1,56 @@
+To implement the FreqStack class in Python, we can use a combination of a dictionary and a list.
+
+The dictionary will keep track of the frequency of each element in the stack, and the list will store the elements in the stack in the order they were pushed.
+
+Here's the implementation:
+
+```python
+class FreqStack:
+    def __init__(self):
+        self.freq = {}  # Dictionary to store the frequency of each element
+        self.stack = []  # List to store the elements in the stack
+
+    def push(self, val: int) -> None:
+        if val in self.freq:
+            self.freq[val] += 1
+        else:
+            self.freq[val] = 1
+        self.stack.append(val)
+
+    def pop(self) -> int:
+        max_freq = max(self.freq.values())  # Find the maximum frequency
+        max_freq_elements = [key for key, value in self.freq.items() if value == max_freq]  # Find elements with maximum frequency
+        element_to_pop = None
+
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i] in max_freq_elements:
+                element_to_pop = self.stack[i]
+                del self.stack[i]
+                break
+
+        self.freq[element_to_pop] -= 1
+
+        if self.freq[element_to_pop] == 0:
+            del self.freq[element_to_pop]
+
+        return element_to_pop
+```
+
+Here's an example of how to use the FreqStack class:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)  # The stack is [5]
+freqStack.push(7)  # The stack is [5,7]
+freqStack.push(5)  # The stack is [5,7,5]
+freqStack.push(7)  # The stack is [5,7,5,7]
+freqStack.push(4)  # The stack is [5,7,5,7,4]
+freqStack.push(5)  # The stack is [5,7,5,7,4,5]
+
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The output will be `[5, 7, 5, 4]`, which matches the expected output in the example you provided.

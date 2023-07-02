@@ -1,0 +1,42 @@
+Apologies for the confusion caused by the previous code. The error is due to the incorrect usage of the variable `guess_char`, which is not needed in the updated implementation. The correct code should compare the characters directly without using `guess_char`.
+
+Here's the revised implementation:
+
+```python
+from typing import List
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        n = 0  # Number of calls to Master.guess()
+        
+        while n < 10:  # allowedGuesses is 10 in this case
+            count = [0] * 6  # Count of each character position
+            
+            for word in words:
+                for i, char in enumerate(word):
+                    count[i] += ord(char) - ord('a')
+            
+            guess_word = max(words, key=lambda word: sum((char == word[i]) * -count[i] for i, char in enumerate(word)))
+            matches = master.guess(guess_word)
+            n += 1
+            
+            if matches == 6:
+                print("You guessed the secret word correctly.")
+                return
+            
+            # Update the candidate words based on the number of matches
+            words = [word for word in words if self.matchCount(word, guess_word) == matches]
+        
+        print("Either you took too many guesses, or you did not find the secret word.")
+    
+    def matchCount(self, word1: str, word2: str) -> int:
+        count = 0
+        for c1, c2 in zip(word1, word2):
+            if c1 == c2:
+                count += 1
+        return count
+```
+
+In the updated code, the lambda function compares the characters directly using `char == word[i]`, where `word[i]` represents the character at position `i` in the word. This resolves the `NameError` issue related to the undefined variable `guess_char`.
+
+Please give it a try now, and it should work correctly without any errors.

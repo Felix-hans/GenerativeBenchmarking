@@ -1,0 +1,80 @@
+Apologies for the mistake again. The issue lies in the logic of the `removeRange` method. We need to handle cases where the intervals partially overlap with the range to be removed. In such cases, we need to split the intervals into multiple intervals or adjust the existing intervals accordingly.
+
+Here's the corrected implementation of the `removeRange` method:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.intervals = []
+
+    def addRange(self, left: int, right: int) -> None:
+        # Find the position to insert the new interval
+        i = 0
+        while i < len(self.intervals) and self.intervals[i][1] <= left:
+            i += 1
+
+        # Merge overlapping intervals
+        new_interval = [left, right]
+        while i < len(self.intervals) and self.intervals[i][0] < right:
+            new_interval[0] = min(new_interval[0], self.intervals[i][0])
+            new_interval[1] = max(new_interval[1], self.intervals[i][1])
+            del self.intervals[i]
+
+        # Insert the new interval
+        self.intervals.insert(i, tuple(new_interval))
+
+    def queryRange(self, left: int, right: int) -> bool:
+        # Check if every part of the queried range is tracked
+        for interval in self.intervals:
+            if interval[0] <= left and interval[1] >= right:
+                return True
+            elif interval[0] <= left < interval[1] or interval[0] < right <= interval[1]:
+                return False
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+        # Remove any tracked numbers within the given interval
+        i = 0
+        while i < len(self.intervals) and self.intervals[i][1] <= left:
+            i += 1
+
+        while i < len(self.intervals) and self.intervals[i][0] < right:
+            if self.intervals[i][0] < left:
+                self.intervals.insert(i, (self.intervals[i][0], left))
+
+            if self.intervals[i][1] > right:
+                self.intervals.insert(i + 1, (right, self.intervals[i][1]))
+                i += 2
+            else:
+                i += 1
+
+            del self.intervals[i]
+
+        # Remove any intervals with a length of 0
+        self.intervals = [interval for interval in self.intervals if interval[0] != interval[1]]
+```
+
+Now, if you run the example again:
+
+```python
+rangeModule = RangeModule()
+rangeModule.addRange(10, 180)
+rangeModule.addRange(150, 200)
+rangeModule.addRange(250, 500)
+print(rangeModule.queryRange(50, 100))  # Output: True
+print(rangeModule.queryRange(180, 300))  # Output: False
+print(rangeModule.queryRange(600, 1000))  # Output: False
+rangeModule.removeRange(50, 150)
+print(rangeModule.queryRange(50, 100))  # Output: False
+```
+
+The output will match the expected output:
+
+```
+True
+False
+False
+False
+```
+
+I apologize for the confusion caused by the earlier incorrect response.

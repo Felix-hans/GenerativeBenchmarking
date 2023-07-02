@@ -1,0 +1,51 @@
+To solve the problem, we can use dynamic programming to keep track of the number of distinct subsequences at each position of the string. Let's define dp[i] as the number of distinct subsequences that can be formed from the substring s[:i] (including s[i-1]). 
+
+We can initialize dp[0] = 1, as there is always an empty subsequence in any string.
+
+For each character s[i] in the string, we have two possibilities:
+
+1. If s[i] is a new character, then the number of distinct subsequences formed by including s[i] is twice the number of distinct subsequences formed by excluding s[i]. In other words, dp[i] = 2 * dp[i-1].
+
+2. If s[i] is a character that has already appeared before, then we need to consider the position of the previous occurrence of s[i]. Let's say the last occurrence of s[i] is at index j. In this case, the number of distinct subsequences formed by including s[i] is twice the number of distinct subsequences formed by excluding s[i], minus the number of distinct subsequences formed by excluding all characters from the last occurrence of s[i] (i.e., s[j+1:i]). Mathematically, dp[i] = 2 * dp[i-1] - dp[j].
+
+Finally, we need to take care of negative values that may arise during the calculation of dp[i]. To ensure that the result is always non-negative, we can add the modulo 10^9 + 7 operation after each step.
+
+Here's the implementation of the `distinctSubseqII` function in Python:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        n = len(s)
+        dp = [0] * (n + 1)
+        dp[0] = 1
+        last_occurrence = {}
+        mod = int(1e9 + 7)
+
+        for i in range(1, n + 1):
+            dp[i] = (2 * dp[i - 1]) % mod
+
+            if s[i - 1] in last_occurrence:
+                j = last_occurrence[s[i - 1]]
+                dp[i] = (dp[i] - dp[j]) % mod
+
+            last_occurrence[s[i - 1]] = i - 1
+
+        return (dp[n] - 1) % mod
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+s = "abc"
+print(solution.distinctSubseqII(s))  # Output: 7
+
+s = "aba"
+print(solution.distinctSubseqII(s))  # Output: 6
+
+s = "aaa"
+print(solution.distinctSubseqII(s))  # Output: 3
+```
+
+The function produces the expected outputs for the given examples.

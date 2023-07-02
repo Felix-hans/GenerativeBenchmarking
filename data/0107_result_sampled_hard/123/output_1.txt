@@ -1,0 +1,33 @@
+To find the maximum profit with at most two transactions, we can use dynamic programming. Let's define two arrays, `buy` and `sell`, to keep track of the maximum profit we can achieve at each day for the first and second transactions, respectively.
+
+Here's the implementation of the `maxProfit` function:
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+
+        # Initialize the buy and sell arrays
+        buy = [float('-inf')] * 3
+        sell = [0] * 3
+
+        for price in prices:
+            # Update the buy and sell arrays for each transaction
+            for i in range(1, 3):
+                buy[i] = max(buy[i], sell[i-1] - price)
+                sell[i] = max(sell[i], buy[i] + price)
+
+        # Return the maximum profit after the second transaction
+        return sell[2]
+```
+
+Let's go through the code:
+
+- We start by handling the edge case where the `prices` array is empty. In this case, there are no transactions, so we return 0 as the maximum profit.
+- We initialize the `buy` array with negative infinity values and the `sell` array with zeros. These arrays will be used to keep track of the maximum profit for each transaction.
+- We iterate over each price in the `prices` array.
+- For each transaction, starting from the second (index 1), we update the `buy` and `sell` arrays based on the current price. The maximum profit of buying on the current day is the maximum of the previous day's buy value and the profit from selling on the previous day minus the current price. The maximum profit of selling on the current day is the maximum of the previous day's sell value and the profit from buying on the current day plus the current price.
+- Finally, we return the maximum profit after the second transaction, which is stored in the `sell[2]` value.
+
+Now you can create an instance of the `Solution` class and call the `maxProfit` method with your input array to get the maximum profit.

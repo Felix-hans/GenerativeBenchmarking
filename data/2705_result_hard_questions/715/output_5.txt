@@ -1,0 +1,72 @@
+Apologies for the confusion. Upon reviewing the code and the error message you provided, it seems that the issue lies in how the `queryRange` function is implemented.
+
+The current implementation of `queryRange` checks if the queried range is fully covered by any of the existing ranges. However, it should return `False` if there are any gaps or uncovered intervals within the queried range.
+
+To fix this, we need to modify the logic of the `queryRange` function. Instead of checking for complete coverage, we need to ensure that there are no uncovered intervals within the queried range.
+
+Here's the updated implementation of the `queryRange` function:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.ranges = []
+
+    def addRange(self, left: int, right: int) -> None:
+        new_range = (left, right)
+        merged_ranges = []
+        for i, (start, end) in enumerate(self.ranges):
+            if end < left:
+                merged_ranges.append((start, end))
+            elif right < start:
+                merged_ranges.append(new_range)
+                merged_ranges.extend(self.ranges[i:])
+                break
+            else:
+                new_range = (min(start, left), max(end, right))
+        else:
+            merged_ranges.append(new_range)
+        self.ranges = merged_ranges
+
+    def queryRange(self, left: int, right: int) -> bool:
+        for start, end in self.ranges:
+            if start <= left and end >= right:
+                return True
+            if start >= right:
+                return False
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+        removed_ranges = []
+        for start, end in self.ranges:
+            if end <= left or start >= right:
+                removed_ranges.append((start, end))
+            elif start < left and end > right:
+                removed_ranges.append((start, left))
+                removed_ranges.append((right, end))
+            elif start < left:
+                removed_ranges.append((start, left))
+            elif end > right:
+                removed_ranges.append((right, end))
+        self.ranges = removed_ranges
+```
+
+Now you can test the code again with the provided example:
+
+```python
+rangeModule = RangeModule()
+rangeModule.addRange(10, 20)
+rangeModule.removeRange(14, 16)
+print(rangeModule.queryRange(10, 14))  # True
+print(rangeModule.queryRange(13, 15))  # False
+print(rangeModule.queryRange(16, 17))  # True
+```
+
+The output will be:
+
+```
+True
+False
+True
+```
+
+The code should now produce the correct results for the given example.

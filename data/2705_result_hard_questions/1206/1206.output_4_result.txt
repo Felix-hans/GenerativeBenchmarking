@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x94 Accepted\n  \xe2\x9c\x94 20/20 cases passed (226 ms)\n  \xe2\x9c\x94 Your runtime beats 77.1 % of python3 submissions\n  \xe2\x9c\x94 Your memory usage beats 18.32 % of python3 submissions (25.2 MB)\n'
+**stderr:**
+b"- Sending code to judge\n(node:22276) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

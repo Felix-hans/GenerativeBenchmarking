@@ -1,0 +1,63 @@
+To solve the problem, we can use dynamic programming. We'll create a 2D array to store the lengths of the shortest common supersequences for all prefixes of the input strings. Then, we'll use this array to construct the shortest common supersequence.
+
+Here's the implementation of the `shortestCommonSupersequence` method in Python:
+
+```python
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        m, n = len(str1), len(str2)
+        
+        # Create a 2D array to store the lengths of the shortest common supersequences
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        # Fill the dp array
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if str1[i - 1] == str2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+        
+        # Construct the shortest common supersequence
+        supersequence = ''
+        i, j = m, n
+        while i > 0 and j > 0:
+            if str1[i - 1] == str2[j - 1]:
+                supersequence = str1[i - 1] + supersequence
+                i -= 1
+                j -= 1
+            elif dp[i - 1][j] > dp[i][j - 1]:
+                supersequence = str1[i - 1] + supersequence
+                i -= 1
+            else:
+                supersequence = str2[j - 1] + supersequence
+                j -= 1
+        
+        # Add remaining characters from str1 or str2
+        while i > 0:
+            supersequence = str1[i - 1] + supersequence
+            i -= 1
+        while j > 0:
+            supersequence = str2[j - 1] + supersequence
+            j -= 1
+        
+        return supersequence
+```
+
+Let's test the implementation with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+str1 = "abac"
+str2 = "cab"
+print(solution.shortestCommonSupersequence(str1, str2))  # Output: "cabac"
+
+# Example 2
+str1 = "aaaaaaaa"
+str2 = "aaaaaaaa"
+print(solution.shortestCommonSupersequence(str1, str2))  # Output: "aaaaaaaa"
+```
+
+The output matches the expected results.

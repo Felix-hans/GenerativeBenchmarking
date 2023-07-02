@@ -1,0 +1,39 @@
+To solve the given task, we can follow a dynamic programming approach. We sort the satisfaction array in descending order to maximize the like-time coefficient. Then we iterate through the sorted array and calculate the maximum like-time coefficient at each position.
+
+Here's the implementation of the `maxSatisfaction` method:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort in descending order
+        n = len(satisfaction)
+        max_coefficient = 0
+        total_time = 0
+        
+        for i in range(n):
+            if total_time + satisfaction[i] < 0:
+                break  # Stop if adding the next dish decreases the coefficient
+            total_time += satisfaction[i]
+            max_coefficient += total_time
+        
+        return max_coefficient
+```
+
+Now, let's test the solution with the given examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The solution should produce the correct outputs for the provided examples.

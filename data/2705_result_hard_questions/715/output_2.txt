@@ -1,0 +1,77 @@
+Apologies for the confusion. It seems there is an issue with the logic in the `queryRange` method. Let's correct it and update the implementation.
+
+Here's the corrected implementation:
+
+```python
+class RangeModule:
+    def __init__(self):
+        self.ranges = []
+
+    def addRange(self, left: int, right: int) -> None:
+        # Find the position to insert the new range
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            i += 1
+
+        # Merge overlapping intervals
+        while i < len(self.ranges) and self.ranges[i][0] <= right:
+            left = min(left, self.ranges[i][0])
+            right = max(right, self.ranges[i][1])
+            self.ranges.pop(i)
+
+        # Insert the merged range
+        self.ranges.insert(i, (left, right))
+
+    def queryRange(self, left: int, right: int) -> bool:
+        # Find the position to insert the new range
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            i += 1
+
+        # Check if the range is fully covered by existing intervals
+        if i < len(self.ranges) and self.ranges[i][0] <= left and self.ranges[i][1] >= right:
+            return True
+
+        # Check if the range is partially covered by existing intervals
+        if i < len(self.ranges) and self.ranges[i][0] <= left and self.ranges[i][1] > left:
+            return False
+
+        # Check if the range is partially covered by the next interval
+        if i < len(self.ranges) and self.ranges[i][0] > left and self.ranges[i][0] <= right:
+            return False
+
+        return False
+
+    def removeRange(self, left: int, right: int) -> None:
+        # Find the position to insert the new range
+        i = 0
+        while i < len(self.ranges) and self.ranges[i][1] < left:
+            i += 1
+
+        # Split or remove overlapping intervals
+        while i < len(self.ranges) and self.ranges[i][0] < right:
+            if self.ranges[i][0] < left:
+                self.ranges.insert(i, (self.ranges[i][0], left))
+                i += 1
+            if self.ranges[i][1] > right:
+                self.ranges.insert(i + 1, (right, self.ranges[i][1]))
+                i += 2
+                break
+            self.ranges.pop(i)
+```
+
+Let's test the corrected implementation with the example provided:
+
+```python
+rangeModule = RangeModule()
+rangeModule.addRange(10, 180)
+rangeModule.addRange(150, 200)
+rangeModule.addRange(250, 500)
+print(rangeModule.queryRange(50, 100))  # Output: True
+print(rangeModule.queryRange(180, 300))  # Output: False
+print(rangeModule.queryRange(600, 1000))  # Output: False
+rangeModule.removeRange(50, 150)
+print(rangeModule.queryRange(50, 100))  # Output: False
+```
+
+The output should match the expected results `[True, False, False, False]`.

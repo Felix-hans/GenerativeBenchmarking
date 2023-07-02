@@ -1,0 +1,33 @@
+To solve the given task, we can use a different approach depending on the value of `k`. If `k` is equal to 1, we can simply rotate the string by moving the first character to the end repeatedly and keep track of the lexicographically smallest string. Otherwise, if `k` is greater than 1, we can directly sort the string and return the result.
+
+Here's the implementation of the `orderlyQueue` function:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k == 1:
+            min_string = s
+            for _ in range(len(s)):
+                s = s[1:] + s[0]  # Move the first character to the end
+                min_string = min(min_string, s)  # Update the minimum string
+            return min_string
+        else:
+            return ''.join(sorted(s))
+```
+
+Now you can create an instance of the `Solution` class and call the `orderlyQueue` function with the given inputs:
+
+```python
+solution = Solution()
+s = "cba"
+k = 1
+result = solution.orderlyQueue(s, k)
+print(result)  # Output: "acb"
+
+s = "baaca"
+k = 3
+result = solution.orderlyQueue(s, k)
+print(result)  # Output: "aaabc"
+```
+
+This will produce the expected outputs for the given examples.

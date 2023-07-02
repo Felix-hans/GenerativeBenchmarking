@@ -1,0 +1,50 @@
+To solve the task, we can use the following approach:
+
+1. Initialize a variable called `allowedGuesses` with the given maximum number of allowed guesses.
+2. Initialize a set called `wordSet` and add all the words from the `words` list to it. This set will be used to check if a word is in the word list efficiently.
+3. Initialize a variable called `matched` with 0. This variable will store the number of exact matches between the secret word and the guessed word.
+4. While `allowedGuesses` is greater than 0:
+   a. Create a dictionary called `count` with default values of 0. This dictionary will count the frequency of each character in the remaining words.
+   b. For each word in `words`, iterate over its characters and increment the corresponding character count in the `count` dictionary.
+   c. Sort the words in `words` based on their similarity to other words. The similarity is calculated by counting the number of characters at the same position that match with the characters in the secret word.
+   d. Guess the word with the maximum similarity from `words` using `master.guess()` and store the result in `matched`.
+   e. If `matched` is equal to the length of a word (indicating that it is the secret word), return "You guessed the secret word correctly."
+   f. Remove the guessed word from `words` and decrease `allowedGuesses` by 1.
+   g. Remove words from `words` that have a different number of exact matches (`matched`) with the guessed word than the original word count in `count`.
+5. If we have exhausted all the allowed guesses without finding the secret word, return "Either you took too many guesses, or you did not find the secret word."
+
+Here's the implementation of the `findSecretWord` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        allowedGuesses = 10
+        
+        wordSet = set(words)
+        matched = 0
+        
+        while allowedGuesses > 0:
+            count = {ch: 0 for ch in "abcdef"}
+            for word in words:
+                for ch in word:
+                    count[ch] += 1
+            
+            words.sort(key=lambda w: sum(count[ch] for ch in w))
+            guessedWord = words.pop()
+            matched = master.guess(guessedWord)
+            
+            if matched == len(guessedWord):
+                return "You guessed the secret word correctly."
+            
+            allowedGuesses -= 1
+            words = [word for word in words if self.countMatches(word, guessedWord) == matched]
+        
+        return "Either you took too many guesses, or you did not find the secret word."
+    
+    def countMatches(self, word1: str, word2: str) -> int:
+        return sum(ch1 == ch2 for ch1, ch2 in zip(word1, word2))
+```
+
+Note: The `countMatches` function is used to count the number of character matches between two words.

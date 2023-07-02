@@ -14,11 +14,12 @@ class GenerationUtil:
         self.model_name = "ChatGPT"
         self.chatbot = ChatGPT()
         self.config = Config()
+        self.messages = []
 
   
     def generate(self, prompt, max_length=1024):
 
-        if self.model_name == "ChatGPT": 
+        if self.model_name == "ChatGPT":
             generate,self.chatbot = generateGPTResponse.generate_chatgpt(self.chatbot,prompt)
 
             return generate
@@ -54,7 +55,7 @@ class GenerationUtil:
     def handlePathCreation(self,root_path,folder_name):
 
         
-        problem_folder_path = os.path.join(root_path, folder_name)
+        problem_folder_path = os.path.join(root_path, str(folder_name))
         
         print()
         print('HERE------------------------------------------------------------------')
@@ -74,7 +75,7 @@ class GenerationUtil:
 
         output_dir= os.path.join(self.config.run_path, self.config.target_folder,folder_name)
         if not os.path.exists(output_dir): os.mkdir(output_dir)
-        print(output_dir)
+        
 
         return problem_instructions_file_path, problem_template_file_path,output_dir 
     
@@ -95,7 +96,7 @@ class GenerationUtil:
             new_name = os.path.join(path, new_filename)
 
             os.rename(old_name, new_name)
-            print(f"File renamed from {old_name} to {new_name}")
+            
         except FileNotFoundError:
             print(f"The file {old_name} does not exist.")
         except Exception as e:
@@ -108,6 +109,7 @@ class GenerationUtil:
         print(f'Asking {self.model_name}...')
         curr_time=time.time()
 
+        #self.messages.append()
         response=self.generate(prompt, self.config.max_length)
         time_used=time.time()-curr_time
         print(f'{self.model_name} response received.')
@@ -118,11 +120,12 @@ class GenerationUtil:
 
         #Generate the output file
         py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
-        print(py_file_path)
+        
 
         #submit test on leetcode, we try a couple of times before we stop trying
         iteration = 0
         while tryAgain:
+            
 
             output = LeetCodeUtil().run_leetcode_test(py_file_path)
             tryAgain, prompt = createPrompt.evaluateOutput(tryAgain, output)
@@ -130,7 +133,11 @@ class GenerationUtil:
             print('validating question')
             handleQuestionBank.logQuestionValidation(folder_name,rep,output_dir,self.config.sampled_df_path, self.config.logFile, iteration,tryAgain)
 
+            print(f'Iteration: {iteration}')
             #we try again if the result was not accepted
+            if iteration ==self.config.tryAgainAttempts or tryAgain == False:
+                    break
+
             if tryAgain:
 
                 response = self.generate(prompt, self.config.max_length)
@@ -146,11 +153,6 @@ class GenerationUtil:
 
                 py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
 
-            print(iteration)
-
-            if iteration ==2 or tryAgain == False:
-                    break
-
             iteration = iteration + 1
      
         self.chatbot.new_conversation()
@@ -159,7 +161,7 @@ class GenerationUtil:
         
     
     def generate_selection(self, with_examples:bool, with_constraints:bool, \
-        remarks='Implement the above task in Python.', repetition=1):
+        remarks='Implement the above task in Python.'):
         
         root_path=os.path.normpath(self.config.generation_path)
 
@@ -191,7 +193,7 @@ class GenerationUtil:
             prompt=self.get_description(problem_instructions_file_path, problem_template_file_path, with_examples, with_constraints, remarks)
             
             #iterate x times over the problem (repeating experiment)
-            for i in range(1,repetition+1):
+            for i in range(1,self.config.repetition+1):
 
                 rep = '/output_'+str(i)+'.txt'
                 output_path=output_dir+rep

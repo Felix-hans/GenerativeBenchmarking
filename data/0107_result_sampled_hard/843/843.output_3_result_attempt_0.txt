@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Wrong Answer\n  \xe2\x9c\x98 8/12 cases passed (N/A)\n  \xe2\x9c\x98 Testcase: "azzzzz"\n\' +\n  \'["abcdef","acdefg","adefgh","aefghi","afghij","aghijk","ahijkl","aijklm","ajklmn","aklmno","almnoz","anopqr","azzzzz"]\n\' +\n  \'10\n  \xe2\x9c\x98 Answer: Either you took too many guesses, or you did not find the secret word.\n  \xe2\x9c\x98 Expected Answer: You guessed the secret word correctly.\n  \xe2\x9c\x98 Stdout: Either you took too many guesses, or you did not find the secret word.\n\n'
+**stderr:**
+b"- Sending code to judge\n(node:79671) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

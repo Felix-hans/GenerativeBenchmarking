@@ -1,0 +1,35 @@
+Here's the implementation of the `containsNearbyAlmostDuplicate` function in Python:
+
+```python
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums, indexDiff, valueDiff):
+        n = len(nums)
+        buckets = {}  # Dictionary to store the buckets
+
+        # Iterate over the nums list
+        for i in range(n):
+            # Calculate the bucket and offset for the current number
+            bucket = nums[i] // (valueDiff + 1)
+            offset = 1
+
+            # Check if a neighboring bucket already has a number
+            if bucket in buckets:
+                return True
+            if bucket - 1 in buckets and abs(nums[i] - buckets[bucket - 1]) <= valueDiff:
+                return True
+            if bucket + 1 in buckets and abs(nums[i] - buckets[bucket + 1]) <= valueDiff:
+                return True
+
+            # Add the number to the current bucket
+            buckets[bucket] = nums[i]
+
+            # Remove numbers from buckets that are out of the indexDiff range
+            if i >= indexDiff:
+                prev_bucket = nums[i - indexDiff] // (valueDiff + 1)
+                if prev_bucket in buckets and nums[i - indexDiff] == buckets[prev_bucket]:
+                    del buckets[prev_bucket]
+
+        return False
+```
+
+You can create an instance of the `Solution` class and call the `containsNearbyAlmostDuplicate` method on it, providing the `nums`, `indexDiff`, and `valueDiff` arguments to check if there exists a pair of indices satisfying the conditions. The function returns `True` if such a pair exists and `False` otherwise.

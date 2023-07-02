@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/47 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 24: SyntaxError: invalid syntax\n  \xe2\x9c\x98 Error: SyntaxError: invalid syntax\n        ^\n    i -=\nLine 24  (Solution.py)\n  \xe2\x9c\x98 Testcase: "abac"\n"cab"\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: "cabac"\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:80148) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

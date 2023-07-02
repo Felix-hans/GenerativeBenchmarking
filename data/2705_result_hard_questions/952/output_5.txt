@@ -1,0 +1,73 @@
+To solve the problem, we can use the Union-Find algorithm. We will iterate through each number in the given array `nums` and perform the following steps:
+
+1. Initialize a Union-Find data structure.
+2. For each number `num` in `nums`, iterate from `i = 2` to the square root of `num`:
+     - If `num % i == 0`, it means `i` is a factor of `num`. Perform a union operation between `num` and `i` in the Union-Find data structure.
+     - Also, perform a union operation between `num` and `num // i` if `i` is not the same as `num // i`.
+3. After processing all numbers in `nums`, iterate through `nums` again:
+     - Find the parent of each number using the find operation in the Union-Find data structure.
+     - Keep track of the frequency of each parent.
+4. Return the maximum frequency found.
+
+Here's the implementation of the `largestComponentSize` function:
+
+```python
+from typing import List
+
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.size = [1] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        root_x, root_y = self.find(x), self.find(y)
+        if root_x != root_y:
+            self.parent[root_y] = root_x
+            self.size[root_x] += self.size[root_y]
+
+class Solution:
+    def largestComponentSize(self, nums: List[int]) -> int:
+        n = len(nums)
+        uf = UnionFind(n)
+        factors = {}
+
+        for i, num in enumerate(nums):
+            j = 2
+            while j * j <= num:
+                if num % j == 0:
+                    if j not in factors:
+                        factors[j] = i
+                    else:
+                        uf.union(i, factors[j])
+
+                    if num // j not in factors:
+                        factors[num // j] = i
+                    else:
+                        uf.union(i, factors[num // j])
+                j += 1
+
+            if num not in factors:
+                factors[num] = i
+            else:
+                uf.union(i, factors[num])
+
+        component_sizes = [0] * n
+        for i in range(n):
+            component_sizes[uf.find(i)] += 1
+
+        return max(component_sizes)
+```
+
+You can create an instance of the `Solution` class and call the `largestComponentSize` function with the `nums` array to get the size of the largest connected component. For example:
+
+```python
+solution = Solution()
+nums = [4, 6, 15, 35]
+result = solution.largestComponentSize(nums)
+print(result)  # Output: 4
+```

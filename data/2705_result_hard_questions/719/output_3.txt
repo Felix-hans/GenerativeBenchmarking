@@ -1,0 +1,47 @@
+To solve the problem, we can use a binary search approach to find the kth smallest distance. Here's the implementation in Python:
+
+```python
+class Solution:
+    def smallestDistancePair(self, nums, k):
+        nums.sort()  # Sort the array in ascending order
+        left, right = 0, nums[-1] - nums[0]  # Initialize the search space
+        
+        while left < right:
+            mid = (left + right) // 2
+            count = 0
+            start = 0
+            
+            # Count the number of pairs with distance <= mid
+            for i in range(len(nums)):
+                while nums[i] - nums[start] > mid:
+                    start += 1
+                count += i - start
+            
+            # Adjust the search space based on the count
+            if count < k:
+                left = mid + 1
+            else:
+                right = mid
+        
+        return left
+```
+
+Let's test the implementation with the provided examples:
+
+```python
+solution = Solution()
+
+nums = [1, 3, 1]
+k = 1
+print(solution.smallestDistancePair(nums, k))  # Output: 0
+
+nums = [1, 1, 1]
+k = 2
+print(solution.smallestDistancePair(nums, k))  # Output: 0
+
+nums = [1, 6, 1]
+k = 3
+print(solution.smallestDistancePair(nums, k))  # Output: 5
+```
+
+The implementation should return the expected outputs for the given examples.

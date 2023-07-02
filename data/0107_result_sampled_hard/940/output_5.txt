@@ -1,0 +1,40 @@
+To solve the problem, we can use dynamic programming. Let's define an array `dp` of size n, where n is the length of string s. `dp[i]` will store the number of distinct subsequences that can be formed using the first i characters of string s.
+
+The base case would be `dp[0] = 1`, representing an empty subsequence. Then, for each character s[i] in the string, we have two options:
+
+1. Exclude the current character: In this case, the number of distinct subsequences will be the same as the number of distinct subsequences formed using the first i-1 characters, which is `dp[i] = dp[i-1]`.
+2. Include the current character: In this case, the number of distinct subsequences will be doubled because we can append the current character to all the distinct subsequences formed using the first i-1 characters. However, we need to be careful not to count duplicate subsequences. Therefore, we keep track of the last occurrence of each character and subtract the number of subsequences formed by characters between the current occurrence and the last occurrence of the same character. This can be done using an array `last` of size 26 (assuming lowercase English letters), initialized with -1. Then, the number of distinct subsequences formed by including the current character is `dp[i] = (2 * dp[i-1] - dp[last_position])`, where `last_position` is the last occurrence of the current character.
+
+After processing all the characters in the string, the result will be the sum of all values in the `dp` array modulo 10^9 + 7.
+
+Here's the implementation of the `distinctSubseqII` function in Python:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        n = len(s)
+        mod = 10**9 + 7
+        dp = [0] * (n + 1)
+        last = [-1] * 26
+        dp[0] = 1
+
+        for i in range(1, n + 1):
+            dp[i] = (2 * dp[i-1]) % mod
+            if last[ord(s[i-1]) - ord('a')] != -1:
+                dp[i] -= dp[last[ord(s[i-1]) - ord('a')]]
+            dp[i] %= mod
+            last[ord(s[i-1]) - ord('a')] = i - 1
+
+        return (dp[n] - 1) % mod
+```
+
+Now, you can create an instance of the `Solution` class and call the `distinctSubseqII` method to solve the problem. For example:
+
+```python
+solution = Solution()
+s = "abc"
+result = solution.distinctSubseqII(s)
+print(result)  # Output: 7
+```
+
+The time complexity of this solution is O(n), where n is the length of the string.

@@ -1,0 +1,39 @@
+Certainly! Here's the implementation of the `constrainedSubsetSum` function in Python:
+
+```python
+from collections import deque
+
+class Solution:
+    def constrainedSubsetSum(self, nums, k):
+        n = len(nums)
+        dp = [0] * n  # dp[i] stores the maximum sum of a subsequence ending at index i
+        
+        # Use a deque to store the indices of potential elements in the subsequence
+        # The front of the deque will always have the maximum sum element
+        dq = deque()
+        
+        max_sum = float('-inf')  # Initialize max_sum with negative infinity
+        
+        for i in range(n):
+            # Remove elements from the front of the deque if they are no longer within the window k
+            while dq and i - dq[0] > k:
+                dq.popleft()
+            
+            # Calculate the maximum sum at index i by taking the maximum of:
+            # - The current number nums[i]
+            # - The maximum sum of a subsequence ending at the previous valid index (dp[dq[0]])
+            dp[i] = max(nums[i], nums[i] + (dp[dq[0]] if dq else 0))
+            
+            # Remove elements from the back of the deque if they are smaller than the current element
+            # This ensures that the front of the deque always has the maximum sum element
+            while dq and dp[i] >= dp[dq[-1]]:
+                dq.pop()
+            
+            dq.append(i)  # Add the current index to the deque
+            
+            max_sum = max(max_sum, dp[i])  # Update the maximum sum if necessary
+        
+        return max_sum
+```
+
+You can create an instance of the `Solution` class and call the `constrainedSubsetSum` method with the `nums` array and the value of `k` to obtain the maximum sum of the non-empty subsequence that satisfies the given condition.

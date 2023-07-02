@@ -1,0 +1,17 @@
+Here's the implementation of the `fractionAddition` function in Python:
+
+```python
+from fractions import Fraction
+
+class Solution:
+    def fractionAddition(self, expression: str) -> str:
+        fractions = expression.replace('+', ' +').replace('-', ' -').split()
+        result = sum(map(Fraction, fractions), Fraction(0, 1))
+        return str(result.numerator) + '/' + str(result.denominator)
+```
+
+In this solution, we make use of the `Fraction` class from the `fractions` module to perform fraction calculations. The function takes the `expression` as input, splits it into individual fractions, and converts them into `Fraction` objects. Then, we use the `sum` function along with the `map` function to add all the fractions together.
+
+Finally, we convert the numerator and denominator of the result into strings and concatenate them with a `'/'` character to form the final result in the required format.
+
+Please note that the code assumes the input expression is valid and follows the specified constraints.

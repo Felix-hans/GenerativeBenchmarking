@@ -1,0 +1,11 @@
+Apologies for the mistake in the code. It seems that the generator expression in the `max_prev_sum` calculation is not properly parenthesized, leading to a syntax error.
+
+Here's the corrected line:
+
+```python
+max_prev_sum = max(0, max(dp[j] for j in queue))
+```
+
+By adding parentheses around the generator expression, we ensure that the max function operates on the maximum sum values correctly.
+
+I apologize for the oversight. Please try the updated code with the problematic test case again.

@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Wrong Answer\n  \xe2\x9c\x98 32/54 cases passed (N/A)\n  \xe2\x9c\x98 Testcase: ["RangeModule","addRange","removeRange","removeRange","addRange","removeRange","addRange","queryRange","queryRange","queryRange"]\n\' +\n  \'[[],[6,8],[7,8],[8,9],[8,9],[1,3],[1,8],[2,4],[2,9],[4,6]]\n  \xe2\x9c\x98 Answer: [null,null,null,null,null,null,null,true,false,true]\n  \xe2\x9c\x98 Expected Answer: [null,null,null,null,null,null,null,true,true,true]\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:75693) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

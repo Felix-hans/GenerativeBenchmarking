@@ -1,0 +1,54 @@
+To solve this problem, we can use a greedy algorithm. The idea is to sort the engineers based on their efficiency in descending order and maintain a priority queue of the speeds of the engineers selected so far. 
+
+We will iterate over the sorted engineers and add their speed to the priority queue. If the number of engineers selected so far exceeds k, we will remove the engineer with the lowest speed from the priority queue.
+
+For each engineer, we calculate the performance as the sum of speeds in the priority queue multiplied by the engineer's efficiency. We keep track of the maximum performance encountered during the iteration.
+
+Here's the implementation of the `maxPerformance` function:
+
+```python
+import heapq
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = sorted(zip(efficiency, speed), reverse=True)  # Sort engineers by efficiency in descending order
+        max_performance = 0
+        total_speed = 0
+        speed_heap = []
+
+        for eff, spd in engineers:
+            total_speed += spd
+            heapq.heappush(speed_heap, spd)
+
+            if len(speed_heap) > k:
+                total_speed -= heapq.heappop(speed_heap)
+
+            performance = total_speed * eff
+            max_performance = max(max_performance, performance)
+
+        return max_performance % (10**9 + 7)
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+n = 6
+speed = [2, 10, 3, 1, 5, 8]
+efficiency = [5, 4, 3, 9, 7, 2]
+k = 2
+print(solution.maxPerformance(n, speed, efficiency, k))
+# Output: 60
+
+k = 3
+print(solution.maxPerformance(n, speed, efficiency, k))
+# Output: 68
+
+k = 4
+print(solution.maxPerformance(n, speed, efficiency, k))
+# Output: 72
+```
+
+The function produces the correct outputs for the given examples.

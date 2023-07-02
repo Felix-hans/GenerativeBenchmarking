@@ -57,14 +57,16 @@ class LeetCodeUtil:
 
         #Sometimes leetcode does not answer
         try:
-            
+            print('submiting leetcode')
+            print(python_file_path)
             p=subprocess.run(['leetcode','submit',python_file_path,'-l','python3'],capture_output=True, timeout=timeout)
-
+            print(str(p.stdout))
         except subprocess.TimeoutExpired:
             timeoutCount = timeoutCount +1
             print('TIMEOUT')
 
             if timeoutCount < 3:
+                print('timeout')
                 self.iterate_python_files(python_file_path, timeout, timeoutCount= timeoutCount)
             else:
                 print("SESSION KEEPS TIMING OUT")

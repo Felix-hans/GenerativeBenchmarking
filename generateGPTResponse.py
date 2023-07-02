@@ -1,4 +1,13 @@
 import time
+import sys
+
+def generate_chatgpt_api(chatbot,prompt):
+     
+     resp=chatbot.ask(prompt)
+     
+     
+     return resp,chatbot
+     
 
 def generate_chatgpt(chatbot, prompt):
         time.sleep(2)

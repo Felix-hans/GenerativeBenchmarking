@@ -1,0 +1,40 @@
+To solve this problem, we can use a greedy approach. The idea is to sort the dishes in descending order of satisfaction levels. By doing this, we ensure that we start with the most satisfying dishes first.
+
+Here's the implementation of the `maxSatisfaction` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort dishes in descending order
+        
+        max_sum = 0  # Maximum sum of like-time coefficients
+        total_time = 0  # Total time taken
+        
+        for s in satisfaction:
+            if total_time + s <= 0:
+                break  # Stop if adding the current dish decreases the sum
+            
+            total_time += s
+            max_sum += total_time
+        
+        return max_sum
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The function returns the expected results for the provided examples.

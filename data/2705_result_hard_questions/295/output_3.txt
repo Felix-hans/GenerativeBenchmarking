@@ -1,0 +1,44 @@
+Here's the implementation of the MedianFinder class in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.small = []  # max heap for smaller half
+        self.large = []  # min heap for larger half
+
+    def addNum(self, num: int) -> None:
+        # Balance the heaps and insert the number
+        if len(self.small) == len(self.large):
+            heapq.heappush(self.large, -heapq.heappushpop(self.small, -num))
+        else:
+            heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+
+    def findMedian(self) -> float:
+        if len(self.small) == len(self.large):
+            return (self.large[0] - self.small[0]) / 2.0
+        else:
+            return float(self.large[0])
+```
+
+Here's how you can use the MedianFinder class:
+
+```python
+obj = MedianFinder()
+obj.addNum(1)
+obj.addNum(2)
+print(obj.findMedian())  # Output: 1.5
+obj.addNum(3)
+print(obj.findMedian())  # Output: 2.0
+```
+
+The MedianFinder class uses two heaps to maintain the smaller and larger halves of the input numbers. The small heap is a max heap where we store the negative values of the numbers, and the large heap is a min heap where we store the positive values. This way, the smallest value in the large heap represents the median if the number of elements is odd, and the negative of the largest value in the small heap represents the median if the number of elements is even.
+
+The `addNum` function adds a number to the data structure. It balances the heaps by pushing the number to the appropriate heap and then adjusting the heaps if necessary.
+
+The `findMedian` function returns the median of all elements seen so far. If the number of elements is odd, it calculates the median as the top value of the large heap. If the number of elements is even, it calculates the median as the average of the top values of the small and large heaps.
+
+To optimize the solution when all integer numbers from the stream are in the range [0, 100], we can use an array of size 101 instead of heaps. Each index of the array represents a number from 0 to 100, and the value at that index represents the count of occurrences of that number. This way, we can directly access the median without using heaps.
+
+To optimize the solution when 99% of all integer numbers from the stream are in the range [0, 100], we can use a combination of the heap and array approaches. We can use the array to keep track of the count of numbers in the range [0, 100], and if the number is outside this range, we insert it into the heaps. This way, we maintain the overall median efficiently while using the array for the majority of the numbers.

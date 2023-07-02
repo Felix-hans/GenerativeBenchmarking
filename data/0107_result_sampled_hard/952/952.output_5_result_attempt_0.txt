@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/108 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 46: ValueError: 2 is not in list\n  \xe2\x9c\x98 Error: ValueError: 2 is not in list\n    union(parent, size, nums.index(num), nums.index(prime))\nLine 46 in largestComponentSize (Solution.py)\n    print(solution.largestComponentSize([4, 6, 15, 35]))  # Output: 4\nLine 53 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: [4,6,15,35]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 4\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:79286) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

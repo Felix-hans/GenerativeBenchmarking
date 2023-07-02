@@ -1,0 +1,51 @@
+I apologize for the oversight. The issue lies in the comparison of the decimal expansions. Since the repeating part can have a variable length, we need to compare the decimal expansions up to a certain length rather than checking for exact equality. Here's the updated code to address this:
+
+```python
+class Solution:
+    def isRationalEqual(self, s: str, t: str) -> bool:
+        def expand_decimal(s):
+            integer_part, decimal_part = s.split('.')
+            non_repeating_part = ''
+            repeating_part = ''
+
+            if '(' in decimal_part:
+                non_repeating_part, repeating_part = decimal_part.split('(')
+                repeating_part = repeating_part[:-1]
+            else:
+                non_repeating_part = decimal_part
+
+            return integer_part, non_repeating_part, repeating_part
+
+        def generate_decimal(integer_part, non_repeating_part, repeating_part, length):
+            decimal_expansion = integer_part + '.' + non_repeating_part
+
+            if repeating_part:
+                decimal_expansion += repeating_part * length
+
+            return decimal_expansion
+
+        s_integer, s_non_repeating, s_repeating = expand_decimal(s)
+        t_integer, t_non_repeating, t_repeating = expand_decimal(t)
+
+        # Generate decimal expansions up to a length of 10^5
+        length = 10 ** 5
+        s_decimal = generate_decimal(s_integer, s_non_repeating, s_repeating, length)
+        t_decimal = generate_decimal(t_integer, t_non_repeating, t_repeating, length)
+
+        # Check if the decimal expansions match up to the specified length
+        return s_decimal[:length] == t_decimal[:length]
+```
+
+Now, the `generate_decimal` function takes the length parameter, which determines the number of characters to generate for the repeating part. We set the length to 10^5, which should be sufficient for most cases.
+
+Let's test the code again:
+
+```python
+solution = Solution()
+s = "0.(52)"
+t = "0.5(25)"
+result = solution.isRationalEqual(s, t)
+print(result)  # Output: True
+```
+
+Now the output should be `True`, as expected.

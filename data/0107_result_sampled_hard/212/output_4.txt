@@ -1,0 +1,59 @@
+Apologies for the confusion. The issue is that the condition `if '#' in node and node['#']:` is checking if the `'#'` key exists in `node` and is truthy. However, since we're using a set to store the found words, we need to modify the condition to check if `'#'` is in `node` and its value is `True` (indicating a valid word).
+
+Here's the corrected version of the code:
+
+```python
+from typing import List
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Convert the board into a 2D matrix of characters for easier access
+        board = [list(row) for row in board]
+        
+        # Initialize a set to store the found words
+        result = set()
+        
+        # Define the directions for adjacent cells: up, down, left, right
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        # Define a helper function to perform the backtracking
+        def backtrack(row, col, node, parent):
+            # Check if we have formed a word
+            if '#' in node and node['#']:
+                result.add(''.join(parent))
+                # Mark the word as found by setting '#' to False
+                node['#'] = False
+            
+            # Check if we're out of bounds or if the current cell is not part of the word
+            if row < 0 or row >= len(board) or col < 0 or col >= len(board[0]) or board[row][col] not in node:
+                return
+            
+            # Temporarily mark the current cell as visited
+            letter = board[row][col]
+            board[row][col] = '#'
+            
+            # Explore the neighboring cells
+            for dx, dy in directions:
+                backtrack(row + dx, col + dy, node.get(letter, {}), parent + [letter])
+            
+            # Restore the original value of the current cell
+            board[row][col] = letter
+        
+        # Build a trie from the given words
+        trie = {}
+        for word in words:
+            node = trie
+            for char in word:
+                node = node.setdefault(char, {})
+            node['#'] = True
+        
+        # Perform the backtracking for each cell on the board
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                backtrack(i, j, trie, [])
+        
+        # Return the list of found words
+        return list(result)
+```
+
+Now the code should run without any errors and produce the expected output.

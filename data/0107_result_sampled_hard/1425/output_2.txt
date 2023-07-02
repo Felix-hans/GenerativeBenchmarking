@@ -1,0 +1,58 @@
+I apologize for the error in the previous code. The issue is that the dynamic programming approach I described earlier is not efficient enough for larger test cases. We need to use a different approach to solve this problem.
+
+To address this, we can use a data structure called a monotonic queue (or a deque) to efficiently calculate the maximum sum of subsequences. The monotonic queue will store the indices of the elements in descending order of their values.
+
+Here's the updated implementation using the monotonic queue approach:
+
+```python
+from collections import deque
+
+class Solution:
+    def constrainedSubsetSum(self, nums: List[int], k: int) -> int:
+        n = len(nums)
+        dp = [0] * n
+        queue = deque()
+        max_sum = float('-inf')
+
+        for i in range(n):
+            # Remove indices from the front of the queue if they are outside the window k
+            while queue and i - queue[0] > k:
+                queue.popleft()
+
+            # Calculate the maximum sum of a subsequence ending at index i
+            dp[i] = max(nums[i], nums[i] + (dp[queue[0]] if queue else 0))
+
+            # Remove indices from the back of the queue if their corresponding values are smaller than dp[i]
+            while queue and dp[i] >= dp[queue[-1]]:
+                queue.pop()
+
+            # Add the current index to the queue
+            queue.append(i)
+
+            # Update the maximum sum
+            max_sum = max(max_sum, dp[i])
+
+        return max_sum
+```
+
+Now, let's test the updated implementation with the provided test cases:
+
+```python
+solution = Solution()
+nums = [10, 2, -10, 5, 20]
+k = 2
+result = solution.constrainedSubsetSum(nums, k)
+print(result)  # Output: 37
+
+nums = [-1, -2, -3]
+k = 1
+result = solution.constrainedSubsetSum(nums, k)
+print(result)  # Output: -1
+
+nums = [10, -2, -10, -5, 20]
+k = 2
+result = solution.constrainedSubsetSum(nums, k)
+print(result)  # Output: 23
+```
+
+I apologize for the inconvenience caused by the previous incorrect implementation. This updated code should provide the correct results for the given test cases and perform well even for larger inputs.

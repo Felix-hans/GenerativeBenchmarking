@@ -1,0 +1,62 @@
+To implement the FreqStack class, we can use a combination of a dictionary and a list. The dictionary will store the frequency of each element in the stack, and the list will represent the stack itself. Additionally, we can keep track of the maximum frequency observed so far.
+
+Here's the implementation:
+
+```python
+from collections import defaultdict
+
+class FreqStack:
+    def __init__(self):
+        self.frequency = defaultdict(int)
+        self.stack = []
+        self.max_freq = 0
+
+    def push(self, val: int) -> None:
+        self.frequency[val] += 1
+        freq = self.frequency[val]
+        if freq > self.max_freq:
+            self.max_freq = freq
+        self.stack.append(val)
+
+    def pop(self) -> int:
+        element_to_pop = None
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.frequency[self.stack[i]] == self.max_freq:
+                element_to_pop = i
+                break
+        
+        val = self.stack.pop(element_to_pop)
+        self.frequency[val] -= 1
+        if self.frequency[val] == 0:
+            del self.frequency[val]
+        
+        # Update the maximum frequency
+        self.max_freq = max(self.frequency.values()) if self.frequency else 0
+        
+        return val
+```
+
+The `__init__` method initializes the frequency dictionary, stack, and maximum frequency.
+
+The `push` method takes an integer `val`, increments its frequency in the dictionary, and adds it to the stack. If the frequency of `val` becomes greater than the current maximum frequency, we update `max_freq`.
+
+The `pop` method finds the index of the element to pop by iterating through the stack from the top. It looks for an element whose frequency matches `max_freq`. Once found, it removes the element from the stack, decrements its frequency in the dictionary, and updates `max_freq` accordingly.
+
+Now you can create an instance of `FreqStack` and test it with the given example:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+This will produce the expected output `[5, 7, 5, 4]` as described in the example.

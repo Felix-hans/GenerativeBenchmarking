@@ -1,0 +1,49 @@
+Apologies for the mistake in the previous code. The issue lies in the way the words found on the board are appended to the `found_words` list. Instead of appending `True` when a word is found, we need to append the actual word itself. Here's the corrected version of the code:
+
+```python
+from typing import List
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Create a Trie data structure to store the words
+        trie = {}
+        for word in words:
+            node = trie
+            for char in word:
+                node = node.setdefault(char, {})
+            node['#'] = word  # '#' denotes the end of a word
+        
+        # Define the backtracking function
+        def backtrack(row, col, parent):
+            letter = board[row][col]
+            curr_node = parent[letter]
+            
+            word = curr_node.pop('#', False)
+            if word:
+                found_words.append(word)
+            
+            board[row][col] = '#'  # Mark the cell as visited
+            
+            # Explore the neighboring cells
+            for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+                new_row, new_col = row + dx, col + dy
+                if 0 <= new_row < len(board) and 0 <= new_col < len(board[0]) and board[new_row][new_col] in curr_node:
+                    backtrack(new_row, new_col, curr_node)
+            
+            board[row][col] = letter  # Mark the cell as unvisited
+            
+            # Optimization: remove empty nodes from the Trie
+            if not curr_node:
+                parent.pop(letter)
+        
+        # Iterate through each cell on the board
+        found_words = []
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] in trie:
+                    backtrack(i, j, trie)
+        
+        return found_words
+```
+
+Now, the correct word will be appended to the `found_words` list when it is found on the board.

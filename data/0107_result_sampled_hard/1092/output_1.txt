@@ -1,0 +1,64 @@
+To find the shortest string that has both `str1` and `str2` as subsequences, we can use a dynamic programming approach. Let's define a function `shortestCommonSupersequence` that takes `str1` and `str2` as input and returns the shortest common supersequence.
+
+Here's the implementation in Python:
+
+```python
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        # Find the lengths of the input strings
+        m, n = len(str1), len(str2)
+        
+        # Create a 2D table to store the lengths of the shortest common supersequences
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        # Fill the table using dynamic programming
+        for i in range(m + 1):
+            for j in range(n + 1):
+                if i == 0:
+                    dp[i][j] = j
+                elif j == 0:
+                    dp[i][j] = i
+                elif str1[i - 1] == str2[j - 1]:
+                    dp[i][j] = 1 + dp[i - 1][j - 1]
+                else:
+                    dp[i][j] = 1 + min(dp[i - 1][j], dp[i][j - 1])
+        
+        # Construct the shortest common supersequence by backtracking
+        i, j = m, n
+        superseq = []
+        while i > 0 and j > 0:
+            if str1[i - 1] == str2[j - 1]:
+                superseq.append(str1[i - 1])
+                i -= 1
+                j -= 1
+            elif dp[i - 1][j] < dp[i][j - 1]:
+                superseq.append(str1[i - 1])
+                i -= 1
+            else:
+                superseq.append(str2[j - 1])
+                j -= 1
+        
+        # Append any remaining characters from str1 or str2
+        while i > 0:
+            superseq.append(str1[i - 1])
+            i -= 1
+        while j > 0:
+            superseq.append(str2[j - 1])
+            j -= 1
+        
+        # Reverse the supersequence and convert it to a string
+        superseq.reverse()
+        return ''.join(superseq)
+```
+
+You can create an instance of the `Solution` class and call the `shortestCommonSupersequence` method with your input strings to get the desired output.
+
+```python
+solution = Solution()
+str1 = "abac"
+str2 = "cab"
+result = solution.shortestCommonSupersequence(str1, str2)
+print(result)  # Output: "cabac"
+```
+
+Note that there may be multiple valid shortest common supersequences. The code above finds one of them, but the exact output may differ if there are multiple valid solutions.

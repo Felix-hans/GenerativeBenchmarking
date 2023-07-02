@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/36 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 16: SyntaxError: Generator expression must be parenthesized\n  \xe2\x9c\x98 Error: SyntaxError: Generator expression must be parenthesized\n                          ^^^^^^^^^^^^^^^^^^^^\n    max_prev_sum = max(0, dp[j] for j in queue)\nLine 16  (Solution.py)\n  \xe2\x9c\x98 Testcase: [10,2,-10,5,20]\n2\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 37\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:78680) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

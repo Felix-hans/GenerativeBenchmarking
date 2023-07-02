@@ -1,0 +1,43 @@
+Here's the implementation of the `sumEvenAfterQueries` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        result = []
+        even_sum = sum(num for num in nums if num % 2 == 0)
+        
+        for query in queries:
+            val, index = query
+            prev_num = nums[index]
+            
+            # Update the number at the given index
+            nums[index] += val
+            
+            # Check if the previous number and the updated number are even or odd
+            is_prev_even = prev_num % 2 == 0
+            is_updated_even = nums[index] % 2 == 0
+            
+            # Update the even sum based on the changes in even/odd status
+            if is_prev_even:
+                even_sum -= prev_num
+            if is_updated_even:
+                even_sum += nums[index]
+            
+            result.append(even_sum)
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `sumEvenAfterQueries` method with the given `nums` and `queries` as arguments to get the desired output. For example:
+
+```python
+nums = [1, 2, 3, 4]
+queries = [[1, 0], [-3, 1], [-4, 0], [2, 3]]
+solution = Solution()
+output = solution.sumEvenAfterQueries(nums, queries)
+print(output)  # [8, 6, 2, 4]
+```
+
+The output will be `[8, 6, 2, 4]`, which matches the expected result.

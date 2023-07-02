@@ -1,0 +1,63 @@
+To design a stack-like data structure that supports pushing elements and popping the most frequent element, we can use a combination of a dictionary and a list. The dictionary will track the frequency of each element, and the list will maintain the order of elements in the stack.
+
+Here's the implementation of the `FreqStack` class in Python:
+
+```python
+class FreqStack:
+    def __init__(self):
+        self.freq = {}  # dictionary to track frequency of elements
+        self.stack = []  # list to maintain the order of elements
+
+    def push(self, val: int) -> None:
+        if val in self.freq:
+            self.freq[val] += 1
+        else:
+            self.freq[val] = 1
+        self.stack.append(val)
+
+    def pop(self) -> int:
+        max_freq = 0
+        max_freq_elements = []  # list to store elements with the maximum frequency
+        for element, frequency in self.freq.items():
+            if frequency > max_freq:
+                max_freq = frequency
+                max_freq_elements = [element]
+            elif frequency == max_freq:
+                max_freq_elements.append(element)
+
+        max_freq_stack_indices = []
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i] in max_freq_elements:
+                max_freq_stack_indices.append(i)
+                if self.stack[i] in self.freq:
+                    self.freq[self.stack[i]] -= 1
+                    if self.freq[self.stack[i]] == 0:
+                        del self.freq[self.stack[i]]
+                break
+
+        popped_element = self.stack[max_freq_stack_indices[-1]]
+        del self.stack[max_freq_stack_indices[-1]]
+
+        return popped_element
+```
+
+Here's an example usage of the `FreqStack` class:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)  # The stack is [5]
+freqStack.push(7)  # The stack is [5,7]
+freqStack.push(5)  # The stack is [5,7,5]
+freqStack.push(7)  # The stack is [5,7,5,7]
+freqStack.push(4)  # The stack is [5,7,5,7,4]
+freqStack.push(5)  # The stack is [5,7,5,7,4,5]
+
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The code maintains the frequency of each element in the `freq` dictionary. The `push` method updates the frequency of the element and appends it to the `stack`. The `pop` method finds the element(s) with the maximum frequency, searches for the element closest to the top in the `stack`, updates the frequencies, removes the element from the `stack`, and returns the popped element.
+
+Note: The implementation assumes that there will always be at least one element in the stack before calling `pop()`.

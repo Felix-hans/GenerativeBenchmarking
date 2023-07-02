@@ -1,0 +1,60 @@
+Apologies for the error in the code. The issue lies in how the found words are appended to the `found_words` list. Instead of appending the word itself, we need to append the original word from the `words` list. Additionally, we need to return the list of words in sorted order to match the expected answer. Here's the corrected code:
+
+```python
+from typing import List
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        # Define the directions for adjacent cells
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        # Build a trie from the given words
+        trie = {}
+        for word in words:
+            node = trie
+            for char in word:
+                if char not in node:
+                    node[char] = {}
+                node = node[char]
+            node['_end'] = word
+
+        # Helper function for backtracking
+        def backtrack(row, col, parent):
+            char = board[row][col]
+            curr_node = parent[char]
+
+            # Check if we found a word
+            word = curr_node.pop('_end', False)
+            if word:
+                found_words.append(word)
+
+            # Mark the cell as visited
+            board[row][col] = '#'
+
+            # Explore adjacent cells
+            for dx, dy in directions:
+                new_row, new_col = row + dx, col + dy
+                if 0 <= new_row < len(board) and 0 <= new_col < len(board[0]) and board[new_row][new_col] in curr_node:
+                    backtrack(new_row, new_col, curr_node)
+
+            # Restore the cell value and backtrack
+            board[row][col] = char
+
+            # Clean up the trie node if it's empty
+            if not curr_node:
+                parent.pop(char)
+
+        found_words = []
+
+        # Iterate through each cell on the board
+        for row in range(len(board)):
+            for col in range(len(board[0])):
+                if board[row][col] in trie:
+                    backtrack(row, col, trie)
+
+        return sorted(found_words)
+```
+
+Now the code will correctly append the original words to the `found_words` list and return the sorted list.
+
+Let me know if you have any further questions or issues!

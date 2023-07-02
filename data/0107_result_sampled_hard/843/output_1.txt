@@ -1,0 +1,32 @@
+Apologies for the confusion. It seems that there's an issue in the provided code related to the condition for the maximum number of allowed guesses. Here's the corrected code:
+
+```python
+from typing import List
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        n = 6  # Length of each word
+        
+        # Helper function to calculate the number of matches between two words
+        def matchCount(word1, word2):
+            return sum(c1 == c2 for c1, c2 in zip(word1, word2))
+        
+        # Main logic
+        def minimizeWords():
+            # Set of potential candidates for the secret word
+            candidates = set(range(len(words)))
+
+            # Guess and eliminate words iteratively
+            for _ in range(10):  # Maximum 10 allowed guesses
+                guess = next(iter(candidates))  # Choose a random candidate
+                matches = master.guess(words[guess])
+                if matches == n:  # Found the secret word
+                    return
+                candidates = {c for c in candidates if matchCount(words[guess], words[c]) == matches}
+
+        minimizeWords()
+```
+
+In this corrected code, I removed the construction of the similarity matrix since we only need to compare the number of matches between words during the guessing process. The `matchCount` function calculates the number of matches between two words.
+
+Please ensure that the `Master` class is correctly defined and provides the `guess` method as specified in the problem statement. With this corrected code, it should now work properly and pass the test cases.

@@ -1,0 +1,73 @@
+Apologies for the confusion. The issue lies in the handling of the board and hand counts when removing consecutive balls. We need to update the counts after removing consecutive balls from the board. Here's the corrected implementation:
+
+```python
+from collections import Counter
+
+class Solution:
+    def findMinStep(self, board: str, hand: str) -> int:
+        def backtrack(board, hand):
+            if not board:
+                return 0
+
+            min_steps = float('inf')
+            i = 0
+            while i < len(board):
+                j = i + 1
+                while j < len(board) and board[j] == board[i]:
+                    j += 1
+
+                color = board[i]
+                count = j - i
+                needed = 3 - count
+
+                if hand[color] >= needed:
+                    hand[color] -= needed
+                    new_board = removeConsecutive(board[:i] + board[j:])
+                    steps = backtrack(new_board, hand)
+                    if steps >= 0:
+                        min_steps = min(min_steps, needed + steps)
+                    hand[color] += needed
+
+                i = j
+
+            return min_steps if min_steps != float('inf') else -1
+
+        def removeConsecutive(board):
+            i = 0
+            while i < len(board):
+                j = i + 1
+                while j < len(board) and board[j] == board[i]:
+                    j += 1
+                if j - i >= 3:
+                    new_board = board[:i] + board[j:]
+                    return removeConsecutive(new_board)
+                i = j
+
+            return board
+
+        board_count = Counter(board)
+        hand_count = Counter(hand)
+        return backtrack(board, hand_count)
+```
+
+In the `removeConsecutive` function, we create a new board `new_board` after removing consecutive balls, and then recursively call `removeConsecutive` with `new_board`. This ensures that the counts of balls are updated correctly.
+
+Now you can test the updated solution again with the provided examples:
+
+```python
+solution = Solution()
+
+board = "WRRBBW"
+hand = "RB"
+print(solution.findMinStep(board, hand))  # Output: -1
+
+board = "WWRRBBWW"
+hand = "WRBRW"
+print(solution.findMinStep(board, hand))  # Output: 2
+
+board = "G"
+hand = "GGGGG"
+print(solution.findMinStep(board, hand))  # Output: 2
+```
+
+This time, the code should produce the correct outputs for all the test cases, including the one that previously failed.

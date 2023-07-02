@@ -57,6 +57,8 @@ def bug_detection(all_assignments, descriptions):
     chatgpt.ifbug(all_assignments, descriptions)
 
 def code_generation(model, step):
+    #Run this to run the entire pipeline
+    
     # root dir of the dataset, model name, step name (generate, table, length)
     if step=='generate':
         gen=GenerationUtil()
@@ -347,6 +349,7 @@ if __name__ == '__main__':
         step = arg2
         model = arg3
         code_generation(model, step)
+        #Run command: python main.py RQ1 generate ChatGPT 
 
     elif arg1 == 'eval':
         step = arg2

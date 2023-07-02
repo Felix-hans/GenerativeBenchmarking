@@ -1,0 +1,77 @@
+Apologies for the confusion. It seems there was an error in the implementation of the `Master` class. To fix the issue, we need to include the `allowed_guesses` attribute in the `Master` class.
+
+Here's the updated code with the corrected implementation:
+
+```python
+from typing import List
+
+class Master:
+    def __init__(self, secret: str, words: List[str], allowed_guesses: int):
+        self.secret = secret
+        self.words = words
+        self.allowed_guesses = allowed_guesses
+        self.guess_count = 0
+    
+    def guess(self, word: str) -> int:
+        if word not in self.words:
+            return -1
+        
+        self.guess_count += 1
+        if word == self.secret:
+            return 6  # The secret word has 6 exact matches
+        
+        match_count = sum(a == b for a, b in zip(word, self.secret))
+        return match_count
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: Master) -> None:
+        n = len(words)
+        guess_count = 0
+        
+        while guess_count < master.allowed_guesses:
+            # Count the frequency of each character in each position
+            char_freq = [[0] * 26 for _ in range(6)]
+            for word in words:
+                for i, char in enumerate(word):
+                    char_freq[i][ord(char) - ord('a')] += 1
+            
+            # Find a word with the minimum elimination score
+            min_elimination = float('inf')
+            guess_word = ""
+            for word in words:
+                elimination_score = 0
+                for i, char in enumerate(word):
+                    elimination_score += char_freq[i][ord(char) - ord('a')]
+                if elimination_score < min_elimination:
+                    min_elimination = elimination_score
+                    guess_word = word
+            
+            # Make a guess with the selected word
+            guess_result = master.guess(guess_word)
+            guess_count += 1
+            
+            if guess_result == 6:
+                print("You guessed the secret word correctly.")
+                return
+            
+            # Filter the word list based on the guess result
+            filtered_words = []
+            for word in words:
+                match_count = sum(a == b for a, b in zip(word, guess_word))
+                if match_count == guess_result:
+                    filtered_words.append(word)
+            
+            words = filtered_words
+        
+        print("Either you took too many guesses, or you did not find the secret word.")
+
+# Example usage
+secret = "acckzz"
+words = ["acckzz", "ccbazz", "eiowzz", "abcczz"]
+allowedGuesses = 10
+
+solution = Solution()
+solution.findSecretWord(words, Master(secret, words, allowedGuesses))
+```
+
+Please try running this updated code, and it should resolve the error you encountered. Let me know if you have any further issues.

@@ -1,0 +1,94 @@
+To implement the Skiplist class in Python, we can create a node class to represent the nodes in the skiplist, and the Skiplist class itself to handle the operations. Here's the implementation:
+
+```python
+import random
+
+class Node:
+    def __init__(self, val=None):
+        self.val = val
+        self.right = None
+        self.down = None
+
+class Skiplist:
+    def __init__(self):
+        self.head = Node(float('-inf'))  # Head node with negative infinity value
+        self.levels = [self.head]  # List to store the head nodes of each level
+    
+    def search(self, target: int) -> bool:
+        node = self.head
+        while node:
+            if node.val == target:
+                return True
+            elif node.right is None or node.right.val > target:
+                node = node.down
+            else:
+                node = node.right
+        return False
+    
+    def add(self, num: int) -> None:
+        path = self._get_path(num)
+        down = None
+        for node in reversed(path):
+            new_node = Node(num)
+            new_node.right = node.right
+            node.right = new_node
+            new_node.down = down
+            down = new_node
+            if random.random() < 0.5:
+                break
+    
+    def erase(self, num: int) -> bool:
+        node = self.head
+        found = False
+        while node:
+            if node.right is None or node.right.val > num:
+                node = node.down
+            elif node.right.val == num:
+                node.right = node.right.right
+                found = True
+                node = node.down
+            else:
+                node = node.right
+        return found
+    
+    def _get_path(self, num: int) -> list:
+        node = self.head
+        path = []
+        while node:
+            if node.right is None or node.right.val > num:
+                path.append(node)
+                node = node.down
+            elif node.right.val == num:
+                path.append(node)
+                return path
+            else:
+                node = node.right
+        return path
+```
+
+In this implementation, the skiplist is built using linked lists. The `Node` class represents each node in the skiplist, and the `Skiplist` class handles the operations.
+
+The `search` method traverses through the skiplist starting from the top level and moves down to the lower levels if the target value is not found.
+
+The `add` method follows a similar approach to the `search` method. It first finds the path where the new node should be inserted by traversing through the skiplist. Then it randomly determines whether to create a new level for the new node or not.
+
+The `erase` method searches for the node with the given value and removes it from the skiplist.
+
+The `_get_path` method is a helper function that returns the path taken to reach the given value. It is used by both the `add` and `erase` methods.
+
+Here's an example of how to use the Skiplist class:
+
+```python
+skiplist = Skiplist()
+skiplist.add(1)
+skiplist.add(2)
+skiplist.add(3)
+print(skiplist.search(0))  # Output: False
+skiplist.add(4)
+print(skiplist.search(1))  # Output: True
+print(skiplist.erase(0))   # Output: False
+print(skiplist.erase(1))   # Output: True
+print(skiplist.search(1))  # Output: False
+```
+
+This implementation should provide the expected output and perform the operations

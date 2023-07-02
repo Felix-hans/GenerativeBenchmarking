@@ -1,0 +1,46 @@
+To solve the problem, we can use a greedy approach. The idea is to sort the satisfaction array in descending order and then iterate over it to calculate the maximum sum of the like-time coefficient.
+
+Here's the implementation of the `maxSatisfaction` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort satisfaction in descending order
+        max_sum = 0
+        total_time = 0
+        
+        for s in satisfaction:
+            if total_time + s <= 0:
+                break
+            total_time += s
+            max_sum += total_time
+        
+        return max_sum
+```
+
+Let's go through the code:
+
+1. We start by sorting the `satisfaction` array in descending order using the `sort` function.
+
+2. We initialize the `max_sum` variable to keep track of the maximum sum of the like-time coefficient and `total_time` variable to keep track of the cumulative time.
+
+3. We iterate over each element `s` in the sorted `satisfaction` array.
+
+4. If adding `s` to `total_time` results in a non-positive value, it means that adding any further dishes will only decrease the sum. So, we break out of the loop.
+
+5. Otherwise, we add `s` to `total_time` and update `max_sum` by adding `total_time` to it.
+
+6. Finally, we return the `max_sum`.
+
+Now, you can create an instance of the `Solution` class and call the `maxSatisfaction` function with the given input to test it:
+
+```python
+satisfaction = [-1, -8, 0, 5, -9]
+solution = Solution()
+result = solution.maxSatisfaction(satisfaction)
+print(result)  # Output: 14
+```
+
+You can also test the function with the other provided examples and additional test cases to verify its correctness.

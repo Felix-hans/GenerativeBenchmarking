@@ -1,0 +1,52 @@
+Apologies for the oversight. The previous code has a performance issue when iterating to find the remaining magical numbers. We can optimize the solution by using binary search instead.
+
+Here's the updated code:
+
+```python
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        def gcd(x, y):
+            while y:
+                x, y = y, x % y
+            return x
+
+        def lcm(x, y):
+            return x * y // gcd(x, y)
+
+        MOD = int(1e9) + 7
+
+        # Calculate the least common multiple
+        lcm_val = lcm(a, b)
+
+        # Calculate the count of magical numbers in the range [1, lcm]
+        count = lcm_val // a + lcm_val // b - 1
+
+        # Calculate the number of complete ranges
+        complete_ranges = n // count
+
+        # Calculate the remaining count of magical numbers
+        remaining_count = n % count
+
+        # Calculate the nth magical number in the complete ranges
+        magical_num = complete_ranges * lcm_val % MOD
+
+        if remaining_count == 0:
+            return magical_num
+
+        # Binary search to find the remaining magical numbers
+        low = 1
+        high = lcm_val
+
+        while low < high:
+            mid = (low + high) // 2
+            magical_count = mid // a + mid // b - mid // lcm_val
+
+            if magical_count < remaining_count:
+                low = mid + 1
+            else:
+                high = mid
+
+        return (magical_num + low) % MOD
+```
+
+Now, the code uses binary search to find the remaining magical numbers, which significantly improves the performance. You can use this updated code to get the correct results within the time limit.

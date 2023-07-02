@@ -1,0 +1,39 @@
+To solve this problem, we can follow the following steps:
+
+1. Create a list of tuples, where each tuple contains the engineer's speed and efficiency.
+2. Sort the list of tuples in descending order based on efficiency.
+3. Create a priority queue to keep track of the k engineers with the highest speeds.
+4. Initialize the variables `total_speed` and `max_performance` to 0.
+5. Iterate over each engineer in the sorted list of tuples:
+   - Add the engineer's speed to `total_speed`.
+   - Push the engineer's speed into the priority queue.
+   - If the priority queue's size exceeds k, pop the engineer with the lowest speed from the queue and subtract their speed from `total_speed`.
+   - Calculate the performance as `total_speed` multiplied by the current engineer's efficiency.
+   - Update `max_performance` with the maximum value between `max_performance` and the current performance.
+6. Return `max_performance` modulo 10^9 + 7.
+
+Here's the implementation of the `maxPerformance` function in Python:
+
+```python
+import heapq
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = sorted(zip(efficiency, speed), reverse=True)
+        max_performance = total_speed = 0
+        pq = []
+
+        for eff, spd in engineers:
+            total_speed += spd
+            heapq.heappush(pq, spd)
+
+            if len(pq) > k:
+                total_speed -= heapq.heappop(pq)
+
+            performance = total_speed * eff
+            max_performance = max(max_performance, performance)
+
+        return max_performance % (10**9 + 7)
+```
+
+You can create an instance of the `Solution` class and call the `maxPerformance` function with the provided inputs to get the maximum performance of the team.

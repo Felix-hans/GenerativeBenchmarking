@@ -1,0 +1,63 @@
+Sure! Here's the implementation of the `smallestDistancePair` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        nums.sort()  # Sort the array in ascending order
+        n = len(nums)
+        
+        # Define the range for binary search
+        left = 0
+        right = nums[n-1] - nums[0]
+        
+        while left < right:
+            mid = (left + right) // 2
+            count = 0  # Count of pairs with distance <= mid
+            j = 0  # Pointer for the second element in the pair
+            
+            # Count the number of pairs with distance <= mid
+            for i in range(n):
+                while j < n and nums[j] - nums[i] <= mid:
+                    j += 1
+                count += j - i - 1
+            
+            # Adjust the range for binary search
+            if count < k:
+                left = mid + 1
+            else:
+                right = mid
+        
+        return left
+```
+
+You can create an instance of the `Solution` class and call the `smallestDistancePair` function, passing the `nums` array and the value of `k` as parameters. The function will return the k-th smallest distance among all the pairs in the `nums` array.
+
+Here's an example of how to use the `Solution` class:
+
+```python
+nums = [1, 3, 1]
+k = 1
+solution = Solution()
+result = solution.smallestDistancePair(nums, k)
+print(result)  # Output: 0
+```
+
+```python
+nums = [1, 1, 1]
+k = 2
+solution = Solution()
+result = solution.smallestDistancePair(nums, k)
+print(result)  # Output: 0
+```
+
+```python
+nums = [1, 6, 1]
+k = 3
+solution = Solution()
+result = solution.smallestDistancePair(nums, k)
+print(result)  # Output: 5
+```
+
+I hope this helps! Let me know if you have any further questions.

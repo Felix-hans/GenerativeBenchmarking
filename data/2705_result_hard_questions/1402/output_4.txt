@@ -1,0 +1,39 @@
+To solve the problem, we can use a greedy approach. We sort the satisfaction array in non-decreasing order, as preparing dishes with higher satisfaction levels earlier will yield a higher like-time coefficient. Then, we iterate through the sorted array and calculate the maximum like-time coefficient for each prefix of the array. We keep track of the maximum coefficient encountered so far and return it as the result.
+
+Here's the implementation of the `maxSatisfaction` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort()  # Sort the satisfaction array in non-decreasing order
+        n = len(satisfaction)
+        max_coefficient = 0
+        total_time = 0
+
+        for i in range(n - 1, -1, -1):
+            if satisfaction[i] + total_time <= 0:
+                break
+            total_time += satisfaction[i]
+            max_coefficient += total_time
+
+        return max_coefficient
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The function returns the expected outputs for the given examples.

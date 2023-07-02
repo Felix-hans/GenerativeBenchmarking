@@ -1,0 +1,49 @@
+To solve this problem, we can use dynamic programming to determine the optimal strategy for both Alice and Bob. We'll create a dynamic programming table to store the scores for each subgame.
+
+Here's the implementation of the `stoneGameIII` function:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [0] * (n + 1)  # Dynamic programming table
+
+        for i in range(n - 1, -1, -1):
+            best_score = float('-inf')
+
+            for j in range(1, 4):
+                if i + j <= n:
+                    score = sum(stoneValue[i:i+j]) - dp[i + j]
+                    best_score = max(best_score, score)
+
+            dp[i] = best_score
+
+        if dp[0] > 0:
+            return "Alice"
+        elif dp[0] < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+Let's go through the code step by step:
+
+1. Initialize the length of the stoneValue array as `n` and create a dynamic programming table `dp` of size `n + 1`. We add an extra element to handle the base case when all the stones are taken.
+
+2. Start iterating from the last element of the `stoneValue` array (`i = n - 1`) and move backwards.
+
+3. For each position `i`, calculate the best score Alice can achieve by taking 1, 2, or 3 stones. We store the maximum score in the `best_score` variable.
+
+4. Update the `dp[i]` with the best score. This represents the maximum score difference Alice can achieve if the game starts at position `i`.
+
+5. After iterating through all positions, we check the score difference at the starting position (`dp[0]`).
+
+6. If `dp[0]` is positive, it means Alice can achieve a higher score than Bob, so we return "Alice".
+
+7. If `dp[0]` is negative, it means Bob can achieve a higher score than Alice, so we return "Bob".
+
+8. If `dp[0]` is zero, it means both players will have the same score, so we return "Tie".
+
+The time complexity of this solution is O(n) because we iterate through the stoneValue array only once. The space complexity is also O(n) for the dynamic programming table.

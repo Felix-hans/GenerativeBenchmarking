@@ -1,0 +1,64 @@
+To implement the stack-like data structure with the ability to push elements and pop the most frequent element, we can use a combination of a dictionary and a list.
+
+The dictionary will store the frequency of each element, while the list will store the elements in the stack order. We will also keep track of the maximum frequency encountered so far.
+
+Here's the implementation:
+
+```python
+from collections import defaultdict
+
+class FreqStack:
+    def __init__(self):
+        self.freq = defaultdict(int)  # Frequency dictionary
+        self.stack = []  # Stack to store elements
+        self.max_freq = 0  # Maximum frequency encountered so far
+
+    def push(self, val: int) -> None:
+        self.freq[val] += 1  # Increment frequency of the element
+        freq = self.freq[val]  # Get the updated frequency
+
+        # Update the maximum frequency if needed
+        self.max_freq = max(self.max_freq, freq)
+
+        # Add the element to the stack
+        if freq > len(self.stack):
+            self.stack.append([val])
+        else:
+            self.stack[freq - 1].append(val)
+
+    def pop(self) -> int:
+        # Get the most frequent element from the stack
+        val = self.stack[self.max_freq - 1].pop()
+
+        # Decrement the frequency of the element
+        self.freq[val] -= 1
+
+        # If the stack for the maximum frequency is empty, update the maximum frequency
+        if not self.stack[self.max_freq - 1]:
+            self.max_freq -= 1
+
+        return val
+```
+
+Here's how you can use the `FreqStack` class:
+
+```python
+# Create a new instance of FreqStack
+freqStack = FreqStack()
+
+# Push elements onto the stack
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+
+# Pop elements from the stack
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The implementation maintains the elements in the stack order and correctly handles ties for the most frequent element by returning the one closest to the top.

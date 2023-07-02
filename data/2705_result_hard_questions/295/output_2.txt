@@ -1,0 +1,45 @@
+To implement the MedianFinder class in Python, you can use two heaps: a max-heap to store the smaller half of the numbers and a min-heap to store the larger half of the numbers. The median can then be obtained from the top elements of these heaps.
+
+Here's the implementation:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.min_heap = []  # To store larger half of numbers
+        self.max_heap = []  # To store smaller half of numbers
+
+    def addNum(self, num: int) -> None:
+        # Add the number to the appropriate heap
+        if len(self.min_heap) == len(self.max_heap):
+            # If the heaps are balanced, add the number to the max_heap
+            # but negate it to simulate a max-heap behavior
+            heapq.heappush(self.max_heap, -num)
+        else:
+            # If the heaps are unbalanced, add the number to the min_heap
+            heapq.heappush(self.min_heap, num)
+
+        # Rebalance the heaps if necessary
+        if self.min_heap and -self.max_heap[0] > self.min_heap[0]:
+            max_heap_top = -heapq.heappop(self.max_heap)
+            min_heap_top = heapq.heappop(self.min_heap)
+            heapq.heappush(self.max_heap, -min_heap_top)
+            heapq.heappush(self.min_heap, max_heap_top)
+
+    def findMedian(self) -> float:
+        if len(self.max_heap) == len(self.min_heap):
+            # If the number of elements is even, compute the median as the average of the top elements
+            return (-self.max_heap[0] + self.min_heap[0]) / 2
+        else:
+            # If the number of elements is odd, the median is the top element of the max_heap
+            return -self.max_heap[0]
+```
+
+This implementation maintains the property that the max_heap contains the smaller half of the numbers and the min_heap contains the larger half. The median can be found by comparing the sizes of the heaps and taking the appropriate action.
+
+For the follow-up questions:
+
+1. If all integer numbers from the stream are in the range [0, 100], you can use a list or an array of size 101 to keep track of the counts of each number. This way, you don't need to use heaps, and finding the median becomes a linear-time operation.
+
+2. If 99% of all integer numbers from the stream are in the range [0, 100], you can still use the approach mentioned above. However, instead of keeping track of counts for all numbers, you can use two heaps to maintain the smaller and larger numbers separately. This way, you avoid the overhead of storing and updating counts for all numbers in the range.

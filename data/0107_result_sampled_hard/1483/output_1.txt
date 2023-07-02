@@ -1,0 +1,29 @@
+Apologies for the mistake again. It seems there was an off-by-one error when setting the ancestors in the `__init__` method. The k-th ancestor should be at `self.ancestors[node][k-1]`, not `self.ancestors[node][k]`.
+
+Here's the corrected code:
+
+```python
+from math import log2
+
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.ancestors = [[-1] * (int(log2(n))+1) for _ in range(n)]
+        
+        for node in range(n):
+            self.ancestors[node][0] = parent[node]
+            
+            for k in range(1, int(log2(n))+1):
+                if self.ancestors[node][k-1] == -1:
+                    break
+                self.ancestors[node][k] = self.ancestors[self.ancestors[node][k-1]][k-1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        while k > 0 and node != -1:
+            i = int(log2(k))
+            node = self.ancestors[node][i]
+            k -= 2 ** i
+
+        return node if k == 0 else -1
+```
+
+Now the code should work correctly for the given test case as well.

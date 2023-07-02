@@ -1,0 +1,71 @@
+To implement the RandomizedCollection class, we can use a combination of a list and a dictionary. The list will store the elements in the collection, and the dictionary will map each element to its indices in the list. This allows us to efficiently insert and remove elements in O(1) time complexity on average.
+
+Here's the Python implementation:
+
+```python
+import random
+
+class RandomizedCollection:
+    def __init__(self):
+        self.collection = []  # List to store the elements
+        self.indices = {}  # Dictionary to map elements to their indices
+
+    def insert(self, val: int) -> bool:
+        self.collection.append(val)  # Add the element to the end of the list
+        if val in self.indices:
+            self.indices[val].add(len(self.collection) - 1)
+            return False
+        else:
+            self.indices[val] = {len(self.collection) - 1}
+            return True
+
+    def remove(self, val: int) -> bool:
+        if val in self.indices:
+            # Get one index of the element to remove
+            index = self.indices[val].pop()
+            if len(self.indices[val]) == 0:
+                del self.indices[val]  # Remove the element from the dictionary
+
+            # If the element to remove is not at the end of the list,
+            # swap it with the last element of the list
+            if index != len(self.collection) - 1:
+                last_element = self.collection[-1]
+                self.collection[index] = last_element
+                self.indices[last_element].remove(len(self.collection) - 1)
+                self.indices[last_element].add(index)
+
+            self.collection.pop()  # Remove the last element from the list
+            return True
+        else:
+            return False
+
+    def getRandom(self) -> int:
+        return random.choice(self.collection)
+```
+
+This implementation maintains the invariant that the indices in the dictionary always point to valid elements in the list. The `insert` method adds the element to the list and updates the dictionary accordingly. The `remove` method removes the element from the list, updates the dictionary, and swaps the removed element with the last element of the list if necessary. Finally, the `getRandom` method returns a random element from the list using the `random.choice` function.
+
+You can test the implementation using the example from the prompt:
+
+```python
+randomizedCollection = RandomizedCollection()
+print(randomizedCollection.insert(1))   # True
+print(randomizedCollection.insert(1))   # False
+print(randomizedCollection.insert(2))   # True
+print(randomizedCollection.getRandom())  # 1 or 2
+print(randomizedCollection.remove(1))   # True
+print(randomizedCollection.getRandom())  # 1 or 2
+```
+
+This will output:
+
+```
+True
+False
+True
+1 or 2
+True
+1 or 2
+```
+
+The output for `getRandom` will either be 1 or 2 with equal probability.

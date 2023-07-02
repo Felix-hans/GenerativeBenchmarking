@@ -1,0 +1,46 @@
+To solve the problem, we can preprocess the tree and store the k-th ancestor for each node. This way, the getKthAncestor function can simply retrieve the precomputed value for the given node.
+
+Here's the implementation in Python:
+
+```python
+from typing import List
+
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        # Initialize the ancestor matrix
+        self.ancestors = [[-1] * int(math.log2(n) + 1) for _ in range(n)]
+        
+        # Fill the ancestor matrix using dynamic programming
+        for node in range(n):
+            self.ancestors[node][0] = parent[node]
+
+        for k in range(1, int(math.log2(n)) + 1):
+            for node in range(n):
+                if self.ancestors[node][k - 1] != -1:
+                    self.ancestors[node][k] = self.ancestors[self.ancestors[node][k - 1]][k - 1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        # Traverse the ancestors using binary lifting
+        for i in range(int(math.log2(len(self.ancestors[node]))), -1, -1):
+            if node == -1 or k == 0:
+                break
+            if k >= (1 << i):
+                node = self.ancestors[node][i]
+                k -= 1 << i
+        return node
+```
+
+The TreeAncestor class initializes the ancestor matrix in the constructor using dynamic programming. Each cell `[i][j]` of the matrix represents the `2^j-th` ancestor of node `i`. We fill the matrix by iterating over the nodes and their parents, building the ancestors' hierarchy.
+
+The `getKthAncestor` function performs binary lifting to traverse the ancestors. Starting from the given node, it repeatedly jumps to the `2^i-th` ancestor until it reaches the desired k-th ancestor or exhausts the number of jumps available. The final node value is returned as the k-th ancestor, or -1 if there is no such ancestor.
+
+You can use the TreeAncestor class as shown in the example:
+
+```python
+treeAncestor = TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2])
+print(treeAncestor.getKthAncestor(3, 1))  # Output: 1
+print(treeAncestor.getKthAncestor(5, 2))  # Output: 0
+print(treeAncestor.getKthAncestor(6, 3))  # Output: -1
+```
+
+This will create a TreeAncestor object with 7 nodes and the given parent array. Then, it calls the `getKthAncestor` method to retrieve the k-th ancestor for different nodes and prints the results.

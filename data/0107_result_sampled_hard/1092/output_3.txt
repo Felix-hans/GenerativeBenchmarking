@@ -1,0 +1,45 @@
+Here's the implementation of the `shortestCommonSupersequence` function in Python:
+
+```python
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        m, n = len(str1), len(str2)
+        
+        # Create a 2D array to store the lengths of longest common subsequences
+        dp = [[0] * (n+1) for _ in range(m+1)]
+        
+        # Compute the lengths of longest common subsequences using dynamic programming
+        for i in range(1, m+1):
+            for j in range(1, n+1):
+                if str1[i-1] == str2[j-1]:
+                    dp[i][j] = dp[i-1][j-1] + 1
+                else:
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+        
+        # Construct the shortest common supersequence using the lengths of longest common subsequences
+        i, j = m, n
+        superseq = ""
+        while i > 0 and j > 0:
+            if str1[i-1] == str2[j-1]:
+                superseq = str1[i-1] + superseq
+                i -= 1
+                j -= 1
+            elif dp[i-1][j] > dp[i][j-1]:
+                superseq = str1[i-1] + superseq
+                i -= 1
+            else:
+                superseq = str2[j-1] + superseq
+                j -= 1
+        
+        # Add remaining characters from str1 or str2, if any
+        while i > 0:
+            superseq = str1[i-1] + superseq
+            i -= 1
+        while j > 0:
+            superseq = str2[j-1] + superseq
+            j -= 1
+        
+        return superseq
+```
+
+You can create an instance of the `Solution` class and call the `shortestCommonSupersequence` function on it, passing the input strings `str1` and `str2`. The function will return the shortest string that has both `str1` and `str2` as subsequences.

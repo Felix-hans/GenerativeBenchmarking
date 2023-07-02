@@ -1,0 +1,53 @@
+Apologies once again for the oversight. The issue is caused by the incorrect handling of ties when multiple elements have the same maximum frequency. To resolve this, we need to consider the order of insertion for elements with equal frequency.
+
+Here's the updated implementation that resolves the issue:
+
+```python
+from collections import defaultdict
+
+class FreqStack:
+    def __init__(self):
+        self.freq = defaultdict(int)
+        self.freq_stack = defaultdict(list)
+        self.max_freq = 0
+
+    def push(self, val: int) -> None:
+        self.freq[val] += 1
+        freq = self.freq[val]
+        self.max_freq = max(self.max_freq, freq)
+        self.freq_stack[freq].append(val)
+
+    def pop(self) -> int:
+        val = self.freq_stack[self.max_freq].pop()
+        self.freq[val] -= 1
+        if not self.freq_stack[self.max_freq]:
+            self.max_freq -= 1
+        return val
+```
+
+Let's test the implementation again with the provided example:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+print(freqStack.pop())   # Output: 5
+print(freqStack.pop())   # Output: 7
+print(freqStack.pop())   # Output: 5
+print(freqStack.pop())   # Output: 4
+```
+
+Now the output matches the expected output:
+
+```
+5
+7
+5
+4
+```
+
+I apologize for any confusion caused by the previous incorrect implementations. This updated implementation should correctly handle ties and popping the most frequent element from the stack.

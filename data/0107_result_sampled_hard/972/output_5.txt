@@ -1,0 +1,43 @@
+Apologies for the error once again. The issue lies in the splitting logic for the repeating part. We need to remove the opening bracket '(' when splitting the decimal part into the non-repeating part and repeating part.
+
+Here's the corrected code:
+
+```python
+class Solution:
+    def isRationalEqual(self, s: str, t: str) -> bool:
+        def convert_to_decimal(string):
+            # Check if the string has a repeating part
+            if '(' in string:
+                # Split the string into integer, non-repeating part, and repeating part
+                integer, decimal = string.split('.')
+                non_repeating_part, repeating_part = decimal[:-1].split('(')
+                
+                # Calculate the length of the repeating part
+                repeating_length = len(repeating_part)
+                
+                # Combine the non-repeating part and repeating part
+                combined_part = non_repeating_part + repeating_part
+                
+                # Calculate the decimal value of the combined part
+                decimal_value = int(combined_part) / (10 ** len(non_repeating_part))
+                
+                # Calculate the decimal value of the repeating part
+                repeating_value = int(repeating_part) / (10 ** len(non_repeating_part)) / (10 ** repeating_length)
+                
+                # Add the decimal value of the combined part and repeating part
+                decimal_value += repeating_value
+                
+                return decimal_value
+            
+            # If there is no repeating part, convert the string directly to a decimal value
+            return float(string)
+        
+        # Convert both strings to decimal values
+        decimal_s = convert_to_decimal(s)
+        decimal_t = convert_to_decimal(t)
+        
+        # Compare the decimal values
+        return decimal_s == decimal_t
+```
+
+Please give it a try now, and let me know if you encounter any further issues.

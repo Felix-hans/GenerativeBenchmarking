@@ -1,0 +1,52 @@
+To solve this problem, we can follow the following steps:
+
+1. Combine the `speed` and `efficiency` arrays into a list of tuples `(speed[i], efficiency[i])` for each engineer.
+2. Sort the list of engineers in descending order of their efficiency.
+3. Initialize a priority queue to store the speeds of the selected engineers, with the minimum speed at the top.
+4. Initialize variables `total_speed` and `result` to 0.
+5. Iterate over the sorted list of engineers.
+    - Add the speed of the current engineer to `total_speed`.
+    - Push the speed of the current engineer into the priority queue.
+    - If the size of the priority queue exceeds `k`, pop the engineer with the minimum speed from the queue and subtract their speed from `total_speed`.
+    - Calculate the current performance as `total_speed` multiplied by the efficiency of the current engineer.
+    - Update `result` with the maximum performance seen so far.
+6. Return `result` modulo 10^9 + 7.
+
+Here's the implementation of the `maxPerformance` function in Python:
+
+```python
+import heapq
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = sorted(zip(speed, efficiency), key=lambda x: -x[1])
+        speed_heap = []
+        total_speed = 0
+        result = 0
+
+        for curr_speed, curr_efficiency in engineers:
+            total_speed += curr_speed
+            heapq.heappush(speed_heap, curr_speed)
+
+            if len(speed_heap) > k:
+                total_speed -= heapq.heappop(speed_heap)
+
+            curr_performance = total_speed * curr_efficiency
+            result = max(result, curr_performance)
+
+        return result % (10**9 + 7)
+```
+
+You can create an instance of the `Solution` class and call the `maxPerformance` method to test it with different inputs. For example:
+
+```python
+solution = Solution()
+n = 6
+speed = [2, 10, 3, 1, 5, 8]
+efficiency = [5, 4, 3, 9, 7, 2]
+k = 2
+print(solution.maxPerformance(n, speed, efficiency, k))  # Output: 60
+```
+
+The code will output the maximum performance of the team based on the given inputs.

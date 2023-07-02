@@ -1,0 +1,30 @@
+To determine if the robot stays within a circle, we can track its position and direction after executing the instructions. If the robot returns to the starting position or if it faces any direction other than the initial direction after executing the instructions, it will eventually leave the circle.
+
+Here's the implementation of the `isRobotBounded` function in Python:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Define initial position and direction
+        x, y = 0, 0
+        direction = 0  # 0: north, 1: east, 2: south, 3: west
+        
+        # Define direction changes for left and right turns
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        
+        for instruction in instructions:
+            if instruction == "G":
+                dx, dy = directions[direction]
+                x += dx
+                y += dy
+            elif instruction == "L":
+                direction = (direction - 1) % 4
+            elif instruction == "R":
+                direction = (direction + 1) % 4
+        
+        # If the robot returns to the starting position or faces any direction other than the initial direction
+        # after executing the instructions, it will eventually leave the circle
+        return (x == 0 and y == 0) or direction != 0
+```
+
+You can create an instance of the `Solution` class and call the `isRobotBounded` function, passing the instructions as a string to check if the robot stays within a circle.

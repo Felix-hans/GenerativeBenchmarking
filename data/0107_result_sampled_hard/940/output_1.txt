@@ -1,0 +1,38 @@
+To solve this problem, we can use dynamic programming. Let's go through the steps to implement the `distinctSubseqII` function in Python:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        # Initialize a list to store the count of distinct subsequences
+        dp = [0] * (len(s) + 1)
+        
+        # Initialize the base case
+        dp[0] = 1
+        
+        # Initialize a dictionary to store the last occurrence of each character
+        last_occurrence = {}
+        
+        # Iterate over each character in the string
+        for i, ch in enumerate(s, start=1):
+            # Calculate the count of distinct subsequences ending at the current character
+            dp[i] = (2 * dp[i - 1]) % (10**9 + 7)
+            
+            # If the current character has occurred before, subtract the count of distinct subsequences
+            # ending at the last occurrence of the current character
+            if ch in last_occurrence:
+                dp[i] -= dp[last_occurrence[ch] - 1]
+            
+            # Update the last occurrence of the current character
+            last_occurrence[ch] = i
+        
+        # Return the count of distinct subsequences modulo 10^9 + 7
+        return (dp[-1] - 1) % (10**9 + 7)
+```
+
+In this solution, we use a dynamic programming approach where `dp[i]` represents the count of distinct subsequences ending at the `i`th character of the string. We initialize `dp[0]` to 1 because there is only one empty subsequence.
+
+We also use a dictionary `last_occurrence` to keep track of the last occurrence of each character in the string. This helps us to handle duplicate characters and subtract the count of distinct subsequences ending at the last occurrence of a character.
+
+Finally, we return the count of distinct subsequences modulo 10^9 + 7, subtracting 1 to exclude the empty subsequence.
+
+Now you can create an instance of the `Solution` class and call the `distinctSubseqII` method with the input string to get the desired output.

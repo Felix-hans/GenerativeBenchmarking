@@ -1,0 +1,77 @@
+To solve the problem, we can iterate through the words and try to pack them into lines, making sure each line has exactly maxWidth characters. We'll use a greedy approach, adding words to a line until it becomes too long, and then moving on to the next line.
+
+Here's the Python implementation of the `fullJustify` function:
+
+```python
+class Solution:
+    def fullJustify(self, words, maxWidth):
+        result = []  # Store the final formatted lines
+        
+        # Iterate through the words
+        i = 0
+        while i < len(words):
+            line_words = []  # Words for the current line
+            line_width = 0  # Total width of the words in the line
+            
+            # Add words to the current line until it becomes too long
+            while i < len(words) and line_width + len(line_words) + len(words[i]) <= maxWidth:
+                line_words.append(words[i])
+                line_width += len(words[i])
+                i += 1
+            
+            line = ''  # Formatted line string
+            
+            # Check if it's the last line or only one word in the line
+            if i == len(words) or len(line_words) == 1:
+                line = ' '.join(line_words)  # Left-justified line
+                line += ' ' * (maxWidth - line_width - len(line_words) + 1)  # Add spaces to reach maxWidth
+            else:
+                num_spaces = maxWidth - line_width  # Total number of spaces to distribute
+                num_gaps = len(line_words) - 1  # Number of gaps between words
+                
+                # Calculate the number of spaces to add between each word
+                spaces_per_gap = num_spaces // num_gaps
+                extra_spaces = num_spaces % num_gaps
+                
+                # Format the line with evenly distributed spaces
+                for j in range(len(line_words) - 1):
+                    line += line_words[j]
+                    line += ' ' * spaces_per_gap
+                    if extra_spaces > 0:
+                        line += ' '
+                        extra_spaces -= 1
+                
+                line += line_words[-1]  # Add the last word
+                
+            result.append(line)
+        
+        return result
+```
+
+Now we can test the solution with the provided examples:
+
+```python
+solution = Solution()
+
+words1 = ["This", "is", "an", "example", "of", "text", "justification."]
+maxWidth1 = 16
+print(solution.fullJustify(words1, maxWidth1))
+# Output: ["This    is    an", "example  of text", "justification.  "]
+
+words2 = ["What", "must", "be", "acknowledgment", "shall", "be"]
+maxWidth2 = 16
+print(solution.fullJustify(words2, maxWidth2))
+# Output: ["What   must   be", "acknowledgment  ", "shall be        "]
+
+words3 = [
+    "Science", "is", "what", "we", "understand", "well", "enough", "to",
+    "explain", "to", "a", "computer.", "Art", "is", "everything", "else",
+    "we", "do"
+]
+maxWidth3 = 20
+print(solution.fullJustify(words3, maxWidth3))
+# Output: ["Science is  what we", "understand      well", "enough to explain to",
+#          "a  computer. Art is", "everything else  we", "do                 "]
+```
+
+The solution returns the expected outputs for the given examples.

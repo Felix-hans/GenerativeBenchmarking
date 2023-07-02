@@ -1,0 +1,23 @@
+To solve this problem, we can use a dynamic programming approach. We'll maintain four variables to track the maximum profit at various stages of the transactions: `buy1`, `sell1`, `buy2`, and `sell2`.
+
+Here's the Python implementation of the `maxProfit` function:
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        buy1 = buy2 = float('-inf')  # Initialize the buy variables with negative infinity
+        sell1 = sell2 = 0  # Initialize the sell variables with zero
+        
+        for price in prices:
+            # Update the first buy and sell variables
+            buy1 = max(buy1, -price)  # The maximum between the previous buy1 and the negative price
+            sell1 = max(sell1, buy1 + price)  # The maximum between the previous sell1 and the sum of buy1 and price
+            
+            # Update the second buy and sell variables
+            buy2 = max(buy2, sell1 - price)  # The maximum between the previous buy2 and the difference between sell1 and price
+            sell2 = max(sell2, buy2 + price)  # The maximum between the previous sell2 and the sum of buy2 and price
+        
+        return sell2  # Return the maximum profit after two transactions
+```
+
+This solution has a time complexity of O(n) and a space complexity of O(1), where n is the length of the `prices` array.

@@ -1,0 +1,49 @@
+Sure! Here's the implementation of the RandomizedCollection class in Python:
+
+```python
+import random
+from collections import defaultdict
+
+class RandomizedCollection:
+    def __init__(self):
+        self.nums = []  # List to store the numbers
+        self.indices = defaultdict(set)  # Dictionary to store indices of numbers
+
+    def insert(self, val: int) -> bool:
+        self.nums.append(val)
+        self.indices[val].add(len(self.nums) - 1)
+        return len(self.indices[val]) == 1
+
+    def remove(self, val: int) -> bool:
+        if val not in self.indices or len(self.indices[val]) == 0:
+            return False
+
+        # Find and remove the index of val
+        val_indices = self.indices[val]
+        index_to_remove = val_indices.pop()
+
+        # Update the last element in nums to the removed index
+        last_num = self.nums[-1]
+        last_num_indices = self.indices[last_num]
+        last_num_indices.add(index_to_remove)
+        last_num_indices.discard(len(self.nums) - 1)
+
+        # Swap the removed value with the last element
+        self.nums[index_to_remove] = last_num
+        self.nums.pop()
+
+        return True
+
+    def getRandom(self) -> int:
+        return random.choice(self.nums)
+```
+
+Explanation:
+1. The `RandomizedCollection` class initializes two data structures: `nums` (a list) to store the numbers and `indices` (a defaultdict of sets) to store the indices of the numbers.
+2. The `insert` function adds a new value to `nums` and updates the corresponding index in `indices`. It returns `True` if the value is not already present in the collection, otherwise `False`.
+3. The `remove` function removes a value from `nums` and updates the indices accordingly. It returns `True` if the value was present and removed, otherwise `False`.
+4. The `getRandom` function uses the `random.choice` function to select a random element from `nums` and returns it.
+
+Note: To achieve an average time complexity of O(1), we use a combination of a list and a dictionary. The list allows us to select a random element in constant time, and the dictionary allows us to efficiently check for the presence of values and retrieve their indices.
+
+You can instantiate the `RandomizedCollection` object and call its methods as shown in the commented code block at the end of the implementation.

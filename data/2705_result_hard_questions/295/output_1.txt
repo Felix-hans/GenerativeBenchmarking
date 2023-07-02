@@ -1,0 +1,33 @@
+Here's the implementation of the MedianFinder class in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+
+    def __init__(self):
+        self.min_heap = []
+        self.max_heap = []
+
+    def addNum(self, num: int) -> None:
+        heapq.heappush(self.max_heap, -num)  # Max heap for the smaller half
+        heapq.heappush(self.min_heap, -heapq.heappop(self.max_heap))  # Min heap for the larger half
+        if len(self.max_heap) < len(self.min_heap):
+            heapq.heappush(self.max_heap, -heapq.heappop(self.min_heap))
+
+    def findMedian(self) -> float:
+        if len(self.max_heap) > len(self.min_heap):
+            return -self.max_heap[0]
+        else:
+            return (-self.max_heap[0] + self.min_heap[0]) / 2
+```
+
+Explanation:
+- We maintain two heaps: a max heap (`self.max_heap`) to store the smaller half of the numbers and a min heap (`self.min_heap`) to store the larger half.
+- When adding a number, we push it into the max heap first. Then we balance the heaps by moving the largest element from the max heap to the min heap and vice versa.
+- The max heap stores the negation of the numbers to simulate a max heap in Python.
+- The median can be found by checking the sizes of the heaps. If the max heap has more elements, the median is the root of the max heap. If the heaps have the same size, the median is the average of the roots of both heaps.
+
+Regarding the follow-up questions:
+1. If all numbers are in the range [0, 100], we can optimize the solution by using an array of size 101 to store the counts of each number. This allows us to find the median in constant time.
+2. If 99% of numbers are in the range [0, 100], we can still use the optimized array-based approach. We only need to fall back to the heap-based solution if a number falls outside this range. This ensures that the majority of operations are done in constant time.

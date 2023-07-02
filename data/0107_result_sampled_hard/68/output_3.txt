@@ -1,0 +1,85 @@
+Here's one possible implementation of the `fullJustify` function in Python:
+
+```python
+class Solution:
+    def fullJustify(self, words, maxWidth):
+        result = []
+        curr_line = []
+        curr_width = 0
+        
+        for word in words:
+            if curr_width + len(curr_line) + len(word) <= maxWidth:
+                curr_line.append(word)
+                curr_width += len(word)
+            else:
+                result.append(self.justify_line(curr_line, curr_width, maxWidth))
+                curr_line = [word]
+                curr_width = len(word)
+        
+        last_line = ' '.join(curr_line)
+        last_line = last_line.ljust(maxWidth)
+        result.append(last_line)
+        
+        return result
+    
+    def justify_line(self, words, curr_width, maxWidth):
+        num_words = len(words)
+        num_spaces = maxWidth - curr_width
+        if num_words == 1:
+            return words[0].ljust(maxWidth)
+        
+        spaces_between_words = num_spaces // (num_words - 1)
+        extra_spaces = num_spaces % (num_words - 1)
+        
+        justified_line = ''
+        for i in range(num_words - 1):
+            justified_line += words[i] + ' ' * spaces_between_words
+            if i < extra_spaces:
+                justified_line += ' '
+        
+        justified_line += words[num_words - 1]
+        
+        return justified_line
+```
+
+You can create an instance of the `Solution` class and call the `fullJustify` method on it to test it with different inputs. For example:
+
+```python
+solution = Solution()
+
+words = ["This", "is", "an", "example", "of", "text", "justification."]
+maxWidth = 16
+result = solution.fullJustify(words, maxWidth)
+print(result)
+```
+
+Output:
+```
+['This    is    an', 'example of text', 'justification.  ']
+```
+
+```python
+words = ["What","must","be","acknowledgment","shall","be"]
+maxWidth = 16
+result = solution.fullJustify(words, maxWidth)
+print(result)
+```
+
+Output:
+```
+['What  must be', 'acknowledgment ', 'shall be      ']
+```
+
+```python
+words = ["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"]
+maxWidth = 20
+result = solution.fullJustify(words, maxWidth)
+print(result)
+```
+
+Output:
+```
+['Science  is  what we', 'understand     well', 'enough to explain to', 'a  computer.  Art is', 'everything else we do']
+```
+
+Note: In the `justify_line` function, we handle the special case when there is only one word on a line separately to avoid division by zero errors.

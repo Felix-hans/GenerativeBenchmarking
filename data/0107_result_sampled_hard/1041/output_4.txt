@@ -1,0 +1,42 @@
+To solve this problem, we can simulate the robot's movements and check if it returns to the initial position or if it changes direction after one cycle of instructions.
+
+Here's the implementation of the `isRobotBounded` function in Python:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Initialize robot's position and direction
+        x, y = 0, 0
+        direction = 0  # 0: North, 1: East, 2: South, 3: West
+
+        # Define the directions of movement based on current direction
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        # Simulate the robot's movements
+        for instruction in instructions:
+            if instruction == 'G':
+                dx, dy = directions[direction]
+                x += dx
+                y += dy
+            elif instruction == 'L':
+                direction = (direction - 1) % 4
+            elif instruction == 'R':
+                direction = (direction + 1) % 4
+
+        # If the robot returns to the initial position or faces a different direction
+        # after one cycle of instructions, it will never leave the circle
+        return (x == 0 and y == 0) or direction != 0
+```
+
+You can create an instance of the `Solution` class and call the `isRobotBounded` method, passing the instructions as an argument. The method will return `True` if the robot never leaves the circle and `False` otherwise.
+
+Example usage:
+
+```python
+solution = Solution()
+print(solution.isRobotBounded("GGLLGG"))  # Output: True
+print(solution.isRobotBounded("GG"))      # Output: False
+print(solution.isRobotBounded("GL"))      # Output: True
+```
+
+Note that the implementation assumes an infinite plane, so the robot can keep moving indefinitely without ever reaching an edge.

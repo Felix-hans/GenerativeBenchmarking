@@ -1,0 +1,28 @@
+To determine whether the robot will stay within a circle on an infinite plane, we can observe the robot's behavior after executing a set of instructions. If the robot returns to the initial position (0, 0) or if it doesn't face north at the end of executing the instructions, it will eventually follow a circular path.
+
+Here's the Python implementation for the `isRobotBounded` function:
+
+```python
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        # Initial position and direction
+        x, y = 0, 0
+        dx, dy = 0, 1  # North direction
+        
+        # Execute the instructions
+        for instruction in instructions:
+            if instruction == 'G':
+                x += dx
+                y += dy
+            elif instruction == 'L':
+                dx, dy = -dy, dx  # Rotate 90 degrees to the left
+            elif instruction == 'R':
+                dx, dy = dy, -dx  # Rotate 90 degrees to the right
+        
+        # Check if the robot returns to the initial position or doesn't face north
+        return (x == 0 and y == 0) or (dx, dy) != (0, 1)
+```
+
+This implementation uses two variables `dx` and `dy` to represent the direction the robot is facing. Initially, the robot faces north, which corresponds to `dx = 0` and `dy = 1`. When executing the 'L' instruction, we update the direction by rotating 90 degrees counterclockwise. Similarly, for the 'R' instruction, we rotate 90 degrees clockwise.
+
+After executing all the instructions, we check if the robot returns to the initial position `(0, 0)` and faces north `(0, 1)`. If either of these conditions is true, we return `True`, indicating that the robot will follow a circular path. Otherwise, we return `False`.

@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/54 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 40: IndexError: list index out of range\n  \xe2\x9c\x98 Error: IndexError: list index out of range\n    if j >= 0 and self.ranges[j][1] > right:\nLine 40 in removeRange (Solution.py)\n    rangeModule.removeRange(14, 16)\nLine 45 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: ["RangeModule","addRange","removeRange","queryRange","queryRange","queryRange"]\n\' +\n  \'[[],[10,20],[14,16],[10,14],[13,15],[16,17]]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: [null,null,null,true,false,true]\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:75782) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

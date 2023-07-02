@@ -1,0 +1,22 @@
+To solve this problem, we can consider two cases: when k is 1 and when k is greater than 1.
+
+When k is 1, we can only move the first character of s to the end repeatedly. This means that the lexicographically smallest string we can obtain is simply the sorted version of s. We can use the built-in `sorted()` function to sort the characters in s and then join them back into a string.
+
+When k is greater than 1, we can rearrange the characters of s in any order. Since k is larger than 1, we can simply sort the characters of s to obtain the lexicographically smallest string.
+
+Here's the implementation of the `orderlyQueue` function:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k == 1:
+            return min(s[i:] + s[:i] for i in range(len(s)))
+        else:
+            return ''.join(sorted(s))
+```
+
+In the case where k is 1, we use a generator expression to create all possible strings by moving the first character to the end. Then we use the `min()` function to find the lexicographically smallest string.
+
+In the case where k is greater than 1, we simply sort the characters of s using the `sorted()` function and join them back into a string.
+
+Note that the `Solution` class is used here to match the signature provided in the original code.

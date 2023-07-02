@@ -1,0 +1,42 @@
+To solve the problem, we can use a greedy algorithm approach. The idea is to sort the satisfaction values in descending order and then iterate over them to calculate the maximum sum of like-time coefficients.
+
+Here's the implementation of the `maxSatisfaction` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort satisfaction values in descending order
+        total = 0  # Variable to track the total like-time coefficient
+        max_coefficient = 0  # Variable to track the maximum like-time coefficient
+
+        for s in satisfaction:
+            if total + s > 0:
+                total += s
+                max_coefficient += total
+            else:
+                break
+
+        return max_coefficient
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+satisfaction = [-1, -8, 0, 5, -9]
+print(solution.maxSatisfaction(satisfaction))  # Output: 14
+
+# Example 2
+satisfaction = [4, 3, 2]
+print(solution.maxSatisfaction(satisfaction))  # Output: 20
+
+# Example 3
+satisfaction = [-1, -4, -5]
+print(solution.maxSatisfaction(satisfaction))  # Output: 0
+```
+
+The function should produce the correct outputs for the given examples.

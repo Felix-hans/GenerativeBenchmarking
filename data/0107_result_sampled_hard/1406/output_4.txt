@@ -1,0 +1,50 @@
+To determine the winner of the game, we can use dynamic programming to calculate the maximum score difference for each stone position. We will start from the last stone and work our way backward.
+
+Let's define a function `dp(i)` that represents the maximum score difference that can be achieved starting from the stone at index `i`. We can calculate `dp(i)` using the following recurrence relation:
+
+```
+dp(i) = max(
+    stoneValue[i] - dp(i+1),
+    stoneValue[i] + stoneValue[i+1] - dp(i+2),
+    stoneValue[i] + stoneValue[i+1] + stoneValue[i+2] - dp(i+3)
+)
+```
+
+The first option represents taking only the stone at index `i`. The second option represents taking the stones at index `i` and `i+1`. The third option represents taking the stones at index `i`, `i+1`, and `i+2`.
+
+We need to handle some edge cases where there are not enough stones remaining to take.
+
+Finally, we compare `dp(0)` with the total sum of all stone values. If `dp(0)` is greater, Alice wins. If it is smaller, Bob wins. Otherwise, it's a tie.
+
+Here's the implementation of the `stoneGameIII` function:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [0] * (n + 1)
+
+        for i in range(n - 1, -1, -1):
+            take_one = stoneValue[i] - dp[i + 1]
+            take_two = stoneValue[i] + stoneValue[i + 1] - dp[i + 2] if i + 1 < n else float('-inf')
+            take_three = stoneValue[i] + stoneValue[i + 1] + stoneValue[i + 2] - dp[i + 3] if i + 2 < n else float('-inf')
+            dp[i] = max(take_one, take_two, take_three)
+
+        if dp[0] > 0:
+            return "Alice"
+        elif dp[0] < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+Now you can create an instance of the `Solution` class and call the `stoneGameIII` function with your stone values to get the winner of the game. For example:
+
+```python
+solution = Solution()
+values = [1, 2, 3, 7]
+winner = solution.stoneGameIII(values)
+print(winner)  # Output: "Bob"
+```

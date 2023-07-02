@@ -1,0 +1,44 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum profit at each day, considering the possibility of making one or two transactions.
+
+Here's the Python code to implement the solution:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        
+        # Initialize the variables for the first and second transactions
+        buy1 = buy2 = float('-inf')
+        sell1 = sell2 = 0
+        
+        for price in prices:
+            # Update the variables for the first transaction
+            buy1 = max(buy1, -price)
+            sell1 = max(sell1, buy1 + price)
+            
+            # Update the variables for the second transaction
+            buy2 = max(buy2, sell1 - price)
+            sell2 = max(sell2, buy2 + price)
+        
+        return sell2
+```
+
+Let's test the solution with the provided examples:
+
+```python
+prices = [3, 3, 5, 0, 0, 3, 1, 4]
+solution = Solution()
+print(solution.maxProfit(prices))  # Output: 6
+
+prices = [1, 2, 3, 4, 5]
+solution = Solution()
+print(solution.maxProfit(prices))  # Output: 4
+
+prices = [7, 6, 4, 3, 1]
+solution = Solution()
+print(solution.maxProfit(prices))  # Output: 0
+```
+
+The output matches the expected results, and the solution works as intended.

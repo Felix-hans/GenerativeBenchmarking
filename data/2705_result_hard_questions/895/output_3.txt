@@ -1,0 +1,74 @@
+To design a stack-like data structure that can push elements and pop the most frequent element, we can use a combination of a dictionary and a list.
+
+In the dictionary, we will store the frequency of each element in the stack. The key will be the element, and the value will be the frequency.
+
+In the list, we will maintain stacks of elements based on their frequency. Each stack will store the elements that have the same frequency. The index of the list will represent the frequency value.
+
+Here's the implementation of the `FreqStack` class in Python:
+
+```python
+class FreqStack:
+    def __init__(self):
+        self.freq_dict = {}
+        self.stack_list = [[]]
+
+    def push(self, val: int) -> None:
+        # Increase the frequency of the element
+        if val in self.freq_dict:
+            freq = self.freq_dict[val] + 1
+            self.freq_dict[val] = freq
+        else:
+            freq = 1
+            self.freq_dict[val] = freq
+
+        # Update the stack_list with the element's frequency
+        if freq == len(self.stack_list):
+            self.stack_list.append([val])
+        else:
+            self.stack_list[freq].append(val)
+
+    def pop(self) -> int:
+        # Get the most frequent element from the topmost stack
+        most_freq_stack = self.stack_list[-1]
+        val = most_freq_stack.pop()
+        
+        # Update the frequency of the element in freq_dict
+        freq = self.freq_dict[val] - 1
+        if freq == 0:
+            del self.freq_dict[val]
+        else:
+            self.freq_dict[val] = freq
+
+        # If the topmost stack becomes empty, remove it from stack_list
+        if len(most_freq_stack) == 0 and len(self.stack_list) > 1:
+            self.stack_list.pop()
+
+        return val
+```
+
+Now, let's test the code with the given example:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The code should produce the following output, matching the expected output from the example:
+
+```
+5
+7
+5
+4
+```
+
+Note: The implementation assumes that there will always be at least one element in the stack before calling `pop()`.

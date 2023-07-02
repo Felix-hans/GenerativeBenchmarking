@@ -1,0 +1,51 @@
+Apologies for the confusion. The error occurs because the `remove` method attempts to remove an index that does not exist in the `indices[last_element]` list. To fix this, we need to update the indices of the swapped element before removing the last element.
+
+Here's the corrected implementation:
+
+```python
+import random
+
+class RandomizedCollection:
+
+    def __init__(self):
+        self.collection = []
+        self.indices = {}
+
+    def insert(self, val: int) -> bool:
+        self.collection.append(val)
+        if val in self.indices:
+            self.indices[val].add(len(self.collection) - 1)
+            return False
+        else:
+            self.indices[val] = {len(self.collection) - 1}
+            return True
+
+    def remove(self, val: int) -> bool:
+        if val in self.indices:
+            # Get the index of the value to remove
+            index = self.indices[val].pop()
+
+            if len(self.indices[val]) == 0:
+                del self.indices[val]
+
+            # Swap the element to remove with the last element in the collection
+            last_element = self.collection[-1]
+            self.collection[index] = last_element
+            self.indices[last_element].remove(len(self.collection) - 1)
+            self.indices[last_element].add(index)
+
+            # Remove the last element
+            self.collection.pop()
+            return True
+        else:
+            return False
+
+    def getRandom(self) -> int:
+        return random.choice(self.collection)
+```
+
+In this updated version, we use a set instead of a list to store the indices in the `indices` dictionary. This allows us to use the `add` and `remove` methods, which are more efficient for sets.
+
+Now, the `remove` method updates the indices of the swapped element (`last_element`) before removing the last element. We use `add` to include the new index and `remove` to remove the previous index.
+
+With these changes, the error should be resolved, and the implementation should work correctly.

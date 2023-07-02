@@ -1,0 +1,53 @@
+Sure! Here's the implementation of the `MedianFinder` class in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.min_heap = []  # stores the larger half of the numbers
+        self.max_heap = []  # stores the smaller half of the numbers
+        
+    def addNum(self, num: int) -> None:
+        if len(self.min_heap) == len(self.max_heap):
+            # Add the new number to the max_heap
+            # But negate the number to simulate a max heap
+            # since Python heapq only supports min heap by default
+            heapq.heappush(self.max_heap, -num)
+            
+            # Take the maximum number from the max_heap and add it to the min_heap
+            max_num = -heapq.heappop(self.max_heap)
+            heapq.heappush(self.min_heap, max_num)
+        else:
+            # Add the new number to the min_heap
+            heapq.heappush(self.min_heap, num)
+            
+            # Take the minimum number from the min_heap and add it to the max_heap
+            min_num = heapq.heappop(self.min_heap)
+            heapq.heappush(self.max_heap, -min_num)
+            
+    def findMedian(self) -> float:
+        if len(self.min_heap) == len(self.max_heap):
+            # If the number of elements is even, take the average of the two middle numbers
+            return (self.min_heap[0] - self.max_heap[0]) / 2
+        else:
+            # If the number of elements is odd, the median is the middle number
+            return float(self.min_heap[0])
+```
+
+Here's an example usage of the `MedianFinder` class:
+
+```python
+medianFinder = MedianFinder()
+medianFinder.addNum(1)
+medianFinder.addNum(2)
+print(medianFinder.findMedian())  # Output: 1.5
+medianFinder.addNum(3)
+print(medianFinder.findMedian())  # Output: 2.0
+```
+
+Regarding the follow-up questions:
+
+1. If all integer numbers from the stream are in the range [0, 100], you can optimize the solution by using a counting array instead of heaps. Maintain an array of size 101, where each index represents a number from 0 to 100, and the value at that index represents the count of that number. You can update the array in constant time when adding a number. Finding the median would involve calculating the cumulative sum of the counts until you reach the middle two elements.
+
+2. If 99% of all integer numbers from the stream are in the range [0, 100], you can still use the counting array approach mentioned above. However, if the number falls outside the range [0, 100], you can resort to using heaps to handle those outliers. This way, you optimize the majority of the numbers using the counting array and handle the outliers separately using heaps.

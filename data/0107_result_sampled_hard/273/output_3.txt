@@ -1,0 +1,59 @@
+Sure! Here's an implementation of the `numberToWords` function in Python that converts a non-negative integer to its English words representation:
+
+```python
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        if num == 0:
+            return "Zero"
+
+        # Define word lists for numbers up to 19 and multiples of ten up to 90
+        less_than_20 = [
+            "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+            "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen",
+            "Sixteen", "Seventeen", "Eighteen", "Nineteen"
+        ]
+        tens = [
+            "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy",
+            "Eighty", "Ninety"
+        ]
+
+        # Define word list for magnitude (thousand, million, billion)
+        magnitudes = ["", "Thousand", "Million", "Billion"]
+
+        def convert_chunk(num):
+            if num == 0:
+                return ""
+            elif num < 20:
+                return less_than_20[num] + " "
+            elif num < 100:
+                return tens[num // 10] + " " + convert_chunk(num % 10)
+            else:
+                return less_than_20[num // 100] + " Hundred " + convert_chunk(num % 100)
+
+        words = ""
+        i = 0
+
+        while num > 0:
+            if num % 1000 != 0:
+                words = convert_chunk(num % 1000) + magnitudes[i] + " " + words
+            num //= 1000
+            i += 1
+
+        return words.strip()
+```
+
+You can create an instance of the `Solution` class and call the `numberToWords` function with the desired input number:
+
+```python
+solution = Solution()
+num = 1234567
+result = solution.numberToWords(num)
+print(result)
+```
+
+Output:
+```
+One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven
+```
+
+The implementation divides the input number into chunks of three digits, starting from the rightmost chunk, and converts each chunk to its English words representation. The magnitude (thousand, million, billion) is appended to each chunk based on its position. The resulting words are concatenated and returned as the final output.

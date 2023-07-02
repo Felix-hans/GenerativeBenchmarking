@@ -1,0 +1,92 @@
+Below is the Python implementation of the Skiplist class:
+
+```python
+import random
+
+class Node:
+    def __init__(self, val=None, right=None, down=None):
+        self.val = val
+        self.right = right
+        self.down = down
+
+class Skiplist:
+    def __init__(self):
+        self.head = Node()
+
+    def search(self, target: int) -> bool:
+        curr = self.head
+        while curr:
+            while curr.right and curr.right.val < target:
+                curr = curr.right
+            if curr.right and curr.right.val == target:
+                return True
+            curr = curr.down
+        return False
+
+    def add(self, num: int) -> None:
+        path = []
+        curr = self.head
+        while curr:
+            while curr.right and curr.right.val < num:
+                curr = curr.right
+            path.append(curr)
+            curr = curr.down
+
+        insert = True
+        down = None
+        while insert and path:
+            curr = path.pop()
+            curr.right = Node(num, curr.right, down)
+            down = curr.right
+            insert = random.random() < 0.5
+
+        if insert:
+            self.head = Node(None, Node(num, None, down), self.head)
+
+    def erase(self, num: int) -> bool:
+        found = False
+        curr = self.head
+        while curr:
+            while curr.right and curr.right.val < num:
+                curr = curr.right
+            if curr.right and curr.right.val == num:
+                found = True
+                curr.right = curr.right.right
+            curr = curr.down
+        return found
+```
+
+Here's how you can use the Skiplist class:
+
+```python
+skiplist = Skiplist()
+skiplist.add(1)
+skiplist.add(2)
+skiplist.add(3)
+print(skiplist.search(0))  # False
+skiplist.add(4)
+print(skiplist.search(1))  # True
+print(skiplist.erase(0))   # False
+print(skiplist.erase(1))   # True
+print(skiplist.search(1))  # False
+```
+
+The output will be:
+
+```
+False
+True
+False
+True
+False
+```
+
+The Skiplist class uses a bottom-up approach to implement the skip list data structure. Each node in the skip list has a `val` representing the value, a `right` pointer pointing to the next node in the same level, and a `down` pointer pointing to the corresponding node in the lower level. The `head` node is the entry point to the skip list.
+
+The `search` method performs a search operation in the skip list. It starts from the top level and moves right until it finds a value greater than or equal to the target. If the target is found, it returns `True`; otherwise, it moves down to the next level and continues the search. If it reaches the bottom level without finding the target, it returns `False`.
+
+The `add` method inserts a value into the skip list. It follows a similar approach as the search method, moving right and down until it finds the correct position to insert the value. The insertion process also involves a random decision to create a new level for the value, allowing for efficient searching in subsequent operations.
+
+The `erase` method removes a value from the skip list. It searches for the value and removes it if found. The method returns `True` if the value was found and removed, and `False` otherwise.
+
+Note that the `random.random()` function is used to determine whether to create a new level during insertion. This is what provides the skip list with

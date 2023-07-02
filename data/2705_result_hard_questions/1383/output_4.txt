@@ -1,0 +1,43 @@
+To solve this problem, we can use a greedy algorithm combined with a priority queue (heapq) to efficiently select the engineers with the highest performance.
+
+Here's the implementation of the `maxPerformance` function in Python:
+
+```python
+import heapq
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        # Create a list of tuples (speed, efficiency) representing the engineers
+        engineers = list(zip(speed, efficiency))
+        
+        # Sort the engineers by their efficiency in descending order
+        engineers.sort(key=lambda x: x[1], reverse=True)
+        
+        # Create a heap to keep track of the k engineers with the highest speeds
+        speed_heap = []
+        
+        total_speed = 0
+        max_performance = 0
+        
+        for engineer_speed, engineer_efficiency in engineers:
+            # Add the current engineer's speed to the total speed
+            total_speed += engineer_speed
+            
+            # Push the current engineer's speed to the heap
+            heapq.heappush(speed_heap, engineer_speed)
+            
+            # If the heap size exceeds k, remove the engineer with the lowest speed
+            if len(speed_heap) > k:
+                total_speed -= heapq.heappop(speed_heap)
+            
+            # Calculate the performance with the current engineer as the minimum efficiency
+            performance = total_speed * engineer_efficiency
+            
+            # Update the maximum performance if necessary
+            max_performance = max(max_performance, performance)
+        
+        # Return the maximum performance modulo 10^9 + 7
+        return max_performance % (10**9 + 7)
+```
+
+This solution has a time complexity of O(n log k) since we iterate over the engineers once and perform heap operations with a maximum size of k.

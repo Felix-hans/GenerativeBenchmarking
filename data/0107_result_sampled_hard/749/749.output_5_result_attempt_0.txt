@@ -1,0 +1,5 @@
+
+**stdout:**
+b"  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/32 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 25: TypeError: object of type 'NoneType' has no len()\n  \xe2\x9c\x98 Error: TypeError: object of type 'NoneType' has no len()\n    walls += len(walls_to_build)\nLine 25 in containVirus (Solution.py)\n    ret = Solution().containVirus(param_1)\nLine 96 in _driver (Solution.py)\n    _driver()\nLine 107 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: [[0,1,0,0,0,0,0,1],[0,1,0,0,0,0,0,1],[0,0,0,0,0,0,0,1],[0,0,0,0,0,0,0,0]]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 10\n  \xe2\x9c\x98 Stdout: \n"
+**stderr:**
+b"- Sending code to judge\n(node:77932) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

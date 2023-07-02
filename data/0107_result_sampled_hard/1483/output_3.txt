@@ -1,0 +1,49 @@
+To solve the problem, we can precompute the ancestors for each node up to a certain depth using dynamic programming. We'll store the ancestors in a 2D array where `ancestors[i][j]` represents the 2^j-th ancestor of node `i`. Then, when we need to find the k-th ancestor of a node, we can use the precomputed ancestors array to quickly determine the ancestor.
+
+Here's the implementation of the `TreeAncestor` class:
+
+```python
+from typing import List
+
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.MAX_DEPTH = 16  # Maximum depth for efficient precomputation
+        self.n = n
+        self.ancestors = [[-1] * self.MAX_DEPTH for _ in range(n)]
+
+        # Precompute ancestors using dynamic programming
+        for i in range(n):
+            self.ancestors[i][0] = parent[i]
+
+        for j in range(1, self.MAX_DEPTH):
+            for i in range(n):
+                if self.ancestors[i][j - 1] != -1:
+                    self.ancestors[i][j] = self.ancestors[self.ancestors[i][j - 1]][j - 1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        # Check if the node is valid
+        if node < 0 or node >= self.n:
+            return -1
+
+        # Find the k-th ancestor
+        for i in range(self.MAX_DEPTH - 1, -1, -1):
+            if k >= (1 << i):
+                node = self.ancestors[node][i]
+                if node == -1:
+                    return -1
+                k -= (1 << i)
+
+        return node
+```
+
+With this implementation, you can create a `TreeAncestor` object and use the `getKthAncestor` method to find the k-th ancestor of a given node. Here's an example of how to use it:
+
+```python
+# Example usage
+treeAncestor = TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2])
+print(treeAncestor.getKthAncestor(3, 1))  # Output: 1
+print(treeAncestor.getKthAncestor(5, 2))  # Output: 0
+print(treeAncestor.getKthAncestor(6, 3))  # Output: -1
+```
+
+The output matches the expected output from the example you provided.

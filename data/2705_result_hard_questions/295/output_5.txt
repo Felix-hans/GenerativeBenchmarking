@@ -1,0 +1,57 @@
+To solve the problem, we can use two heaps: a max-heap to store the smaller half of the numbers and a min-heap to store the larger half of the numbers. This way, the median will always be either the root of the max-heap or the average of the roots of both heaps.
+
+Here's the implementation in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.min_heap = []
+        self.max_heap = []
+
+    def addNum(self, num: int) -> None:
+        # Add the number to the max_heap first
+        heapq.heappush(self.max_heap, -num)
+
+        # Move the maximum element from the max_heap to the min_heap
+        max_heap_max = -heapq.heappop(self.max_heap)
+        heapq.heappush(self.min_heap, max_heap_max)
+
+        # Rebalance the heaps if necessary
+        if len(self.max_heap) < len(self.min_heap):
+            min_heap_min = heapq.heappop(self.min_heap)
+            heapq.heappush(self.max_heap, -min_heap_min)
+
+    def findMedian(self) -> float:
+        if len(self.max_heap) == len(self.min_heap):
+            return (-self.max_heap[0] + self.min_heap[0]) / 2.0
+        else:
+            return -self.max_heap[0]
+```
+
+Here's how you can use the `MedianFinder` class:
+
+```python
+# Create a MedianFinder object
+obj = MedianFinder()
+
+# Add numbers to the data structure
+obj.addNum(1)
+obj.addNum(2)
+
+# Find the median
+median1 = obj.findMedian()
+print(median1)  # Output: 1.5
+
+# Add another number
+obj.addNum(3)
+
+# Find the new median
+median2 = obj.findMedian()
+print(median2)  # Output: 2.0
+```
+
+To optimize the solution when all integer numbers are in the range [0, 100], we can use a list of size 101 to store the count of each number. When adding a number, we increment the count at the corresponding index. Then, when finding the median, we iterate over the count list to find the median value based on the count of numbers. This approach has a time complexity of O(1) for adding a number and O(101) for finding the median.
+
+If 99% of the integer numbers are in the range [0, 100], we can use a similar approach, but instead of a list, we can use a dictionary to store the count of numbers. The keys of the dictionary will be the numbers in the range [0, 100], and the values will be their counts. When finding the median, we iterate over the dictionary keys in ascending order, accumulating the counts until we reach the middle element(s). This approach has a time complexity of O(1) for adding a number and O(100) for finding the median.
