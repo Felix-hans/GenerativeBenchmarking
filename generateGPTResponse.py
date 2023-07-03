@@ -1,12 +1,21 @@
 import time
 import sys
+import openai
+import yaml
 
-def generate_chatgpt_api(chatbot,prompt):
+def generate_chatgpt_api(messages):
+
+    with open('/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/gptConfig.yaml', 'r') as file:
+        config = yaml.safe_load(file)
      
-     resp=chatbot.ask(prompt)
+    openai.api_key = config['OPENAI_KEY']
+    response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            max_tokens=4096
+        )
      
-     
-     return resp,chatbot
+    return response
      
 
 def generate_chatgpt(chatbot, prompt):

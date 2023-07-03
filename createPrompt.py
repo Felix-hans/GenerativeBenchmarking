@@ -28,6 +28,7 @@ def evaluateOutput(tryAgain,output):
 
     output = re.sub(r'\\xe2\\x9c\\x98', '', output)
     output = re.sub(r'\\xe2\\x9c\\x94', '', output)
+    print('ERROR --------------------------')
     print(output)
     output = 'There seems to be an issue in the code: ' + output + 'Correct the error.'
 

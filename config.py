@@ -7,7 +7,7 @@ class Config:
         # replace self.generation_path with the path to code_generation_dataset
         self.generation_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/problems'
         self.run_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data'
-        self.target_folder = '0107_result_sampled_hard'
+        self.target_folder = '0307_result_sampled_hard_chatGPT_API'
         
         # self.generation_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/code_generation_dataset'
         
@@ -19,9 +19,9 @@ class Config:
         self.questionBank = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/Leetcode_question_bank_V01.xlsx'
         self.logFile = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/Leetcode_question_log.xlsx'
         # self.sampled_df_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/sampled_df.xlsx'
-        self.sampled_df_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/sampled_df_hard_2.xlsx'
-        self.generated_name = 'generated_sampled_df_hard_questions'
-        self.validated_name = 'validated_sampled_df_hard_questions'
+        self.sampled_df_path = '/Users/fhans/Documents/GenerativeBenchmarking/clone-anonymous-github/ChatGPT-Study-2757/data/sampled_df_hard_2_chatGPT_API.xlsx'
+        self.generated_name = 'generated_sampled_df_hard_chatGPT_API_questions'
+        self.validated_name = 'validated_sampled_df_hard_chatGPT_API_questions'
         
         '''Question sampling parameters'''
         self.period = 'Before_2021'

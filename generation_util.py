@@ -1,7 +1,6 @@
 import glob
-import os, sys, time, torch, openai
-from chatgpt_wrapper import ChatGPT
-from transformers import AutoModelForCausalLM, AutoTokenizer
+import os, time
+#from chatgpt_wrapper import ChatGPT
 from config import Config
 from leetcode_util import LeetCodeUtil
 import handleQuestionBank
@@ -12,17 +11,23 @@ import createPrompt
 class GenerationUtil:
     def __init__(self):
         self.model_name = "ChatGPT"
-        self.chatbot = ChatGPT()
+        #self.chatbot = ChatGPT()
         self.config = Config()
         self.messages = []
 
   
-    def generate(self, prompt, max_length=1024):
+    def generate(self, prompt=None, max_length=1024):
 
         if self.model_name == "ChatGPT":
-            generate,self.chatbot = generateGPTResponse.generate_chatgpt(self.chatbot,prompt)
 
-            return generate
+            #This is the old version referring to the inofficial chatgpt api
+            #response,self.chatbot = generateGPTResponse.generate_chatgpt(self.chatbot,prompt)
+
+            #This is the new version referring to the official chatgpt api
+            response = generateGPTResponse.generate_chatgpt_api(self.messages)
+
+            return response
+        
         else: assert False, "Invalid model name"
     
 
@@ -109,39 +114,45 @@ class GenerationUtil:
         print(f'Asking {self.model_name}...')
         curr_time=time.time()
 
-        #self.messages.append()
-        response=self.generate(prompt, self.config.max_length)
+
+        self.messages.append([{"role": "user", "content": prompt}])
+        #response=self.generate(prompt, self.config.max_length)
+        response=self.generate()
+
+        
         time_used=time.time()-curr_time
         print(f'{self.model_name} response received.')
         with open(output_path,'w',encoding='UTF8') as f:
             f.write(response)
-            print('Response written to',output_path)
         print('Time used:',time_used)
+        print()
 
         #Generate the output file
         py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
         
-
         #submit test on leetcode, we try a couple of times before we stop trying
         iteration = 0
         while tryAgain:
             
 
             output = LeetCodeUtil().run_leetcode_test(py_file_path)
-            tryAgain, prompt = createPrompt.evaluateOutput(tryAgain, output)
+            tryAgain, errorPrompt = createPrompt.evaluateOutput(tryAgain, output)
 
             print('validating question')
             handleQuestionBank.logQuestionValidation(folder_name,rep,output_dir,self.config.sampled_df_path, self.config.logFile, iteration,tryAgain)
 
-            print(f'Iteration: {iteration}')
-            #we try again if the result was not accepted
+            
+            #we try again if the result was not accepted or we reached the maximum of attempts
             if iteration ==self.config.tryAgainAttempts or tryAgain == False:
                     break
+            
+            print(f'Iteration: {iteration}')
 
             if tryAgain:
 
-                response = self.generate(prompt, self.config.max_length)
-                print(response)
+                self.messages.append([{"role": "user", "content": errorPrompt}])
+                response=self.generate()
+                #response = self.generate(prompt, self.config.max_length)
 
                 #We name the current file "attempt" to not overwrite
                 self.renameFile(py_file_path, iteration, 'py')
@@ -155,7 +166,11 @@ class GenerationUtil:
 
             iteration = iteration + 1
      
-        self.chatbot.new_conversation()
+        #This is the command from the inofficial api to start a new conversation
+        #self.chatbot.new_conversation()
+
+        #We clean the message content for the official API
+        self.messages = []
         
         return 0
         
