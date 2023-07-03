@@ -11,11 +11,10 @@ def generate_chatgpt_api(messages):
     openai.api_key = config['OPENAI_KEY']
     response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=messages,
-            max_tokens=4096
+            messages=messages
         )
      
-    return response
+    return response['choices'][0]['message']['content']
      
 
 def generate_chatgpt(chatbot, prompt):

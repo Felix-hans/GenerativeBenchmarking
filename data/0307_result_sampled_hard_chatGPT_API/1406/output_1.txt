@@ -1,0 +1,42 @@
+To solve this game, we can use dynamic programming. We define a function dp(i) that represents the maximum possible score difference Alice can achieve starting from the i-th stone. 
+
+We can calculate dp(i) using the formula:
+dp(i) = max(sum(stoneValue[i:i+k]) - dp(i+k)) for k in [1, 2, 3]
+
+If dp(0) is greater than 0, Alice will win the game. If dp(0) is less than 0, Bob will win the game. Otherwise, it is a tie.
+
+Here is the implementation of the solution:
+
+```python
+class Solution:
+    def stoneGameIII(self, stoneValue):
+        n = len(stoneValue)
+        dp = [0] * (n + 1) # dp[i] represents the maximum possible score difference Alice can achieve starting from the i-th stone
+        
+        for i in range(n-1, -1, -1):
+            choose = float('-inf')
+            for k in [1, 2, 3]:
+                if i + k <= n:
+                    choose = max(choose, sum(stoneValue[i:i+k]) - dp[i+k])
+            dp[i] = choose
+        
+        if dp[0] > 0:
+            return "Alice"
+        elif dp[0] < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+We can test the implementation with the given examples:
+
+```python
+stoneValue = [1,2,3,7]
+print(Solution().stoneGameIII(stoneValue)) # Output: "Bob"
+
+stoneValue = [1,2,3,-9]
+print(Solution().stoneGameIII(stoneValue)) # Output: "Alice"
+
+stoneValue = [1,2,3,6]
+print(Solution().stoneGameIII(stoneValue)) # Output: "Tie"
+```

@@ -1,0 +1,62 @@
+To solve this problem, we can use dynamic programming to keep track of the maximum score each player can achieve from a given position in the array. 
+
+We define a recursive function `maxScore` that takes the current position in the array as a parameter. In this function, we handle the base cases where the current position is outside the array (i.e., we have taken all the stones) and return the corresponding scores for Alice and Bob.
+
+To calculate the maximum score from the current position, we iterate over the next three positions and recursively call the `maxScore` function for each position. We then take the maximum score among the three possibilities and return it as the result. 
+
+We also keep track of the score difference between Alice and Bob at each position. If the score difference is positive, it means Alice is winning; if it's negative, Bob is winning; and if it's zero, it's a tie. 
+
+Finally, we check the score difference between Alice and Bob at the starting position (position 0) and return "Alice" if it's positive, "Bob" if it's negative, or "Tie" if it's zero.
+
+Here's the implementation of the `stoneGameIII` function:
+
+```
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [-float('inf')] * n
+
+        def maxScore(position):
+            if position >= n:
+                return 0
+
+            if dp[position] != -float('inf'):
+                return dp[position]
+
+            max_val = float('-inf')
+
+            for i in range(1, 4):
+                if position + i <= n:
+                    score_diff = sum(stoneValue[position:position + i]) - maxScore(position + i)
+                    max_val = max(max_val, score_diff)
+
+            dp[position] = max_val
+            return dp[position]
+
+        score_diff = maxScore(0)
+
+        if score_diff > 0:
+            return "Alice"
+        elif score_diff < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+We can test the solution using the provided test cases:
+
+```
+solution = Solution()
+values = [1, 2, 3, 7]
+print(solution.stoneGameIII(values))  # Output: "Bob"
+
+values = [1, 2, 3, -9]
+print(solution.stoneGameIII(values))  # Output: "Alice"
+
+values = [1, 2, 3, 6]
+print(solution.stoneGameIII(values))  # Output: "Tie"
+```
+
+The output matches the expected results for the given test cases.

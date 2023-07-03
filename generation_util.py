@@ -115,7 +115,7 @@ class GenerationUtil:
         curr_time=time.time()
 
 
-        self.messages.append([{"role": "user", "content": prompt}])
+        self.messages.append({"role": "user", "content": prompt})
         #response=self.generate(prompt, self.config.max_length)
         response=self.generate()
 
@@ -150,7 +150,7 @@ class GenerationUtil:
 
             if tryAgain:
 
-                self.messages.append([{"role": "user", "content": errorPrompt}])
+                self.messages.append({"role": "user", "content": errorPrompt})
                 response=self.generate()
                 #response = self.generate(prompt, self.config.max_length)
 

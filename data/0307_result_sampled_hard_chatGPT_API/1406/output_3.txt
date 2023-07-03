@@ -1,0 +1,44 @@
+To solve this problem, we can use a dynamic programming approach. Let's define a function `stoneGameIII` that takes an array `stoneValue` as input and returns the name of the winner.
+
+Here's the updated code that fixes the issues mentioned:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [0] * (n + 1)  # Create a DP array to store the optimal scores
+        
+        for i in range(n-1, -1, -1):
+            dp[i] = float('-inf')  # Initialize each score to negative infinity
+            
+            # We calculate the maximum score Alice can get by taking 1, 2, or 3 stones
+            # and subtracting the minimum score Bob can get in the next turn
+            for k in range(1, 4):
+                if i + k <= n:
+                    score = sum(stoneValue[i:i+k]) - dp[i+k]
+                    dp[i] = max(dp[i], score)
+        
+        if dp[0] > 0:
+            return "Alice"
+        elif dp[0] < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+We iterate through the `stoneValue` array backwards, starting from the second-to-last element. For each element, we calculate the maximum score Alice can get by taking 1, 2, or 3 stones. We subtract the minimum score Bob can get in the next turn from Alice's score. We update the DP array with the maximum score possible at each position.
+
+Finally, we check the score at the first position (Alice's turn) in the DP array. If it's positive, Alice wins. If it's negative, Bob wins. Otherwise, it's a tie.
+
+Now, let's create an instance of the `Solution` class and test it with the given test cases:
+
+```python
+s = Solution()
+print(s.stoneGameIII([1, 2, 3, 7]))  # Output: "Bob"
+print(s.stoneGameIII([1, 2, 3, -9]))  # Output: "Alice"
+print(s.stoneGameIII([1, 2, 3, 6]))  # Output: "Tie"
+```
+
+The code should now produce the correct output for the given test cases.
