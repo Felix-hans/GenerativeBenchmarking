@@ -1,0 +1,87 @@
+Here is the code implementation for the given task:
+
+```go
+import "fmt"
+
+func isPossibleToCutPath(grid [][]int) bool {
+    m := len(grid)
+    n := len(grid[0])
+  
+    // Check if the grid is already disconnected
+    if !hasPath(grid, 0, 0, m-1, n-1) {
+        return true
+    }
+  
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            // Try flipping the cell at (i, j)
+            temp := grid[i][j]
+            grid[i][j] ^= 1
+  
+            // Check if the grid is still connected
+            if !hasPath(grid, 0, 0, m-1, n-1) {
+                return true
+            }
+  
+            // Revert the flipped cell
+            grid[i][j] = temp
+        }
+    }
+  
+    return false
+}
+
+func hasPath(grid [][]int, r1, c1, r2, c2 int) bool {
+    if grid[r1][c1] == 0 || grid[r2][c2] == 0 {
+        return false
+    }
+  
+    m := len(grid)
+    n := len(grid[0])
+  
+    visited := make([]bool, m*n)
+    queue := []int{r1*n + c1}
+    visited[r1*n+c1] = true
+  
+    for len(queue) > 0 {
+        size := len(queue)
+  
+        for i := 0; i < size; i++ {
+            curr := queue[i]
+            r := curr / n
+            c := curr % n
+  
+            if r == r2 && c == c2 {
+                return true
+            }
+  
+            if r < m-1 && grid[r+1][c] == 1 && !visited[(r+1)*n+c] {
+                queue = append(queue, (r+1)*n+c)
+                visited[(r+1)*n+c] = true
+            }
+  
+            if c < n-1 && grid[r][c+1] == 1 && !visited[r*n+c+1] {
+                queue = append(queue, r*n+c+1)
+                visited[r*n+c+1] = true
+            }
+        }
+  
+        queue = queue[size:]
+    }
+  
+    return false
+}
+```
+
+Example usage:
+```go
+func main() {
+    grid1 := [][]int{{1, 1, 1}, {1, 0, 0}, {1, 1, 1}}
+    result1 := isPossibleToCutPath(grid1)
+    fmt.Println(result1) // Output: true
+
+    grid2 := [][]int{{1, 1, 1}, {1, 0, 1}, {1, 1, 1}}
+    result2 := isPossibleToCutPath(grid2)
+    fmt.Println(result2) // Output: false
+}
+```

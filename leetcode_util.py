@@ -6,48 +6,51 @@ import handleQuestionBank
 
 class LeetCodeUtil:
     def __init__(self):
-        pass
+        self.config = Config()
+        
     
-    def generate_submit_file(self, output_file,problem_id, model_name):
+    def generate_submit_file(self, output_file,problem_id):
 
-        if model_name=='ChatGPT':
-            def remove_import(ans:str)->str:
-                ans_arr=ans.split('\n')
-                for i, l in enumerate(ans_arr):
-                    if l.startswith('import ') or l.startswith('from ') or l.strip()=='':
-                        continue
-                    else:
-                        return '\n'.join(ans_arr[i:])
-                return ''
-            def remove_line_comment(code:str):
-                return '\n'.join([l for l in code.split('\n') if not l.strip().startswith('#')])
-            with open(output_file,'r',encoding='UTF8') as f:
-                # problem_id=os.path.basename(os.path.dirname(os.path.dirname(output_file))).split('-')[0]
-                test_num=os.path.basename(output_file).split('_')[-1].split('.')[0]
-                ans=f.read().strip()
-                ans=remove_line_comment(ans)
-                ans=ans.replace("```python","```")
-                if ans.startswith("```") and ans.endswith("```"): ans=ans[3:-3].strip()
-                ans_splits=ans.split("```")
-                class_splits=[l.strip() for l in ans_splits if remove_import(l.strip()).startswith('class ')]
-                class_splits.sort(key=lambda x:len(x.split('\n')))
-                ans=class_splits[-1]
-                assert(remove_import(ans).startswith('class '))
-                ans=f'# @lc app=leetcode id={problem_id} lang=python3\n'+ans
-                py_file_path=os.path.join(os.path.dirname(output_file),f'{problem_id}.output_{test_num}.py')
-                assert("class " in [l for l in remove_import(remove_line_comment(ans)).split('\n') if l.strip()!=''][0])
-                try: assert("return" in ans)
-                except: print('return not found:',output_file)
-                with open(py_file_path,'w',encoding='UTF8') as fw:
-                    fw.write(ans)
-                print('Generated',py_file_path)
-      
-        else: assert(False, f'Unknown model_name: {model_name}')
+        
+        def remove_import(ans:str)->str:
+            ans_arr=ans.split('\n')
+            for i, l in enumerate(ans_arr):
+                if l.startswith('import ') or l.startswith('from ') or l.strip()=='':
+                    continue
+                else:
+                    return '\n'.join(ans_arr[i:])
+            return ''
+        def remove_line_comment(code:str):
+            return '\n'.join([l for l in code.split('\n') if not l.strip().startswith('#')])
+        
+        with open(output_file,'r',encoding='UTF8') as f:
+            # problem_id=os.path.basename(os.path.dirname(os.path.dirname(output_file))).split('-')[0]
+            test_num=os.path.basename(output_file).split('_')[-1].split('.')[0]
+            
+            ans=f.read().strip()
+            
+            ans=remove_line_comment(ans)
+            ans=ans.replace(f"```{self.config.language}","```")
+            if ans.startswith("```") and ans.endswith("```"): ans=ans[3:-3].strip()
+            ans_splits=ans.split("```")
+            class_splits=[l.strip() for l in ans_splits if remove_import(l.strip()).startswith('class ')]
+            class_splits.sort(key=lambda x:len(x.split('\n')))
+            ans=class_splits[-1]
+            assert(remove_import(ans).startswith('class '))
+            ans=f'# @lc app=leetcode id={problem_id} lang={self.config.languageLeetCode}\n'+ans
+            py_file_path=os.path.join(os.path.dirname(output_file),f'{problem_id}.output_{test_num}.{self.config.languageFileFormat}')
+            assert("class " in [l for l in remove_import(remove_line_comment(ans)).split('\n') if l.strip()!=''][0])
+            try: assert("return" in ans)
+            except: print('return not found:',output_file)
+            with open(py_file_path,'w',encoding='UTF8') as fw:
+                fw.write(ans)
+            print('Generated',py_file_path)
+        
         
         return py_file_path
     
     def remove_leetcode_result(self, py_file_path):
-        result_path=py_file_path.replace('.py','_result.txt')
+        result_path=py_file_path.replace('.{self.config.languageFileFormat}','_result.txt')
         if os.path.exists(result_path): os.remove(result_path)
         
     
@@ -59,7 +62,7 @@ class LeetCodeUtil:
         try:
             print('submiting leetcode')
             print(python_file_path)
-            p=subprocess.run(['leetcode','submit',python_file_path,'-l','python3'],capture_output=True, timeout=timeout)
+            p=subprocess.run(['leetcode','submit',python_file_path,'-l','{self.config.languageLeetCode}'],capture_output=True, timeout=timeout)
             print(str(p.stdout))
         except subprocess.TimeoutExpired:
             timeoutCount = timeoutCount +1
@@ -148,7 +151,7 @@ class LeetCodeUtil:
                 break
 
             problem_result_folder_path = os.path.join(problem_folder_path, config.target_folder)
-            problem_solution_files_path = glob.glob(problem_result_folder_path + '/*.py')
+            problem_solution_files_path = glob.glob(problem_result_folder_path + f'/*.{self.config.languageFileFormat}')
             self.run_leetcode_test(problem_solution_files_path)
 
             handleQuestionBank.logQuestionValidation(folder_name,problem_result_folder_path,config.sampled_df_path, config.logFile)

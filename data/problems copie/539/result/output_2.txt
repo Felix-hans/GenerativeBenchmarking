@@ -1,0 +1,48 @@
+To find the minimum minutes difference between any two time points in a given list, you can follow these steps:
+
+1. Convert each time point to minutes. Since the time is given in the "HH:MM" format, you can split the time by the colon ":" and calculate the total minutes by multiplying the hours by 60 and adding the minutes.
+2. Sort the time points in ascending order.
+3. Initialize a variable `min_diff` to store the minimum difference and set it to a large value or infinity.
+4. Iterate through the sorted time points and calculate the difference between each adjacent pair of time points.
+5. Update `min_diff` with the smaller value if the calculated difference is smaller than the current `min_diff`.
+6. After the loop, check the difference between the first and last time points, considering it as a circular clock. If this difference is smaller than `min_diff`, update `min_diff` with this value.
+7. Return `min_diff`, which will be the minimum minutes difference between any two time points in the list.
+
+Here's the implementation of the `findMinDifference` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        def convert_to_minutes(time: str) -> int:
+            hours, minutes = map(int, time.split(":"))
+            return hours * 60 + minutes
+
+        time_points_in_minutes = [convert_to_minutes(time) for time in timePoints]
+        time_points_in_minutes.sort()
+
+        min_diff = float('inf')
+        for i in range(len(time_points_in_minutes) - 1):
+            diff = time_points_in_minutes[i + 1] - time_points_in_minutes[i]
+            min_diff = min(min_diff, diff)
+
+        # Consider the difference between the first and last time points
+        circular_diff = (24 * 60 - time_points_in_minutes[-1]) + time_points_in_minutes[0]
+        min_diff = min(min_diff, circular_diff)
+
+        return min_diff
+```
+
+You can create an instance of the `Solution` class and call the `findMinDifference` method with the `timePoints` list as the input. For example:
+
+```python
+solution = Solution()
+timePoints = ["23:59", "00:00"]
+print(solution.findMinDifference(timePoints))  # Output: 1
+
+timePoints = ["00:00", "23:59", "00:00"]
+print(solution.findMinDifference(timePoints))  # Output: 0
+```
+
+The code will output the minimum minutes difference between any two time points in the given list.

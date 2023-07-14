@@ -1,0 +1,34 @@
+To solve this problem, we can start by finding the largest even number less than or equal to the given `finalSum`. Let's call this number `largestEven`. We can then check if `largestEven` is equal to `finalSum`. If it is, then we can return `[largestEven]` as a valid split. If not, then we need to find the maximum number of unique positive even integers that sum up to `finalSum - largestEven`.
+
+To implement this in Python, we can use the `maximumEvenSplit` function:
+
+```
+class Solution:
+    def maximumEvenSplit(self, finalSum: int) -> List[int]:
+        result = []
+        largestEven = finalSum - (finalSum % 2)
+        
+        if largestEven == finalSum:
+            result.append(largestEven)
+            return result
+        
+        remainingSum = finalSum - largestEven
+        start = 2
+        
+        while remainingSum > 0:
+            if start % 2 == 0 and start <= remainingSum:
+                result.append(start)
+                remainingSum -= start
+            start += 2
+        
+        if remainingSum == 0:
+            return result
+        else:
+            return []
+```
+
+In the `maximumEvenSplit` function, we first initialize an empty list called `result` to store the split integers. We then find the largest even number less than or equal to `finalSum` by subtracting the remainder of `finalSum` divided by 2 from `finalSum`. If the largest even number is equal to `finalSum`, we append it to `result` and return the list.
+
+If the largest even number is not equal to `finalSum`, we initialize a variable called `remainingSum` to store the remaining sum after subtracting the largest even number. We then start a loop from 2, and if the current number (`start`) is even and less than or equal to the remaining sum, we append it to `result` and subtract it from the remaining sum. We continue this process until the remaining sum is 0 or we have exhausted all possible even numbers.
+
+Finally, if the remaining sum is 0, we return `result` as the valid split. Otherwise, we return an empty list to indicate that no valid split exists for the given `finalSum`.

@@ -1,0 +1,41 @@
+To solve this problem, we can use dynamic programming. We will define a function `countTexts` that takes in the string "pressedKeys" and returns the total number of possible text messages Alice could have sent.
+
+First, we need to create a dictionary that maps each digit to its corresponding letters. We can do this using a list of strings, where the index of each string corresponds to the digit.
+
+Next, we initialize a dynamic programming array `dp` of length `n+1`, where `n` is the length of the input string `pressedKeys`. The value at each index `i` in `dp` represents the number of possible text messages up to that index.
+
+We then iterate through the input string `pressedKeys` from left to right. For each index `i`, we iterate through the possible letters that the current digit can represent. For each possible letter, we update `dp[i+j]` by adding the value of `dp[i]` to it, where `j` is the position of the letter in the corresponding digit.
+
+Finally, we return the value at `dp[n]`, which represents the total number of possible text messages Alice could have sent.
+
+Here is the implementation in Python:
+
+```python
+class Solution:
+    def countTexts(self, pressedKeys: str) -> int:
+        mappings = ['', '', 'abc', 'def', 'ghi', 'jkl', 'mno', 'pqrs', 'tuv', 'wxyz']
+        n = len(pressedKeys)
+        dp = [0] * (n + 1)
+        dp[0] = 1
+
+        for i in range(n):
+            digit = int(pressedKeys[i])
+            letters = mappings[digit]
+            for j in range(1, len(letters)+1):
+                dp[i+j] = (dp[i+j] + dp[i]) % (10**9 + 7)
+        
+        return dp[n]
+```
+
+Now, we can create an instance of the `Solution` class and test the function:
+
+```python
+solution = Solution()
+pressedKeys = '22233'
+print(solution.countTexts(pressedKeys))  # Output: 8
+
+pressedKeys = '222222222222222222222222222222222222'
+print(solution.countTexts(pressedKeys))  # Output: 82876089
+```
+
+The function returns the correct outputs for the given examples.

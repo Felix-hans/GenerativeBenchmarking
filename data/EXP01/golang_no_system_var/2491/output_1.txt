@@ -1,0 +1,74 @@
+Here is the implementation of the dividePlayers function in Go:
+
+```go
+func dividePlayers(skill []int) int64 {
+    // Calculate the sum of all the skills
+    sum := 0
+    for _, s := range skill {
+        sum += s
+    }
+    
+    // If the sum is not divisible by n/2, return -1
+    if sum%(len(skill)/2) != 0 {
+        return -1
+    }
+    
+    // Calculate the target sum for each team
+    target := sum / (len(skill) / 2)
+    
+    // Initialize a map to store the count of players with each skill level
+    counts := make(map[int]int)
+    for _, s := range skill {
+        counts[s]++
+    }
+    
+    // Check if it is possible to divide the players into teams
+    for s, count := range counts {
+        // If there are an odd number of players with the current skill level, return -1
+        if count%2 != 0 {
+            return -1
+        }
+        
+        // Calculate the number of teams that can be formed with players of the current skill level
+        numTeams := count / 2
+        
+        // Calculate the number of teams that can be formed with players of the complementary skill level
+        complement := target - s
+        complementCount := counts[complement]
+        numComplementTeams := complementCount / 2
+        
+        // If the number of teams with the current skill level is greater than the number of complement teams,
+        // update the count of complement teams and teams with the current skill level
+        if numTeams > numComplementTeams {
+            counts[complement] -= numComplementTeams * 2
+            counts[s] -= numComplementTeams * 2
+        } else {
+            counts[complement] -= numTeams * 2
+            counts[s] -= numTeams * 2
+        }
+    }
+    
+    // Calculate the sum of the chemistry of all the teams
+    chemistry := int64(0)
+    for s, count := range counts {
+        chemistry += int64(s) * int64(count/2)
+    }
+    
+    return chemistry
+}
+```
+
+The dividePlayers function takes an integer array `skill` as input and returns an int64 representing the sum of the chemistry of all the teams. If it is not possible to divide the players into teams such that the total skill of each team is equal, it returns -1.
+
+The implementation follows the following steps:
+1. Calculate the sum of all the skills in the `skill` array.
+2. If the sum is not divisible by n/2 (where n is the length of the `skill` array), return -1.
+3. Calculate the target sum for each team by dividing the total sum by n/2.
+4. Initialize a map `counts` to store the count of players with each skill level.
+5. Iterate over the `skill` array and update the count of players with each skill level in the `counts` map.
+6. Check if it is possible to divide the players into teams by iterating over the `counts` map.
+   - If there are an odd number of players with a particular skill level, return -1.
+   - For each skill level, calculate the number of teams that can be formed with players of that skill level and the complementary skill level.
+     - If the number of teams with the current skill level is greater than the number of complement teams, update the count of complement teams and teams with the current skill level.
+7. Calculate the sum of the chemistry of all the teams by multiplying the skill level with the number of teams with that skill level, and adding it to the `chemistry` variable.
+8. Return the `chemistry` variable as the result.

@@ -1,0 +1,80 @@
+To solve this task, we can perform a depth-first search (DFS) on the binary tree while keeping track of the horizontal position (column) and vertical position (row) of each node. We can use a dictionary to store the nodes based on their column positions and their corresponding values. After the DFS, we sort the nodes in each column by their row and value.
+
+Here's the implementation of the `verticalTraversal` function:
+
+```python
+from typing import List, Optional
+from collections import defaultdict
+from heapq import heappop, heappush
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        # Dictionary to store nodes by column position
+        column_map = defaultdict(list)
+
+        # DFS function to traverse the tree and update the column_map
+        def dfs(node, row, col):
+            if node:
+                # Push the node into the column_map with its column as the key
+                heappush(column_map[col], (row, node.val))
+
+                # Recursive calls for left and right children with updated positions
+                dfs(node.left, row + 1, col - 1)
+                dfs(node.right, row + 1, col + 1)
+
+        # Start the DFS from the root node
+        dfs(root, 0, 0)
+
+        # Create the result list and populate it by iterating over the column_map
+        result = []
+        for col in sorted(column_map):
+            column_values = []
+            while column_map[col]:
+                # Sort the nodes in the same column by row and value
+                column_values.append(heappop(column_map[col])[1])
+            result.append(column_values)
+
+        return result
+```
+
+You can test the solution with the provided examples:
+
+```python
+root1 = TreeNode(3)
+root1.left = TreeNode(9)
+root1.right = TreeNode(20)
+root1.right.left = TreeNode(15)
+root1.right.right = TreeNode(7)
+
+root2 = TreeNode(1)
+root2.left = TreeNode(2)
+root2.right = TreeNode(3)
+root2.left.left = TreeNode(4)
+root2.left.right = TreeNode(5)
+root2.right.left = TreeNode(6)
+root2.right.right = TreeNode(7)
+
+root3 = TreeNode(1)
+root3.left = TreeNode(2)
+root3.right = TreeNode(3)
+root3.left.left = TreeNode(4)
+root3.left.right = TreeNode(6)
+root3.right.left = TreeNode(5)
+root3.right.right = TreeNode(7)
+
+solution = Solution()
+print(solution.verticalTraversal(root1))  # [[9], [3, 15], [20], [7]]
+print(solution.verticalTraversal(root2))  # [[4], [2], [1, 5, 6], [3], [7]]
+print(solution.verticalTraversal(root3))  # [[4], [2], [1, 5, 6], [3], [7]]
+```
+
+The output should match the expected results provided in the examples.

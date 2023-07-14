@@ -1,0 +1,47 @@
+To solve the given task, we can use a dynamic programming approach. Let's define the steps for the solution:
+
+1. Sort the satisfaction array in ascending order. This step is necessary because we want to maximize the like-time coefficient, which is achieved by preparing dishes with higher satisfaction levels earlier.
+
+2. Initialize two variables: `max_coef` to keep track of the maximum like-time coefficient, and `total_coef` to store the cumulative like-time coefficient.
+
+3. Iterate over the sorted satisfaction array. For each dish, calculate its like-time coefficient by multiplying its satisfaction level by the time taken (which is the current index + 1).
+
+4. Update the `total_coef` by adding the calculated like-time coefficient.
+
+5. If the `total_coef` is negative or zero, there is no point in continuing further because discarding dishes will only decrease the sum. In this case, return 0.
+
+6. Update the `max_coef` with the maximum value between `max_coef` and `total_coef`.
+
+7. Return the `max_coef`.
+
+Here's the implementation of the `maxSatisfaction` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort()  # Sort the satisfaction array in ascending order
+        max_coef = 0
+        total_coef = 0
+
+        for i, s in enumerate(satisfaction):
+            curr_coef = (i + 1) * s
+            total_coef += curr_coef
+
+            if total_coef <= 0:
+                return 0
+
+            max_coef = max(max_coef, total_coef)
+
+        return max_coef
+```
+
+You can create an instance of the `Solution` class and call the `maxSatisfaction` method with the satisfaction array as an argument to obtain the maximum like-time coefficient. For example:
+
+```python
+solution = Solution()
+satisfaction = [-1, -8, 0, 5, -9]
+max_coefficient = solution.maxSatisfaction(satisfaction)
+print(max_coefficient)  # Output: 14
+```

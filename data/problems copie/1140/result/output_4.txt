@@ -1,0 +1,49 @@
+To solve the given problem, we can use dynamic programming to keep track of the maximum number of stones Alice can get at each step. We'll define a recursive function that takes the current index, the number of stones Bob can take (M), and a memoization table to store the computed results.
+
+Here's the implementation in Python:
+
+```python
+class Solution:
+    def stoneGameII(self, piles):
+        n = len(piles)
+        memo = [[-1] * (2 * n) for _ in range(n)]  # Memoization table
+
+        def dp(i, M):
+            if i >= n:  # Base case: no more piles left
+                return 0
+
+            if memo[i][M] != -1:  # Check if the result is already computed
+                return memo[i][M]
+
+            max_stones = float('-inf')
+
+            for x in range(1, 2 * M + 1):
+                if i + x <= n:
+                    stones = sum(piles[i:i + x])
+                    max_stones = max(max_stones, stones - dp(i + x, max(x, M)))
+
+            memo[i][M] = max_stones  # Store the result in the memoization table
+            return max_stones
+
+        return dp(0, 1)
+```
+
+We create a memoization table `memo` to store the computed results. The `dp` function represents the recursive part of the algorithm. It takes the current index `i` and the number of stones Bob can take `M` as input. Inside the function, we check if the result for the current state has already been computed and stored in the memoization table. If it has, we return the stored result. Otherwise, we calculate the maximum number of stones Alice can get by trying all possible values of `x` (the number of piles Alice takes) from 1 to 2M. We recursively call `dp` with the updated index and maximum stones Bob can take, and subtract the result from the total stones to get the number of stones Alice can get. We keep track of the maximum number of stones Alice can get (`max_stones`) and store it in the memoization table. Finally, we return the maximum number of stones Alice can get by calling `dp` with the initial state (index 0 and M = 1).
+
+You can create an instance of the `Solution` class and call the `stoneGameII` method with the input piles to get the maximum number of stones Alice can get. For example:
+
+```python
+solution = Solution()
+piles = [2, 7, 9, 4, 4]
+maximum_stones = solution.stoneGameII(piles)
+print(maximum_stones)  # Output: 10
+```
+
+```python
+solution = Solution()
+piles = [1, 2, 3, 4, 5, 100]
+maximum_stones = solution.stoneGameII(piles)
+print(maximum_stones)  # Output: 104
+```
+
+The solution uses memoization to avoid redundant calculations and has a time complexity of O(n^3), where n is the length of the `piles` list.

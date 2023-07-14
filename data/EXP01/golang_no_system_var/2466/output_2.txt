@@ -1,0 +1,36 @@
+To solve this problem, we can use dynamic programming. We'll create a 2D array dp with dimensions (low+1) x 2, where dp[i][j] represents the number of good strings of length i with j zeros at the end.
+
+We'll initialize dp[0][0] = 1, since there is one empty string with zero zeros at the end.
+
+Then, for each length i from 1 to high, we'll calculate dp[i][0] and dp[i][1] as follows:
+
+- dp[i][0] = (dp[i-1][0] + dp[i-1][1]) * zero, because we can append a zero at the end of any good string of length i-1 with zero or one zeros at the end.
+
+- dp[i][1] = dp[i-1][0] * one, because we can append a one at the end of any good string of length i-1 with zero zeros at the end.
+
+Finally, we'll sum up all the dp[i][0] and dp[i][1] for lengths between low and high (inclusive) to get the total number of different good strings.
+
+Here is the implementation in Go:
+
+```go
+const mod = int(1e9) + 7
+
+func countGoodStrings(low int, high int, zero int, one int) int {
+    dp := make([][2]int, high+1)
+    dp[0][0] = 1
+
+    for i := 1; i <= high; i++ {
+        dp[i][0] = (dp[i-1][0] + dp[i-1][1]) * zero % mod
+        dp[i][1] = dp[i-1][0] * one % mod
+    }
+
+    count := 0
+    for i := low; i <= high; i++ {
+        count = (count + dp[i][0] + dp[i][1]) % mod
+    }
+
+    return count
+}
+```
+
+The time complexity of this solution is O(high), and the space complexity is O(high).

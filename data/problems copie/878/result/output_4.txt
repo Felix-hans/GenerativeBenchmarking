@@ -1,0 +1,41 @@
+To solve this problem, we can use the concept of the least common multiple (LCM) between two numbers, a and b.
+
+The LCM of two numbers represents the smallest positive integer that is divisible by both numbers. If we find the LCM of a and b, we can determine how many magical numbers exist between two consecutive multiples of the LCM.
+
+Let's define the function `nthMagicalNumber` to implement this solution in Python:
+
+```python
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        def gcd(x, y):
+            while y:
+                x, y = y, x % y
+            return x
+        
+        def lcm(x, y):
+            return x * y // gcd(x, y)
+        
+        mod = 10**9 + 7
+        lcm_ab = lcm(a, b)
+        left = 1
+        right = 10**18  # Set an upper bound to avoid infinite loop
+        
+        while left < right:
+            mid = (left + right) // 2
+            magical_numbers = mid // a + mid // b - mid // lcm_ab
+            
+            if magical_numbers < n:
+                left = mid + 1
+            else:
+                right = mid
+        
+        return left % mod
+```
+
+In this solution, we use the binary search algorithm to find the nth magical number efficiently. We initialize `left` to 1 and `right` to a large upper bound, 10^18, to cover the range of possible magical numbers.
+
+Inside the binary search loop, we calculate `mid` as the midpoint between `left` and `right`. We then determine the number of magical numbers between 1 and `mid` using the formula: `mid // a + mid // b - mid // lcm_ab`. This formula counts the multiples of `a` and `b` while subtracting the multiples of their LCM to avoid double-counting.
+
+If the number of magical numbers is less than `n`, we update `left` to `mid + 1` to search in the right half of the range. Otherwise, if the number of magical numbers is greater than or equal to `n`, we update `right` to `mid` to search in the left half of the range.
+
+Finally, we return `left` modulo `10^9 + 7` as the nth magical number. This ensures the result is within the required range.

@@ -1,0 +1,26 @@
+To solve the given task, we can follow the following approach:
+
+1. Calculate the frequency of each task.
+2. Sort the frequencies in descending order.
+3. Find the maximum frequency `max_freq`.
+4. Calculate the number of idle slots using the formula: `(max_freq - 1) * n`.
+5. Calculate the total number of slots required using the formula: `len(tasks) + number of idle slots`.
+6. Return the maximum value between the total number of slots required and the length of the input tasks.
+
+Here's the implementation of the `leastInterval` function in Python:
+
+```python
+from collections import Counter
+from typing import List
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        task_counts = Counter(tasks)
+        max_freq = max(task_counts.values())
+        max_freq_tasks = sum(1 for count in task_counts.values() if count == max_freq)
+        number_of_slots = (max_freq - 1) * n
+        total_slots = max(number_of_slots + max_freq + max_freq_tasks - 1, len(tasks))
+        return total_slots
+```
+
+You can create an instance of the `Solution` class and call the `leastInterval` method, passing the `tasks` and `n` as arguments to get the least number of units of time the CPU will take to finish all the given tasks.

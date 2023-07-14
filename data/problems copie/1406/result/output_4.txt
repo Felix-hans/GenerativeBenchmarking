@@ -1,0 +1,45 @@
+To solve this task, we can use dynamic programming to determine the optimal strategy and calculate the maximum score for each player. We'll define a function `stoneGameIII` that takes the `stoneValue` array as input and returns the name of the winner or "Tie" if there is a tie.
+
+Here's the implementation of the `stoneGameIII` function:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [0] * (n + 1)  # DP array to store maximum scores
+        
+        for i in range(n - 1, -1, -1):
+            best_score = float('-inf')
+            
+            for j in range(i, min(i + 3, n)):
+                curr_sum = sum(stoneValue[i:j+1])
+                next_score = dp[j + 1] if j + 1 <= n else 0
+                best_score = max(best_score, curr_sum - next_score)
+            
+            dp[i] = best_score
+        
+        if dp[0] > 0:
+            return "Alice"
+        elif dp[0] < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+Now, we can create an instance of the `Solution` class and call the `stoneGameIII` function with the stone values as an argument to test it:
+
+```python
+solution = Solution()
+values = [1, 2, 3, 7]
+print(solution.stoneGameIII(values))  # Output: "Bob"
+
+values = [1, 2, 3, -9]
+print(solution.stoneGameIII(values))  # Output: "Alice"
+
+values = [1, 2, 3, 6]
+print(solution.stoneGameIII(values))  # Output: "Tie"
+```
+
+The code should produce the correct output for the given examples and handle other test cases as well.

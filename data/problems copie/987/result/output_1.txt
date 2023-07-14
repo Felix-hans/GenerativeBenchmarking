@@ -1,0 +1,78 @@
+To solve this task, we can perform a depth-first search (DFS) on the binary tree while keeping track of the vertical position (column) of each node. We can use a hash map to store the nodes based on their column positions and their corresponding values. After traversing the entire tree, we can sort the nodes within each column based on their values and construct the result.
+
+Here's the implementation:
+
+```python
+from typing import List, Optional
+from collections import defaultdict
+from heapq import heappush, heappop
+from TreeNode import TreeNode  # Assuming the TreeNode class is available
+
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        # Create a hash map to store nodes based on column position
+        columns = defaultdict(list)
+
+        # Perform a depth-first search on the binary tree
+        def dfs(node, row, col):
+            if node:
+                # Add the node to its corresponding column position
+                heappush(columns[col], (row, node.val))
+
+                # Traverse the left and right subtrees
+                dfs(node.left, row + 1, col - 1)
+                dfs(node.right, row + 1, col + 1)
+
+        # Start the DFS traversal from the root
+        dfs(root, 0, 0)
+
+        # Construct the result
+        result = []
+        for col in sorted(columns):
+            column_nodes = []
+            while columns[col]:
+                column_nodes.append(heappop(columns[col])[1])  # Get the node value
+            result.append(column_nodes)
+
+        return result
+```
+
+You can test the implementation using the provided examples as follows:
+
+```python
+# Example 1
+root1 = TreeNode(3)
+root1.left = TreeNode(9)
+root1.right = TreeNode(20)
+root1.right.left = TreeNode(15)
+root1.right.right = TreeNode(7)
+
+sol = Solution()
+print(sol.verticalTraversal(root1))  # Output: [[9], [3, 15], [20], [7]]
+
+# Example 2
+root2 = TreeNode(1)
+root2.left = TreeNode(2)
+root2.right = TreeNode(3)
+root2.left.left = TreeNode(4)
+root2.left.right = TreeNode(5)
+root2.right.left = TreeNode(6)
+root2.right.right = TreeNode(7)
+
+sol = Solution()
+print(sol.verticalTraversal(root2))  # Output: [[4], [2], [1, 5, 6], [3], [7]]
+
+# Example 3
+root3 = TreeNode(1)
+root3.left = TreeNode(2)
+root3.right = TreeNode(3)
+root3.left.left = TreeNode(4)
+root3.left.right = TreeNode(6)
+root3.right.left = TreeNode(5)
+root3.right.right = TreeNode(7)
+
+sol = Solution()
+print(sol.verticalTraversal(root3))  # Output: [[4], [2], [1, 5, 6], [3], [7]]
+```
+
+Make sure to define the `TreeNode` class appropriately or import it from the correct source.

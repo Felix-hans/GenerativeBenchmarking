@@ -1,0 +1,18 @@
+Here is an implementation of the given task in Python:
+
+```python
+class Solution:
+    def xorBeauty(self, nums: List[int]) -> int:
+        result = 0
+        n = len(nums)
+        
+        for i in range(n):
+            for j in range(n):
+                for k in range(n):
+                    effective_value = (nums[i] | nums[j]) & nums[k]
+                    result ^= effective_value
+        
+        return result
+```
+
+In this solution, we iterate over all possible triplets of indices (i, j, k). For each triplet, we calculate the effective value using the bitwise OR and bitwise AND operations. We then XOR the effective value with the current result. Finally, we return the result, which represents the XOR beauty of the array.

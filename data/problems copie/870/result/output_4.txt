@@ -1,0 +1,52 @@
+To solve the given task, we can use the following approach:
+
+1. Sort both arrays, `nums1` and `nums2`, in non-decreasing order.
+2. Create an empty dictionary, `advantage`, to store the advantage count for each element in `nums2`.
+3. Create two lists, `remaining` and `assigned`, to keep track of the remaining numbers in `nums1` and the assigned numbers in the advantage permutation, respectively. Initialize both lists with the values from `nums1`.
+4. Iterate through each element, `num`, in `nums2`, and do the following:
+   - If `num` is smaller than the smallest number in `remaining`, assign the smallest number to `num` in `advantage`.
+   - Otherwise, find the smallest number, `assigned_num`, in `assigned` that is greater than `num`. Assign `assigned_num` to `num` in `advantage` and remove `assigned_num` from `assigned`.
+5. Create a list, `result`, to store the final advantage permutation.
+6. Iterate through each element, `num`, in `nums2`, and do the following:
+   - If `num` is present in `advantage`, append the corresponding value from `advantage` to `result` and remove the entry from `advantage`.
+   - Otherwise, append the smallest number from `remaining` to `result` and remove it from `remaining`.
+7. Return the `result` list as the maximum advantage permutation.
+
+Here's the implementation of the `advantageCount` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        nums1.sort()
+        nums2_sort = sorted([(num, i) for i, num in enumerate(nums2)])
+        advantage = {}
+        remaining = list(nums1)
+        assigned = []
+        
+        for num, i in nums2_sort:
+            if num < remaining[0]:
+                advantage[i] = remaining[0]
+                remaining.pop(0)
+            else:
+                assigned_num = next((n for n in remaining if n > num), remaining[0])
+                advantage[i] = assigned_num
+                remaining.remove(assigned_num)
+                assigned.append(assigned_num)
+        
+        result = [advantage[i] if i in advantage else remaining.pop(0) for i in range(len(nums2))]
+        return result
+```
+
+Now, you can create an instance of the `Solution` class and call the `advantageCount` method with the given inputs to get the desired output. Here's an example:
+
+```python
+solution = Solution()
+nums1 = [2, 7, 11, 15]
+nums2 = [1, 10, 4, 11]
+output = solution.advantageCount(nums1, nums2)
+print(output)  # Output: [2, 11, 7, 15]
+```
+
+You can also test the second example in a similar way.

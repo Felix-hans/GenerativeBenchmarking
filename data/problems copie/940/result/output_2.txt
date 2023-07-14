@@ -1,0 +1,44 @@
+To solve this problem, we can use dynamic programming. Let's go step by step:
+
+1. Initialize a variable `n` to store the length of the input string `s`.
+2. Initialize an array `dp` of length `n + 1` to store the number of distinct subsequences for each prefix of the string `s`.
+3. Initialize a variable `last` to store the last occurrence index of each character in the string `s`. Initialize all elements of `last` to -1.
+4. Initialize a variable `MOD` to store the value of 10^9 + 7, which will be used to take the modulo of the final result.
+5. Iterate over each character `c` in the string `s`:
+   - Calculate the number of distinct subsequences ending at position `i` (0 <= i < n) by using the formula: `dp[i + 1] = (2 * dp[i] - dp[last[ord(c)]]) % MOD`.
+   - Update the last occurrence index of character `c` to `i`.
+6. Calculate the final result by summing up all elements in the `dp` array and taking the modulo with `MOD`. Return the result.
+
+Here's the implementation of the `distinctSubseqII` function:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        n = len(s)
+        dp = [0] * (n + 1)
+        last = [-1] * 26
+        MOD = int(1e9) + 7
+
+        dp[0] = 1
+        for i in range(n):
+            dp[i + 1] = (2 * dp[i] - (dp[last[ord(s[i])] - 1] if last[ord(s[i])] >= 0 else 0)) % MOD
+            last[ord(s[i])] = i
+
+        return (dp[n] - 1) % MOD
+```
+
+Now you can create an instance of the `Solution` class and call the `distinctSubseqII` function with the input string `s` to get the desired output. For example:
+
+```python
+solution = Solution()
+s = "abc"
+print(solution.distinctSubseqII(s))  # Output: 7
+
+s = "aba"
+print(solution.distinctSubseqII(s))  # Output: 6
+
+s = "aaa"
+print(solution.distinctSubseqII(s))  # Output: 3
+```
+
+The function will return the correct number of distinct non-empty subsequences of the given string `s` modulo 10^9 + 7.

@@ -1,0 +1,24 @@
+Here's the implementation of the `goodIndices` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def goodIndices(self, nums: List[int], k: int) -> List[int]:
+        n = len(nums)
+        result = []
+        
+        for i in range(k, n - k):
+            if self.isGoodIndex(nums, i, k):
+                result.append(i)
+                
+        return result
+    
+    def isGoodIndex(self, nums: List[int], idx: int, k: int) -> bool:
+        for i in range(k):
+            if nums[idx - i] < nums[idx - i - 1] or nums[idx + i] > nums[idx + i + 1]:
+                return False
+        return True
+```
+
+You can create an instance of the `Solution` class and call the `goodIndices` method passing the `nums` array and `k` as arguments. It will return a list of good indices.

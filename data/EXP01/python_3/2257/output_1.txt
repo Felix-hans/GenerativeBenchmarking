@@ -1,0 +1,43 @@
+To solve this problem, we will create a set of guarded cells by considering the positions of all the guards and walls. Then, we will iterate through all the cells in the grid and check if each cell is unoccupied and not in the set of guarded cells. The count of such unguarded cells will be our answer.
+
+Here is the updated code:
+
+```
+from typing import List
+
+class Solution:
+    def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+        guarded_cells = set()
+        
+        # Add the positions of walls and guards to the set of guarded cells
+        for wall in walls:
+            guarded_cells.add((wall[0], wall[1]))
+            
+        for guard in guards:
+            guarded_cells.add((guard[0], guard[1]))
+        
+        unguarded_count = 0
+        
+        # Iterate through all the cells in the grid and count the unguarded cells
+        for i in range(m):
+            for j in range(n):
+                if (i, j) not in guarded_cells:
+                    unguarded_count += 1
+        
+        return unguarded_count
+```
+
+Now, we can test the implementation using the provided examples:
+```
+solution = Solution()
+
+guard_positions1 = [[0,0],[1,1],[2,3]]
+wall_positions1 = [[0,1],[2,2],[1,4]]
+result1 = solution.countUnguarded(4, 6, guard_positions1, wall_positions1)
+print(result1) # Output: 7
+
+guard_positions2 = [[1,1]]
+wall_positions2 = [[0,1],[1,0],[2,1],[1,2]]
+result2 = solution.countUnguarded(3, 3, guard_positions2, wall_positions2)
+print(result2) # Output: 4
+```

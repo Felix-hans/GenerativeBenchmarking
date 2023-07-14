@@ -1,0 +1,36 @@
+Here's the implementation of the TimeMap class in Python that fulfills the requirements:
+
+```python
+import bisect
+
+class TimeMap:
+
+    def __init__(self):
+        self.data = {}
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        if key not in self.data:
+            self.data[key] = []
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key in self.data:
+            values = self.data[key]
+            index = bisect.bisect_right(values, (timestamp, chr(127)))
+            if index > 0:
+                return values[index - 1][1]
+        return ""
+
+# Example usage:
+timeMap = TimeMap()
+timeMap.set("foo", "bar", 1)
+print(timeMap.get("foo", 1))   # Output: "bar"
+print(timeMap.get("foo", 3))   # Output: "bar"
+timeMap.set("foo", "bar2", 4)
+print(timeMap.get("foo", 4))   # Output: "bar2"
+print(timeMap.get("foo", 5))   # Output: "bar2"
+```
+
+The TimeMap class uses a dictionary (`self.data`) to store the key-value pairs, where the values are stored as a list of tuples `(timestamp, value)`. The `set` method appends a new tuple to the list associated with the given key. The `get` method performs a binary search using the `bisect_right` function to find the rightmost tuple with a timestamp less than or equal to the given timestamp, and returns the corresponding value. If no value is found, it returns an empty string `""`.
+
+Note that the `bisect` module in Python provides an efficient way to search for the insertion point of a value in a sorted sequence. In this case, it helps us find the rightmost tuple with a timestamp less than or equal to the target timestamp.

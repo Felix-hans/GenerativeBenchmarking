@@ -1,0 +1,53 @@
+To solve the problem, we can use dynamic programming. Let's define a list `dp` of size `n + 1`, where `dp[i]` represents the number of distinct non-empty subsequences we can form using the first `i` characters of the string `s`. We initialize `dp[0] = 1` because there is one empty subsequence.
+
+For each character `s[i]` in the string, we have two options:
+1. We can include `s[i]` as a new subsequence, so the number of distinct subsequences up to index `i` is doubled (`dp[i] * 2`).
+2. We can exclude `s[i]` and consider all the distinct subsequences formed using the previous characters, so the number of distinct subsequences remains the same (`dp[i]`).
+
+To handle duplicate characters, we need to keep track of the last occurrence of each character. We can use a dictionary `last` to store the last index at which each character was seen.
+
+Here's the implementation of the `distinctSubseqII` method:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        n = len(s)
+        mod = int(1e9) + 7
+        dp = [0] * (n + 1)
+        dp[0] = 1
+        last = {}
+
+        for i in range(1, n + 1):
+            dp[i] = (dp[i - 1] * 2) % mod
+            if s[i - 1] in last:
+                dp[i] -= dp[last[s[i - 1]] - 1]
+            last[s[i - 1]] = i
+
+        return (dp[n] - 1) % mod
+```
+
+Let's test the implementation with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+s = "abc"
+# The distinct subsequences are "a", "b", "c", "ab", "ac", "bc", and "abc".
+# Total = 7
+print(solution.distinctSubseqII(s))  # Output: 7
+
+# Example 2
+s = "aba"
+# The distinct subsequences are "a", "b", "ab", "aa", "ba", and "aba".
+# Total = 6
+print(solution.distinctSubseqII(s))  # Output: 6
+
+# Example 3
+s = "aaa"
+# The distinct subsequences are "a", "aa", and "aaa".
+# Total = 3
+print(solution.distinctSubseqII(s))  # Output: 3
+```
+
+The output matches the expected results for the given examples.

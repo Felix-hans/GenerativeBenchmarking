@@ -1,0 +1,23 @@
+To solve this problem, we can sort the grades array in descending order. Then, we can iterate through the array and check for the conditions mentioned in the problem statement to form non-empty groups.
+
+Here's the implementation in Python:
+
+```
+class Solution:
+    def maximumGroups(self, grades: List[int]) -> int:
+        grades.sort(reverse=True)  # Sort the array in descending order
+
+        groups = 1  # Number of groups formed
+        prev_sum = grades[0]  # Sum of grades in the previous group
+
+        for i in range(1, len(grades)):
+            if grades[i] * (i+1) > prev_sum:
+                groups += 1
+                prev_sum += grades[i]
+                
+        return groups
+```
+
+In the above code, we iterate through the sorted grades array and compare the sum of grades in the current group (grades[i] * (i+1)) with the sum of grades in the previous group (prev_sum). If the current group has a greater sum of grades, we increment the number of groups and update the previous sum.
+
+Finally, we return the maximum number of groups formed.

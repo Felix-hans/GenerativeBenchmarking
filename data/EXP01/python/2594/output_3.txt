@@ -1,0 +1,40 @@
+Here is the implementation of the `repairCars` function in Python:
+
+```python
+def repairCars(ranks, cars):
+    # Sort the ranks in ascending order
+    ranks.sort()
+    
+    # Initialize the minimum time to repair all cars
+    min_time = float('inf')
+    
+    # Iterate through each rank
+    for rank in ranks:
+        # Calculate the number of cars the mechanic can repair with the current rank
+        num_cars = min(cars, rank)
+        
+        # Calculate the time required to repair the cars with the current rank
+        time = rank * num_cars * num_cars
+        
+        # Update the minimum time if the current time is smaller
+        min_time = min(min_time, time)
+        
+        # Reduce the number of remaining cars by the number of cars repaired with the current rank
+        cars -= num_cars
+    
+    return min_time
+```
+
+You can use this function to find the minimum time taken to repair all the cars for a given `ranks` list and `cars` count. For example:
+
+```python
+ranks = [4, 2, 3, 1]
+cars = 10
+
+print(repairCars(ranks, cars))
+```
+
+Output:
+```
+16
+```

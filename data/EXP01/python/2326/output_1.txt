@@ -1,0 +1,76 @@
+To solve the problem, we can follow the below steps:
+
+1. Initialize an empty m x n matrix with all elements set to -1.
+2. Traverse the linked list and store the values in a 1D array.
+3. Initialize four variables: top, bottom, left, and right. These will represent the boundaries of the matrix.
+4. Initialize two variables: row and col. These will represent the current position in the matrix.
+5. Set the initial values of top, bottom, left, and right to 0, m-1, 0, and n-1 respectively.
+6. Initialize a variable called direction to 0. This will represent the current direction of traversal.
+7. Iterate from 0 to m*n-1:
+     a. If direction is 0, move right until col is greater than right. Increment top by 1.
+     b. If direction is 1, move down until row is greater than bottom. Decrement right by 1.
+     c. If direction is 2, move left until col is less than left. Decrement bottom by 1.
+     d. If direction is 3, move up until row is less than top. Increment left by 1.
+8. If the current direction is 0, update the matrix by assigning the current value from the linked list and increment the linked list pointer.
+9. If the current direction is not 0, update the matrix by assigning -1.
+10. Update the current position row and col.
+11. Increment direction by 1 modulo 4, as we need to cycle through the directions.
+12. Return the generated matrix.
+
+Here is the Python implementation of the above algorithm:
+
+```
+from typing import List, Optional
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+        # Initialize an empty m x n matrix with all elements set to -1
+        matrix = [[-1] * n for _ in range(m)]
+        
+        # Store the values in a 1D array
+        values = []
+        node = head
+        while node:
+            values.append(node.val)
+            node = node.next
+        
+        # Initialize variables
+        top, bottom, left, right = 0, m-1, 0, n-1
+        row, col = 0, 0
+        direction = 0
+        
+        # Fill the matrix in spiral order
+        for i in range(m * n):
+            if direction == 0: # Move right
+                matrix[row][col] = values[i]
+                col += 1
+                if col > right:
+                    direction = (direction + 1) % 4
+                    top += 1
+            elif direction == 1: # Move down
+                matrix[row][col] = values[i]
+                row += 1
+                if row > bottom:
+                    direction = (direction + 1) % 4
+                    right -= 1
+            elif direction == 2: # Move left
+                matrix[row][col] = values[i]
+                col -= 1
+                if col < left:
+                    direction = (direction + 1) % 4
+                    bottom -= 1
+            elif direction == 3: # Move up
+                matrix[row][col] = values[i]
+                row -= 1
+                if row < top:
+                    direction = (direction + 1) % 4
+                    left += 1
+        
+        return matrix
+```
+
+You can test the code using the provided test cases.

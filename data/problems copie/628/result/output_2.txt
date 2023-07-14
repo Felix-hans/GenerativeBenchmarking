@@ -1,0 +1,40 @@
+To find three numbers in the given array `nums` whose product is maximum, we can sort the array in ascending order. Then, we have two possible cases:
+
+1. All numbers in the array are non-negative or zero:
+   In this case, the maximum product will be the product of the three largest numbers in the sorted array. We can obtain this by multiplying the last three numbers in the sorted array.
+
+2. There are negative numbers in the array:
+   In this case, the maximum product can be obtained either by multiplying the three largest positive numbers or by multiplying the two smallest negative numbers (to make them positive) and the largest positive number. To handle this case, we need to consider both possibilities and return the maximum of the two.
+
+Here's the implementation of the `maximumProduct` method:
+
+```python
+from typing import List
+
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        nums.sort()  # Sort the array in ascending order
+
+        # Case 1: All non-negative or zero
+        max_product = nums[-1] * nums[-2] * nums[-3]
+
+        # Case 2: Negative numbers present
+        # We need to consider two possibilities:
+        # 1. Multiply two smallest negative numbers with the largest positive number
+        # 2. Multiply three largest positive numbers
+        if nums[0] < 0 and nums[1] < 0:
+            max_product = max(max_product, nums[0] * nums[1] * nums[-1])
+
+        return max_product
+```
+
+Now you can create an instance of the `Solution` class and call the `maximumProduct` method with your input array:
+
+```python
+nums = [1, 2, 3]
+solution = Solution()
+result = solution.maximumProduct(nums)
+print(result)  # Output: 6
+```
+
+The same can be done for the other examples as well.

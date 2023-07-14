@@ -1,0 +1,30 @@
+To solve this problem, we can use a dynamic programming approach. We'll create an array to store the super ugly numbers, initialize it with the first super ugly number (which is always 1), and then calculate the subsequent super ugly numbers until we reach the desired n.
+
+Here's the implementation in Python:
+
+```python
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        ugly_nums = [1]  # Store the super ugly numbers
+        prime_factors = [0] * len(primes)  # Pointers to track the current prime factor for each prime
+        
+        for _ in range(1, n):
+            next_ugly = float('inf')  # Initialize the next super ugly number as positive infinity
+            
+            # Calculate the next super ugly number by multiplying each prime with its corresponding prime factor
+            for i in range(len(primes)):
+                next_ugly = min(next_ugly, primes[i] * ugly_nums[prime_factors[i]])
+            
+            # Update the prime factors to point to the next candidate super ugly number
+            for i in range(len(primes)):
+                if primes[i] * ugly_nums[prime_factors[i]] == next_ugly:
+                    prime_factors[i] += 1
+            
+            ugly_nums.append(next_ugly)  # Add the next super ugly number to the list
+        
+        return ugly_nums[-1]  # Return the nth super ugly number
+```
+
+In this solution, we maintain a pointer for each prime factor in the `prime_factors` array. We calculate the next super ugly number by multiplying each prime with its corresponding prime factor and finding the minimum among them. Then, we increment the prime factor for each prime that contributes to the next super ugly number. Finally, we add the next super ugly number to the `ugly_nums` array and repeat the process until we have calculated the nth super ugly number.
+
+Note that this solution has a time complexity of O(n * m), where n is the given number and m is the number of primes. Since the input constraints are reasonably small, this solution should work efficiently.

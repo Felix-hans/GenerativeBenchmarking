@@ -1,0 +1,40 @@
+One way to generate a valid n-bit gray code sequence is by using the following algorithm:
+
+1. Create an empty list to store the gray code sequence.
+2. Append 0 to the list as the first integer.
+3. Initialize a variable `mask` to 1. This mask will be used to toggle the bit at a specific position.
+4. Iterate `i` from 0 to n-1.
+    1. Iterate `j` in reverse order from the current size of the gray code sequence - 1 to 0.
+        1. Compute the next gray code by toggling the bit at position `i` using `mask`.
+        2. Append the next gray code to the gray code sequence.
+    2. Update the mask by left-shifting it by 1.
+5. Return the gray code sequence.
+
+Here's the implementation of the `grayCode` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        gray_code = [0]  # Initialize with 0
+        mask = 1  # Initialize mask
+
+        for i in range(n):
+            for j in range(len(gray_code) - 1, -1, -1):
+                next_gray_code = gray_code[j] | mask  # Toggle the bit at position i
+                gray_code.append(next_gray_code)
+
+            mask <<= 1  # Update the mask by left-shifting
+
+        return gray_code
+```
+
+You can create an instance of the `Solution` class and call the `grayCode` function with the desired `n` value to get a valid n-bit gray code sequence. For example:
+
+```python
+solution = Solution()
+n = 2
+sequence = solution.grayCode(n)
+print(sequence)  # Output: [0, 1, 3, 2]
+```

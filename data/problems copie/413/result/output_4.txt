@@ -1,0 +1,38 @@
+To solve the problem, we can use dynamic programming. We'll iterate through the array `nums`, and for each index `i`, we'll check if it forms an arithmetic sequence with the previous elements. If it does, we'll update the count of arithmetic subarrays.
+
+Here's the implementation of the `numberOfArithmeticSlices` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 3:
+            return 0
+        
+        dp = [0] * n  # dp[i] stores the number of arithmetic subarrays ending at index i
+        count = 0  # total count of arithmetic subarrays
+        
+        for i in range(2, n):
+            if nums[i] - nums[i-1] == nums[i-1] - nums[i-2]:
+                # The current element is part of an arithmetic sequence
+                dp[i] = dp[i-1] + 1
+                count += dp[i]
+        
+        return count
+```
+
+Now, let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+nums = [1, 2, 3, 4]
+print(solution.numberOfArithmeticSlices(nums))  # Output: 3
+
+nums = [1]
+print(solution.numberOfArithmeticSlices(nums))  # Output: 0
+```
+
+The function returns the expected outputs for the given examples.

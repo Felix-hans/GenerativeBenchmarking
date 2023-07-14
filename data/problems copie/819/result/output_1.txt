@@ -1,0 +1,32 @@
+Here's an implementation of the task in Python:
+
+```python
+from typing import List
+import re
+from collections import Counter
+
+class Solution:
+    def mostCommonWord(self, paragraph: str, banned: List[str]) -> str:
+        # Convert paragraph to lowercase and split into words
+        words = re.findall(r'\w+', paragraph.lower())
+        
+        # Count the frequency of each word
+        word_count = Counter(words)
+        
+        # Remove banned words from the count
+        for banned_word in banned:
+            del word_count[banned_word]
+        
+        # Find the most frequent word
+        most_common_word = word_count.most_common(1)[0][0]
+        
+        return most_common_word
+```
+
+In this solution, we first convert the paragraph to lowercase and split it into words using regular expressions. We then count the frequency of each word using the `Counter` class from the `collections` module.
+
+Next, we iterate over the banned words and remove them from the word count. This is done by deleting the banned word from the `word_count` dictionary.
+
+Finally, we use the `most_common` method of the `Counter` class to find the most frequent word. Since there is guaranteed to be at least one word that is not banned, we can safely assume that the `most_common` method will return a result. We extract the word from the result using indexing (`[0][0]`) and return it as the answer.
+
+You can create an instance of the `Solution` class and call the `mostCommonWord` method with the given paragraph and banned words to get the desired output.

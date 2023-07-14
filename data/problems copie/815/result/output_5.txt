@@ -1,0 +1,60 @@
+To solve this problem, we can use a breadth-first search (BFS) algorithm. Here's the implementation of the `numBusesToDestination` method in Python:
+
+```python
+from typing import List, Dict, Set
+from collections import deque
+
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        if source == target:
+            return 0
+
+        # Create a dictionary to store the buses that pass through each bus stop
+        bus_stops = {}
+        for i, route in enumerate(routes):
+            for bus_stop in route:
+                if bus_stop not in bus_stops:
+                    bus_stops[bus_stop] = set()
+                bus_stops[bus_stop].add(i)
+
+        # Use a set to keep track of visited bus stops and a queue for BFS
+        visited_stops = set()
+        queue = deque([(source, 0)])
+
+        while queue:
+            bus_stop, num_buses = queue.popleft()
+
+            if bus_stop == target:
+                return num_buses
+
+            for bus in bus_stops[bus_stop]:
+                for next_stop in routes[bus]:
+                    if next_stop not in visited_stops:
+                        visited_stops.add(next_stop)
+                        queue.append((next_stop, num_buses + 1))
+
+                # Remove the bus from other bus stops as it has been used
+                del routes[bus]
+
+        return -1
+```
+
+Let's test the implementation using the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+routes1 = [[1, 2, 7], [3, 6, 7]]
+source1 = 1
+target1 = 6
+print(solution.numBusesToDestination(routes1, source1, target1))  # Output: 2
+
+# Example 2
+routes2 = [[7, 12], [4, 5, 15], [6], [15, 19], [9, 12, 13]]
+source2 = 15
+target2 = 12
+print(solution.numBusesToDestination(routes2, source2, target2))  # Output: -1
+```
+
+The code should produce the expected outputs for the given examples.

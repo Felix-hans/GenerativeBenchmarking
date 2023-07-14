@@ -1,0 +1,54 @@
+To solve this problem, we can use dynamic programming to calculate the optimal score for each player. Let's define a recursive function `dfs` that takes the current index `idx` and returns the maximum score the current player can achieve.
+
+Here's the implementation in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [float('-inf')] * (n + 1)  # Initialize the dp array with negative infinity
+        dp[n] = 0  # Base case: if there are no stones left, the score is 0
+
+        def dfs(idx):
+            if dp[idx] != float('-inf'):
+                return dp[idx]
+
+            max_score = float('-inf')
+            curr_score = 0
+            for i in range(idx, min(idx + 3, n)):
+                curr_score += stoneValue[i]
+                max_score = max(max_score, curr_score - dfs(i + 1))
+
+            dp[idx] = max_score
+            return dp[idx]
+
+        score = dfs(0)
+        if score > 0:
+            return "Alice"
+        elif score < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+Let's test the solution with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+values = [1, 2, 3, 7]
+print(solution.stoneGameIII(values))  # Output: "Bob"
+
+# Example 2
+values = [1, 2, 3, -9]
+print(solution.stoneGameIII(values))  # Output: "Alice"
+
+# Example 3
+values = [1, 2, 3, 6]
+print(solution.stoneGameIII(values))  # Output: "Tie"
+```
+
+The solution should provide the correct results for the given examples.

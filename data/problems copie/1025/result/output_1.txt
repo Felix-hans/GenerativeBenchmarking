@@ -1,0 +1,15 @@
+To determine whether Alice wins the game or not, we can use the following observations:
+
+1. If n is even, Alice can always choose x = 1 on her turn, which will make the new n (n - x) odd. Since Bob can only choose odd numbers, the new n on Bob's turn will be even again. This process continues until n becomes 2, and Alice wins by choosing x = 1. Therefore, if n is even, Alice always wins.
+
+2. If n is odd, Alice has no choice but to choose an odd factor of n. This will make the new n (n - x) even. Now it's Bob's turn, and according to the observation above, Bob will always win if n is even. Therefore, if n is odd, Bob always wins.
+
+Based on these observations, we can implement the `divisorGame` function as follows:
+
+```python
+class Solution:
+    def divisorGame(self, n: int) -> bool:
+        return n % 2 == 0
+```
+
+This implementation checks if n is even by checking if n % 2 == 0. If it is, the function returns True, indicating that Alice wins. Otherwise, it returns False, indicating that Bob wins.

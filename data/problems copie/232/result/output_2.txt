@@ -1,0 +1,48 @@
+To implement a queue using two stacks, we can use one stack for the enqueue operation (push) and another stack for the dequeue operation (pop). The idea is to maintain the order of elements by transferring elements between the two stacks as needed.
+
+Here's the implementation of the `MyQueue` class in Python:
+
+```python
+class MyQueue:
+
+    def __init__(self):
+        self.stack1 = []  # For enqueue operation (push)
+        self.stack2 = []  # For dequeue operation (pop)
+
+    def push(self, x: int) -> None:
+        self.stack1.append(x)
+
+    def pop(self) -> int:
+        if not self.stack2:
+            # Transfer elements from stack1 to stack2 in reverse order
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2.pop()
+
+    def peek(self) -> int:
+        if not self.stack2:
+            # Transfer elements from stack1 to stack2 in reverse order
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+        return self.stack2[-1]
+
+    def empty(self) -> bool:
+        return len(self.stack1) == 0 and len(self.stack2) == 0
+```
+
+The `MyQueue` class uses two lists (`stack1` and `stack2`) to simulate the two stacks. The `push` operation simply adds elements to `stack1`. When performing a `pop` or `peek` operation, if `stack2` is empty, we transfer all elements from `stack1` to `stack2` in reverse order. This ensures that the first element pushed into `stack1` becomes the first element in the queue, following the FIFO order.
+
+The `pop` operation removes and returns the top element from `stack2`, which corresponds to the front of the queue. The `peek` operation returns the top element from `stack2` without removing it. The `empty` operation checks if both `stack1` and `stack2` are empty, indicating an empty queue.
+
+Here's an example usage of the `MyQueue` class:
+
+```python
+myQueue = MyQueue()
+myQueue.push(1)
+myQueue.push(2)
+print(myQueue.peek())  # Output: 1
+print(myQueue.pop())   # Output: 1
+print(myQueue.empty()) # Output: False
+```
+
+This example demonstrates the enqueue, peek, pop, and empty operations on the queue.

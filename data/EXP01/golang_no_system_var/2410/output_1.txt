@@ -1,0 +1,36 @@
+Here's the implementation of the `matchPlayersAndTrainers` function in Go:
+
+```go
+import "sort"
+
+func matchPlayersAndTrainers(players []int, trainers []int) int {
+    sort.Ints(players)
+    sort.Ints(trainers)
+
+    playerIdx, trainerIdx := 0, 0
+    matches := 0
+
+    for playerIdx < len(players) && trainerIdx < len(trainers) {
+        if players[playerIdx] <= trainers[trainerIdx] {
+            playerIdx++
+            trainerIdx++
+            matches++
+        } else {
+            trainerIdx++
+        }
+    }
+
+    return matches
+}
+```
+
+Explanation:
+
+- We first sort the `players` and `trainers` arrays in ascending order to simplify the matching process.
+- We use two pointers, `playerIdx` and `trainerIdx`, to iterate over the sorted arrays.
+- We compare the ability of the player at index `playerIdx` with the training capacity of the trainer at index `trainerIdx`. If the player's ability is less than or equal to the trainer's training capacity, a match is found, and we increment `playerIdx`, `trainerIdx`, and `matches` counter.
+- If the player's ability is greater than the trainer's training capacity, we increment `trainerIdx` to consider the next trainer.
+- We continue this process until we reach the end of either the `players` or `trainers` array.
+- Finally, we return the `matches` counter, which represents the maximum number of matchings that can be formed.
+
+The time complexity of this solution is O(n log n), where n represents the maximum length between `players` and `trainers` arrays, due to the sorting step.

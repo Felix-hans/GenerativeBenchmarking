@@ -1,0 +1,67 @@
+To find the maximum length of a subarray with a positive product, we can iterate through the given array and keep track of the following:
+
+1. The number of negative elements encountered so far.
+2. The index of the first encountered negative element.
+3. The index of the last encountered negative element.
+
+We initialize these variables as follows:
+
+```python
+max_len = 0  # Maximum length of subarray with positive product
+neg_count = 0  # Number of negative elements encountered so far
+first_neg_idx = -1  # Index of the first encountered negative element
+last_neg_idx = -1  # Index of the last encountered negative element
+```
+
+Then, we iterate through the array and update these variables accordingly:
+
+```python
+for i in range(len(nums)):
+    if nums[i] < 0:
+        neg_count += 1
+        if first_neg_idx == -1:
+            first_neg_idx = i
+        last_neg_idx = i
+    elif nums[i] == 0:
+        neg_count = 0
+        first_neg_idx = -1
+        last_neg_idx = -1
+    else:
+        if neg_count % 2 == 0:
+            max_len = max(max_len, i + 1)
+        else:
+            max_len = max(max_len, i - first_neg_idx)
+```
+
+Finally, we return the `max_len` as the maximum length of a subarray with a positive product.
+
+Here's the complete implementation:
+
+```python
+class Solution:
+    def getMaxLen(self, nums: List[int]) -> int:
+        max_len = 0
+        neg_count = 0
+        first_neg_idx = -1
+        last_neg_idx = -1
+        
+        for i in range(len(nums)):
+            if nums[i] < 0:
+                neg_count += 1
+                if first_neg_idx == -1:
+                    first_neg_idx = i
+                last_neg_idx = i
+            elif nums[i] == 0:
+                neg_count = 0
+                first_neg_idx = -1
+                last_neg_idx = -1
+            else:
+                if neg_count % 2 == 0:
+                    max_len = max(max_len, i + 1)
+                else:
+                    max_len = max(max_len, i - first_neg_idx)
+        
+        return max_len
+```
+
+You can create an instance of the `Solution` class and call the `getMaxLen` method with the input array to get the maximum length of the subarray with a positive product.

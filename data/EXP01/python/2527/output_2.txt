@@ -1,0 +1,20 @@
+To solve this problem, we can iterate through all possible triplets of indices (i, j, k) and calculate the effective value for each triplet using the given formula. Then, we take the bitwise XOR of all the effective values to get the xor-beauty of the array.
+
+Here's the implementation of the Solution class in Python:
+
+```python
+class Solution:
+    def xorBeauty(self, nums: List[int]) -> int:
+        n = len(nums)
+        xor_beauty = 0
+        
+        for i in range(n):
+            for j in range(n):
+                for k in range(n):
+                    effective_val = (nums[i] | nums[j]) & nums[k]
+                    xor_beauty ^= effective_val
+                    
+        return xor_beauty
+```
+
+The time complexity of this solution is O(n^3), where n is the length of the input array nums.

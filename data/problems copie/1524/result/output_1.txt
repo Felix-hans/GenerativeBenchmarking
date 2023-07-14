@@ -1,0 +1,25 @@
+To solve this problem, we can use the cumulative sum approach. We'll iterate over the array, keeping track of the cumulative sum of the elements encountered so far. At each iteration, we'll count the number of subarrays that end at the current element with an odd sum.
+
+Here's the implementation of the `numOfSubarrays` method in Python:
+
+```python
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        prefix_sum = 0  # Cumulative sum
+        odd_count = 0  # Number of subarrays with odd sum
+        even_count = 0  # Number of subarrays with even sum
+
+        for num in arr:
+            prefix_sum += num
+
+            if prefix_sum % 2 == 0:
+                even_count += 1
+            else:
+                odd_count += 1
+
+        # The number of subarrays with odd sum is the product of odd_count and even_count
+        # Modulo 10^9 + 7 is applied to the final result
+        return (odd_count * even_count) % (10**9 + 7)
+```
+
+Now you can create an instance of the `Solution` class and call the `numOfSubarrays` method with your input array to get the desired result.

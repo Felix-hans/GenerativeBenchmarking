@@ -1,0 +1,84 @@
+To implement the LFU cache, we can use a combination of data structures to achieve the desired functionality efficiently.
+
+Here's the implementation in Python:
+
+```python
+from collections import defaultdict
+
+class LFUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.key_value = {}  # Stores the key-value pairs
+        self.key_freq = defaultdict(int)  # Stores the frequency of each key
+        self.freq_keys = defaultdict(list)  # Stores keys for each frequency
+        self.min_freq = 0  # Tracks the minimum frequency in the cache
+
+    def get(self, key: int) -> int:
+        if key not in self.key_value:
+            return -1
+
+        value = self.key_value[key]
+        self.update_frequency(key)
+        return value
+
+    def put(self, key: int, value: int) -> None:
+        if self.capacity <= 0:
+            return
+
+        if key in self.key_value:
+            self.key_value[key] = value
+            self.update_frequency(key)
+        else:
+            if len(self.key_value) >= self.capacity:
+                self.evict_least_frequent()
+
+            self.key_value[key] = value
+            self.key_freq[key] = 1
+            self.freq_keys[1].append(key)
+            self.min_freq = 1
+
+    def update_frequency(self, key: int) -> None:
+        freq = self.key_freq[key]
+        self.key_freq[key] += 1
+
+        self.freq_keys[freq].remove(key)
+        if len(self.freq_keys[freq]) == 0 and freq == self.min_freq:
+            self.min_freq += 1
+
+        self.freq_keys[freq + 1].append(key)
+
+    def evict_least_frequent(self) -> None:
+        keys = self.freq_keys[self.min_freq]
+        key_to_evict = keys.pop(0)
+        del self.key_value[key_to_evict]
+        del self.key_freq[key_to_evict]
+
+    # Optional helper method to print the state of the cache
+    def print_cache_state(self):
+        print("Cache State:")
+        print("Key-Value:", self.key_value)
+        print("Key-Frequency:", dict(self.key_freq))
+        print("Frequency-Keys:", dict(self.freq_keys))
+        print("Minimum Frequency:", self.min_freq)
+        print()
+
+# Example usage
+lfu = LFUCache(2)
+lfu.put(1, 1)
+lfu.put(2, 2)
+print(lfu.get(1))  # Output: 1
+lfu.put(3, 3)
+print(lfu.get(2))  # Output: -1
+print(lfu.get(3))  # Output: 3
+lfu.put(4, 4)
+print(lfu.get(1))  # Output: -1
+print(lfu.get(3))  # Output: 3
+print(lfu.get(4))  # Output: 4
+```
+
+The LFUCache class maintains the key-value pairs in `key_value`, the frequency of each key in `key_freq`, and the keys for each frequency in `freq_keys`. The `min_freq` variable tracks the minimum frequency in the cache.
+
+In the `get` method, if the key is present in the cache, it retrieves the value, updates the frequency of the key, and returns the value. If the key is not present, it returns -1.
+
+In the `put` method, if the key is already present in the cache, it updates the value and frequency of the key. If the key is not present, it checks if the cache is at full capacity and evicts the least frequently used key if necessary

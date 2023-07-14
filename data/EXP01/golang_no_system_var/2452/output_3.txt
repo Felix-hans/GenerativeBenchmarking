@@ -1,0 +1,77 @@
+Here's an implementation of the given task in Go:
+
+```go
+func twoEditWords(queries []string, dictionary []string) []string {
+    result := []string{}
+    
+    for _, query := range queries {
+        if containsWord(query, dictionary) || canTransform(query, dictionary) {
+            result = append(result, query)
+        }
+    }
+    
+    return result
+}
+
+func containsWord(word string, dictionary []string) bool {
+    for _, dictWord := range dictionary {
+        if word == dictWord {
+            return true
+        }
+    }
+    return false
+}
+
+func canTransform(word string, dictionary []string) bool {
+    for _, dictWord := range dictionary {
+        if isOneEditAway(word, dictWord) || isTwoEditsAway(word, dictWord) {
+            return true
+        }
+    }
+    return false
+}
+
+func isOneEditAway(word1, word2 string) bool {
+    diffCount := 0
+    for i := range word1 {
+        if word1[i] != word2[i] {
+            diffCount++
+            if diffCount > 1 {
+                return false
+            }
+        }
+    }
+    return diffCount == 1
+}
+
+func isTwoEditsAway(word1, word2 string) bool {
+    for i := range word1 {
+        if word1[i] != word2[i] {
+            editedWord := word1[:i] + word2[i:i+1] + word1[i+1:]
+            if editedWord == word2 {
+                return true
+            }
+            for j := range editedWord {
+                if j != i && editedWord[j] != word2[j] {
+                    editedWord = editedWord[:j] + word2[j:j+1] + editedWord[j+1:]
+                    if editedWord == word2 {
+                        return true
+                    }
+                }
+            }
+            return false
+        }
+    }
+    return false
+}
+```
+
+In the above code, the `twoEditWords` function takes in the `queries` and `dictionary` string arrays and returns a new string array containing the words from `queries` that match with some word from `dictionary` after a maximum of two edits. The function first checks if a word from `queries` is in `dictionary` using the `containsWord` function. If not, it checks if the word can be transformed into a word from `dictionary` with one or two edits using the `canTransform` function. If either condition is true, the word is added to the `result` array.
+
+The `containsWord` function checks if a word is present in the `dictionary` array by iterating over each word in the array and comparing it with the given word.
+
+The `canTransform` function checks if a word can be transformed into a word from the `dictionary` array with one or two edits. It checks if the word is one edit away from any word in the `dictionary` array using the `isOneEditAway` function, and if not, it checks if it is two edits away using the `isTwoEditsAway` function.
+
+The `isOneEditAway` function checks if two words differ by exactly one character by comparing each character in the words. If the number of differing characters is greater than 1, it returns false.
+
+The `isTwoEditsAway` function checks if two words differ by exactly two characters by comparing each character in the words. If the first differing character is found, it creates an edited word where that character is replaced with the corresponding character from the second word. It then checks if the edited word is equal to the second word. If not, it continues iterating and replaces other differing characters until the edited word matches the second word or all differing characters have been replaced. If the edited word matches the second word, it returns true. If not, it returns false.

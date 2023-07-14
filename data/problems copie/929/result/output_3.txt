@@ -1,0 +1,22 @@
+To solve the task, we can iterate through the list of emails and process each email individually. We'll apply the given rules to each email and store the unique addresses in a set. Finally, we'll return the size of the set, which represents the number of different addresses that actually receive mails. Here's the implementation:
+
+```python
+class Solution:
+    def numUniqueEmails(self, emails: List[str]) -> int:
+        unique_emails = set()
+        
+        for email in emails:
+            local, domain = email.split('@')
+            
+            # Remove everything after the '+' sign
+            local = local.split('+')[0]
+            
+            # Remove periods and concatenate the local and domain names
+            local = local.replace('.', '')
+            
+            unique_emails.add(local + '@' + domain)
+        
+        return len(unique_emails)
+```
+
+This solution has a time complexity of O(n * m), where n is the number of emails and m is the average length of an email. The space complexity is O(n) since we store unique emails in a set.

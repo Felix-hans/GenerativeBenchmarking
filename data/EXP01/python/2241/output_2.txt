@@ -1,0 +1,39 @@
+Here's the implementation of the ATM class in Python:
+
+```
+class ATM:
+
+    def __init__(self):
+        self.banknotesCount = [0, 0, 0, 0, 0]
+
+    def deposit(self, banknotesCount):
+        for i in range(5):
+            self.banknotesCount[i] += banknotesCount[i]
+
+    def withdraw(self, amount):
+        ans = [0, 0, 0, 0, 0]
+        values = [500, 200, 100, 50, 20]
+
+        for i in range(5):
+            while self.banknotesCount[i] > 0 and amount >= values[i]:
+                amount -= values[i]
+                self.banknotesCount[i] -= 1
+                ans[i] += 1
+
+        if amount != 0:
+            return [-1]
+
+        return ans
+```
+
+I have initialized the `banknotesCount` variable in the `__init__` method to keep track of the number of banknotes of each denomination in the ATM.
+
+In the `deposit` method, I simply add the deposited banknotes to the existing `banknotesCount`.
+
+In the `withdraw` method, I maintain a list `ans` to keep track of the number of banknotes to be handed out to the user. I also define a `values` list to store the denominations in descending order.
+
+I iterate through the `values` list and check if the current denomination can be used. If the number of banknotes of the current denomination is greater than 0 and the amount is greater than or equal to the current denomination, I decrement the count of banknotes of the current denomination, decrement the amount, and increment the count in the `ans` list.
+
+Finally, if the amount is not 0 after the iteration, it means that the withdrawal request cannot be completed and I return `[-1]`. Otherwise, I return the `ans` list.
+
+You can create an instance of the `ATM` class and call the `deposit` and `withdraw` methods as shown in the example in the problem statement.

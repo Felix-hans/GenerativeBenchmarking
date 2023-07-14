@@ -1,0 +1,66 @@
+To solve this task, we can use long division to calculate the decimal representation of the fraction. We'll keep track of the remainders and their positions to detect repeating patterns.
+
+Here's the implementation of the `fractionToDecimal` method in Python:
+
+```python
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        # Handle zero numerator
+        if numerator == 0:
+            return "0"
+
+        # Handle negative sign
+        sign = "-" if (numerator < 0) ^ (denominator < 0) else ""
+
+        numerator = abs(numerator)
+        denominator = abs(denominator)
+
+        # Calculate integer part
+        integer_part = numerator // denominator
+        remainder = numerator % denominator
+
+        # If there's no fractional part, return the integer part
+        if remainder == 0:
+            return sign + str(integer_part)
+
+        # Calculate fractional part
+        fractional_part = []
+        remainders = {}
+
+        while remainder != 0:
+            # If the remainder repeats, insert parentheses
+            if remainder in remainders:
+                index = remainders[remainder]
+                fractional_part.insert(index, "(")
+                fractional_part.append(")")
+                break
+
+            # Store current remainder and its position
+            remainders[remainder] = len(fractional_part)
+
+            # Perform long division
+            remainder *= 10
+            fractional_part.append(str(remainder // denominator))
+            remainder %= denominator
+
+        # Combine the integer and fractional parts
+        result = sign + str(integer_part) + "." + "".join(fractional_part)
+        return result
+```
+
+Now, we can create an instance of the `Solution` class and test it with the provided examples:
+
+```python
+solution = Solution()
+
+print(solution.fractionToDecimal(1, 2))
+# Output: "0.5"
+
+print(solution.fractionToDecimal(2, 1))
+# Output: "2"
+
+print(solution.fractionToDecimal(4, 333))
+# Output: "0.(012)"
+```
+
+This implementation handles zero numerators, negative fractions, and detects repeating patterns in the fractional part. It returns the decimal representation of the fraction as a string.

@@ -1,0 +1,49 @@
+To solve this task, we can follow the Jarvis algorithm, also known as the Gift Wrapping algorithm. Here's an implementation of the `outerTrees` function in Python:
+
+```python
+class Solution:
+    def orientation(self, p, q, r):
+        # Calculate the orientation of three points (p, q, r)
+        # Returns 0 if they are collinear, 1 if clockwise, and 2 if counterclockwise
+        val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+        if val == 0:
+            return 0
+        return 1 if val > 0 else 2
+    
+    def outerTrees(self, trees):
+        n = len(trees)
+        if n <= 3:
+            return trees
+        
+        # Find the leftmost point
+        leftmost = min(trees, key=lambda x: x[0])
+        hull = []
+        p = leftmost
+        q = None
+        
+        while True:
+            hull.append(p)
+            q = (p[0] + 1, p[1])  # Initialize q with a point not equal to p
+            
+            for i in range(n):
+                if p == trees[i]:
+                    continue
+                if self.orientation(p, q, trees[i]) == 2:
+                    q = trees[i]
+            
+            # Check for wrap-around case (reached the starting point)
+            if q == leftmost:
+                break
+            
+            p = q
+        
+        return hull
+```
+
+The `outerTrees` function implements the Gift Wrapping algorithm to find the convex hull of the given points. It starts by finding the leftmost point as the starting point of the hull. Then it iteratively finds the next point on the hull by checking the orientation of all other points.
+
+The orientation function is used to determine whether three points are collinear, clockwise, or counterclockwise. It calculates the cross product of the vectors formed by the points (p, q) and (q, r). If the cross product is 0, the points are collinear. If it is positive, they are counterclockwise. If it is negative, they are clockwise.
+
+Finally, the function returns the list of points on the convex hull, which represents the coordinates of the trees that are located on the fence perimeter.
+
+You can create an instance of the `Solution` class and call the `outerTrees` function with the input `trees` to obtain the desired output.

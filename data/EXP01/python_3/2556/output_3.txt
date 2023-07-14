@@ -1,0 +1,9 @@
+To solve this problem, we can use a depth-first search (DFS) algorithm to check if there is a path from (0, 0) to (m - 1, n - 1). 
+
+We can start the DFS from (0, 0) and try to reach (m - 1, n - 1) by only moving to cells that have the value 1. 
+
+During the DFS, we can keep track of the number of cells with value 0 that we have encountered. If this count exceeds 1, it means that we have encountered more than one cell that we can potentially flip. In this case, we can return True because it is possible to disconnect the matrix by flipping at most one cell.
+
+If the DFS completes without encountering more than one cell with value 0, it means that there is a path from (0, 0) to (m - 1, n - 1) and flipping any additional cell will not disconnect the matrix. In this case, we can return False.
+
+Here is the implementation of the isPossibleToCutPath function:

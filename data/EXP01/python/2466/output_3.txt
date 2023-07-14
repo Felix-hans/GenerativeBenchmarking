@@ -1,0 +1,54 @@
+To solve this problem, we can use dynamic programming. We will create a matrix dp of size (zero + 1) x (one + 1) x 2, where dp[i][j][k] represents the number of good strings that can be formed using i zeros, j ones, and k as the starting character.
+
+First, let's initialize the base cases:
+- dp[0][0][0] = 1, since an empty string is a valid good string.
+- dp[i][j][0] = 0 for i > 0 or j > 0, since we cannot have a good string starting with 0 if there are no zeros available.
+- dp[i][j][1] = 0 for i > 0 or j > 0, since we cannot have a good string starting with 1 if there are no ones available.
+
+Next, we iterate over the possible number of zeros and ones:
+- For i in range(zero + 1) and j in range(one + 1), we will calculate the number of good strings with i zeros and j ones.
+- For k in range(2), we will calculate dp[i][j][k] based on the previous values of dp.
+
+To calculate dp[i][j][0], we can append '0' zero times to any valid good string with (i-1) zeros and j ones, and also append '0' one time to any valid good string with i zeros and j ones. Therefore, dp[i][j][0] = dp[i-1][j][0] + dp[i][j][0].
+
+To calculate dp[i][j][1], we can append '1' one time to any valid good string with i zeros and (j-1) ones, and also append '1' zero times to any valid good string with i zeros and j ones. Therefore, dp[i][j][1] = dp[i][j-1][1] + dp[i][j][1].
+
+Finally, we sum up the total number of good strings in the range low to high by iterating over dp[low:high+1]. Since the answer can be large, we return the result modulo 10^9 + 7.
+
+Here is the implementation of the above approach:
+
+```python
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        mod = 10**9 + 7
+        dp = [[[0 for _ in range(2)] for _ in range(one + 1)] for _ in range(zero + 1)]
+        dp[0][0][0] = 1
+
+        for i in range(zero + 1):
+            for j in range(one + 1):
+                for k in range(2):
+                    if i > 0:
+                        dp[i][j][0] = (dp[i][j][0] + dp[i-1][j][0]) % mod
+                    if j > 0:
+                        dp[i][j][1] = (dp[i][j][1] + dp[i][j-1][1]) % mod
+                    if k == 0:
+                        dp[i][j][0] = (dp[i][j][0] + dp[i][j][1]) % mod
+                    elif k == 1:
+                        dp[i][j][1] = (dp[i][j][1] + dp[i][j][0]) % mod
+
+        ans = 0
+        for i in range(low, high + 1):
+            ans = (ans + dp[zero][one][0] + dp[zero][one][1]) % mod
+
+        return ans
+```
+
+Let's test the code with the provided examples:
+
+```python
+s = Solution()
+print(s.countGoodStrings(3, 3, 1, 1))  # Output: 8
+print(s.countGoodStrings(2, 3, 1, 2))  # Output: 5
+```
+
+The code produces the correct output for the given examples.

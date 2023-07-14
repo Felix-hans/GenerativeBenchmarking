@@ -1,0 +1,65 @@
+To solve the given problem, we can use the sliding window technique along with two pointers. Here's the implementation of the `minWindow` function in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        if not s or not t:
+            return ""
+        
+        # Create a dictionary to store the count of characters in string t
+        target_counts = Counter(t)
+        
+        # Initialize variables to keep track of the window and character counts
+        window_counts = {}
+        left = right = 0
+        formed = 0
+        
+        # Variables to keep track of the minimum window substring
+        min_length = float('inf')
+        min_window = ""
+        
+        # Iterate through the string s using the right pointer
+        while right < len(s):
+            # Add the current character to the window and update the count
+            char = s[right]
+            window_counts[char] = window_counts.get(char, 0) + 1
+            
+            # If the count of the current character matches the target count, increment the formed count
+            if char in target_counts and window_counts[char] == target_counts[char]:
+                formed += 1
+            
+            # Try to minimize the window by moving the left pointer
+            while left <= right and formed == len(target_counts):
+                # Update the minimum window if a smaller length is found
+                if right - left + 1 < min_length:
+                    min_length = right - left + 1
+                    min_window = s[left:right+1]
+                
+                # Remove the character at the left pointer from the window and update the count
+                char = s[left]
+                window_counts[char] -= 1
+                
+                # If the count of the removed character is less than the target count, decrement the formed count
+                if char in target_counts and window_counts[char] < target_counts[char]:
+                    formed -= 1
+                
+                # Move the left pointer ahead
+                left += 1
+            
+            # Move the right pointer ahead
+            right += 1
+        
+        return min_window
+```
+
+The above code maintains two dictionaries, `target_counts` and `window_counts`, to store the count of characters in the target string `t` and the current window, respectively. We also use two pointers, `left` and `right`, to create a sliding window.
+
+The algorithm starts by incrementing the `right` pointer and adding characters to the window. When a character's count matches the target count, the `formed` count is incremented. Then, the algorithm tries to minimize the window by moving the `left` pointer and removing characters from the window.
+
+If the window contains all the characters from the target string, the algorithm checks if the current window length is smaller than the minimum window found so far. If it is, the minimum window and its length are updated accordingly.
+
+Finally, the algorithm returns the minimum window substring.
+
+The time complexity of this algorithm is O(m + n), where m and n are the lengths of strings s and t, respectively.

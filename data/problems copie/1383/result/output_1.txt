@@ -1,0 +1,54 @@
+To solve the problem, we can follow the following steps:
+
+1. Combine the speeds and efficiencies of the engineers into a list of tuples, where each tuple represents an engineer with their speed and efficiency.
+2. Sort the list of engineers based on their efficiencies in descending order.
+3. Create a priority queue to keep track of the speeds of the selected engineers. We will use a min-heap for this purpose.
+4. Initialize the total_speed variable to keep track of the sum of speeds.
+5. Initialize the max_performance variable to keep track of the maximum performance.
+6. Iterate over the sorted engineers list.
+7. Add the current engineer's speed to the total_speed variable.
+8. Push the current engineer's speed into the priority queue.
+9. If the size of the priority queue exceeds k, pop the engineer with the minimum speed from the priority queue and subtract their speed from the total_speed.
+10. Calculate the current performance by multiplying the total_speed with the current engineer's efficiency.
+11. Update the max_performance if the current performance is greater.
+12. Finally, return the max_performance modulo 10^9 + 7.
+
+Here's the implementation of the `maxPerformance` function in Python:
+
+```python
+import heapq
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = sorted(zip(efficiency, speed), reverse=True)  # Sort engineers by efficiency (descending order)
+        speed_heap = []
+        total_speed = 0
+        max_performance = 0
+
+        for curr_efficiency, curr_speed in engineers:
+            total_speed += curr_speed
+            heapq.heappush(speed_heap, curr_speed)
+
+            if len(speed_heap) > k:
+                total_speed -= heapq.heappop(speed_heap)
+
+            performance = total_speed * curr_efficiency
+            max_performance = max(max_performance, performance)
+
+        return max_performance % (10**9 + 7)
+```
+
+Now you can create an instance of the `Solution` class and call the `maxPerformance` method with the provided inputs to get the maximum performance of the team. For example:
+
+```python
+solution = Solution()
+n = 6
+speed = [2, 10, 3, 1, 5, 8]
+efficiency = [5, 4, 3, 9, 7, 2]
+k = 2
+result = solution.maxPerformance(n, speed, efficiency, k)
+print(result)  # Output: 60
+```
+
+You can also test the function with the other provided examples.

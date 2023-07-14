@@ -1,0 +1,18 @@
+One way to approach this problem is to use a loop to repeat the process until there is only one element left in the array.
+
+Here's an implementation of the `triangularSum` function:
+
+```python
+class Solution:
+    def triangularSum(self, nums: List[int]) -> int:
+        while len(nums) > 1:
+            new_nums = []
+            for i in range(len(nums) - 1):
+                new_nums.append((nums[i] + nums[i+1]) % 10)
+            nums = new_nums
+        return nums[0]
+```
+
+In each iteration of the loop, we create a new array `new_nums` and calculate the new values based on the given formula. Then, we assign `new_nums` to `nums` and continue the process until there is only one element left.
+
+Finally, we return the remaining element, which is the triangular sum of `nums`.

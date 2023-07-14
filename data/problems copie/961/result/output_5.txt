@@ -1,0 +1,29 @@
+Here's the implementation of the `repeatedNTimes` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def repeatedNTimes(self, nums: List[int]) -> int:
+        num_count = {}
+        n = len(nums) // 2
+
+        for num in nums:
+            if num in num_count:
+                num_count[num] += 1
+                if num_count[num] == n:
+                    return num
+            else:
+                num_count[num] = 1
+```
+
+You can create an instance of the `Solution` class and call the `repeatedNTimes` method, passing the `nums` array as the argument to find the element that is repeated n times.
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 3]
+result = solution.repeatedNTimes(nums)
+print(result)  # Output: 3
+```
+
+Hope this helps!

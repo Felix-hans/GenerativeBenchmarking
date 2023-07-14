@@ -1,0 +1,46 @@
+To solve this problem, we can traverse the linked list and store the values in a 2D matrix in spiral order. We will also keep track of the empty spaces in the matrix.
+
+Here is the implementation for the given task:
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+        # Create an m x n matrix initialized with -1
+        matrix = [[-1] * n for _ in range(m)]
+        
+        # Directions: right, down, left, up
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        direction = 0
+        
+        # Initialize matrix indices
+        row, col = 0, 0
+        
+        while head:
+            # Assign the current node's value to the matrix
+            matrix[row][col] = head.val
+            
+            # Move to the next position
+            dx, dy = directions[direction]
+            next_row, next_col = row + dx, col + dy
+            
+            # If the next position is out of bounds or already filled, change direction
+            if next_row < 0 or next_row >= m or next_col < 0 or next_col >= n or matrix[next_row][next_col] != -1:
+                direction = (direction + 1) % 4
+                dx, dy = directions[direction]
+                next_row, next_col = row + dx, col + dy
+            
+            # Update the current position
+            row, col = next_row, next_col
+            head = head.next
+        
+        return matrix
+```
+
+The time complexity of this solution is O(m * n), where m is the number of rows and n is the number of columns in the matrix. This is because we traverse the matrix once and fill each element with a linked list value.
+
+The space complexity is O(m * n) as we create a matrix of size m x n to store the elements.

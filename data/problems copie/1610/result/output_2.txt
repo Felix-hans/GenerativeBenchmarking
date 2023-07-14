@@ -1,0 +1,53 @@
+To solve the problem, we can follow these steps:
+
+1. Calculate the angles between each point and the location.
+2. Normalize the angles to be between 0 and 360 degrees.
+3. Sort the angles in ascending order.
+4. Duplicate the angles array and add 360 to each angle to handle wrapping around.
+5. Create a sliding window of size `angle` in the duplicated angles array.
+6. Initialize the maximum number of visible points to the number of points at the location.
+7. Iterate over the angles array using two pointers: start and end.
+8. Move the end pointer until the difference between the current angle and the start angle is less than or equal to the desired angle.
+9. Calculate the number of visible points as the difference between the end and start pointers.
+10. Update the maximum number of visible points if the current count is higher.
+11. Move the start pointer to the right by one position.
+12. Repeat steps 8 to 11 until the start pointer reaches the end of the angles array.
+13. Return the maximum number of visible points.
+
+Here's the implementation of the `visiblePoints` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        angles = []
+        x, y = location
+        same_location_count = 0
+
+        for xi, yi in points:
+            if xi == x and yi == y:
+                same_location_count += 1
+            else:
+                angles.append(math.atan2(yi - y, xi - x) * 180 / math.pi)
+
+        angles.sort()
+        angles += [angle + angle for angle in angles]
+
+        start, end = 0, 0
+        max_visible = 0
+        n = len(angles)
+
+        while start < n:
+            while angles[end] - angles[start] <= angle:
+                end += 1
+
+            max_visible = max(max_visible, end - start)
+            start += 1
+
+        return max_visible + same_location_count
+```
+
+This implementation uses the `math.atan2` function to calculate the angles in radians. We convert them to degrees by multiplying with `180 / math.pi`.
+
+Make sure to import the `math` module at the top of your Python file to use the `math.atan2` function.

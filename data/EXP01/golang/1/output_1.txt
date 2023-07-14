@@ -1,0 +1,30 @@
+```go
+import "fmt"
+
+func twoSum(nums []int, target int) []int {
+    // Create a map to store the complement value and its index
+    complements := make(map[int]int)
+
+    // Iterate through the array
+    for i, num := range nums {
+        // Check if there is a complement in the map
+        if complementIndex, ok := complements[num]; ok {
+            // Return the indices if a complement is found
+            return []int{complementIndex, i}
+        }
+
+        // Calculate the complement value and store it in the map
+        complements[target-num] = i
+    }
+
+    // No solution found, return an empty slice
+    return []int{}
+}
+
+func main() {
+    nums := []int{2, 7, 11, 15}
+    target := 9
+    result := twoSum(nums, target)
+    fmt.Println(result) // Output: [0, 1]
+}
+```

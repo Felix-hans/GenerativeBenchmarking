@@ -1,0 +1,27 @@
+To find the length of the longest ideal string, we can use a dynamic programming approach. Let's define dp[i] as the length of the longest ideal string that ends at index i in the input string s. We can initialize dp with all zeros.
+
+Then, for each index i starting from 1 to the length of s, we can calculate dp[i] as follows:
+
+1. Initialize dp[i] with dp[i-1] since the longest ideal string ending at index i-1 is a valid continuation for the current index.
+
+2. Find the maximum alphabet order difference between s[i] and any previous character from index i back to dp[i-k]. Let's call this maximum difference max_diff.
+
+3. Update dp[i] to dp[i-k] + 1 + max_diff, which represents the length of the longest ideal string ending at index i.
+
+Finally, we return the maximum value in the dp array, which represents the length of the longest ideal string in the input string s.
+
+Here is the implementation of the above approach:
+
+class Solution:
+    def longestIdealString(self, s: str, k: int) -> int:
+        n = len(s)
+        dp = [0] * n
+
+        for i in range(1, n):
+            dp[i] = dp[i-1]
+
+            for j in range(i - 1, max(i - k - 1, -1), -1):
+                max_diff = abs(ord(s[i]) - ord(s[j]))
+                dp[i] = max(dp[i], dp[j - 1] + 1 + max_diff)
+        
+        return max(dp)

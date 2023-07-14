@@ -1,0 +1,19 @@
+Here's the implementation of the task in Python:
+
+```python
+class Solution:
+    def checkIfExist(self, arr):
+        num_count = {}
+        for num in arr:
+            if num * 2 in num_count or num / 2 in num_count:
+                return True
+            num_count[num] = True
+        return False
+```
+
+Explanation:
+1. We iterate through the array `arr` and check for each number if its double or half is present in the `num_count` dictionary.
+2. If we find either `num * 2` or `num / 2` in the `num_count` dictionary, we return `True` because we have found two indices `i` and `j` such that `arr[i] == 2 * arr[j]`.
+3. If we reach the end of the array without finding a match, we return `False` because there are no two indices satisfying the given conditions.
+
+Note: The `Solution` class is defined to match the template provided in the question. However, it's not necessary to use a class for this task. You can simply define the `checkIfExist` function without the class wrapper if you prefer.

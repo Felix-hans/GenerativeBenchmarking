@@ -1,0 +1,50 @@
+To solve this problem, we can use dynamic programming to determine the optimal strategy for both players. We'll create a memoization table to store the scores of each player at each position in the stoneValue array.
+
+Here's the implementation of the `stoneGameIII` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [float('-inf')] * (n + 1)
+        dp[n] = 0
+
+        for i in range(n - 1, -1, -1):
+            take = 0
+            for j in range(i, min(n, i + 3)):
+                take += stoneValue[j]
+                dp[i] = max(dp[i], take - dp[j + 1])
+
+        score = dp[0]
+        if score > 0:
+            return "Alice"
+        elif score < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+In this implementation, we initialize a dynamic programming array `dp` with size `n + 1`, where `n` is the length of the `stoneValue` array. The `dp` array stores the maximum score difference a player can achieve when starting from position `i`.
+
+We iterate from the last stone position to the first stone position. For each position, we calculate the maximum score difference that can be achieved by taking 1, 2, or 3 stones. We update the `dp` array accordingly.
+
+Finally, we check the score difference at the first position (`dp[0]`) to determine the winner. If the score is positive, Alice wins. If the score is negative, Bob wins. Otherwise, it's a tie.
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+values = [1, 2, 3, 7]
+print(solution.stoneGameIII(values))  # Output: "Bob"
+
+values = [1, 2, 3, -9]
+print(solution.stoneGameIII(values))  # Output: "Alice"
+
+values = [1, 2, 3, 6]
+print(solution.stoneGameIII(values))  # Output: "Tie"
+```
+
+The function returns the expected outputs for the given examples.

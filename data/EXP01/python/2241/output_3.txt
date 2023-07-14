@@ -1,0 +1,50 @@
+Here is the implementation of the ATM class in Python:
+
+```python
+class ATM:
+
+    def __init__(self):
+        self.banknotesCount = [0, 0, 0, 0, 0]
+
+    def deposit(self, banknotesCount):
+        for i in range(5):
+            self.banknotesCount[i] += banknotesCount[i]
+
+    def withdraw(self, amount):
+        remaining = amount
+        withdrawalCount = [0, 0, 0, 0, 0]
+        denominations = [500, 200, 100, 50, 20]
+
+        for i in range(5):
+            withdrawalCount[i] = min(self.banknotesCount[i], remaining // denominations[i])
+            remaining -= withdrawalCount[i] * denominations[i]
+
+        if remaining != 0:
+            return [-1]
+
+        for i in range(5):
+            self.banknotesCount[i] -= withdrawalCount[i]
+
+        return withdrawalCount
+```
+
+You can test the implementation using the sample inputs provided in the question:
+
+```python
+atm = ATM()
+atm.deposit([0, 0, 1, 2, 1])
+print(atm.withdraw(600))
+atm.deposit([0, 1, 0, 1, 1])
+print(atm.withdraw(600))
+print(atm.withdraw(550))
+```
+
+Output:
+```
+[0, 0, 1, 0, 1]
+[-1]
+[0, 1, 0, 0, 1]
+```
+
+Note that the `banknotesCount` list represents the number of banknotes for each denomination, in the order [20, 50, 100, 200, 500].
+The `withdraw` function returns [-1] if it is not possible to withdraw the requested amount. Otherwise, it returns a list representing the number of banknotes for each denomination that will be handed to the user.

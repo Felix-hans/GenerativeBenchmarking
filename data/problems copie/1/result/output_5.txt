@@ -1,0 +1,19 @@
+Sure! Here's the implementation of the `twoSum` function in Python:
+
+```python
+class Solution:
+    def twoSum(self, nums, target):
+        num_dict = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in num_dict:
+                return [num_dict[complement], i]
+            num_dict[num] = i
+        return []
+```
+
+The `twoSum` function takes an array of integers `nums` and an integer `target` as input and returns a list of indices representing the two numbers that add up to the target.
+
+The function uses a dictionary `num_dict` to store the previously encountered numbers and their indices. It iterates through the `nums` list, calculates the complement (target minus the current number), and checks if the complement exists in the dictionary. If it does, it means we have found the pair that adds up to the target, so we return the indices of the complement and the current number. If the complement does not exist in the dictionary, we add the current number and its index to the dictionary.
+
+This solution has a time complexity of O(n) because we iterate through the `nums` list once and perform constant time operations for each number.

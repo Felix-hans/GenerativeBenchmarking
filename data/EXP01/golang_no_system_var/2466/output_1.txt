@@ -1,0 +1,50 @@
+To solve this problem, we can use dynamic programming to count the number of different good strings that can be constructed.
+
+First, we need to initialize a 2D array dp with dimensions low+1 and high+1. The value dp[i][j] represents the number of different good strings that can be constructed with i zeros and j ones.
+
+We can fill in the base cases of the dp array. When the target length is 0, there are no good strings that can be constructed, so dp[0][0] = 1. For all other cases where the target length is non-zero, dp[i][j] = 0.
+
+Next, we can use dynamic programming to fill in the rest of the dp array. For each i (number of zeros) and j (number of ones) from 0 to low, we can calculate dp[i][j] based on the previous values in the dp array.
+
+To calculate dp[i][j], we can consider two cases:
+
+1. If we append a '0' to the string, the number of zeros decreases by 1. So dp[i][j] += dp[i-1][j]. However, we must ensure that i > 0 (there are enough zeros remaining) and that dp[i-1][j] is within the allowed length range.
+
+2. If we append a '1' to the string, the number of ones decreases by 1. So dp[i][j] += dp[i][j-1]. However, we must ensure that j > 0 (there are enough ones remaining) and that dp[i][j-1] is within the allowed length range.
+
+Finally, the answer is given by the sum of dp[i][j] for i and j within the allowed length range.
+
+Here is the implementation in Go:
+
+```go
+func countGoodStrings(low int, high int, zero int, one int) int {
+    mod := int(1e9) + 7
+    dp := make([][]int, low+1)
+    for i := 0; i <= low; i++ {
+        dp[i] = make([]int, high+1)
+    }
+
+    dp[0][0] = 1
+
+    for i := 0; i <= low; i++ {
+        for j := 0; j <= high; j++ {
+            // Calculate dp[i][j] based on the previous values in dp array
+            if i > 0 && dp[i-1][j] >= low && dp[i-1][j] <= high {
+                dp[i][j] = (dp[i][j] + dp[i-1][j]) % mod
+            }
+            if j > 0 && dp[i][j-1] >= low && dp[i][j-1] <= high {
+                dp[i][j] = (dp[i][j] + dp[i][j-1]) % mod
+            }
+        }
+    }
+
+    result := 0
+    for i := low; i <= high; i++ {
+        result = (result + dp[zero][one]) % mod
+    }
+
+    return result
+}
+```
+
+The time complexity of this solution is O(low * high), and the space complexity is O(low * high) because we use a 2D dp array of dimensions low+1 and high+1.

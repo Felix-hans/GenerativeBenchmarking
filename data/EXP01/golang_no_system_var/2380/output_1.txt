@@ -1,0 +1,18 @@
+To solve this problem, we can iterate through the string and count the number of occurrences of "01". Each time we find "01", we replace it with "10" and increment the count. We repeat this process until no occurrences of "01" exist.
+
+Here is the implementation in Go:
+
+```go
+func secondsToRemoveOccurrences(s string) int {
+    count := 0
+    for strings.Contains(s, "01") {
+        s = strings.Replace(s, "01", "10", -1)
+        count++
+    }
+    return count
+}
+```
+
+In the above implementation, we use the `strings.Contains` function to check if the string `s` contains "01". If it does, we use the `strings.Replace` function to replace all occurrences of "01" with "10". We set the count to zero initially and increment it each time we find "01". Once there are no occurrences of "01" left, we return the count.
+
+Note that this implementation has a time complexity of O(n^2) because each call to `strings.Contains` and `strings.Replace` takes O(n) time.

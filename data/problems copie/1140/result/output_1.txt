@@ -1,0 +1,50 @@
+To solve this problem, we can use dynamic programming to calculate the maximum number of stones Alice can get.
+
+First, let's define a helper function `dfs` that takes three parameters: `start`, which represents the current pile index; `M`, which represents the current value of M; and `memo`, which is a memoization dictionary to store previously computed results.
+
+Inside the `dfs` function, we need to handle two base cases:
+1. If `start >= len(piles)`, it means we have taken all the piles, so we return 0.
+2. If `start + 2 * M >= len(piles)`, it means we can take all the remaining piles, so we return the sum of the remaining piles.
+
+Next, we initialize `max_stones` as 0, which will store the maximum number of stones Alice can get.
+
+We iterate through all possible values of `X` from 1 to 2 * M. For each `X`, we calculate the sum of the stones Alice can get by taking the first `X` piles and recursively calling the `dfs` function for Bob's turn with updated parameters. We also update `M` as `max(M, X)`.
+
+To optimize the recursion, we use memoization. Before making a recursive call, we check if the current state (start, M) is already computed and stored in the memo dictionary. If it is, we directly return the stored result.
+
+Finally, we update `max_stones` as the maximum between `max_stones` and the sum of `X` piles plus the stones Bob can get in the next turn.
+
+At the end of the iteration, we store the calculated `max_stones` in the memo dictionary and return it as the result.
+
+Here's the implementation of the `stoneGameII` function:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameII(self, piles: List[int]) -> int:
+        memo = {}
+
+        def dfs(start: int, M: int) -> int:
+            if start >= len(piles):
+                return 0
+            
+            if start + 2 * M >= len(piles):
+                return sum(piles[start:])
+            
+            if (start, M) in memo:
+                return memo[(start, M)]
+            
+            max_stones = 0
+            for X in range(1, 2 * M + 1):
+                Alice_stones = sum(piles[start:start+X])
+                Bob_stones = dfs(start + X, max(M, X))
+                max_stones = max(max_stones, Alice_stones + Bob_stones)
+            
+            memo[(start, M)] = max_stones
+            return max_stones
+
+        return dfs(0, 1)
+```
+
+Now you can create an instance of the `Solution` class and call the `stoneGameII` function with the input list of piles to get the maximum number of stones Alice can get.

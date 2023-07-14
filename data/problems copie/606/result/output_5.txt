@@ -1,0 +1,42 @@
+You can solve this task by implementing a recursive function that performs a preorder traversal of the binary tree and constructs the string representation.
+
+Here's the implementation of the `tree2str` function:
+
+```python
+class Solution:
+    def tree2str(self, root):
+        if root is None:
+            return ""
+
+        # Convert the root value to a string
+        result = str(root.val)
+
+        # Process the left and right subtrees
+        left = self.tree2str(root.left)
+        right = self.tree2str(root.right)
+
+        # Case 1: Both left and right subtrees are empty
+        if not left and not right:
+            return result
+
+        # Case 2: Only the right subtree is empty
+        if not right:
+            return result + "(" + left + ")"
+
+        # Case 3: Both left and right subtrees are non-empty
+        return result + "(" + left + ")" + "(" + right + ")"
+```
+
+The function takes the root of the binary tree as input and returns the string representation according to the given requirements. The function recursively traverses the tree in a preorder manner.
+
+Let's go through the logic step by step:
+
+1. If the root is `None`, return an empty string.
+2. Convert the value of the root node to a string and assign it to the `result` variable.
+3. Recursively process the left and right subtrees by calling the `tree2str` function on each subtree.
+4. There are three cases to consider:
+   a. If both the left and right subtrees are empty (i.e., `left` and `right` are empty strings), return the `result` string.
+   b. If only the right subtree is empty, return the `result` string concatenated with the left subtree enclosed in parentheses.
+   c. If both the left and right subtrees are non-empty, return the `result` string concatenated with the left subtree enclosed in parentheses, followed by the right subtree enclosed in parentheses.
+
+By following this logic, the function constructs the desired string representation of the binary tree with the preorder traversal.

@@ -1,0 +1,43 @@
+You can solve the given task by iterating through each number in the range [1, n] and checking if it is a good number according to the given rules. Here's the implementation of the `rotatedDigits` function in Python:
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        count = 0
+        for num in range(1, n+1):
+            if self.isGoodNumber(num):
+                count += 1
+        return count
+
+    def isGoodNumber(self, num: int) -> bool:
+        rotated = ""
+        for digit in str(num):
+            if digit in "018":
+                rotated += digit
+            elif digit == "2":
+                rotated += "5"
+            elif digit == "5":
+                rotated += "2"
+            elif digit == "6":
+                rotated += "9"
+            elif digit == "9":
+                rotated += "6"
+            else:
+                return False
+        return rotated != str(num)
+```
+
+In the `rotatedDigits` function, we initialize a `count` variable to keep track of the number of good numbers. Then, we iterate through each number from 1 to `n`. For each number, we call the `isGoodNumber` function to check if it is a good number. If it is, we increment the `count` variable. Finally, we return the `count` as the result.
+
+The `isGoodNumber` function takes a number `num` and checks if it is a good number according to the given rules. We convert the number to a string and iterate through each digit. Based on the rules, we rotate each digit and build a new string `rotated`. If any digit is not a valid digit after rotation, we return `False`. Otherwise, we compare the `rotated` string with the original number converted to a string. If they are different, it means the number has changed after rotation and is a good number. Otherwise, it is not a good number.
+
+You can create an instance of the `Solution` class and call the `rotatedDigits` function with the desired value of `n` to test it:
+
+```python
+solution = Solution()
+print(solution.rotatedDigits(10))  # Output: 4
+print(solution.rotatedDigits(1))   # Output: 0
+print(solution.rotatedDigits(2))   # Output: 1
+```
+
+The output will match the expected results provided in the examples you mentioned.

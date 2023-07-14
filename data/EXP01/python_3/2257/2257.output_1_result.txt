@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/48 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 5: SyntaxError: invalid syntax\n  \xe2\x9c\x98 Error: SyntaxError: invalid syntax\n                              ^\n    def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:\nLine 5  (Solution.py)\n  \xe2\x9c\x98 Testcase: 4\n6\n[[0,0],[1,1],[2,3]]\n[[0,1],[2,2],[1,4]]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 7\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:15853) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

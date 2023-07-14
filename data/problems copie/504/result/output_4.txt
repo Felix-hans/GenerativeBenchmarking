@@ -1,0 +1,23 @@
+Certainly! Here's an implementation of the task in Python:
+
+```python
+class Solution:
+    def convertToBase7(self, num: int) -> str:
+        if num == 0:
+            return '0'
+        
+        is_negative = num < 0
+        num = abs(num)
+        
+        result = ''
+        while num > 0:
+            result = str(num % 7) + result
+            num //= 7
+        
+        if is_negative:
+            result = '-' + result
+        
+        return result
+```
+
+This solution uses the concept of repeated division by 7 to convert the given number into its base 7 representation. It handles the case when the input number is 0 separately and also takes care of negative numbers. The result is built by continuously taking the remainder of the division and appending it to the left side of the result string. Finally, if the number was originally negative, the negative sign is added at the beginning of the result.

@@ -1,0 +1,36 @@
+To solve this problem, we can follow the steps below in the `halveArray` function:
+
+1. Sort the `nums` array in descending order.
+2. Initialize a variable `target` with half of the sum of all elements in `nums`.
+3. Initialize a variable `currSum` with the sum of all elements in `nums`.
+4. Initialize a variable `operations` with 0.
+5. Iterate through each number in the `nums` array:
+   - If `currSum` is already less than `target`, break out of the loop.
+   - Reduce the current number by dividing it by 2 until it becomes less than or equal to `target`.
+   - Subtract the reduced number from `currSum`.
+   - Increment `operations` by 1.
+6. Return the value of `operations`.
+
+Here is the JavaScript implementation:
+
+```javascript
+var halveArray = function (nums) {
+  nums.sort((a, b) => b - a); // Sort in descending order
+  const target = nums.reduce((sum, num) => sum + num, 0) / 2;
+  let currSum = nums.reduce((sum, num) => sum + num, 0);
+  let operations = 0;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (currSum <= target) break;
+    while (nums[i] > target) {
+      nums[i] /= 2;
+      currSum -= nums[i];
+      operations++;
+    }
+  }
+
+  return operations;
+};
+```
+
+This solution has a time complexity of O(n log n) where n is the length of the `nums` array, due to the sorting process.

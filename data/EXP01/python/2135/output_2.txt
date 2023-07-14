@@ -1,0 +1,35 @@
+Here is the solution for the given task:
+
+```python
+from collections import Counter
+from typing import List
+
+class Solution:
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        count_start = [Counter(word) for word in startWords]
+        count_target = [Counter(word) for word in targetWords]
+        
+        result = 0
+        for i in range(len(targetWords)):
+            found = False
+            for j in range(len(startWords)):
+                # check if all characters in target word are present in start word
+                if all(count_target[i][c] <= count_start[j][c] for c in count_target[i]):
+                    found = True
+                    break
+            if found:
+                result += 1
+        
+        return result
+```
+
+You can test the solution by creating an instance of the `Solution` class and calling the `wordCount` method with the given input:
+
+```python
+startWords = ["ant","act","tack"]
+targetWords = ["tack","act","acti"]
+
+solution = Solution()
+result = solution.wordCount(startWords, targetWords)
+print(result) # Output: 2
+```

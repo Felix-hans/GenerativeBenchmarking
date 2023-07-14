@@ -1,0 +1,45 @@
+Here's the implementation of the Cashier class in Python based on the given requirements:
+
+```python
+from typing import List
+
+class Cashier:
+    def __init__(self, n: int, discount: int, products: List[int], prices: List[int]):
+        self.n = n
+        self.discount = discount
+        self.products = products
+        self.prices = prices
+        self.customer_count = 0
+
+    def getBill(self, product: List[int], amount: List[int]) -> float:
+        self.customer_count += 1
+        bill = sum(self.prices[self.products.index(p)] * a for p, a in zip(product, amount))
+        if self.customer_count % self.n == 0:
+            bill -= bill * self.discount / 100
+        return bill
+```
+
+Explanation of the implementation:
+
+1. In the `__init__` method, we initialize the Cashier object with the provided parameters: `n` (the number of customers before a discount is applied), `discount` (the discount percentage), `products` (the list of product IDs), and `prices` (the list of corresponding prices).
+
+2. In the `getBill` method, we calculate the bill for a customer based on the purchased products and amounts. We iterate over the `product` and `amount` lists using `zip` to pair each product with its corresponding amount. We use the product ID to find the corresponding price in the `prices` list and calculate the subtotal.
+
+3. After calculating the subtotal, we check if the current customer is eligible for a discount based on the `customer_count` and `n` parameters. If the current customer is the `n`-th customer, we apply the discount by subtracting `bill * discount / 100` from the subtotal.
+
+4. Finally, we return the final bill, which may or may not include the discount.
+
+Example usage:
+
+```python
+cashier = Cashier(3, 50, [1, 2, 3, 4, 5, 6, 7], [100, 200, 300, 400, 300, 200, 100])
+print(cashier.getBill([1, 2], [1, 2]))  # Output: 500.0
+print(cashier.getBill([3, 7], [10, 10]))  # Output: 4000.0
+print(cashier.getBill([1, 2, 3, 4, 5, 6, 7], [1, 1, 1, 1, 1, 1, 1]))  # Output: 800.0
+print(cashier.getBill([4], [10]))  # Output: 4000.0
+print(cashier.getBill([7, 3], [10, 10]))  # Output: 4000.0
+print(cashier.getBill([7, 5, 3, 1, 6, 4, 2], [10, 10, 10, 9, 9, 9, 7]))  # Output: 7350.0
+print(cashier.getBill([2, 3, 5], [5, 3, 2]))  # Output: 2500.0
+```
+
+The output matches the expected results provided in the example.

@@ -1,0 +1,41 @@
+To solve this problem, we can use backtracking to generate all possible subsequences of the given array `arr`. For each subsequence, we can check if it has unique characters and update the maximum length accordingly.
+
+Here's the implementation of the `maxLength` function:
+
+```python
+class Solution:
+    def maxLength(self, arr: List[str]) -> int:
+        def backtrack(arr, index, current):
+            nonlocal max_length
+            # Check if the current string has unique characters
+            if len(set(current)) == len(current):
+                max_length = max(max_length, len(current))
+
+            # Backtracking
+            for i in range(index, len(arr)):
+                # Concatenate the current string with the next element
+                new_str = current + arr[i]
+                # Check if the new string has unique characters
+                if len(set(new_str)) == len(new_str):
+                    backtrack(arr, i + 1, new_str)
+
+        max_length = 0
+        backtrack(arr, 0, "")
+        return max_length
+```
+
+Now you can create an instance of the `Solution` class and call the `maxLength` function with your input:
+
+```python
+solution = Solution()
+arr = ["un", "iq", "ue"]
+result = solution.maxLength(arr)
+print(result)
+```
+
+Output:
+```
+4
+```
+
+The implementation uses backtracking to generate all possible subsequences by iterating through the array and concatenating the current string with the next element. It checks if the resulting string has unique characters and updates the maximum length accordingly.

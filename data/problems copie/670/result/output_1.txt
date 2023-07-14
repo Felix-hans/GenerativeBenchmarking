@@ -1,0 +1,40 @@
+Certainly! Here's the implementation of the `maximumSwap` function in Python:
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        # Convert the integer to a string for easy manipulation
+        num_str = str(num)
+        n = len(num_str)
+
+        # Store the last occurrence index of each digit
+        last_occurrence = [0] * 10
+        for i in range(n):
+            last_occurrence[int(num_str[i])] = i
+
+        # Iterate through each digit from left to right
+        for i in range(n):
+            digit = int(num_str[i])
+
+            # Start from 9 and check if there's a larger digit to the right
+            for j in range(9, digit, -1):
+                if last_occurrence[j] > i:
+                    # Swap the digits and return the updated number
+                    num_list = list(num_str)
+                    num_list[i], num_list[last_occurrence[j]] = num_list[last_occurrence[j]], num_list[i]
+                    return int(''.join(num_list))
+
+        # If no swap is possible, return the original number
+        return num
+```
+
+You can use the `maximumSwap` function to find the maximum valued number by creating an instance of the `Solution` class and calling the function. Here's an example usage:
+
+```python
+solution = Solution()
+num = 2736
+max_num = solution.maximumSwap(num)
+print(max_num)
+```
+
+This will output: `7236`, which is the maximum valued number after swapping the digits 2 and 7.

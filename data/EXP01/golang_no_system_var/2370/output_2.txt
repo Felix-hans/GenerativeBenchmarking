@@ -1,0 +1,65 @@
+import (
+  "strings"
+  "sort"
+)
+
+func longestIdealString(s string, k int) int {
+  if len(s) == 0 {
+    return 0
+  }
+  
+  // Create a map to store the maximum ideal string length for each letter
+  maxLenMap := make(map[string]int)
+  
+  // Split the string into individual letters
+  letters := strings.Split(s, "")
+  
+  // Sort the letters in alphabetical order
+  sort.Strings(letters)
+  
+  // Initialize the maximum length of the ideal string to 0
+  maxLen := 0
+  
+  // Iterate through each letter in the sorted letters
+  for i := 0; i < len(letters); i++ {
+    letter := letters[i]
+    
+    // Get the maximum length of the ideal string for the previous letter (if it exists)
+    prevMaxLen := maxLenMap[letter]
+    
+    // Initialize the current maximum length of the ideal string to 1
+    curMaxLen := 1
+    
+    // Iterate through all previous letters (in reverse order) to find the maximum length of the ideal string
+    for j := i - 1; j >= 0; j-- {
+      prevLetter := letters[j]
+      
+      // Calculate the absolute difference in the alphabet order between the current letter and the previous letter
+      diff := int(letter[0]) - int(prevLetter[0])
+      if diff < 0 {
+        diff = -diff
+      }
+      
+      // Check if the absolute difference is less than or equal to k
+      if diff <= k {
+        // Update the current maximum length of the ideal string
+        curMaxLen = max(curMaxLen, maxLenMap[prevLetter]+1)
+      }
+    }
+    
+    // Update the maximum length of the ideal string if necessary
+    maxLen = max(maxLen, curMaxLen)
+    
+    // Update the maximum length of the ideal string for the current letter in the map
+    maxLenMap[letter] = curMaxLen
+  }
+  
+  return maxLen
+}
+
+func max(a, b int) int {
+  if a > b {
+    return a
+  }
+  return b
+}

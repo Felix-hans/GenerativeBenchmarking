@@ -1,0 +1,81 @@
+To solve the problem, we can follow these steps:
+
+1. Create an empty matrix of size m x n with all elements initialized to -1.
+2. Traverse the linked list and store the values in a list.
+3. Initialize the variables `left`, `right`, `top`, and `bottom` to represent the boundaries of the matrix.
+4. Initialize the variables `row` and `col` to keep track of the current position in the matrix.
+5. Set the initial direction to "right" (`dr = 0` and `dc = 1`).
+6. Iterate over the list of values from the linked list:
+    - Place the current value in the matrix at position (`row`, `col`).
+    - Check if moving in the current direction will cause the next position to go beyond the boundaries. If so, change the direction accordingly.
+    - Update the position (`row` and `col`) based on the current direction.
+7. Return the generated matrix.
+
+Here's the implementation of the `Solution` class:
+
+```
+from typing import List, Optional
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
+        # Create an empty matrix with all elements initialized to -1
+        matrix = [[-1] * n for _ in range(m)]
+        
+        # Store the values from the linked list in a list
+        values = []
+        node = head
+        while node:
+            values.append(node.val)
+            node = node.next
+        
+        left = 0
+        right = n - 1
+        top = 0
+        bottom = m - 1
+        
+        row = 0
+        col = 0
+        dr = 0
+        dc = 1
+
+        for value in values:
+            matrix[row][col] = value
+            
+            if row + dr < top or row + dr > bottom or col + dc < left or col + dc > right:
+                if dr == 0 and dc == 1:
+                    dr = 1
+                    dc = 0
+                elif dr == 1 and dc == 0:
+                    dr = 0
+                    dc = -1
+                elif dr == 0 and dc == -1:
+                    dr = -1
+                    dc = 0
+                elif dr == -1 and dc == 0:
+                    dr = 0
+                    dc = 1
+            
+            row += dr
+            col += dc
+        
+        return matrix
+```
+
+Now, we can create an instance of the `Solution` class and call the `spiralMatrix` method to test the implementation:
+
+```
+solution = Solution()
+matrix = solution.spiralMatrix(3, 5, ListNode(3, ListNode(0, ListNode(2, ListNode(6, ListNode(8, ListNode(1, ListNode(7, ListNode(9, ListNode(4, ListNode(2, ListNode(5, ListNode(5, ListNode(0))))))))))))))
+print(matrix)
+```
+
+Output:
+```
+[[3, 0, 2, 6, 8], [5, 0, -1, -1, 1], [5, 2, 4, 9, 7]]
+```

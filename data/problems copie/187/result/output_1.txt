@@ -1,0 +1,26 @@
+Certainly! Here's an implementation of the `findRepeatedDnaSequences` method in Python:
+
+```python
+from collections import Counter
+from typing import List
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        if len(s) < 10:
+            return []
+        
+        sequences = []
+        counter = Counter()
+        
+        for i in range(len(s) - 9):
+            sequence = s[i:i+10]
+            counter[sequence] += 1
+            if counter[sequence] == 2:
+                sequences.append(sequence)
+        
+        return sequences
+```
+
+This solution uses a sliding window approach to iterate through the DNA sequence `s` and extract 10-letter-long substrings. We maintain a counter to keep track of the occurrences of each substring. If a substring occurs more than once, it is added to the `sequences` list. Finally, the list of repeated sequences is returned.
+
+You can create an instance of the `Solution` class and call the `findRepeatedDnaSequences` method with the DNA sequence as the input to get the desired output.

@@ -1,0 +1,42 @@
+To solve the task, we can follow the following steps:
+
+1. Calculate the total number of candies Alice and Bob have, respectively.
+2. Calculate the difference between the total number of candies Alice and Bob have. Let's call this difference "diff".
+3. Iterate over the candies in Alice's array. For each candy, calculate the target candy value that Alice needs to exchange with Bob. The target value can be calculated as "(candy + diff // 2)".
+4. Check if the target value exists in Bob's array. If it does, return the current candy from Alice's array and the target value.
+5. If no answer is found in step 4, it means that there is no valid answer. In this case, we can return an empty list or raise an exception.
+
+Here's the implementation of the solution:
+
+```python
+from typing import List
+
+class Solution:
+    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+        sum_alice = sum(aliceSizes)
+        sum_bob = sum(bobSizes)
+        diff = sum_bob - sum_alice
+
+        set_bob = set(bobSizes)
+
+        for candy in aliceSizes:
+            target = candy + diff // 2
+            if target in set_bob:
+                return [candy, target]
+
+        return []  # No valid answer found
+```
+
+You can create an instance of the `Solution` class and call the `fairCandySwap` method with the given inputs to obtain the result.
+
+Example usage:
+
+```python
+solution = Solution()
+aliceSizes = [1, 1]
+bobSizes = [2, 2]
+result = solution.fairCandySwap(aliceSizes, bobSizes)
+print(result)  # Output: [1, 2]
+```
+
+Note: The solution assumes that there is at least one valid answer for the given inputs, as stated in the problem constraints.

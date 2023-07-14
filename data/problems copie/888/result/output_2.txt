@@ -1,0 +1,35 @@
+To solve this task, we can follow the following steps:
+
+1. Calculate the total number of candies Alice and Bob have.
+2. Create a set of candies that Alice has. This will help us efficiently check if Bob has a candy that Alice needs.
+3. Iterate through Bob's candies. For each candy, calculate the target candy that Alice needs to exchange by subtracting Bob's candy from the total candies of Alice and dividing by 2.
+4. Check if the target candy is in Alice's set of candies. If it is, return the target candy and Bob's candy as the answer.
+
+Here's the implementation of the `fairCandySwap` function:
+
+```python
+from typing import List
+
+class Solution:
+    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+        alice_total = sum(aliceSizes)
+        bob_total = sum(bobSizes)
+        alice_set = set(aliceSizes)
+
+        for bob_candy in bobSizes:
+            target_candy = (alice_total - bob_total) // 2 + bob_candy
+            if target_candy in alice_set:
+                return [target_candy, bob_candy]
+```
+
+You can use this solution by creating an instance of the `Solution` class and calling the `fairCandySwap` method with the given inputs:
+
+```python
+aliceSizes = [1, 1]
+bobSizes = [2, 2]
+solution = Solution()
+result = solution.fairCandySwap(aliceSizes, bobSizes)
+print(result)  # Output: [1, 2]
+```
+
+The code will output the pair of candies that Alice and Bob should exchange to have an equal total number of candies.

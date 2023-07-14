@@ -1,0 +1,31 @@
+To solve this problem, we can start with a list containing the largest even number less than or equal to the finalSum and keep reducing the finalSum by that number until it becomes 0 or reaches an odd number. If the finalSum becomes 0, we have found a valid split and return the list of even numbers used. If the finalSum becomes odd before reaching 0, it means that there is no valid split and we return an empty list.
+
+Here is the implementation in Go:
+
+```go
+func maximumEvenSplit(finalSum int64) []int64 {
+    result := []int64{}
+
+    // Find the largest even number less than or equal to the finalSum
+    // and add it to the result list
+    evenNumber := finalSum / 2 * 2
+    result = append(result, evenNumber)
+
+    // Reduce the finalSum by the even number and repeat the process
+    for finalSum > 0 && finalSum%2 == 0 {
+        finalSum -= evenNumber
+        evenNumber = finalSum / 2 * 2
+        result = append(result, evenNumber)
+    }
+
+    // If the finalSum becomes 0, return the result
+    if finalSum == 0 {
+        return result
+    }
+
+    // If the finalSum becomes odd, return an empty list
+    return []int64{}
+}
+```
+
+The time complexity of this solution is O(log(finalSum)), where finalSum is the given integer.

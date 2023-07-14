@@ -1,0 +1,38 @@
+To find the least number of units of time needed to finish all the tasks, we can use a greedy approach. The idea is to schedule the tasks in such a way that we maximize the utilization of the CPU.
+
+Here's the implementation of the `leastInterval` function in Python:
+
+```python
+from collections import Counter
+from typing import List
+
+class Solution:
+    def leastInterval(self, tasks: List[str], n: int) -> int:
+        task_counts = Counter(tasks)  # Count the frequency of each task
+        max_count = max(task_counts.values())  # Find the task with the maximum frequency
+        max_tasks = sum(1 for count in task_counts.values() if count == max_count)
+
+        # Calculate the number of intervals needed
+        intervals = (max_count - 1) * (n + 1) + max_tasks
+
+        # The intervals should be at least the number of tasks
+        return max(intervals, len(tasks))
+```
+
+In this solution, we first count the frequency of each task using the `Counter` class from the `collections` module. Then, we find the task with the maximum frequency (`max_count`). We also count the number of tasks that have the maximum frequency (`max_tasks`).
+
+To calculate the number of intervals needed, we consider that each interval consists of `n + 1` slots (including the task itself). We subtract 1 from `max_count` because the last interval doesn't need an idle slot after the last occurrence of the most frequent task. We multiply this by `max_count - 1` to account for all the tasks with the maximum frequency except the last one. Then, we add `max_tasks` to include the last interval with the most frequent task.
+
+Finally, we compare the calculated `intervals` with the total number of tasks and return the maximum of the two. This is because if the calculated `intervals` value is less than the number of tasks, it means there are more than enough intervals to accommodate all the tasks without needing any idle slots.
+
+You can create an instance of the `Solution` class and call the `leastInterval` function on it, passing the tasks list and the cooldown period `n`. For example:
+
+```python
+solution = Solution()
+tasks = ["A","A","A","B","B","B"]
+n = 2
+result = solution.leastInterval(tasks, n)
+print(result)  # Output: 8
+```
+
+Hope this helps!

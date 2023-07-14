@@ -1,0 +1,14 @@
+# Python Programming Template
+
+## Define the function
+```
+def multiply(a, b):
+    # Multiply two numbers
+    return a * b
+```
+
+## Call the function
+```
+result = multiply(5, 3)
+print(result)
+```

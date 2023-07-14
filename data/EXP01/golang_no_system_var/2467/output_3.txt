@@ -1,0 +1,66 @@
+One approach to solve this problem is to use a depth-first search (DFS) algorithm to traverse the tree. During the DFS, we can keep track of the maximum net income Alice can have at each node. 
+
+We can start by defining a helper function `dfs` that takes three parameters: the current node `node`, the previous node `prev`, and a boolean flag `isBob` indicating whether the current player is Bob or not. 
+
+In the `dfs` function, we can check if the current node is a leaf node by checking if it has only one adjacent node. If it is a leaf node, we can calculate the net income for Alice by adding the reward at the leaf node to the maximum net income at the previous node. If the current player is Bob, we can return the negative of the net income.
+
+If the current node is not a leaf node, we can iterate over its adjacent nodes and recursively call the `dfs` function for each adjacent node. We can add the maximum net income at the current node to the net income of Alice, and take the maximum value of the net income for Bob.
+
+Finally, we can call the `dfs` function with the root node as the current node and the previous node as -1. This will initiate the DFS traversal from the root node.
+
+Here is the updated code:
+
+```go
+func dfs(node, prev int, isBob bool, edges [][]int, amount []int) int {
+    if len(edges[node]) == 1 {
+        return amount[node]
+    }
+    
+    maxIncome := 0
+    for _, next := range edges[node] {
+        if next == prev {
+            continue
+        }
+        
+        income := amount[node] + dfs(next, node, !isBob, edges, amount)
+        if !isBob {
+            maxIncome = max(maxIncome, income)
+        } else {
+            maxIncome = min(maxIncome, -income)
+        }
+    }
+    
+    return maxIncome
+}
+
+func maxProfitablePath(edges [][]int, bob int, amount []int) int {
+    n := len(amount)
+    
+    // Construct adjacency list from edge list
+    adj := make([][]int, n)
+    for _, edge := range edges {
+        u, v := edge[0], edge[1]
+        adj[u] = append(adj[u], v)
+        adj[v] = append(adj[v], u)
+    }
+    
+    // Perform DFS traversal starting from root node 0
+    return dfs(0, -1, false, adj, amount)
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+The `max` and `min` functions are helper functions to find the maximum and minimum values respectively.

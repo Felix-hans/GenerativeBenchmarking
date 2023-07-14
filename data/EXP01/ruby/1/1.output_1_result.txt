@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x94 Accepted\n  \xe2\x9c\x94 57/57 cases passed (101 ms)\n  \xe2\x9c\x94 Your runtime beats 37.55 % of ruby submissions\n  \xe2\x9c\x94 Your memory usage beats 45.88 % of ruby submissions (212 MB)\n'
+**stderr:**
+b"- Sending code to judge\n(node:29788) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

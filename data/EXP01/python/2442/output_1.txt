@@ -1,0 +1,28 @@
+To solve this task, we can use a set to keep track of the distinct integers in the array. 
+
+We can iterate through each integer in the array, reverse its digits, and add it to the set. After iterating through all the integers, we can return the size of the set.
+
+Here's the implementation of the Solution class:
+
+```python
+class Solution:
+    def countDistinctIntegers(self, nums: List[int]) -> int:
+        distinct_integers = set(nums)
+        
+        for num in nums:
+            reversed_num = int(str(num)[::-1])
+            distinct_integers.add(reversed_num)
+        
+        return len(distinct_integers)
+```
+
+You can then create an instance of the Solution class and call the `countDistinctIntegers` method with your input array:
+
+```python
+nums = [1, 13, 10, 12, 31]
+solution = Solution()
+distinct_count = solution.countDistinctIntegers(nums)
+print(distinct_count)  # Output: 6
+```
+
+Note that the time complexity of this solution is O(n), where n is the length of the input array.

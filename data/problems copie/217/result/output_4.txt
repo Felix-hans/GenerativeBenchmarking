@@ -1,0 +1,30 @@
+To implement the task in Python, you can use a hash set to keep track of the unique elements in the array. As you iterate through the array, if you encounter an element that is already in the set, it means there is a duplicate, and you can return True. If you finish iterating through the array without finding any duplicates, you can return False.
+
+Here's the implementation of the `containsDuplicate` function:
+
+```python
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        num_set = set()
+        for num in nums:
+            if num in num_set:
+                return True
+            num_set.add(num)
+        return False
+```
+
+You can create an instance of the `Solution` class and call the `containsDuplicate` method with the given input to get the desired output. For example:
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 1]
+print(solution.containsDuplicate(nums))  # Output: True
+
+nums = [1, 2, 3, 4]
+print(solution.containsDuplicate(nums))  # Output: False
+
+nums = [1, 1, 1, 3, 3, 4, 3, 2, 4, 2]
+print(solution.containsDuplicate(nums))  # Output: True
+```
+
+This will give you the expected results based on the examples provided.

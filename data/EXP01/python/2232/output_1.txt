@@ -1,0 +1,41 @@
+We can approach this problem by considering all possible positions to add the parentheses and evaluating the expression at each position. We'll keep track of the smallest possible value and the corresponding expression.
+
+Here's the step-by-step algorithm:
+
+1. Initialize the smallest possible value as the evaluated value of the given expression without any parentheses, and initialize the corresponding expression as the given expression itself.
+2. Iterate through each position where we can add parentheses. We'll consider all positions between the two digits of the given expression.
+3. For each position, insert parentheses at that position and evaluate the expression.
+4. If the evaluated value is smaller than the current smallest possible value, update the smallest possible value and the corresponding expression.
+5. Return the corresponding expression as the result.
+
+Here's the implementation of the above algorithm:
+
+```
+class Solution:
+    def minimizeResult(self, expression: str) -> str:
+        n = len(expression)
+        smallest_val = eval(expression)  # evaluate the given expression without parentheses
+        smallest_exp = expression
+
+        for i in range(1, n-1):
+            # consider all positions between the two digits
+            num1 = expression[:i]
+            num2 = expression[i+1:]
+            new_exp = num1 + '(' + num2 + ')'  # add parentheses at position i
+            val = eval(new_exp)  # evaluate the new expression
+
+            if val < smallest_val:
+                smallest_val = val
+                smallest_exp = new_exp
+
+        return smallest_exp
+```
+
+We can test the implementation with the given examples:
+
+```
+s = Solution()
+print(s.minimizeResult("247+38"))  # Output: "2(47+38)"
+print(s.minimizeResult("12+34"))  # Output: "1(2+3)4"
+print(s.minimizeResult("999+999"))  # Output: "(999+999)"
+```

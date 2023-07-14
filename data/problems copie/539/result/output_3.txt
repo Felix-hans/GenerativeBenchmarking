@@ -1,0 +1,33 @@
+Here's an implementation of the `findMinDifference` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findMinDifference(self, timePoints: List[str]) -> int:
+        # Convert time points to minutes
+        minutes = [self.convertToMinutes(time) for time in timePoints]
+        
+        # Sort the minutes in ascending order
+        minutes.sort()
+        
+        min_diff = float('inf')
+        n = len(minutes)
+        
+        # Calculate the minimum difference between consecutive time points
+        for i in range(n):
+            diff = minutes[(i + 1) % n] - minutes[i]
+            if diff < 0:
+                diff += 24 * 60  # Add 24 hours in minutes
+            min_diff = min(min_diff, diff)
+        
+        return min_diff
+    
+    def convertToMinutes(self, time: str) -> int:
+        hours, minutes = map(int, time.split(':'))
+        return hours * 60 + minutes
+```
+
+This solution works by converting each time point to minutes and storing them in a list. Then, the list is sorted in ascending order. We initialize `min_diff` with a large value (`float('inf')`) and iterate through the sorted minutes list. For each pair of consecutive time points, we calculate the difference and update `min_diff` if the difference is smaller. If the difference is negative, it means that the second time point is wrapping around to the next day, so we add 24 hours (in minutes) to handle this case.
+
+Finally, we return the minimum difference found.

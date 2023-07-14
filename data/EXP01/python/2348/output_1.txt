@@ -1,0 +1,25 @@
+One possible solution for this problem is to iterate through the array and check for each element if it is zero. If it is zero, we start a new subarray and count the number of zeros until we reach a non-zero element or the end of the array. If the subarray has more than one zero, we add it to the count.
+
+Here is the implementation for the given task:
+
+```python
+class Solution:
+    def zeroFilledSubarray(self, nums: List[int]) -> int:
+        count = 0
+        subarray_zeros = 0
+        for num in nums:
+            if num == 0:
+                subarray_zeros += 1
+                count += subarray_zeros
+            else:
+                subarray_zeros = 0
+        return count
+```
+
+Explanation:
+
+- We initialize `count` and `subarray_zeros` variables to keep track of the total count and the number of zeros in the current subarray, respectively.
+- We iterate through each element `num` in the given array `nums`.
+- If `num` is zero, we increment `subarray_zeros` by 1 and add it to the `count`. This counts the current zero and all the previous zeros in the subarray.
+- If `num` is not zero, we reset `subarray_zeros` to zero, as the current subarray ends.
+- Finally, we return the `count`, which represents the total number of subarrays filled with zeros.

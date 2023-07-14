@@ -1,0 +1,31 @@
+Here is the implementation of the solution in Go:
+
+```go
+package main
+
+import "fmt"
+
+func successfulPairs(spells []int, potions []int, success int64) []int {
+    res := make([]int, len(spells))
+
+    for i := 0; i < len(spells); i++ {
+        for j := 0; j < len(potions); j++ {
+            if int64(spells[i])*int64(potions[j]) >= success {
+                res[i]++
+            }
+        }
+    }
+
+    return res
+}
+
+func main() {
+    spells := []int{5, 1, 3}
+    potions := []int{1, 2, 3, 4, 5}
+    success := int64(7)
+
+    fmt.Println(successfulPairs(spells, potions, success)) // Output: [4, 0, 3]
+}
+```
+
+The function `successfulPairs` takes in the `spells`, `potions`, and `success` as input and returns an integer array `res`. It initializes `res` with zeros and then iterates over each spell and potion pair. If the product of their strengths is greater than or equal to the `success` value, it increments the corresponding count in the `res` array. Finally, it returns the `res` array.

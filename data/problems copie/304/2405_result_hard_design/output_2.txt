@@ -1,0 +1,39 @@
+To implement the NumMatrix class with efficient sumRegion operation, we can use the concept of a cumulative sum matrix. The idea is to precompute a matrix where each cell represents the sum of all elements from the top-left corner of the original matrix up to that cell.
+
+Here's the Python implementation for the given task:
+
+```python
+class NumMatrix:
+    def __init__(self, matrix: List[List[int]]):
+        if not matrix or not matrix[0]:
+            self.cumulative_sum = None
+        else:
+            rows, cols = len(matrix), len(matrix[0])
+            self.cumulative_sum = [[0] * (cols + 1) for _ in range(rows + 1)]
+
+            for i in range(1, rows + 1):
+                for j in range(1, cols + 1):
+                    self.cumulative_sum[i][j] = (
+                        matrix[i - 1][j - 1]
+                        + self.cumulative_sum[i - 1][j]
+                        + self.cumulative_sum[i][j - 1]
+                        - self.cumulative_sum[i - 1][j - 1]
+                    )
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        if not self.cumulative_sum:
+            return 0
+
+        return (
+            self.cumulative_sum[row2 + 1][col2 + 1]
+            - self.cumulative_sum[row2 + 1][col1]
+            - self.cumulative_sum[row1][col2 + 1]
+            + self.cumulative_sum[row1][col1]
+        )
+```
+
+This implementation initializes the `NumMatrix` object by constructing a `cumulative_sum` matrix using dynamic programming. The `cumulative_sum` matrix has an extra row and column to simplify the computation in `sumRegion`.
+
+The `sumRegion` method calculates the sum of the elements inside the given rectangle using the values stored in the `cumulative_sum` matrix. By subtracting the appropriate cumulative sums, we can obtain the sum of the desired region in constant time O(1).
+
+You can create a `NumMatrix` object and call the `sumRegion` method as shown in the comments at the end of the code snippet.

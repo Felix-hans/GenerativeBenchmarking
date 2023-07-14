@@ -1,0 +1,46 @@
+To solve this problem, we need to find all the possible text messages Alice could have sent given the pressed keys received by Bob. We can use recursion and backtracking to generate all possible combinations of letters from the pressed keys.
+
+First, we need to create a mapping of digits to letters:
+```
+letters := []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+```
+
+Then, we define a recursive function `generateMessages` that takes six parameters: the index `idx` representing the current position in the pressed keys, the current message `currentMessage`, the number of times each digit has been pressed `digitCount`, the mapping of digits to letters `letters`, the total number of possible messages `totalMessages`, and the modulo value `mod`.
+
+Inside the function, we check if we have reached the end of the pressed keys by comparing `idx` with the length of `pressedKeys`. If we have reached the end, we add the current message to the total messages and return.
+
+Otherwise, we get the current digit from the `pressedKeys` at index `idx`. We get the corresponding letters for the digit from the `letters` mapping. For each letter, we increment the count for the current digit, recursively call the function with the next index, updated current message, updated digit count, and updated total messages, and then decrement the count for the current digit. This is done to generate all possible combinations of letters for the current digit.
+
+Finally, we return the total messages modulo `mod`.
+
+Here is the implementation in Go:
+
+```go
+func countTexts(pressedKeys string) int {
+    letters := []string{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"}
+    mod := int(math.Pow10(9)) + 7
+
+    var generateMessages func(idx int, currentMessage string, digitCount []int, letters []string, totalMessages int) int
+    generateMessages = func(idx int, currentMessage string, digitCount []int, letters []string, totalMessages int) int {
+        if idx == len(pressedKeys) {
+            return (totalMessages + 1) % mod
+        }
+
+        digit := int(pressedKeys[idx] - '0')
+        for _, letter := range letters[digit] {
+            digitCount[digit]++
+            totalMessages = generateMessages(idx+1, currentMessage+string(letter), digitCount, letters, totalMessages)
+            digitCount[digit]--
+        }
+
+        return totalMessages
+    }
+
+    digitCount := make([]int, 10)
+    totalMessages := generateMessages(0, "", digitCount, letters, 0)
+
+    return totalMessages
+}
+```
+
+The time complexity of this solution is O(n * m), where n is the length of the pressed keys and m is the average number of letters for each digit.

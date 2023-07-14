@@ -1,0 +1,19 @@
+Here's the Python implementation of the given task:
+
+```python
+class Solution:
+    def fizzBuzz(self, n: int) -> List[str]:
+        result = []
+        for i in range(1, n + 1):
+            if i % 3 == 0 and i % 5 == 0:
+                result.append("FizzBuzz")
+            elif i % 3 == 0:
+                result.append("Fizz")
+            elif i % 5 == 0:
+                result.append("Buzz")
+            else:
+                result.append(str(i))
+        return result
+```
+
+In this solution, we initialize an empty list `result` to store the output strings. We iterate from 1 to `n` (inclusive) using a for loop. For each iteration, we check the divisibility of `i` by 3 and 5, 3 only, 5 only, or none of them using the modulo operator (`%`). Based on the conditions, we append the corresponding string to the `result` list. Finally, we return the `result` list as the output.

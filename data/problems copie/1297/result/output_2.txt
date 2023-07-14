@@ -1,0 +1,31 @@
+Here's the implementation of the `maxFreq` function in Python:
+
+```python
+from collections import defaultdict
+
+class Solution:
+    def maxFreq(self, s: str, maxLetters: int, minSize: int, maxSize: int) -> int:
+        counts = defaultdict(int)
+        max_occurrences = 0
+        
+        for i in range(len(s) - minSize + 1):
+            substring = s[i:i+minSize]
+            unique_letters = len(set(substring))
+            
+            if unique_letters <= maxLetters:
+                counts[substring] += 1
+                max_occurrences = max(max_occurrences, counts[substring])
+        
+        return max_occurrences
+```
+
+Explanation:
+
+1. We create a `defaultdict` called `counts` to store the counts of each valid substring.
+2. We initialize `max_occurrences` to 0, which will hold the maximum number of occurrences.
+3. We iterate over the input string `s` from index 0 to `len(s) - minSize + 1`. This ensures that we consider all possible substrings of length `minSize`.
+4. For each substring, we check the number of unique letters using `len(set(substring))`. If the number of unique letters is less than or equal to `maxLetters`, it satisfies the condition.
+5. We increment the count of the substring in the `counts` dictionary and update `max_occurrences` if the current count is greater than `max_occurrences`.
+6. Finally, we return the value of `max_occurrences`, which represents the maximum number of occurrences of any valid substring.
+
+You can create an instance of the `Solution` class and call the `maxFreq` function with the given inputs to obtain the desired result.

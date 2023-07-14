@@ -1,0 +1,39 @@
+To solve this task, we can iterate through the prices array and keep track of the minimum price we have seen so far and the maximum profit we can achieve.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+class Solution:
+    def maxProfit(self, prices):
+        if not prices:
+            return 0
+
+        min_price = prices[0]
+        max_profit = 0
+
+        for price in prices:
+            if price < min_price:
+                min_price = price
+            else:
+                max_profit = max(max_profit, price - min_price)
+
+        return max_profit
+```
+
+Explanation:
+1. We start by initializing `min_price` to the first price in the array and `max_profit` to 0.
+2. We iterate through the prices array, starting from the second day.
+3. For each price, if it is less than the `min_price`, we update `min_price` to the current price. This ensures that we have the lowest possible buying price.
+4. If the current price is greater than or equal to `min_price`, we calculate the profit we would make if we sell at this price (`price - min_price`), and update `max_profit` if this profit is greater than the previous maximum profit.
+5. After iterating through all prices, we return the maximum profit.
+
+Now, you can create an instance of the `Solution` class and call the `maxProfit` method, passing the prices array as the argument. For example:
+
+```python
+solution = Solution()
+prices = [7, 1, 5, 3, 6, 4]
+max_profit = solution.maxProfit(prices)
+print(max_profit)  # Output: 7
+```
+
+Note: The `Solution` class and the `maxProfit` method are provided to match the given code template, but they are not necessary for the solution. You can simply remove the class and the `self` parameter from the `maxProfit` function if you prefer.

@@ -1,0 +1,69 @@
+To solve this problem, we can use a variation of the Depth-First Search (DFS) algorithm. 
+
+First, we need to build an adjacency list to represent the undirected graph. We can create a map where the keys represent the nodes and the values are arrays of their neighbors. 
+
+Next, we can define a helper function called `dfs` that takes the current node, the parent node, and the adjacency list as parameters. 
+
+Inside the `dfs` function, we iterate through the neighbors of the current node and recursively call the `dfs` function for each neighbor, excluding the parent node. We also keep track of the maximum star sum by updating a global variable called `maxSum` whenever we find a new star graph.
+
+In each recursive call, we calculate the sum of the values of the nodes in the star graph by adding the value of the current node and the values of its neighbors. If the number of edges in the star graph (excluding the edge connecting the current node and its parent) is less than or equal to `k`, we update the `maxSum` if necessary.
+
+Finally, we return the value of `maxSum` as the result of the `maxStarSum` function.
+
+Here's the implementation:
+
+```go
+func buildGraph(vals []int, edges [][]int) map[int][]int {
+    graph := make(map[int][]int)
+    
+    for _, edge := range edges {
+        x, y := edge[0], edge[1]
+        graph[x] = append(graph[x], y)
+        graph[y] = append(graph[y], x)
+    }
+    
+    return graph
+}
+
+func dfs(node, parent int, graph map[int][]int, vals []int, k int, sum int, maxSum *int) {
+    sum += vals[node]
+    neighbors := graph[node]
+    count := len(neighbors) - 1 // exclude parent node
+    
+    for _, neighbor := range neighbors {
+        if neighbor != parent {
+            dfs(neighbor, node, graph, vals, k, sum, maxSum)
+        }
+    }
+    
+    if count <= k {
+        *maxSum = max(*maxSum, sum)
+    }
+}
+
+func max(x, y int) int {
+    if x > y {
+        return x
+    }
+    return y
+}
+
+func maxStarSum(vals []int, edges [][]int, k int) int {
+    graph := buildGraph(vals, edges)
+    maxSum := 0
+    
+    dfs(0, -1, graph, vals, k, 0, &maxSum)
+    
+    return maxSum
+}
+```
+
+The `buildGraph` function takes the `vals` array and the `edges` array as input and returns the adjacency list representation of the graph.
+
+The `dfs` function is a recursive function that performs the depth-first search. It takes the current node, the parent node, the adjacency list, the `vals` array, the number of edges in the star graph, the current sum of node values, and a pointer to the `maxSum` variable as input.
+
+The `max` function is a helper function that returns the maximum of two integers.
+
+In the `maxStarSum` function, we first build the adjacency list representation of the graph using the `buildGraph` function. Then, we initialize the `maxSum` variable to 0.
+
+We start the depth-first search from node 0 and call the `dfs` function with the appropriate parameters. Finally, we return the value of `maxSum` as the result of the `maxStarSum` function.

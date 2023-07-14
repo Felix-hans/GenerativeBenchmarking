@@ -1,0 +1,45 @@
+To solve the given task, we can follow these steps:
+
+1. Sort both `nums1` and `nums2` in ascending order. We will also create an array called `remaining` to keep track of the numbers in `nums2` that have not been assigned a larger number from `nums1`.
+2. Initialize two pointers, `left` and `right`, to keep track of the current indices of `nums1` and `nums2` respectively.
+3. Initialize an empty array called `result` to store the final permutation of `nums1`.
+4. Iterate over each element `num` in `nums2`:
+     - If the number at the `left` pointer in `nums1` is greater than `num`, assign it to the corresponding index in `result` and move the `left` pointer one step forward.
+     - If the number at the `left` pointer in `nums1` is not greater than `num`, assign the smallest remaining number from `remaining` to the corresponding index in `result` and remove that number from `remaining`.
+5. Return the `result` array.
+
+Here's the implementation of the `advantageCount` function in Python:
+
+```python
+class Solution:
+    def advantageCount(self, nums1, nums2):
+        nums1.sort()
+        sorted_nums2 = sorted(nums2)
+        remaining = []
+        
+        left = 0
+        right = 0
+        
+        while left < len(nums1) and right < len(nums2):
+            if nums1[left] > sorted_nums2[right]:
+                nums1[left], sorted_nums2[right] = sorted_nums2[right], nums1[left]
+                left += 1
+                right += 1
+            else:
+                remaining.append(nums1[left])
+                left += 1
+        
+        result = []
+        
+        for num in nums2:
+            index = bisect.bisect_right(sorted_nums2, num)
+            if index < len(sorted_nums2):
+                result.append(sorted_nums2[index])
+                sorted_nums2.pop(index)
+            else:
+                result.append(remaining.pop())
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `advantageCount` method with the given input arrays `nums1` and `nums2` to get the desired output.

@@ -1,0 +1,24 @@
+Here's the implementation of the `twoSum` function in Python:
+
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        # Create a dictionary to store the complement of each number and its index
+        complement_dict = {}
+        
+        # Iterate through the array
+        for i, num in enumerate(nums):
+            # Check if the complement of the current number exists in the dictionary
+            complement = target - num
+            if complement in complement_dict:
+                # Return the indices of the two numbers that add up to the target
+                return [complement_dict[complement], i]
+            
+            # Add the current number and its index to the dictionary
+            complement_dict[num] = i
+        
+        # If no solution is found, return an empty list
+        return []
+```
+
+This implementation has a time complexity of O(n) since we iterate through the array once and perform constant time dictionary lookups for each number.

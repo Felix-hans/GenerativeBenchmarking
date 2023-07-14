@@ -1,0 +1,41 @@
+To solve this problem, we can use a sliding window approach. We initialize two pointers, left and right, and a variable max_len to store the length of the longest alphabetical continuous substring.
+
+We iterate through the string from left to right and for each character, we check if it is the next character in the alphabetical order. If it is, we increment the right pointer and update the max_len if necessary. Otherwise, we reset the left and right pointers to the current index and start a new substring.
+
+Here is the implementation:
+
+```python
+class Solution:
+    def longestContinuousSubstring(self, s: str) -> int:
+        max_len = 0
+        left = 0
+        right = 0
+        
+        while right < len(s):
+            if right > 0 and ord(s[right]) <= ord(s[right-1]):
+                left = right
+            right += 1
+            max_len = max(max_len, right - left)
+        
+        return max_len
+```
+
+We can test the code with the given examples:
+
+```python
+solution = Solution()
+
+s = "abacaba"
+# Expected output: 2
+print(solution.longestContinuousSubstring(s))
+
+s = "abcde"
+# Expected output: 5
+print(solution.longestContinuousSubstring(s))
+```
+
+Output:
+```
+2
+5
+```

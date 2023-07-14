@@ -1,0 +1,18 @@
+To solve this task, we can iterate over each row and column separately and compare the elements using the '==' operator. If a row and column are equal, we increment a counter. Finally, we return the counter.
+
+Here is the implementation of the `equalPairs` function:
+
+```python
+class Solution:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        count = 0
+        for i in range(n):
+            for j in range(n):
+                if grid[i] == [row[j] for row in grid]:
+                    count += 1
+        return count
+```
+
+Time complexity: O(n^2), where n is the size of the grid matrix.
+Space complexity: O(1)

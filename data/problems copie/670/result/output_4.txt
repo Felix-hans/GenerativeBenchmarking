@@ -1,0 +1,38 @@
+Here's the implementation of the `maximumSwap` function in Python:
+
+```python
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        # Convert the number to a list of digits
+        digits = list(str(num))
+
+        # Find the first digit that can be swapped with a larger digit
+        for i in range(len(digits)):
+            max_digit = digits[i]
+            max_index = i
+
+            # Find the maximum digit in the remaining digits
+            for j in range(i + 1, len(digits)):
+                if digits[j] >= max_digit:
+                    max_digit = digits[j]
+                    max_index = j
+
+            # If a larger digit is found, swap the digits and return the result
+            if max_digit > digits[i]:
+                digits[i], digits[max_index] = digits[max_index], digits[i]
+                return int(''.join(digits))
+
+        # If no swap is possible, return the original number
+        return num
+```
+
+You can create an instance of the `Solution` class and call the `maximumSwap` method to find the maximum valued number:
+
+```python
+solution = Solution()
+num = 2736
+result = solution.maximumSwap(num)
+print(result)  # Output: 7236
+```
+
+For the input `2736`, the function will swap the digits `2` and `7` to produce the maximum value `7236`.

@@ -1,0 +1,32 @@
+To solve the given task, we can use dynamic programming to find the maximum number of points we can earn. Here's the implementation of the `deleteAndEarn` function in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def deleteAndEarn(self, nums):
+        points = Counter(nums)
+        max_num = max(nums)
+        dp = [0] * (max_num + 1)
+
+        for i in range(1, max_num + 1):
+            dp[i] = max(dp[i - 1], dp[i - 2] + i * points[i])
+
+        return dp[max_num]
+```
+
+The function takes an array `nums` as input and returns the maximum number of points that can be earned.
+
+Here's how the solution works:
+
+1. We create a Counter object `points` to count the occurrences of each number in the input array.
+2. We find the maximum number in the array using the `max` function.
+3. We initialize a dynamic programming array `dp` of size `max_num + 1` and set all elements to 0.
+4. We iterate from 1 to `max_num` and calculate the maximum points that can be earned at each index `i` based on the previous results.
+   - If we choose to delete the number `i`, we add `i * points[i]` to the points earned so far.
+   - If we skip deleting the number `i`, we take the maximum points earned up to the previous index, `dp[i - 1]`.
+   - If the number `i` is adjacent to the previous deleted number, we cannot choose to delete it as it violates the condition of deleting `nums[i] - 1`. In that case, we use the maximum points earned up to the index two steps back, `dp[i - 2]`.
+   - We take the maximum value between the two options mentioned above and store it in `dp[i]`.
+5. Finally, we return the maximum points stored in `dp[max_num]`, which represents the maximum points that can be earned by deleting numbers.
+
+You can create an instance of the `Solution` class and call the `deleteAndEarn` function with the input array to get the desired output.

@@ -1,0 +1,29 @@
+Here's the Python implementation of the task:
+
+```python
+from typing import List
+
+class Solution:
+    def checkIfExist(self, arr: List[int]) -> bool:
+        seen = set()  # Store the seen numbers
+        
+        for num in arr:
+            if num * 2 in seen or (num % 2 == 0 and num // 2 in seen):
+                return True
+            seen.add(num)
+        
+        return False
+```
+
+In this solution, we iterate through each number in the array and check if either `num * 2` or `num // 2` (if `num` is even) is already present in the `seen` set. If we find a match, we return `True` immediately. Otherwise, we add the current number to the `seen` set. If we exhaust the loop without finding a match, we return `False`.
+
+You can create an instance of the `Solution` class and call the `checkIfExist` method with the input array to test it. Here's an example:
+
+```python
+arr = [10, 2, 5, 3]
+solution = Solution()
+result = solution.checkIfExist(arr)
+print(result)  # Output: True
+```
+
+Hope this helps!

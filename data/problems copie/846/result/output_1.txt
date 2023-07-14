@@ -1,0 +1,53 @@
+To solve this problem, we can follow the following steps:
+
+1. Create a dictionary `card_count` to count the frequency of each card in the hand.
+2. Sort the hand in ascending order.
+3. Iterate through the sorted hand.
+   - If the current card is already used (i.e., `card_count[card] == 0`), continue to the next card.
+   - Otherwise, decrement the count of the current card in `card_count`.
+   - Iterate from 1 to `groupSize - 1` (since we already have 1 card), and for each iteration:
+     - Check if the next consecutive card exists in `card_count` and its count is greater than 0.
+     - If it does, decrement the count of the consecutive card in `card_count`.
+     - If it doesn't, return `False` as we cannot form a group.
+4. If we successfully form all groups, return `True`.
+
+Here's the implementation of the `isNStraightHand` function:
+
+```python
+from typing import List
+
+class Solution:
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        card_count = {}
+        for card in hand:
+            card_count[card] = card_count.get(card, 0) + 1
+
+        hand.sort()
+
+        for card in hand:
+            if card_count[card] == 0:
+                continue
+            
+            card_count[card] -= 1
+            
+            for i in range(1, groupSize):
+                next_card = card + i
+                if card_count.get(next_card, 0) > 0:
+                    card_count[next_card] -= 1
+                else:
+                    return False
+
+        return True
+```
+
+Now, you can create an instance of the `Solution` class and call the `isNStraightHand` function with the given input to get the result. For example:
+
+```python
+solution = Solution()
+hand = [1, 2, 3, 6, 2, 3, 4, 7, 8]
+groupSize = 3
+result = solution.isNStraightHand(hand, groupSize)
+print(result)  # Output: True
+```
+
+I hope this helps! Let me know if you have any further questions.

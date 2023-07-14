@@ -1,0 +1,35 @@
+Here's the implementation of the `KthLargest` class in Python:
+
+```python
+import heapq
+
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        self.k = k
+        self.heap = []
+        for num in nums:
+            self.add(num)
+
+    def add(self, val: int) -> int:
+        heapq.heappush(self.heap, val)
+        if len(self.heap) > self.k:
+            heapq.heappop(self.heap)
+        return self.heap[0]
+
+# Example usage:
+kthLargest = KthLargest(3, [4, 5, 8, 2])
+print(kthLargest.add(3))  # Output: 4
+print(kthLargest.add(5))  # Output: 5
+print(kthLargest.add(10)) # Output: 5
+print(kthLargest.add(9))  # Output: 8
+print(kthLargest.add(4))  # Output: 8
+```
+
+In the `KthLargest` class, we use a min-heap to keep track of the k largest elements seen so far. The `__init__` method initializes the object by adding the elements from the `nums` list. The `add` method appends the new value to the stream, maintains the heap size to be at most k, and returns the kth largest element.
+
+We use the `heapq` module in Python, which provides an implementation of the heap queue algorithm. The `heappush` function is used to push elements onto the heap, and `heappop` function is used to pop the smallest element from the heap.
+
+Note that the `__init__` method has a loop that calls the `add` method for each element in `nums`. This ensures that the initial heap is constructed correctly.
+
+You can create a `KthLargest` object and call the `add` method to test the implementation with different inputs.

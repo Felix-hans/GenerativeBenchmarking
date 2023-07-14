@@ -1,0 +1,55 @@
+Here is the code implementation for the given task:
+
+```python
+from collections import defaultdict
+
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        graph = defaultdict(list)  # Adjacency list representation of the tree
+        
+        # Building the adjacency list
+        for edge in edges:
+            u, v = edge
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        # Traverse the tree and calculate the maximum net income
+        return self.dfs(graph, bob, amount, 0, bob)
+    
+    def dfs(self, graph, bob, amount, node, parent):
+        net_income = 0  # Net income at the current node
+        
+        # Check if the current node is a leaf node
+        if len(graph[node]) == 1 and node != bob:
+            return max(0, amount[node])  # Return the cash reward if it's positive, else 0
+        
+        # Traverse the adjacent nodes (except the parent)
+        for adj_node in graph[node]:
+            if adj_node != parent:
+                # Calculate the net income at the adjacent node
+                adj_income = self.dfs(graph, bob, amount, adj_node, node)
+                
+                # Calculate the price/cash reward at the current gate
+                gate_value = amount[node] // 2
+                
+                # Adjust the net income depending on who opened the gate
+                if adj_node == bob:
+                    adj_income += gate_value
+                elif node == bob:
+                    adj_income -= gate_value
+                
+                # Update the maximum net income at the current node
+                net_income = max(net_income, adj_income)
+        
+        return net_income
+```
+
+Example usage:
+```python
+if __name__ == "__main__":
+    solution = Solution()
+    edges = [[0,1],[1,2],[1,3],[3,4]]
+    bob = 3
+    amount = [-2,4,2,-4,6]
+    print(solution.mostProfitablePath(edges, bob, amount))
+```

@@ -1,0 +1,44 @@
+To solve this problem, we can use the concept of interval scheduling. Interval scheduling is a classic algorithmic problem in which we want to find the maximum number of non-overlapping intervals that can be selected from a given set of intervals.
+
+We can sort the intervals based on their start times and then iterate through the sorted intervals. For each interval, if it does not overlap with the previous interval, we can add it to a new group. Otherwise, we have to start a new group.
+
+Here's the implementation of the minGroups function in Go:
+
+```go
+import "sort"
+
+func minGroups(intervals [][]int) int {
+    sort.Slice(intervals, func(i, j int) bool {
+        return intervals[i][0] < intervals[j][0]
+    })
+    
+    groups := 1
+    prevEnd := intervals[0][1]
+    
+    for i := 1; i < len(intervals); i++ {
+        if intervals[i][0] > prevEnd {
+            groups++
+        }
+        prevEnd = max(prevEnd, intervals[i][1])
+    }
+    
+    return groups
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+In this implementation, we first sort the intervals array based on the start times using the sort.Slice function. Then, we initialize the number of groups to 1 and the previous end time to the end time of the first interval.
+
+Next, we iterate through the sorted intervals array starting from the second interval. If the start time of the current interval is greater than the previous end time, it means that the current interval does not overlap with the previous interval, so we increment the number of groups.
+
+Finally, we update the previous end time to the maximum of the current end time and the previous end time.
+
+At the end of the loop, the number of groups will represent the minimum number of groups needed to divide the intervals. We return this value as the result.
+
+The time complexity of this solution is O(n log n), where n is the number of intervals. This is because we need to sort the intervals before iterating through them. The space complexity is O(1) as we are using a constant amount of extra space.

@@ -1,0 +1,39 @@
+To solve this problem, we can use a greedy approach combined with a priority queue (min heap) to efficiently select the engineers with the highest efficiency.
+
+Here's the implementation of the `maxPerformance` function:
+
+```python
+import heapq
+from typing import List
+
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        engineers = list(zip(efficiency, speed))  # Combine efficiency and speed into tuples
+        engineers.sort(reverse=True)  # Sort engineers in descending order of efficiency
+
+        max_performance = 0
+        total_speed = 0
+        heap = []
+        for eff, spd in engineers:
+            heapq.heappush(heap, spd)  # Add speed to the heap
+            total_speed += spd
+
+            if len(heap) > k:
+                total_speed -= heapq.heappop(heap)  # Remove the engineer with the lowest speed
+
+            max_performance = max(max_performance, total_speed * eff)
+
+        return max_performance % (10**9 + 7)
+```
+
+The function takes in the number of engineers `n`, the speed list `speed`, the efficiency list `efficiency`, and the maximum number of engineers `k` to select. It returns the maximum performance modulo 10^9 + 7.
+
+In the function, we combine the efficiency and speed of each engineer into tuples and sort them in descending order of efficiency. This allows us to prioritize engineers with higher efficiency.
+
+We then iterate over the engineers and maintain a heap (min heap) with the `k` engineers with the highest speed. We also keep track of the total speed and update it as we add or remove engineers from the heap.
+
+For each engineer, we calculate the current performance by multiplying the total speed with the engineer's efficiency. We update the maximum performance if the current performance is higher.
+
+Finally, we return the maximum performance modulo 10^9 + 7 to satisfy the constraints of the problem.
+
+You can create an instance of the `Solution` class and call the `maxPerformance` function with the given inputs to get the desired result.

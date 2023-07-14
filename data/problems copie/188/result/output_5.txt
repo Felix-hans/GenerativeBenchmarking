@@ -1,0 +1,43 @@
+To solve the problem, we can use dynamic programming to keep track of the maximum profit at each day and for each transaction. We will create a 2D array dp with dimensions [k+1][n], where k is the maximum number of transactions allowed and n is the number of days.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+        
+        # If k is larger than half the number of days,
+        # we can perform as many transactions as we want.
+        if k >= n // 2:
+            return self.maxProfitUnlimited(prices)
+        
+        # Initialize the dp array with 0s
+        dp = [[0] * n for _ in range(k + 1)]
+        
+        for i in range(1, k + 1):
+            maxDiff = -prices[0]
+            for j in range(1, n):
+                dp[i][j] = max(dp[i][j - 1], prices[j] + maxDiff)
+                maxDiff = max(maxDiff, dp[i - 1][j] - prices[j])
+        
+        return dp[k][n - 1]
+    
+    def maxProfitUnlimited(self, prices: List[int]) -> int:
+        n = len(prices)
+        maxProfit = 0
+        for i in range(1, n):
+            if prices[i] > prices[i - 1]:
+                maxProfit += prices[i] - prices[i - 1]
+        return maxProfit
+```
+
+In the code, we first check if k is larger than or equal to half the number of days. In that case, we can perform as many transactions as we want (unlimited transactions), and we call a separate function `maxProfitUnlimited` to calculate the maximum profit.
+
+If k is smaller than half the number of days, we proceed with dynamic programming. We initialize the dp array and then iterate through each transaction and day to fill in the values of the dp array.
+
+Finally, we return the maximum profit stored in dp[k][n-1], where k is the maximum number of transactions and n is the number of days.
+
+Note: The `maxProfitUnlimited` function calculates the maximum profit when there are no restrictions on the number of transactions. It uses a simple approach to calculate the profit by considering all the increasing price intervals. This step is optional if k is always greater than or equal to half the number of days.

@@ -1,0 +1,27 @@
+To count the number of battleships on the board, we can iterate through each cell and check if it is part of a battleship. We can use the following approach:
+
+1. Initialize a variable `count` to 0 to keep track of the number of battleships.
+
+2. Iterate through each cell of the board.
+
+3. For each cell, if it is 'X' and its left cell (if it exists) is not 'X', and its above cell (if it exists) is not 'X', then increment `count` by 1. This condition ensures that we count only the first cell of each battleship.
+
+4. Finally, return the value of `count`.
+
+Here's the implementation of the `countBattleships` function:
+
+```python
+class Solution:
+    def countBattleships(self, board: List[List[str]]) -> int:
+        count = 0
+        m, n = len(board), len(board[0])
+        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == 'X' and (i == 0 or board[i-1][j] != 'X') and (j == 0 or board[i][j-1] != 'X'):
+                    count += 1
+        
+        return count
+```
+
+This solution has a time complexity of O(m * n), where m and n are the dimensions of the board, as we need to iterate through each cell once. It uses only O(1) extra memory since we are not using any additional data structures to solve the problem.

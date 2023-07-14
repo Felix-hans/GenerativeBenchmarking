@@ -1,0 +1,76 @@
+Here's the implementation of the Bank class in Go:
+
+```go
+package main
+
+type Bank struct {
+    balance []int64
+}
+
+func Constructor(balance []int64) Bank {
+    return Bank{
+        balance: balance,
+    }
+}
+
+func (b *Bank) isValidAccount(account int) bool {
+    return account >= 1 && account <= len(b.balance)
+}
+
+func (b *Bank) Transfer(account1, account2 int, money int64) bool {
+    if !b.isValidAccount(account1) || !b.isValidAccount(account2) {
+        return false
+    }
+
+    if b.balance[account1-1] < money {
+        return false
+    }
+
+    b.balance[account1-1] -= money
+    b.balance[account2-1] += money
+
+    return true
+}
+
+func (b *Bank) Deposit(account int, money int64) bool {
+    if !b.isValidAccount(account) {
+        return false
+    }
+
+    b.balance[account-1] += money
+
+    return true
+}
+
+func (b *Bank) Withdraw(account int, money int64) bool {
+    if !b.isValidAccount(account) {
+        return false
+    }
+
+    if b.balance[account-1] < money {
+        return false
+    }
+
+    b.balance[account-1] -= money
+
+    return true
+}
+```
+
+To use the Bank class, you can create an instance of it using the Constructor function:
+
+```go
+bank := Constructor([]int64{10, 100, 20, 50, 30})
+```
+
+Then, you can call the methods on the Bank object:
+
+```go
+bank.Withdraw(3, 10)    // Returns true
+bank.Transfer(5, 1, 20) // Returns true
+bank.Deposit(5, 20)     // Returns true
+bank.Transfer(3, 4, 15) // Returns false
+bank.Withdraw(10, 50)   // Returns false
+```
+
+Note that the input values and expected output values in the example are not correct. The correct values can be determined based on the logic of the methods.

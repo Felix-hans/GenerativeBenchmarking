@@ -1,0 +1,14 @@
+## Task
+
+Write a Python function that takes a list of numbers as input and returns the sum of the elements in the list.
+
+## Example
+
+Input: [1, 2, 3, 4, 5]
+Output: 15
+
+## Requirements
+
+The function should be called `sum_list_elements` and should take a single parameter - a list of numbers.
+
+The function should return an integer - the sum of the elements in the list.

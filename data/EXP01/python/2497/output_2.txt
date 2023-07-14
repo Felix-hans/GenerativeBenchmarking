@@ -1,0 +1,46 @@
+To solve this problem, we can use a depth-first search (DFS) approach to find all possible star graphs. We will start from each node in the graph and explore its neighbors recursively to identify all connected nodes in the star graph.
+
+Here's how we can implement the solution in Python:
+
+```python
+class Solution:
+    def maxStarSum(self, vals, edges, k):
+        # Build the adjacency list representation of the graph
+        graph = [[] for _ in range(len(vals))]
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        self.max_sum = float('-inf')  # Initialize maximum star sum
+        
+        def dfs(node, visited, edge_count, s):
+            visited[node] = True
+            s += vals[node]
+            
+            if edge_count > k:
+                return
+            
+            if edge_count <= k:
+                self.max_sum = max(self.max_sum, s)
+            
+            for neighbor in graph[node]:
+                if not visited[neighbor]:
+                    dfs(neighbor, visited, edge_count + 1, s)
+            
+            visited[node] = False
+        
+        # Perform DFS from each node
+        for i in range(len(vals)):
+            visited = [False] * len(vals)
+            dfs(i, visited, 0, 0)
+        
+        return self.max_sum
+```
+
+We first build the adjacency list representation of the graph using the given edges. Then, we define a recursive DFS function `dfs` that takes a node, a visited array, the current edge count, and the current star sum as parameters.
+
+Inside the `dfs` function, we mark the current node as visited and update the star sum by adding the value of the current node. If the current edge count is greater than `k`, we return out of the function since we've exceeded the maximum allowed number of edges for a star graph.
+
+If the current edge count is less than or equal to `k`, we update the maximum star sum if necessary. Then, for each unvisited neighbor of the current node, we recursively call the `dfs` function with the neighbor as the new node, the visited array updated with the current node, the edge count incremented by 1, and the star sum updated with the value of the current node.
+
+Finally, we iterate over all nodes in the graph and perform a DFS from each node to find the maximum star sum. The overall time complexity of this solution is O(n + e), where n is the number of nodes and e is the number of edges in the graph.

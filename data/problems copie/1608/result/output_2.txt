@@ -1,0 +1,44 @@
+Here's the implementation of the `specialArray` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        n = len(nums)
+        counts = [0] * (n + 1)  # Initialize counts array with zeros
+
+        # Count the occurrences of numbers in nums
+        for num in nums:
+            if num <= n:
+                counts[num] += 1
+            else:
+                counts[n] += 1
+
+        greater_count = 0
+        for i in range(n, -1, -1):
+            greater_count += counts[i]
+            if greater_count == i:
+                return i
+
+        return -1
+```
+
+This solution works as follows:
+
+1. We initialize an array called `counts` of length `n + 1` with zeros. This array will be used to count the occurrences of numbers in `nums`.
+2. We iterate through `nums` and update the count in `counts` for each number. If the number is greater than `n`, we increment the count at index `n`.
+3. We iterate in reverse order through the `counts` array, starting from `n`. We keep track of the cumulative count of numbers greater than or equal to the current index.
+4. If the cumulative count is equal to the current index, we have found the special number `x`. We return `x`.
+5. If no special number is found after the iteration, we return -1.
+
+You can create an instance of the `Solution` class and call the `specialArray` method on it to test the solution with different inputs. For example:
+
+```python
+solution = Solution()
+nums = [3, 5]
+result = solution.specialArray(nums)
+print(result)  # Output: 2
+```
+
+I hope this helps!

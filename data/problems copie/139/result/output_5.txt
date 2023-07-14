@@ -1,0 +1,39 @@
+To solve this task, we can use dynamic programming to determine if the string `s` can be segmented into words from the `wordDict`.
+
+Here's the implementation of the `wordBreak` function:
+
+```python
+from typing import List
+
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        n = len(s)
+        dp = [False] * (n + 1)  # dp[i] indicates if s[:i] can be segmented
+
+        dp[0] = True  # An empty string can be segmented
+
+        for i in range(1, n + 1):
+            for j in range(i):
+                if dp[j] and s[j:i] in wordDict:
+                    dp[i] = True
+                    break
+
+        return dp[n]
+```
+
+You can create an instance of the `Solution` class and call the `wordBreak` method with the input string and word dictionary.
+
+```python
+s = "leetcode"
+wordDict = ["leet", "code"]
+solution = Solution()
+result = solution.wordBreak(s, wordDict)
+print(result)
+```
+
+The output will be:
+```
+True
+```
+
+You can follow the same approach for the other examples as well.

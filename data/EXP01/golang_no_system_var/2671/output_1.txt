@@ -1,0 +1,43 @@
+Here is the solution to the problem:
+
+```go
+type FrequencyTracker struct {
+    numbers map[int]int
+}
+
+func Constructor() FrequencyTracker {
+    return FrequencyTracker{
+        numbers: make(map[int]int),
+    }
+}
+
+func (ft *FrequencyTracker) Add(number int) {
+    ft.numbers[number]++
+}
+
+func (ft *FrequencyTracker) DeleteOne(number int) {
+    if _, ok := ft.numbers[number]; ok {
+        ft.numbers[number]--
+        if ft.numbers[number] == 0 {
+            delete(ft.numbers, number)
+        }
+    }
+}
+
+func (ft *FrequencyTracker) HasFrequency(frequency int) bool {
+    for _, count := range ft.numbers {
+        if count == frequency {
+            return true
+        }
+    }
+    return false
+}
+```
+
+Explanation:
+- I created a struct `FrequencyTracker` with a field `numbers` which is a map[int]int to keep track of the numbers and their frequencies.
+- In the `Constructor` function, I initialized the `numbers` map.
+- In the `Add` function, I simply added the number to the `numbers` map and incremented its count.
+- In the `DeleteOne` function, I checked if the number is present in the `numbers` map. If it is, then I decremented its count and if the count becomes zero, I deleted the number from the map.
+- In the `HasFrequency` function, I looped through the counts in the `numbers` map and checked if any count is equal to the given frequency. If yes, then I returned true.
+- Finally, I returned the required functions as mentioned in the problem statement.

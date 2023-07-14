@@ -1,0 +1,53 @@
+You can implement the task using the following code:
+
+```python
+from typing import List
+
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        # Initialize a list to store the common characters
+        common_chars = []
+        
+        # Get the frequency of characters in the first word
+        char_count = {}
+        for char in words[0]:
+            char_count[char] = char_count.get(char, 0) + 1
+        
+        # Iterate through the remaining words
+        for word in words[1:]:
+            # Create a new dictionary to store the frequency of characters in the current word
+            word_count = {}
+            
+            # Count the frequency of characters in the current word
+            for char in word:
+                word_count[char] = word_count.get(char, 0) + 1
+            
+            # Update the common characters list with the intersection of characters
+            # between the current word and the previous common characters
+            common_chars = []
+            for char in char_count:
+                if char in word_count:
+                    # Add the common characters the minimum number of times they appear
+                    common_chars.extend([char] * min(char_count[char], word_count[char]))
+            
+            # Update the char_count dictionary with the character frequencies of the current word
+            char_count = word_count
+        
+        return common_chars
+```
+
+You can create an instance of the `Solution` class and call the `commonChars` method with the input array to get the desired output. For example:
+
+```python
+words = ["bella","label","roller"]
+solution = Solution()
+output = solution.commonChars(words)
+print(output)  # Output: ["e","l","l"]
+
+words = ["cool","lock","cook"]
+solution = Solution()
+output = solution.commonChars(words)
+print(output)  # Output: ["c","o"]
+```
+
+The code works by maintaining a dictionary `char_count` to store the frequency of characters in the first word. Then, for each subsequent word, it creates a new dictionary `word_count` to store the frequency of characters in that word. It updates the `common_chars` list by taking the intersection of characters between the previous common characters and the current word. Finally, it updates the `char_count` with the character frequencies of the current word and repeats the process for the remaining words. The resulting `common_chars` list contains all the characters that appear in all the strings.

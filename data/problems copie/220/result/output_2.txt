@@ -1,0 +1,20 @@
+To solve the given task, we can iterate over the array `nums` and for each element, check if there exists another element within the specified index and value differences. We can use a nested loop to compare each pair of elements and check the conditions.
+
+Here's the implementation of the `containsNearbyAlmostDuplicate` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums: List[int], indexDiff: int, valueDiff: int) -> bool:
+        n = len(nums)
+        
+        for i in range(n):
+            for j in range(i + 1, min(i + indexDiff + 1, n)):
+                if abs(nums[i] - nums[j]) <= valueDiff:
+                    return True
+        
+        return False
+```
+
+This solution has a time complexity of O(n * min(indexDiff, n)), where n is the length of the `nums` array.

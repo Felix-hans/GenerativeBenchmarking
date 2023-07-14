@@ -1,0 +1,48 @@
+Here's the implementation of the `fullJustify` function in Python:
+
+```python
+class Solution:
+    def fullJustify(self, words, maxWidth):
+        result = []
+        current_line = []
+        current_width = 0
+
+        for word in words:
+            # Check if the current word can fit in the current line
+            if current_width + len(current_line) + len(word) <= maxWidth:
+                current_line.append(word)
+                current_width += len(word)
+            else:
+                # Distribute extra spaces evenly between words in the line
+                num_words = len(current_line)
+                num_spaces = maxWidth - current_width
+
+                # If there's only one word in the line, it should be left-justified
+                if num_words == 1:
+                    line = current_line[0] + ' ' * num_spaces
+                else:
+                    spaces_between_words = num_spaces // (num_words - 1)
+                    extra_spaces = num_spaces % (num_words - 1)
+
+                    line = ''
+                    for i in range(num_words - 1):
+                        line += current_line[i] + ' ' * spaces_between_words
+                        if i < extra_spaces:
+                            line += ' '
+                    line += current_line[-1]  # Add the last word
+
+                result.append(line)
+
+                # Reset the current line and width
+                current_line = [word]
+                current_width = len(word)
+
+        # Create the last line (left-justified)
+        last_line = ' '.join(current_line)
+        last_line += ' ' * (maxWidth - len(last_line))
+        result.append(last_line)
+
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `fullJustify` method, passing in the `words` list and `maxWidth` as arguments. The function will return a list of strings representing the justified text.

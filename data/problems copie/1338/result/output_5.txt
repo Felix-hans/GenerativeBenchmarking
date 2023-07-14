@@ -1,0 +1,54 @@
+To solve this task, we can follow the following steps:
+
+1. Count the frequency of each integer in the given array `arr`.
+2. Sort the frequencies in descending order.
+3. Iterate over the frequencies and keep track of the total number of removed integers.
+4. Stop iterating when the total number of removed integers becomes greater than or equal to half the size of the original array.
+5. Return the number of frequencies iterated.
+
+Here's the implementation of the `minSetSize` function in Python:
+
+```python
+from typing import List
+from collections import Counter
+
+class Solution:
+    def minSetSize(self, arr: List[int]) -> int:
+        # Step 1: Count the frequency of each integer
+        freq = Counter(arr)
+
+        # Step 2: Sort the frequencies in descending order
+        sorted_freq = sorted(freq.values(), reverse=True)
+
+        # Step 3: Iterate over the frequencies and track the total number of removed integers
+        removed_count = 0
+        removed_set_count = 0
+        for count in sorted_freq:
+            removed_count += count
+            removed_set_count += 1
+
+            # Step 4: Stop iterating when the total number of removed integers >= half the size of the original array
+            if removed_count >= len(arr) // 2:
+                break
+
+        # Step 5: Return the number of frequencies iterated
+        return removed_set_count
+```
+
+You can create an instance of the `Solution` class and call the `minSetSize` function with the `arr` array to get the minimum size of the set. For example:
+
+```python
+arr = [3, 3, 3, 3, 5, 5, 5, 2, 2, 7]
+solution = Solution()
+result = solution.minSetSize(arr)
+print(result)  # Output: 2
+```
+
+```python
+arr = [7, 7, 7, 7, 7, 7]
+solution = Solution()
+result = solution.minSetSize(arr)
+print(result)  # Output: 1
+```
+
+The solution follows the specified constraints, and it should give the expected output for the provided examples.

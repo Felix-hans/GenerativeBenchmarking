@@ -1,0 +1,53 @@
+To solve the given task, we can use a binary search approach combined with a sliding window technique. Here's the implementation of the `smallestDistancePair` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        nums.sort()  # Sort the input array in non-decreasing order
+        left, right = 0, nums[-1] - nums[0]  # Set the search space boundaries
+        
+        while left < right:
+            mid = (left + right) // 2  # Calculate the mid value of the search space
+            count = 0  # Count of pairs with distance <= mid
+            start = 0  # Start index of the sliding window
+            
+            # Use two pointers approach to count the number of pairs with distance <= mid
+            for end in range(len(nums)):
+                while nums[end] - nums[start] > mid:
+                    start += 1
+                count += end - start
+            
+            # Adjust the search space based on the count of pairs
+            if count >= k:
+                right = mid
+            else:
+                left = mid + 1
+        
+        return left
+```
+
+Here's how the function works:
+
+1. Sort the `nums` array in non-decreasing order to ensure that pairs with smaller distances are located earlier in the array.
+2. Set the boundaries of the search space: `left` is initially 0 (minimum possible distance), and `right` is the difference between the maximum and minimum elements in `nums`.
+3. Enter a binary search loop that continues until `left` is equal to `right`.
+4. Calculate the middle value of the search space using `(left + right) // 2` and assign it to `mid`.
+5. Initialize `count` to 0, which will keep track of the number of pairs with distance less than or equal to `mid`.
+6. Initialize `start` to 0, which represents the start index of the sliding window.
+7. Iterate over the `nums` array using the `end` pointer.
+8. Move the `start` pointer until `nums[end] - nums[start]` is greater than `mid`. This ensures that the distance between the elements at the `start` and `end` indices is less than or equal to `mid`.
+9. Add `end - start` to the `count` since all the elements between `start` and `end` (inclusive) form valid pairs with distance less than or equal to `mid`.
+10. Adjust the boundaries of the search space based on the value of `count`. If `count` is greater than or equal to `k`, it means that there are at least `k` pairs with distance less than or equal to `mid`, so we need to search for smaller distances. Therefore, update `right` to `mid`. Otherwise, there are fewer than `k` pairs with distance less than or equal to `mid`, so we need to search for larger distances. In this case, update `left` to `mid + 1`.
+11. Repeat steps 4-10 until `left` becomes equal to `right`, at which point the binary search loop terminates.
+12. Return the value of `left`, which represents the k-th smallest distance among all the pairs.
+
+You can create an instance of the `Solution` class and call the `smallestDistancePair` function with the given inputs to obtain the result. For example:
+
+```python
+solution = Solution()
+nums = [1, 3, 1]
+k = 1
+result = solution.smallestDistancePair(nums, k)
+print(result)  # Output:

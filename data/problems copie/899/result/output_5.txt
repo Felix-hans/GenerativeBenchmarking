@@ -1,0 +1,32 @@
+To solve the given task, we can follow two different approaches based on the value of `k`.
+
+If `k` is greater than 1, we can simply sort the string `s` in lexicographically ascending order and return the result. This is because we can freely rearrange the characters in any order, so sorting the string will give us the lexicographically smallest possible string.
+
+If `k` is equal to 1, we need to consider all possible rotations of the string `s` to find the lexicographically smallest string. We can compare the rotated strings and keep track of the smallest one. To rotate the string, we can concatenate the substring from the second character onwards with the first character.
+
+Here's the implementation of the `orderlyQueue` function in Python:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k > 1:
+            return ''.join(sorted(s))
+        
+        smallest = s
+        for i in range(len(s)):
+            rotated = s[i:] + s[:i]
+            if rotated < smallest:
+                smallest = rotated
+        
+        return smallest
+```
+
+Now you can create an instance of the `Solution` class and call the `orderlyQueue` function to test it with different inputs. For example:
+
+```python
+solution = Solution()
+print(solution.orderlyQueue("cba", 1))  # Output: "acb"
+print(solution.orderlyQueue("baaca", 3))  # Output: "aaabc"
+```
+
+The code will output the expected results for the given examples.

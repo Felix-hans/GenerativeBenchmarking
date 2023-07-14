@@ -1,0 +1,39 @@
+To solve this problem, we can make use of the greedy algorithm. First, we sort the intervals based on the start time. Then, we iterate through the intervals and compare the end time of each interval with the start time of the next interval. If the end time of the current interval is before the start time of the next interval, we can put them in the same group. Otherwise, we need to create a new group. At the end, the number of groups we created will be the minimum number of groups needed.
+
+Here is the implementation in Go:
+
+```go
+import "sort"
+
+func minGroups(intervals [][]int) int {
+    // Sort the intervals based on the start time
+    sort.Slice(intervals, func(i, j int) bool {
+        return intervals[i][0] < intervals[j][0]
+    })
+
+    // Initialize the number of groups to 1
+    groups := 1
+    // Initialize the end time of the current interval
+    endTime := intervals[0][1]
+
+    // Iterate through the intervals
+    for i := 1; i < len(intervals); i++ {
+        // If the end time of the current interval is before the start time of the next interval
+        // put them in the same group and update the end time of the current interval
+        if endTime < intervals[i][0] {
+            groups++
+            endTime = intervals[i][1]
+        } else {
+            // If the end time of the current interval is after or equal to the start time of the next interval
+            // create a new group and update the end time if necessary
+            if endTime < intervals[i][1] {
+                endTime = intervals[i][1]
+            }
+        }
+    }
+
+    return groups
+}
+```
+
+The time complexity of this solution is O(n log n) due to the sorting step, where n is the number of intervals.

@@ -1,0 +1,68 @@
+To solve this task, we can use a backtracking algorithm. Here's the implementation of the `findMinStep` method in Python:
+
+```python
+from collections import Counter
+
+class Solution:
+    def findMinStep(self, board: str, hand: str) -> int:
+        self.min_balls = float('inf')
+        hand_count = Counter(hand)
+        self.backtrack(board, hand_count)
+        return self.min_balls if self.min_balls < float('inf') else -1
+
+    def backtrack(self, board, hand_count, balls_used=0):
+        if not board:
+            self.min_balls = min(self.min_balls, balls_used)
+            return
+
+        if not hand_count:
+            return
+
+        i = 0
+        while i < len(board):
+            j = i + 1
+            while j < len(board) and board[i] == board[j]:
+                j += 1
+
+            needed_balls = 3 - (j - i)
+            if hand_count[board[i]] >= needed_balls:
+                removed_balls = board[i:j]
+                new_board = self.remove_balls(board[:i] + board[j:])
+                hand_count[board[i]] -= needed_balls
+                self.backtrack(new_board, hand_count, balls_used + needed_balls)
+                hand_count[board[i]] += needed_balls
+
+            i = j
+
+    def remove_balls(self, board):
+        i = 0
+        while i < len(board):
+            j = i + 1
+            while j < len(board) and board[i] == board[j]:
+                j += 1
+
+            if j - i >= 3:
+                return self.remove_balls(board[:i] + board[j:])
+
+            i = j
+
+        return board
+```
+
+We start by defining the `Solution` class and the `findMinStep` method that takes the `board` and `hand` strings as input and returns the minimum number of balls needed to clear the board.
+
+Inside the `findMinStep` method, we initialize a variable `min_balls` to infinity. We also create a counter `hand_count` to keep track of the count of each ball in the hand.
+
+We then call the `backtrack` method, passing the `board`, `hand_count`, and `balls_used` as arguments.
+
+In the `backtrack` method, we have the following base cases:
+- If the `board` is empty, we update `min_balls` with the minimum value between the current `min_balls` and `balls_used` and return.
+- If the `hand_count` is empty (i.e., we have used all the balls in the hand), we return.
+
+Next, we iterate through the `board` using two pointers, `i` and `j`, to identify groups of consecutive balls with the same color. We calculate the number of needed balls to form a group of three by subtracting the length of the group from 3.
+
+If the count of the current ball in the hand (`hand_count[board[i]]`) is greater than or equal to the needed balls, we can remove the group from the board. We update the `hand_count` and recursively call the `backtrack` method with the updated `board`, `hand_count`, and `balls_used`.
+
+After the recursive call, we restore the original `hand_count` by adding back the balls used in the current iteration.
+
+Finally, we define the `remove_balls` method to remove groups of three or more consecutive balls from the board. We use a similar approach as in the `backtrack` method, iterating through the board and removing groups of consecutive balls until there are no more groups

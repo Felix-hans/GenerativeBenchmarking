@@ -1,0 +1,61 @@
+To check if two strings, `s` and `t`, are anagrams of each other, we can compare the frequency of each character in both strings. If the frequency of each character is the same in both strings, then `t` is an anagram of `s`.
+
+Here's the Python code to solve this problem:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        
+        # Initialize a dictionary to store the character frequency
+        frequency = {}
+        
+        # Count the frequency of each character in string s
+        for char in s:
+            frequency[char] = frequency.get(char, 0) + 1
+        
+        # Decrement the frequency of each character in string t
+        # If a character frequency becomes negative, or a character
+        # is missing from string s, it means t is not an anagram of s
+        for char in t:
+            frequency[char] = frequency.get(char, 0) - 1
+            if frequency[char] < 0:
+                return False
+        
+        # If all characters in both strings have the same frequency,
+        # t is an anagram of s
+        return True
+```
+
+This solution has a time complexity of O(n), where n is the length of the strings `s` and `t`.
+
+If the inputs contain Unicode characters, we can modify the solution as follows:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        
+        # Initialize a dictionary to store the character frequency
+        frequency = {}
+        
+        # Count the frequency of each character in string s
+        for char in s:
+            frequency[char] = frequency.get(char, 0) + 1
+        
+        # Decrement the frequency of each character in string t
+        # If a character frequency becomes negative, or a character
+        # is missing from string s, it means t is not an anagram of s
+        for char in t:
+            frequency[char] = frequency.get(char, 0) - 1
+            if frequency[char] < 0:
+                return False
+        
+        # If all characters in both strings have the same frequency,
+        # t is an anagram of s
+        return True
+```
+
+This modified solution works for Unicode characters as well, as Python's strings can handle Unicode characters by default. The only difference is that the frequency dictionary will now store the counts of Unicode characters.

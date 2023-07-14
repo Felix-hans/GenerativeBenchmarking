@@ -1,0 +1,43 @@
+Here is the implementation of the problem using the given template:
+
+```go
+func minimizeResult(expression string) string {
+    num1 := ""
+    num2 := ""
+
+    i := 0
+
+    // Extracting num1 and num2 from the expression
+    for expression[i] != '+' {
+        num1 += string(expression[i])
+        i++
+    }
+    i++
+    for i < len(expression) {
+        num2 += string(expression[i])
+        i++
+    }
+
+    // Evaluating num1+num2
+    sum := strconv.Itoa(strconv.Atoi(num1) + strconv.Atoi(num2))
+
+    // Constructing the result expression
+    result := ""
+
+    if sum == "0" {
+        // Adding parentheses to num1+num2
+        result = "(" + num1 + "+" + num2 + ")"
+    } else if len(num1) <= len(num2) {
+        // Adding parentheses to num1+num2
+        result = "(" + num1 + "+" + num2 + ")"
+    } else {
+        // Only adding parentheses to num2
+        result = "(" + num1 + "+" + num2
+        result += ")"
+    }
+
+    return result
+}
+```
+
+I hope this helps! Let me know if you have any further questions.

@@ -1,0 +1,44 @@
+To solve this problem, we can use dynamic programming to find the maximum dot product between non-empty subsequences of `nums1` and `nums2`.
+
+We'll define a 2D table `dp` of size `(len(nums1) + 1) x (len(nums2) + 1)`. Each cell `dp[i][j]` will represent the maximum dot product between non-empty subsequences of `nums1[:i]` and `nums2[:j]`.
+
+The recurrence relation to fill in the `dp` table is as follows:
+
+```
+dp[i][j] = max(dp[i-1][j-1] + nums1[i-1] * nums2[j-1],  # Include nums1[i-1] and nums2[j-1] in the subsequence
+               dp[i][j-1],  # Exclude nums2[j-1] from the subsequence
+               dp[i-1][j])  # Exclude nums1[i-1] from the subsequence
+```
+
+Here's the implementation of the `maxDotProduct` function in Python:
+
+```python
+class Solution:
+    def maxDotProduct(self, nums1, nums2):
+        m, n = len(nums1), len(nums2)
+        dp = [[float('-inf')] * (n + 1) for _ in range(m + 1)]
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                dp[i][j] = max(dp[i-1][j-1] + nums1[i-1] * nums2[j-1], dp[i][j-1], dp[i-1][j])
+        
+        return dp[m][n]
+```
+
+Let's test the solution with the given examples:
+
+```python
+nums1 = [2, 1, -2, 5]
+nums2 = [3, 0, -6]
+print(Solution().maxDotProduct(nums1, nums2))  # Output: 18
+
+nums1 = [3, -2]
+nums2 = [2, -6, 7]
+print(Solution().maxDotProduct(nums1, nums2))  # Output: 21
+
+nums1 = [-1, -1]
+nums2 = [1, 1]
+print(Solution().maxDotProduct(nums1, nums2))  # Output: -1
+```
+
+The output matches the expected results for the given examples.

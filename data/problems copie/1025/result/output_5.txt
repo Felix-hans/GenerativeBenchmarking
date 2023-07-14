@@ -1,0 +1,37 @@
+To solve this problem, we can use dynamic programming to determine the outcome of the game for each possible value of n.
+
+We can define a boolean array dp of size n+1, where dp[i] represents the outcome of the game for the number i. We can initialize dp[0] and dp[1] as False, since the game cannot be played with these values.
+
+Then, we can iterate from 2 to n and for each number i, check if there exists any x such that 0 < x < i and i % x == 0. If such x exists, it means Alice can choose x and the game can continue with the number i-x. In this case, Alice will win if the outcome of the game for i-x is False (Bob loses). So, we can set dp[i] to True.
+
+If no such x exists, it means Alice cannot make a move and she loses the game. So, we can set dp[i] to False.
+
+Finally, we can return dp[n], which represents the outcome of the game for the initial number n.
+
+Here's the implementation of the `divisorGame` function:
+
+```python
+class Solution:
+    def divisorGame(self, n: int) -> bool:
+        dp = [False] * (n + 1)
+        dp[0] = False
+        dp[1] = False
+
+        for i in range(2, n + 1):
+            for x in range(1, i):
+                if i % x == 0 and not dp[i - x]:
+                    dp[i] = True
+                    break
+
+        return dp[n]
+```
+
+Now, you can create an instance of the `Solution` class and call the `divisorGame` function to test it with different values of n. For example:
+
+```python
+solution = Solution()
+print(solution.divisorGame(2))  # Output: True
+print(solution.divisorGame(3))  # Output: False
+```
+
+This implementation should provide the expected outputs for the given examples and satisfy the given constraints.

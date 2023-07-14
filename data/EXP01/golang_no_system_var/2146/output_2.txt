@@ -1,0 +1,104 @@
+To solve this problem, we can use a modified breadth-first search algorithm. We start from the given starting position and explore the grid in a breadth-first manner, keeping track of the distance, price, row number, and column number of each item cell we encounter. We can use a priority queue to maintain the k highest-ranked items based on the given criteria.
+
+Here is the implementation in Go:
+
+```go
+import "container/heap"
+
+type Item struct {
+    distance, price, row, col int
+}
+
+type PriorityQueue []*Item
+
+func (pq PriorityQueue) Len() int { return len(pq) }
+func (pq PriorityQueue) Less(i, j int) bool {
+    if pq[i].distance != pq[j].distance {
+        return pq[i].distance < pq[j].distance
+    } else if pq[i].price != pq[j].price {
+        return pq[i].price > pq[j].price
+    } else if pq[i].row != pq[j].row {
+        return pq[i].row < pq[j].row
+    } else {
+        return pq[i].col < pq[j].col
+    }
+}
+func (pq PriorityQueue) Swap(i, j int) { pq[i], pq[j] = pq[j], pq[i] }
+
+func (pq *PriorityQueue) Push(x interface{}) {
+    item := x.(*Item)
+    *pq = append(*pq, item)
+}
+
+func (pq *PriorityQueue) Pop() interface{} {
+    n := len(*pq)
+    item := (*pq)[n-1]
+    *pq = (*pq)[:n-1]
+    return item
+}
+
+func highestRankedKItems(grid [][]int, pricing []int, start []int, k int) [][]int {
+    visited := make([][]bool, len(grid))
+    for i := 0; i < len(grid); i++ {
+        visited[i] = make([]bool, len(grid[i]))
+    }
+    
+    pq := make(PriorityQueue, 0)
+    heap.Init(&pq)
+    
+    // Helper function to check if a cell is valid and within the price range
+    isValid := func(row, col int) bool {
+        if row < 0 || row >= len(grid) || col < 0 || col >= len(grid[0]) {
+            return false
+        }
+        price := grid[row][col]
+        return price >= pricing[0] && price <= pricing[1]
+    }
+    
+    // Add the starting position to the priority queue
+    startItem := &Item{0, grid[start[0]][start[1]], start[0], start[1]}
+    heap.Push(&pq, startItem)
+    visited[start[0]][start[1]] = true
+    
+    result := make([][]int, 0)
+    
+    // Perform the breadth-first search
+    for len(pq) > 0 && len(result) < k {
+        item := heap.Pop(&pq).(*Item)
+        result = append(result, []int{item.row, item.col})
+        
+        // Explore adjacent cells
+        neighbors := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+        for _, neighbor := range neighbors {
+            newRow, newCol := item.row+neighbor[0], item.col+neighbor[1]
+            if isValid(newRow, newCol) && !visited[newRow][newCol] {
+                newDistance := item.distance + 1
+                newPrice := grid[newRow][newCol]
+                newItem := &Item{newDistance, newPrice, newRow, newCol}
+                heap.Push(&pq, newItem)
+                visited[newRow][newCol] = true
+            }
+        }
+    }
+    
+    return result
+}
+```
+
+The main function `highestRankedKItems` takes the `grid` representing the map of the items, the `pricing` range, the `start` position, and the value of `k` as input.
+
+We initialize a `visited` array to keep track of which cells have been visited during the search. We also initialize a priority queue `pq` using the `PriorityQueue` type defined above.
+
+We then define a helper function `isValid` to check if a cell is within the grid and has a price within the given range.
+
+Next, we add the starting position to the priority queue and mark it as visited. We use the `Item` struct defined above to store the distance, price, row number, and column number of each item cell.
+
+We initialize an empty `result` array to store the k highest-ranked items.
+
+We then enter a loop where we continue to pop items from the priority queue until either the queue is empty or we have found k items. For each popped item, we add its position to the `result` array.
+
+We then explore the adjacent cells of the current item and if a valid cell is found (within the grid and price range) and it has not been visited before, we calculate the new distance and price, create a new item with these values, and push it to the priority queue. We also mark the cell as visited.
+
+Finally, we return the `result` array containing the k highest-ranked items.
+
+Note that the priority queue ensures that the items are sorted based on the given rank criteria (distance, price, row number, column number) and the `Less` function defined in the `PriorityQueue` type.

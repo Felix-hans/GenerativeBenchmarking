@@ -1,0 +1,55 @@
+To solve the problem, we can use dynamic programming to keep track of the maximum profit at each day by considering all possible combinations of buying and selling.
+
+Here's the implementation of the `maxProfit` function:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        n = len(prices)
+        if n < 2:
+            return 0
+        
+        # Initialize the variables to track the maximum profit after each transaction
+        buy1 = buy2 = float('-inf')
+        sell1 = sell2 = 0
+        
+        for price in prices:
+            # First transaction: buy at the lowest price and sell at the highest price
+            buy1 = max(buy1, -price)               # Track the lowest price to buy
+            sell1 = max(sell1, buy1 + price)        # Track the maximum profit after the first transaction
+            
+            # Second transaction: buy after the first sell and sell at the highest price
+            buy2 = max(buy2, sell1 - price)         # Track the lowest price to buy after the first sell
+            sell2 = max(sell2, buy2 + price)        # Track the maximum profit after the second transaction
+            
+        return sell2
+```
+
+The algorithm maintains four variables: `buy1`, `sell1`, `buy2`, and `sell2`. `buy1` and `sell1` keep track of the maximum profit after the first transaction, and `buy2` and `sell2` track the maximum profit after the second transaction.
+
+We iterate through the prices array, updating these variables as follows:
+
+1. Update `buy1` to be the maximum between the current `buy1` and the negative price (representing buying at the lowest price).
+2. Update `sell1` to be the maximum between the current `sell1` and the sum of `buy1` and the current price (representing selling after the first buy).
+3. Update `buy2` to be the maximum between the current `buy2` and the difference between `sell1` and the current price (representing buying after the first sell).
+4. Update `sell2` to be the maximum between the current `sell2` and the sum of `buy2` and the current price (representing selling after the second buy).
+
+Finally, we return `sell2`, which represents the maximum profit after completing the two transactions.
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+prices = [3, 3, 5, 0, 0, 3, 1, 4]
+print(solution.maxProfit(prices))  # Output: 6
+
+prices = [1, 2, 3, 4, 5]
+print(solution.maxProfit(prices))  # Output: 4
+
+prices = [7, 6, 4, 3, 1]
+print(solution.maxProfit(prices))  # Output: 0
+```
+
+The function should produce the expected outputs.

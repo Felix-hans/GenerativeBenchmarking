@@ -1,0 +1,51 @@
+To solve this task, we can use a recursive backtracking algorithm. Here's the implementation of the `findMinStep` function:
+
+```python
+class Solution:
+    def findMinStep(self, board: str, hand: str) -> int:
+        # Count the frequency of each ball in the hand
+        hand_freq = {}
+        for ball in hand:
+            hand_freq[ball] = hand_freq.get(ball, 0) + 1
+
+        # Recursive backtracking function
+        def backtrack(board: str, hand_freq: dict) -> int:
+            if not board:
+                return 0  # Board is empty, game is won
+
+            min_steps = float('inf')
+            i = 0
+
+            while i < len(board):
+                j = i + 1
+
+                # Find the end index of the current color group
+                while j < len(board) and board[j] == board[i]:
+                    j += 1
+
+                # Calculate the number of balls needed to remove the current group
+                balls_needed = 3 - (j - i)
+
+                if hand_freq.get(board[i], 0) >= balls_needed:
+                    # Try removing the current group using balls from the hand
+                    balls_removed = balls_needed if balls_needed > 0 else 0
+                    hand_freq[board[i]] -= balls_removed
+
+                    # Recursively solve the remaining board
+                    remaining_board = board[:i] + board[j:]
+                    min_steps = min(min_steps, balls_removed + backtrack(remaining_board, hand_freq))
+
+                    # Restore the hand after backtracking
+                    hand_freq[board[i]] += balls_removed
+
+                i = j
+
+            return min_steps
+
+        # Call the backtracking function
+        min_steps = backtrack(board, hand_freq)
+
+        return min_steps if min_steps != float('inf') else -1
+```
+
+You can create an instance of the `Solution` class and call the `findMinStep` method with the `board` and `hand` inputs to get the minimum number of balls needed to clear the board.

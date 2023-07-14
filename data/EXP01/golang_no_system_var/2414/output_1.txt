@@ -1,0 +1,29 @@
+Here is one possible implementation:
+
+```go
+func longestContinuousSubstring(s string) int {
+	maxLen := 0
+	currLen := 1
+	for i := 1; i < len(s); i++ {
+		if s[i] > s[i-1] {
+			currLen++
+		} else {
+			currLen = 1
+		}
+		if currLen > maxLen {
+			maxLen = currLen
+		}
+	}
+	return maxLen
+}
+```
+
+Explanation:
+- We initialize `maxLen` and `currLen` variables to track the maximum length and the current length of the continuous substring respectively.
+- We start traversing the input string `s` from the second character.
+- If the current character is greater than the previous character, it means the substring is still in alphabetical order, so we increment `currLen` by 1.
+- If the current character is not greater than the previous character, it means the substring has ended, so we reset `currLen` to 1.
+- Finally, we compare `currLen` with `maxLen` and update `maxLen` if necessary.
+- After traversing the entire string, we return the maximum length.
+
+The time complexity of this approach is O(n), where n is the length of the input string.

@@ -1,0 +1,85 @@
+To implement the LRU cache, we can use a combination of a doubly linked list and a dictionary.
+
+The doubly linked list will keep track of the recently used keys, with the head of the list representing the most recently used key and the tail representing the least recently used key. Each node in the list will store the key and value.
+
+The dictionary will provide fast access to the nodes in the linked list, allowing us to quickly retrieve or update values associated with a given key.
+
+Here's the Python implementation of the LRUCache class:
+
+```python
+class ListNode:
+    def __init__(self, key=None, value=None):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.cache = {}
+        self.head = ListNode()
+        self.tail = ListNode()
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            node = self.cache[key]
+            self._move_to_head(node)
+            return node.value
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = value
+            self._move_to_head(node)
+        else:
+            new_node = ListNode(key, value)
+            self.cache[key] = new_node
+            self._add_to_head(new_node)
+            if len(self.cache) > self.capacity:
+                self._remove_tail()
+
+    def _move_to_head(self, node: ListNode) -> None:
+        self._remove_node(node)
+        self._add_to_head(node)
+
+    def _add_to_head(self, node: ListNode) -> None:
+        node.prev = self.head
+        node.next = self.head.next
+        self.head.next.prev = node
+        self.head.next = node
+
+    def _remove_node(self, node: ListNode) -> None:
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+    def _remove_tail(self) -> None:
+        tail = self.tail.prev
+        self._remove_node(tail)
+        del self.cache[tail.key]
+```
+
+This implementation maintains the order of recently used keys by moving a node to the head whenever it's accessed (get) or updated (put). If the cache reaches its capacity, the least recently used key is removed from the tail.
+
+The time complexity of both the `get` and `put` operations is O(1) on average since dictionary operations like key lookup and deletion are amortized O(1), and the linked list operations involve constant time manipulations of the nodes.
+
+Here's an example usage of the LRUCache class with the provided test case:
+
+```python
+lRUCache = LRUCache(2)
+lRUCache.put(1, 1)
+lRUCache.put(2, 2)
+print(lRUCache.get(1))  # Output: 1
+lRUCache.put(3, 3)
+print(lRUCache.get(2))  # Output: -1
+lRUCache.put(4, 4)
+print(lRUCache.get(1))  # Output: -1
+print(lRUCache.get(3))  # Output: 3
+print(lRUCache.get(4))  # Output: 4
+```
+
+I hope this helps! Let me know if you have any further questions.

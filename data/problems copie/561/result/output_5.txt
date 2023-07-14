@@ -1,0 +1,41 @@
+To solve the problem, we can follow the steps below:
+
+1. Sort the given `nums` array in ascending order.
+2. Initialize a variable `max_sum` to store the maximum sum.
+3. Iterate over the sorted `nums` array with a step size of 2, considering pairs of adjacent elements.
+4. Add the minimum value between the two elements in each pair to `max_sum`.
+5. Return the value of `max_sum`.
+
+Here's the implementation of the `arrayPairSum` function:
+
+```python
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        nums.sort()  # Step 1: Sort the array
+        
+        max_sum = 0  # Step 2: Initialize the maximum sum
+        
+        # Step 3 and 4: Iterate over pairs and add minimum value to max_sum
+        for i in range(0, len(nums), 2):
+            max_sum += min(nums[i], nums[i + 1])
+        
+        return max_sum  # Step 5
+```
+
+Now, you can create an instance of the `Solution` class and call the `arrayPairSum` method with your input array to obtain the maximum sum. For example:
+
+```python
+nums = [1, 4, 3, 2]
+solution = Solution()
+result = solution.arrayPairSum(nums)
+print(result)  # Output: 4
+```
+
+```python
+nums = [6, 2, 6, 5, 1, 2]
+solution = Solution()
+result = solution.arrayPairSum(nums)
+print(result)  # Output: 9
+```
+
+The code will output the maximum sum based on the given input array `nums`.

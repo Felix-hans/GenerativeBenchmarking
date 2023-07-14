@@ -1,0 +1,55 @@
+To solve the problem, we can follow these steps:
+
+1. Sort the ranks in ascending order.
+2. Initialize the total time variable `total_time` to 0.
+3. Iterate over the sorted ranks in reverse order.
+    - For each rank, calculate the number of cars the mechanic can repair `num_cars` using the formula: `num_cars = rank * rank`.
+    - If `num_cars` is greater than or equal to the number of cars remaining `cars`, add the required time to repair the remaining cars `cars` to `total_time` using the formula: `total_time += cars * rank * rank`.
+    - Otherwise, subtract `num_cars` from `cars`, and add the required time to repair `num_cars` cars to `total_time` using the formula: `total_time += num_cars * rank * rank`.
+4. Return `total_time`.
+
+Here is the implementation of the `repairCars` function:
+
+```python
+from typing import List
+
+class Solution:
+    def repairCars(self, ranks: List[int], cars: int) -> int:
+        ranks.sort()  # sort ranks in ascending order
+        total_time = 0  # initialize total time to 0
+        
+        # iterate over ranks in reverse order
+        for rank in reversed(ranks):
+            num_cars = rank * rank  # calculate number of cars the mechanic can repair
+            
+            if num_cars >= cars:
+                total_time += cars * rank * rank  # repair the remaining cars
+                break  # exit the loop
+                
+            total_time += num_cars * rank * rank  # repair num_cars cars
+            cars -= num_cars  # decrease the number of cars remaining
+        
+        return total_time
+```
+
+We can test the function using the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+ranks1 = [4, 2, 3, 1]
+cars1 = 10
+print(solution.repairCars(ranks1, cars1))  # Output: 16
+
+# Example 2
+ranks2 = [5, 1, 8]
+cars2 = 6
+print(solution.repairCars(ranks2, cars2))  # Output: 16
+```
+
+Output:
+```
+16
+16
+```

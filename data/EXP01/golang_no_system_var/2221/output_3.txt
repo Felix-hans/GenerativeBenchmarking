@@ -1,0 +1,26 @@
+Here is the implementation of the `triangularSum` function in Go:
+
+```go
+func triangularSum(nums []int) int {
+    n := len(nums)
+
+    for n > 1 {
+        newNums := make([]int, n-1)
+        for i := 0; i < n-1; i++ {
+            newNums[i] = (nums[i] + nums[i+1]) % 10
+        }
+        nums = newNums
+        n = len(nums)
+    }
+
+    return nums[0]
+}
+```
+
+We start by checking the length of the `nums` array. If it has only one element, we return that element as the triangular sum.
+
+Otherwise, we create a new array `newNums` of length `n - 1`. We iterate through the `nums` array and calculate the modulus sum of each pair of adjacent elements, and store the result in the corresponding index of `newNums`.
+
+After that, we assign `newNums` to `nums` and update the value of `n` to be the new length of `nums`.
+
+We repeat this process until `n` becomes 1, and finally return the value at index 0 of `nums` as the triangular sum.

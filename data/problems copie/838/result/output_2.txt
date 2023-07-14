@@ -1,0 +1,60 @@
+To solve the problem, we can simulate the process of pushing the dominoes. We'll iterate over the dominoes string and perform the following steps:
+
+1. Initialize an empty list, `forces`, to store the forces acting on each domino.
+2. Initialize two variables, `force` and `n`, to track the current force and the length of the input string, respectively.
+3. Iterate over the dominoes string and perform the following steps:
+   - If the current domino is 'R', set the `force` variable to `n` (this represents the maximum force from the right).
+   - If the current domino is 'L', set the `force` variable to 0 (this represents no force from the right).
+   - Otherwise (the current domino is '.'), decrement the `force` variable by 1 (to simulate the decreasing force from the right).
+   - Append the `force` value to the `forces` list.
+   - Decrement the `force` variable by 1 (to simulate the force applied by the current domino on the next one).
+   - Decrement `n` by 1 (to simulate the decreasing distance to the next domino).
+4. Initialize a new list, `result`, to store the final state of the dominoes.
+5. Initialize a variable, `prev`, to track the previous domino's state (initialized as '.').
+6. Iterate over the `forces` list in reverse order and perform the following steps:
+   - Compute the net force acting on the current domino by subtracting the current force from the previous force.
+   - If the net force is positive, append 'R' to the `result` list.
+   - If the net force is negative, append 'L' to the `result` list.
+   - Otherwise, append the current domino's state (obtained from the input string) to the `result` list.
+   - Update the `prev` variable to the current domino's state.
+7. Reverse the `result` list and convert it to a string to obtain the final state of the dominoes.
+
+Here's the implementation of the `pushDominoes` method in Python:
+
+```python
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        forces = []
+        force = n = len(dominoes)
+        
+        for i in range(n):
+            if dominoes[i] == 'R':
+                force = n
+            elif dominoes[i] == 'L':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+                
+            forces.append(force)
+            force -= 1
+            n -= 1
+        
+        result = []
+        prev = '.'
+        
+        for i in range(len(forces) - 1, -1, -1):
+            net_force = forces[i] - forces[i - 1] if i > 0 else forces[i]
+            
+            if net_force > 0:
+                result.append('R')
+            elif net_force < 0:
+                result.append('L')
+            else:
+                result.append(dominoes[i])
+                
+            prev = result[-1]
+            
+        return ''.join(result[::-1])
+```
+
+Now you can create an instance of the `Solution` class and call the `pushDominoes` method with the input string to obtain the final state of the dominoes.

@@ -1,0 +1,29 @@
+You can solve the task by converting the integer to a string and then inserting a dot (".") as the thousands separator every three digits from the right. Here's the implementation of the `thousandSeparator` method in Python:
+
+```python
+class Solution:
+    def thousandSeparator(self, n: int) -> str:
+        n_str = str(n)
+        result = []
+        
+        for i in range(len(n_str)):
+            if i > 0 and i % 3 == 0:
+                result.append('.')
+            result.append(n_str[-i - 1])
+        
+        return ''.join(result[::-1])
+```
+
+This implementation converts the input integer `n` to a string using `str(n)`. Then, it iterates over the characters of the string from the right side using the `range` function and `len(n_str)`. When the index `i` is a multiple of 3 (except for the first digit), it appends a dot (`'.'`) to the `result` list. It also appends the current digit from `n_str` to the `result` list.
+
+Finally, it joins the characters in the `result` list into a string using `''.join(result[::-1])` and returns the result.
+
+You can create an instance of the `Solution` class and call the `thousandSeparator` method with the desired input to test it. For example:
+
+```python
+solution = Solution()
+print(solution.thousandSeparator(987))  # Output: "987"
+print(solution.thousandSeparator(1234))  # Output: "1.234"
+```
+
+The code will output the expected results for the given examples.

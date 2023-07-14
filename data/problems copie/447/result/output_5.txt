@@ -1,0 +1,39 @@
+The problem can be solved using a combination of loops and a hashmap. Here's the implementation of the `numberOfBoomerangs` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        num_boomerangs = 0
+        
+        for i in range(len(points)):
+            distances = {}  # Hashmap to store distances and their frequencies
+            
+            for j in range(len(points)):
+                if i != j:
+                    # Calculate the Euclidean distance between points[i] and points[j]
+                    distance = (points[i][0] - points[j][0])**2 + (points[i][1] - points[j][1])**2
+                    
+                    # Increment the count of this distance in the hashmap
+                    distances[distance] = distances.get(distance, 0) + 1
+            
+            # Count the number of boomerangs for each distance
+            for freq in distances.values():
+                num_boomerangs += freq * (freq - 1)  # Calculate permutations of 2 from freq
+            
+        return num_boomerangs
+```
+
+This solution iterates over each point in the `points` list and calculates the distance between it and all other points. It uses a hashmap (`distances`) to store the frequencies of different distances. For each point, we iterate over the distances hashmap and calculate the number of boomerangs that can be formed using the formula `freq * (freq - 1)`, where `freq` is the frequency of a particular distance. Finally, we return the total count of boomerangs.
+
+You can create an instance of the `Solution` class and call the `numberOfBoomerangs` function, passing in the `points` list as the argument, to get the desired result. For example:
+
+```python
+points = [[0,0],[1,0],[2,0]]
+solution = Solution()
+result = solution.numberOfBoomerangs(points)
+print(result)  # Output: 2
+```
+
+Note: The implementation assumes that the input `points` list is valid and follows the given constraints. It does not perform any additional error checking.

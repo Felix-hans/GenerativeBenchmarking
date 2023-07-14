@@ -1,0 +1,33 @@
+To solve the problem, we can iterate over each word in the input array and count the unique combinations of characters in even and odd indices. We can store these combinations in a set to ensure uniqueness. The size of the set will give us the number of groups of special-equivalent strings.
+
+Here's the implementation of the `numSpecialEquivGroups` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numSpecialEquivGroups(self, words: List[str]) -> int:
+        groups = set()
+
+        for word in words:
+            even = ''.join(sorted(word[::2]))
+            odd = ''.join(sorted(word[1::2]))
+            groups.add((even, odd))
+
+        return len(groups)
+```
+
+We use slicing to separate the characters at even and odd indices. Then, we sort the characters in both parts and concatenate them. This ensures that the resulting strings are unique for every special-equivalent group.
+
+Finally, we return the length of the `groups` set, which gives us the number of groups of special-equivalent strings.
+
+You can create an instance of the `Solution` class and call the `numSpecialEquivGroups` function with your input array:
+
+```python
+words = ["abcd", "cdab", "cbad", "xyzz", "zzxy", "zzyx"]
+solution = Solution()
+result = solution.numSpecialEquivGroups(words)
+print(result)
+```
+
+This will output `3`, which is the correct number of groups of special-equivalent strings for the given example.

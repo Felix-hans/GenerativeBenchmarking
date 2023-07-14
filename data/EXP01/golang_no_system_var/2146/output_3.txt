@@ -1,0 +1,147 @@
+To solve this problem, we can use Dijkstra's algorithm to find the shortest path from the start position to each item in the grid. Then, we can filter the items that fall within the given price range and sort them based on their rank.
+
+Here is the implementation in Go:
+
+```go
+import (
+	"container/heap"
+	"math"
+)
+
+// Item represents an item in the grid
+type Item struct {
+	row, col int
+	price    int
+	distance int
+}
+
+// PriorityQueue is a priority queue of items
+type PriorityQueue []*Item
+
+// Len returns the length of the priority queue
+func (pq PriorityQueue) Len() int {
+	return len(pq)
+}
+
+// Less returns whether the item at index i is less than the item at index j in the priority queue
+func (pq PriorityQueue) Less(i, j int) bool {
+	// Rank by distance
+	if pq[i].distance != pq[j].distance {
+		return pq[i].distance < pq[j].distance
+	}
+	// Rank by price
+	if pq[i].price != pq[j].price {
+		return pq[i].price > pq[j].price
+	}
+	// Rank by row
+	if pq[i].row != pq[j].row {
+		return pq[i].row < pq[j].row
+	}
+	// Rank by column
+	return pq[i].col < pq[j].col
+}
+
+// Swap swaps the items at index i and j in the priority queue
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].distance, pq[j].distance = pq[j].distance, pq[i].distance
+}
+
+// Push adds an item to the priority queue
+func (pq *PriorityQueue) Push(x interface{}) {
+	item := x.(*Item)
+	*pq = append(*pq, item)
+}
+
+// Pop removes and returns the item at the top of the priority queue
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	*pq = old[:n-1]
+	return item
+}
+
+func shortestPath(grid [][]int, start []int) []int {
+	m := len(grid)
+	n := len(grid[0])
+	distance := make([][]int, m)
+	for i := range distance {
+		distance[i] = make([]int, n)
+		for j := range distance[i] {
+			distance[i][j] = math.MaxInt32
+		}
+	}
+	distance[start[0]][start[1]] = 0
+
+	pq := make(PriorityQueue, 0)
+	heap.Push(&pq, &Item{start[0], start[1], grid[start[0]][start[1]], 0})
+
+	directions := [][]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+
+	for pq.Len() > 0 {
+		item := heap.Pop(&pq).(*Item)
+		row, col := item.row, item.col
+
+		if distance[row][col] < item.distance {
+			continue
+		}
+
+		for _, dir := range directions {
+			newRow, newCol := row+dir[0], col+dir[1]
+			if newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && grid[newRow][newCol] != 0 {
+				newDistance := distance[row][col] + 1
+				if newDistance < distance[newRow][newCol] {
+					distance[newRow][newCol] = newDistance
+					heap.Push(&pq, &Item{newRow, newCol, grid[newRow][newCol], newDistance})
+				}
+			}
+		}
+	}
+
+	return distance
+}
+
+func highestRankedKItems(grid [][]int, pricing []int, start []int, k int) [][]int {
+	m := len(grid)
+	n := len(grid[0])
+
+	distance := shortestPath(grid, start)
+
+	result := make([][]int, 0)
+	for row := 0; row < m; row++ {
+		for col := 0; col < n; col++ {
+			price := grid[row][col]
+			if price >= pricing[0] && price <= pricing[1] {
+				result = append(result, []int{row, col})
+			}
+		}
+	}
+
+	sort.Slice(result, func(i, j int) bool {
+		// Sort by distance
+		if distance[result[i][0]][result[i][1]] != distance[result[j][0]][result[j][1]] {
+			return distance[result[i][0]][result[i][1]] < distance[result[j][0]][result[j][1]]
+		}
+		// Sort by price
+		if grid[result[i][0]][result[i][1]] != grid[result[j][0]][result[j][1]] {
+			return grid[result[i][0]][result[i][1]] < grid[result[j][0]][result[j][1]]
+		}
+		// Sort by row
+		if result[i][0] != result[j][0] {
+			return result[i][0] < result[j][0]
+		}
+		// Sort by column
+		return result[i][1] < result[j][1]
+	})
+
+	if k > len(result) {
+		return result
+	}
+	return result[:k]
+}
+```
+
+The function `shortestPath` implements Dijkstra's algorithm to find the shortest distance from the start position to each item in the grid. The function `highestRankedKItems` uses the `shortestPath` function to compute the shortest path distances and then filters and sorts the items that fall within the price range.
+
+Note: The code uses `sort.Slice` for sorting based on multiple criteria. This requires importing the `sort` package.

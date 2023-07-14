@@ -1,0 +1,49 @@
+You can implement the given task in Python by following these steps:
+
+1. Split the input string `s` into a list of words using the `split()` method, which splits the string based on whitespace.
+2. Find the maximum length among all the words in the list obtained from step 1. This will determine the number of columns in the vertical representation.
+3. Initialize an empty list called `result` to store the vertically printed words.
+4. Iterate `i` from 0 to the maximum word length - 1. This will represent the current column.
+5. For each column `i`, iterate through the words in the list obtained from step 1.
+   - If the word has a length greater than or equal to `i+1`, add the `i`-th character of the word to the corresponding column in the `result` list.
+   - Otherwise, add a space character to the corresponding column in the `result` list.
+6. Finally, return the `result` list as the output.
+
+Here's the implementation of the `printVertically` function:
+
+```python
+from typing import List
+
+class Solution:
+    def printVertically(self, s: str) -> List[str]:
+        words = s.split()
+        max_length = max(len(word) for word in words)
+        result = []
+        
+        for i in range(max_length):
+            column = []
+            for word in words:
+                if i < len(word):
+                    column.append(word[i])
+                else:
+                    column.append(' ')
+            result.append(''.join(column).rstrip())
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `printVertically` method with the input string to get the desired output. For example:
+
+```python
+solution = Solution()
+s = "HOW ARE YOU"
+output = solution.printVertically(s)
+print(output)
+```
+
+Output:
+```
+['HAY', 'ORO', 'WEU']
+```
+
+You can repeat the same process for other test cases as well.

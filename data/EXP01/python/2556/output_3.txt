@@ -1,0 +1,79 @@
+To solve this task, we can use a depth-first search (DFS) algorithm to check if there is a path from (0, 0) to (m - 1, n - 1) in the given grid. 
+
+We start by initializing a visited matrix of size m x n, where all cells are initially set to False. This matrix will keep track of the visited cells during the DFS traversal.
+
+Then, we define a helper function called dfs() that takes the current cell coordinates (row, col) as parameters. In this function, we first check if the current cell is out of bounds or if it is already visited. If any of these conditions are met, we simply return without doing anything.
+
+Next, we mark the current cell as visited by setting visited[row][col] = True. We then recursively call dfs() for the adjacent cells (row + 1, col) and (row, col + 1) if they are valid and have a value of 1.
+
+After defining the dfs() function, we can implement the isPossibleToCutPath() function that checks if it is possible to disconnect the matrix.
+
+First, we check if there is a direct path from (0, 0) to (m - 1, n - 1) without flipping any cells. If such a path exists, we return False, as it is not possible to disconnect the matrix without flipping any cells.
+
+Next, we iterate over each cell (row, col) in the grid. For each cell, we check if flipping it would result in a disconnected matrix. To do this, we temporarily flip the value of the current cell, and then call the dfs() function to check if there is still a path from (0, 0) to (m - 1, n - 1). If there is no path, we return True, indicating that it is possible to disconnect the matrix by flipping the current cell.
+
+If we have checked all cells and none of them can be flipped to disconnect the matrix, we return False.
+
+Here is the complete implementation:
+
+```python
+from typing import List
+
+class Solution:
+    def dfs(self, grid: List[List[int]], visited: List[List[bool]], row: int, col: int) -> None:
+        m, n = len(grid), len(grid[0])
+        
+        if row < 0 or row >= m or col < 0 or col >= n or visited[row][col] or grid[row][col] == 0:
+            return
+        
+        visited[row][col] = True
+        
+        self.dfs(grid, visited, row + 1, col)
+        self.dfs(grid, visited, row, col + 1)
+        
+        
+    def isPossibleToCutPath(self, grid: List[List[int]]) -> bool:
+        m, n = len(grid), len(grid[0])
+        
+        visited = [[False] * n for _ in range(m)]
+        
+        # Check if there is a direct path from (0, 0) to (m - 1, n - 1) without flipping any cells
+        self.dfs(grid, visited, 0, 0)
+        
+        if visited[m - 1][n - 1]:
+            return False
+        
+        # Check if flipping any cell can disconnect the matrix
+        for row in range(m):
+            for col in range(n):
+                # Flip the current cell
+                grid[row][col] = 1 - grid[row][col]
+                
+                visited = [[False] * n for _ in range(m)]
+                
+                self.dfs(grid, visited, 0, 0)
+                
+                if not visited[m - 1][n - 1]:
+                    return True
+                
+                # Restore the original value of the current cell
+                grid[row][col] = 1 - grid[row][col]
+                
+        return False
+```
+
+We can then create an instance of the Solution class and call the isPossibleToCutPath() function with the given grid to get the result:
+
+```python
+grid = [[1, 1, 1], [1, 0, 0], [1, 1, 1]]
+solution = Solution()
+result = solution.isPossibleToCutPath(grid)
+print(result)  # Output: True
+```
+
+```python
+grid = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+solution = Solution()
+result = solution.isPossibleToCutPath(grid)
+print(result)  # Output: False
+```

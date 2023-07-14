@@ -1,0 +1,41 @@
+Here is the implementation of the FrequencyTracker class in Go:
+
+```go
+type FrequencyTracker struct {
+    data map[int]int
+}
+
+func Constructor() FrequencyTracker {
+    return FrequencyTracker{
+        data: make(map[int]int),
+    }
+}
+
+func (this *FrequencyTracker) Add(number int) {
+    this.data[number]++
+}
+
+func (this *FrequencyTracker) DeleteOne(number int) {
+    if this.data[number] > 0 {
+        this.data[number]--
+    }
+}
+
+func (this *FrequencyTracker) HasFrequency(frequency int) bool {
+    for _, count := range this.data {
+        if count == frequency {
+            return true
+        }
+    }
+    return false
+}
+```
+
+Explanation:
+- The `FrequencyTracker` struct has a `data` field which is a map that will store the numbers as keys and their frequencies as values.
+- The `Constructor` function initializes a new `FrequencyTracker` object with an empty `data` map.
+- The `Add` function adds a number to the `data` map by incrementing its frequency.
+- The `DeleteOne` function deletes one occurrence of a number from the `data` map, if it exists. It decrements its frequency.
+- The `HasFrequency` function checks if there is a number in the `data` map that occurs with the specified frequency. It iterates over the frequencies in the `data` map and returns true if it finds a match, otherwise false.
+
+Note: The test cases mentioned in the problem statement are not included in the code above.

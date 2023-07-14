@@ -1,0 +1,15 @@
+To solve this task, we can follow these steps:
+
+- Define a function `wordCount` that takes two input parameters `startWords` and `targetWords` of type `List[str]` and returns an integer.
+- Initialize a variable `count` to 0 to keep track of the number of strings in `targetWords` that can be obtained from `startWords`.
+- Iterate over each string `target` in `targetWords`.
+    - Initialize a variable `targetFreq` as an empty dictionary to store the frequency of each character in `target`.
+    - Iterate over each string `start` in `startWords`.
+        - Initialize a variable `startFreq` as an empty dictionary to store the frequency of each character in `start`.
+        - Iterate over each character `c` in `start` and increment its count in `startFreq`.
+        - Iterate over each character `c` in `target` and increment its count in `targetFreq`.
+        - Iterate over each character `c` in `targetFreq` and check if the count of `c` is greater than the count of the same character in `startFreq`. If so, break out of the loop since we cannot obtain `target` from `start`.
+    - If the loop completes without breaking, increment `count` by 1.
+- Finally, return the value of `count`.
+
+Here is the implementation of these steps:

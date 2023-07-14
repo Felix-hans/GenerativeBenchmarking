@@ -1,0 +1,42 @@
+To solve this problem, we can use dynamic programming. Let's define a 2-dimensional array dp, where dp[i][j] represents the number of different good strings that can be constructed with i zeros and j ones.
+
+To fill in the dp array, we can start by initializing dp with zeros. Then, we can iterate through each possible number of zeros and ones (from 0 to low). For each combination of zeros and ones, we can calculate the number of good strings by considering two cases:
+
+1. If we append zero characters, then the number of good strings will be dp[i][j - 1]. This means that we can append j - 1 ones and i zeros to the previous number of good strings.
+2. If we append one character, then the number of good strings will be dp[i - 1][j] + dp[i][j - 1]. This means that we can either append i zeros to the previous number of good strings, or append j ones to the previous number of good strings.
+
+Finally, to get the total number of different good strings that can be constructed with a length between low and high, we can sum up all the values in the dp array that correspond to lengths between low and high.
+
+Here's the implementation in Python:
+
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        MOD = 10**9 + 7
+        
+        # Initialize dp array with zeros
+        dp = [[0] * (one+1) for _ in range(zero+1)]
+        
+        # Base case: dp[0][0] = 1, as an empty string is a valid good string
+        dp[0][0] = 1
+        
+        # Fill dp array
+        for i in range(zero+1):
+            for j in range(one+1):
+                if i > 0:
+                    dp[i][j] += dp[i-1][j]
+                if j > 0:
+                    dp[i][j] += dp[i][j-1]
+                dp[i][j] %= MOD
+        
+        # Calculate the total number of different good strings between low and high
+        total_good_strings = 0
+        for i in range(low, high+1):
+            total_good_strings += dp[i][one]
+            total_good_strings %= MOD
+        
+        return total_good_strings
+
+# Test cases
+solution = Solution()
+print(solution.countGoodStrings(3, 3, 1, 1))    # Output: 8
+print(solution.countGoodStrings(2, 3, 1, 2))    # Output: 5

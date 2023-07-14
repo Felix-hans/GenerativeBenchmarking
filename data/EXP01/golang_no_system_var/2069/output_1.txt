@@ -1,0 +1,78 @@
+Here is the implementation of the Robot class in Go:
+
+```go
+package main
+
+import "fmt"
+
+type Robot struct {
+	width, height   int
+	x, y            int
+	direction       string
+}
+
+func NewRobot(width int, height int) *Robot {
+	return &Robot{
+		width:     width,
+		height:    height,
+		x:         0,
+		y:         0,
+		direction: "East",
+	}
+}
+
+func (r *Robot) Step(num int) {
+	for num > 0 {
+		switch r.direction {
+		case "North":
+			r.y++
+			if r.y >= r.height {
+				r.y--
+				r.direction = "West"
+			}
+		case "East":
+			r.x++
+			if r.x >= r.width {
+				r.x--
+				r.direction = "North"
+			}
+		case "South":
+			r.y--
+			if r.y < 0 {
+				r.y++
+				r.direction = "East"
+			}
+		case "West":
+			r.x--
+			if r.x < 0 {
+				r.x++
+				r.direction = "South"
+			}
+		}
+		num--
+	}
+}
+
+func (r *Robot) GetPos() []int {
+	return []int{r.x, r.y}
+}
+
+func (r *Robot) GetDir() string {
+	return r.direction
+}
+
+func main() {
+	robot := NewRobot(6, 3)
+	robot.Step(2)
+	robot.Step(2)
+	fmt.Println(robot.GetPos()) // [4, 0]
+	fmt.Println(robot.GetDir()) // "East"
+	robot.Step(2)
+	robot.Step(1)
+	robot.Step(4)
+	fmt.Println(robot.GetPos()) // [1, 2]
+	fmt.Println(robot.GetDir()) // "West"
+}
+```
+
+Note: The main function is included for testing purposes. You can remove the main function and directly use the Robot object in your code.

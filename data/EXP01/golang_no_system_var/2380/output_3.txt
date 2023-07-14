@@ -1,0 +1,20 @@
+To solve the problem, we can use a simple approach. We can keep replacing all occurrences of "01" with "10" until no more occurrences exist. For each replacement, we increment a counter to keep track of the number of seconds it takes to complete the process.
+
+Here is the implementation in Go:
+
+```go
+func secondsToRemoveOccurrences(s string) int {
+    seconds := 0
+
+    for strings.Contains(s, "01") {
+        s = strings.ReplaceAll(s, "01", "10")
+        seconds++
+    }
+
+    return seconds
+}
+```
+
+We start with the input string `s` and initialize the `seconds` counter to 0. We then enter a loop that continues until there are no more occurrences of "01" in the string. Inside the loop, we use the `strings.ReplaceAll` function to replace all occurrences of "01" with "10". We increment the `seconds` counter by 1 for each replacement. Finally, when there are no more occurrences of "01", we return the `seconds` counter, which represents the number of seconds it took to complete the process.
+
+The time complexity of this solution is O(n^2) because `strings.ReplaceAll` has a worst-case time complexity of O(n) and we may need to replace all occurrences in each step. However, since the input length is at most 1000, the solution will run in a reasonable amount of time.

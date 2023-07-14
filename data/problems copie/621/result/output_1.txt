@@ -1,0 +1,39 @@
+To solve this task, we can follow a greedy approach. We want to minimize the number of idle cycles, so we need to determine the number of intervals required between the most frequent task.
+
+Here's the implementation of the `leastInterval` function in Python:
+
+```python
+from collections import Counter
+class Solution:
+    def leastInterval(self, tasks, n):
+        # Count the frequency of each task
+        task_counts = Counter(tasks)
+        # Get the maximum frequency
+        max_freq = max(task_counts.values())
+        # Count the number of tasks with the maximum frequency
+        max_freq_tasks = list(task_counts.values()).count(max_freq)
+        # Calculate the number of intervals required between the most frequent task
+        intervals = (max_freq - 1) * (n + 1) + max_freq_tasks
+        # Return the maximum of intervals and the total number of tasks
+        return max(intervals, len(tasks))
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+tasks = ["A", "A", "A", "B", "B", "B"]
+n = 2
+print(solution.leastInterval(tasks, n))  # Output: 8
+
+tasks = ["A", "A", "A", "B", "B", "B"]
+n = 0
+print(solution.leastInterval(tasks, n))  # Output: 6
+
+tasks = ["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"]
+n = 2
+print(solution.leastInterval(tasks, n))  # Output: 16
+```
+
+The function returns the expected outputs for the given examples.

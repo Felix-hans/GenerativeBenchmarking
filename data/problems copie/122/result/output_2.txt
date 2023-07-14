@@ -1,0 +1,33 @@
+To solve this task, we can iterate through the prices array and keep track of the minimum price seen so far and the maximum profit we can achieve. We update the minimum price if we find a lower price, and we update the maximum profit if we find a higher selling price.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+class Solution:
+    def maxProfit(self, prices):
+        if not prices:
+            return 0
+        
+        min_price = prices[0]  # Initialize the minimum price to the first element
+        max_profit = 0  # Initialize the maximum profit to 0
+        
+        for price in prices:
+            if price < min_price:
+                min_price = price  # Update the minimum price if a lower price is found
+            else:
+                profit = price - min_price  # Calculate the profit if we sell at the current price
+                max_profit = max(max_profit, profit)  # Update the maximum profit if a higher profit is found
+        
+        return max_profit
+```
+
+We can create an instance of the `Solution` class and call the `maxProfit` method on it to find the maximum profit. For example:
+
+```python
+solution = Solution()
+prices = [7, 1, 5, 3, 6, 4]
+max_profit = solution.maxProfit(prices)
+print(max_profit)  # Output: 7
+```
+
+This will output the maximum profit that can be achieved based on the given prices.

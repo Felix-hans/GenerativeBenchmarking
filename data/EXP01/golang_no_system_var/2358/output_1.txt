@@ -1,0 +1,36 @@
+To solve this problem, we can sort the grades array in ascending order. Then, we can iterate through the array and keep track of the current sum and count of students in each group. Whenever the sum of grades in the current group becomes greater than the sum of grades in the next group or the count of students in the current group becomes greater than the count of students in the next group, we increment the group count. Finally, we return the group count.
+
+Here is the implementation in Golang:
+
+```go
+import "sort"
+
+func maximumGroups(grades []int) int {
+    // Sort the grades array in ascending order
+    sort.Ints(grades)
+    
+    // Initialize variables to keep track of current group sum and count
+    sum := grades[0]
+    count := 1
+    groupCount := 1
+    
+    for i := 1; i < len(grades); i++ {
+        // If the sum of grades in the current group becomes greater than the sum of grades in the next group
+        // or the count of students in the current group becomes greater than the count of students in the next group
+        // increment the group count and reset the current group sum and count
+        if sum > grades[i] || count > i {
+            groupCount++
+            sum = grades[i]
+            count = 1
+        } else {
+            // If the sum and count are not greater than the next group, update the sum and count
+            sum += grades[i]
+            count++
+        }
+    }
+    
+    return groupCount
+}
+```
+
+This implementation has a time complexity of O(nlogn) due to the sorting operation.

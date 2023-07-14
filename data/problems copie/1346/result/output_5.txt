@@ -1,0 +1,30 @@
+Certainly! Here's the Python implementation of the task:
+
+```python
+class Solution:
+    def checkIfExist(self, arr):
+        seen = set()
+        for num in arr:
+            if num * 2 in seen or num / 2 in seen:
+                return True
+            seen.add(num)
+        return False
+```
+
+In this implementation, we use a set called `seen` to keep track of the numbers we have encountered so far. We iterate through the array `arr` and for each number, we check if either its double (`num * 2`) or half (`num / 2`) exists in the `seen` set. If we find a match, we return `True`. Otherwise, we add the current number to the `seen` set and continue. If we reach the end of the loop without finding a match, we return `False`.
+
+You can create an instance of the `Solution` class and call the `checkIfExist` method to test it with different input arrays. For example:
+
+```python
+solution = Solution()
+print(solution.checkIfExist([10, 2, 5, 3]))  # Output: True
+print(solution.checkIfExist([3, 1, 7, 11]))  # Output: False
+```
+
+Make sure to import the `List` class from the `typing` module if you haven't already done so:
+
+```python
+from typing import List
+```
+
+Let me know if you need any further assistance!

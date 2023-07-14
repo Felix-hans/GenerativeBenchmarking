@@ -1,0 +1,21 @@
+Sure! Here's the implementation of the `containsDuplicate` function in Python:
+
+```python
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        # Create an empty set to store unique elements
+        unique_set = set()
+        
+        # Iterate through the array
+        for num in nums:
+            # If the element is already in the set, it's a duplicate
+            if num in unique_set:
+                return True
+            # Otherwise, add the element to the set
+            unique_set.add(num)
+        
+        # If no duplicates were found, return False
+        return False
+```
+
+You can use this `Solution` class to create an instance and call the `containsDuplicate` method with the `nums` array as the input. It will return `True` if there are any duplicate elements in the array and `False` otherwise.

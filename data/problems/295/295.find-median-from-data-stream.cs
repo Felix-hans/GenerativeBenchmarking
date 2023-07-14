@@ -1,0 +1,29 @@
+/*
+ * @lc app=leetcode id=295 lang=csharp
+ *
+ * [295] Find Median from Data Stream
+ */
+
+// @lc code=start
+public class MedianFinder {
+
+    public MedianFinder() {
+        
+    }
+    
+    public void AddNum(int num) {
+        
+    }
+    
+    public double FindMedian() {
+        
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.AddNum(num);
+ * double param_2 = obj.FindMedian();
+ */
+// @lc code=end

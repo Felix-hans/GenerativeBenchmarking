@@ -1,0 +1,33 @@
+To solve this task, we can iterate over the matrix and count the number of battleships. We can use the following approach:
+
+1. Initialize a variable `count` to 0 to keep track of the number of battleships.
+
+2. Iterate over each cell in the matrix.
+
+3. If the current cell contains 'X' and the cell above it (if it exists) also contains 'X', or the cell to the left (if it exists) contains 'X', it means the current cell is part of an existing battleship, and we should skip counting it.
+
+4. If the current cell contains 'X' and it doesn't satisfy the condition in step 3, it means it is the start of a new battleship. Increment the `count` variable by 1.
+
+5. Finally, return the value of `count`, which represents the number of battleships.
+
+Here's the implementation of the `countBattleships` function:
+
+```python
+class Solution:
+    def countBattleships(self, board: List[List[str]]) -> int:
+        count = 0
+        m, n = len(board), len(board[0])
+        
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == 'X':
+                    if i > 0 and board[i - 1][j] == 'X':
+                        continue
+                    if j > 0 and board[i][j - 1] == 'X':
+                        continue
+                    count += 1
+        
+        return count
+```
+
+This solution performs a one-pass traversal of the matrix, uses only O(1) extra memory, and does not modify the original board.

@@ -1,0 +1,40 @@
+To solve this problem, we can use a prefix xor array to store the xor values of all prefixes of the binary string s. Then, for each query, we can iterate through all possible substrings and check if their xor value with the given firsti is equal to the secondi. We can optimize this process by using a hashmap to store the starting index of each xor value.
+
+Here is the implementation of the `substringXorQueries` function:
+
+```python
+from typing import List
+
+class Solution:
+    def substringXorQueries(self, s: str, queries: List[List[int]]) -> List[List[int]]:
+        # Calculate prefix xor array
+        xorArr = [0]
+        for i in range(len(s)):
+            xorArr.append(xorArr[-1] ^ int(s[i]))
+
+        # Initialize hashmap to store starting index of each xor value
+        xorMap = {}
+        for i in range(len(xorArr)):
+            if xorArr[i] not in xorMap:
+                xorMap[xorArr[i]] = i
+
+        # Process queries
+        result = []
+        for query in queries:
+            first, second = query
+            if second not in xorMap:
+                result.append([-1, -1])
+            else:
+                start = xorMap[second]
+                end = -1
+
+                # Find the shortest substring with xor value equal to first
+                for i in range(start, len(xorArr)):
+                    if xorArr[i] ^ xorArr[start - 1] == first:
+                        end = i
+                        break
+                
+                result.append([start - 1, end - 1])
+
+        return result
+```

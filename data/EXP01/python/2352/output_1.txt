@@ -1,0 +1,19 @@
+Here is one possible implementation of the solution:
+
+```python
+from typing import List
+
+class Solution:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        count = 0
+        for i in range(n):
+            for j in range(n):
+                if grid[i] == list(map(lambda x: x[j], grid)):
+                    count += 1
+        return count
+```
+
+This solution iterates through each row and column in the grid and checks if they contain the same elements in the same order. It uses the `map` function to extract the specified column from each row and compares it with the corresponding column. If they are equal, it increments the count. Finally, it returns the count as the result.
+
+You can create an instance of the `Solution` class and call the `equalPairs` method with the grid as the argument to get the desired output.

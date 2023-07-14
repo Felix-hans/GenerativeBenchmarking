@@ -1,0 +1,40 @@
+Here is a possible implementation in Go:
+
+```go
+import (
+	"strconv"
+)
+
+func minimizeResult(expression string) string {
+	n := len(expression)
+	pivot := 0
+
+	// Find the plus sign in the expression
+	for i := 0; i < n; i++ {
+		if expression[i] == '+' {
+			pivot = i
+			break
+		}
+	}
+
+	// Get the left and right numbers
+	num1, _ := strconv.Atoi(expression[:pivot])
+	num2, _ := strconv.Atoi(expression[pivot+1:])
+
+	// Find all possible combinations of parentheses and calculate the result
+	result1 := num1 + num2
+	result2 := num1*(num2)
+	result3 := (num1) + num2
+
+	// Return the expression with the parentheses that yield the smallest result
+	if result1 <= result2 && result1 <= result3 {
+		return expression
+	} else if result2 <= result3 {
+		return strconv.Itoa(num1) + "+" + strconv.Itoa(num2)
+	} else {
+		return strconv.Itoa(num1) + "+" + strconv.Itoa(num2)
+	}
+}
+```
+
+The main idea is to find the plus sign in the expression and split the string into two numbers. Then, we calculate the result for three possible combinations of parentheses: without parentheses, with parentheses around the first number, and with parentheses around the second number. Finally, we compare the results and return the expression with the parentheses that yield the smallest result.

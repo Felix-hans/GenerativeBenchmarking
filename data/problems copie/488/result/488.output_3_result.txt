@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/57 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 31: TypeError: can only concatenate str (not "int") to str\n  \xe2\x9c\x98 Error: TypeError: can only concatenate str (not "int") to str\n    newBoard = board[:j] + hand[i] + board[j:]\nLine 31 in dfs (Solution.py)\n    minBalls = dfs(board, handCount)\nLine 44 in findMinStep (Solution.py)\n    ret = Solution().findMinStep(param_1, param_2)\nLine 70 in _driver (Solution.py)\n    _driver()\nLine 81 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: "WRRBBW"\n"RB"\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: -1\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:96583) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

@@ -1,0 +1,51 @@
+To solve this problem, we can use dynamic programming. We will define an array dp of size n+1, where n is the length of pressedKeys. Each element dp[i] will represent the number of possible text messages that Alice could have sent using the first i digits of pressedKeys.
+
+We will initialize dp[0] = 1, since there is only one way to send an empty text message. Then, for each position i from 1 to n:
+
+- If pressedKeys[i-1] is the same as pressedKeys[i-2], it means Alice could have added the current letter to the previous letter. Therefore, dp[i] will be equal to dp[i-1].
+
+- Otherwise, we can find the number of possible messages by counting all the letters that map to each digit in pressedKeys[i-1], and adding them to dp[i-1]. We will increase dp[i] by dp[i-1] times the number of letters in pressedKeys[i-1].
+
+Finally, we will return dp[n] % (10^9 + 7).
+
+Here is the Python code to implement this:
+
+```
+class Solution:
+    def countTexts(self, pressedKeys: str) -> int:
+        n = len(pressedKeys)
+        dp = [0] * (n+1)
+        dp[0] = 1
+        
+        for i in range(1, n+1):
+            if i > 1 and pressedKeys[i-1] == pressedKeys[i-2]:
+                dp[i] = dp[i-1]
+            else:
+                count = 0
+                for j in range(ord(pressedKeys[i-1]) - ord('2') + 1):
+                    count += ord(self.getLetter(pressedKeys[i-1])) - ord('a')
+                dp[i] = dp[i-1] * count
+        
+        return dp[n] % (10**9 + 7)
+    
+    def getLetter(self, digit):
+        mapping = {
+            '2': 'a',
+            '3': 'd',
+            '4': 'g',
+            '5': 'j',
+            '6': 'm',
+            '7': 'p',
+            '8': 't',
+            '9': 'w'
+        }
+        return mapping[digit]
+```
+
+Example usage:
+
+```
+solution = Solution()
+print(solution.countTexts('22233')) # Output: 8
+print(solution.countTexts('222222222222222222222222222222222222')) # Output: 82876089
+```

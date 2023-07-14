@@ -1,0 +1,40 @@
+To solve this task, we can use a hashmap to count the occurrences of each skill level. Then, we can iterate through the hashmap and check if there are enough players with a certain skill level to create teams. If not, we return -1. Otherwise, we calculate the chemistry for each team and return the sum of all chemistries.
+
+Here's the implementation:
+
+```python
+from typing import List
+
+class Solution:
+    def dividePlayers(self, skill: List[int]) -> int:
+        n = len(skill)
+        if n % 2 != 0:
+            return -1
+        
+        # Count the occurrences of each skill level
+        skill_counts = {}
+        for s in skill:
+            skill_counts[s] = skill_counts.get(s, 0) + 1
+        
+        # Check if there are enough players with certain skill levels to create teams
+        for s, count in skill_counts.items():
+            if count % 2 != 0:
+                return -1
+        
+        # Calculate the chemistry for each team and return the sum of all chemistries
+        chemistry_sum = 0
+        for s, count in skill_counts.items():
+            chemistry = s * (count // 2) * (count // 2)
+            chemistry_sum += chemistry
+        
+        return chemistry_sum
+```
+
+We can test the solution by creating an instance of the Solution class and calling the dividePlayers function:
+
+```python
+solution = Solution()
+print(solution.dividePlayers([3, 2, 5, 1, 3, 4]))  # Output: 22
+print(solution.dividePlayers([3, 4]))  # Output: 12
+print(solution.dividePlayers([1, 1, 2, 3]))  # Output: -1
+```

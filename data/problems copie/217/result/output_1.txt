@@ -1,0 +1,19 @@
+Here's the implementation of the task in Python:
+
+```python
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        # Create a set to store unique elements
+        unique_nums = set()
+        
+        for num in nums:
+            # If the current number is already in the set, it's a duplicate
+            if num in unique_nums:
+                return True
+            else:
+                unique_nums.add(num)  # Add the number to the set
+        
+        return False  # No duplicates found
+```
+
+You can use the `Solution` class and call its `containsDuplicate` method, passing the `nums` array as an argument. It will return `True` if there are any duplicate values in the array and `False` if all elements are distinct.

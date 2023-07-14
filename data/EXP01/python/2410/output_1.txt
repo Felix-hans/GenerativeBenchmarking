@@ -1,0 +1,40 @@
+To solve this task, we can sort both the players and trainers arrays in increasing order. Then, we can iterate over the players array and for each player, find the first trainer whose training capacity is greater than or equal to the player's ability. We can then increment the count of matchings and mark the trainer as used to avoid matching it with another player.
+
+Here is the implementation of the `matchPlayersAndTrainers` function:
+
+```python
+class Solution:
+    def matchPlayersAndTrainers(self, players, trainers):
+        players.sort()
+        trainers.sort()
+        
+        num_matchings = 0
+        used_trainers = set()
+        
+        for player in players:
+            for j, trainer in enumerate(trainers):
+                if j not in used_trainers and trainer >= player:
+                    num_matchings += 1
+                    used_trainers.add(j)
+                    break
+        
+        return num_matchings
+```
+
+We can test the function using the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+players = [4, 7, 9]
+trainers = [8, 2, 5, 8]
+print(solution.matchPlayersAndTrainers(players, trainers))  # Output: 2
+
+# Example 2
+players = [1, 1, 1]
+trainers = [10]
+print(solution.matchPlayersAndTrainers(players, trainers))  # Output: 1
+```
+
+This will give the expected results for the given examples.

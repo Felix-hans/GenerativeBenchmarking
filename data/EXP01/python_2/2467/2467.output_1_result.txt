@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/31 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 1: IndentationError: unexpected indent\n  \xe2\x9c\x98 Error: IndentationError: unexpected indent\n    ^\n    class Solution:\nLine 1  (Solution.py)\n  \xe2\x9c\x98 Testcase: [[0,1],[1,2],[1,3],[3,4]]\n3\n[-2,4,2,-4,6]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 6\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:58841) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

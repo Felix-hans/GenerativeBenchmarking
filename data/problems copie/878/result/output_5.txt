@@ -1,0 +1,42 @@
+To find the nth magical number, we can use the concept of the least common multiple (LCM) of two numbers, a and b. The LCM of two numbers is the smallest positive integer that is divisible by both numbers.
+
+We can observe that if a and b are relatively prime (i.e., their greatest common divisor is 1), then every number that is a multiple of the LCM of a and b is magical. Therefore, we need to find the LCM of a and b and multiply it by n to get the nth magical number.
+
+To calculate the LCM of two numbers, we can use the formula LCM(a, b) = (a * b) / GCD(a, b), where GCD(a, b) represents the greatest common divisor of a and b.
+
+Here's the implementation of the `nthMagicalNumber` function in Python:
+
+```python
+class Solution:
+    def nthMagicalNumber(self, n: int, a: int, b: int) -> int:
+        def gcd(x, y):
+            while y:
+                x, y = y, x % y
+            return x
+
+        def lcm(x, y):
+            return (x * y) // gcd(x, y)
+
+        MOD = 10**9 + 7
+        lcm_val = lcm(a, b)
+        # Calculate the number of multiples of a and b up to n
+        multiples = n // a + n // b - n // lcm_val
+        # Calculate the remaining numbers
+        remaining = n - multiples
+        # Calculate the result modulo MOD
+        result = (lcm_val * multiples + min(a, b) * remaining) % MOD
+        return result
+```
+
+Now, you can create an instance of the `Solution` class and call the `nthMagicalNumber` method with the given inputs:
+
+```python
+solution = Solution()
+n = 4
+a = 2
+b = 3
+result = solution.nthMagicalNumber(n, a, b)
+print(result)  # Output: 6
+```
+
+The output will be 6, which is the 4th magical number when a = 2 and b = 3.

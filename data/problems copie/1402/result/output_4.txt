@@ -1,0 +1,44 @@
+To solve the given task, we can use a greedy algorithm. The key idea is to sort the dishes based on their satisfaction levels in descending order. By doing this, we can focus on the dishes with higher satisfaction levels and maximize the like-time coefficient.
+
+Here's the implementation of the `maxSatisfaction` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxSatisfaction(self, satisfaction: List[int]) -> int:
+        satisfaction.sort(reverse=True)  # Sort dishes in descending order of satisfaction
+
+        max_coefficient = 0  # Maximum like-time coefficient
+        total_time = 0  # Total time taken for cooking
+
+        for s in satisfaction:
+            if total_time + s <= 0:
+                break
+            total_time += s
+            max_coefficient += total_time
+
+        return max_coefficient
+```
+
+Let's go through the code:
+
+1. We define the `maxSatisfaction` function that takes a list of integers (`satisfaction`) as input and returns an integer (maximum like-time coefficient).
+2. Inside the function, we sort the `satisfaction` list in descending order using the `sort` method with `reverse=True`.
+3. We initialize two variables: `max_coefficient` to keep track of the maximum like-time coefficient and `total_time` to keep track of the total time taken for cooking.
+4. We iterate over each dish's satisfaction level in the sorted list.
+5. If adding the current satisfaction level (`s`) to the total time (`total_time`) would result in a negative or zero total time, we break the loop. This is because including any more dishes will only decrease the like-time coefficient.
+6. Otherwise, we update the `total_time` by adding the current satisfaction level.
+7. We update the `max_coefficient` by adding the product of the current satisfaction level and the updated `total_time`.
+8. After the loop ends, we return the `max_coefficient`.
+
+Now, you can create an instance of the `Solution` class and call the `maxSatisfaction` function with the desired input to obtain the maximum like-time coefficient. For example:
+
+```python
+solution = Solution()
+satisfaction = [-1, -8, 0, 5, -9]
+max_coefficient = solution.maxSatisfaction(satisfaction)
+print(max_coefficient)  # Output: 14
+```
+
+Feel free to adjust the input and test the code with different scenarios.

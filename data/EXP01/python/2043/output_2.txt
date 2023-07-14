@@ -1,0 +1,28 @@
+Here is the implementation of the Bank class in Python:
+
+```python
+class Bank:
+    def __init__(self, balance: List[int]):
+        self.balance = balance
+
+    def transfer(self, account1: int, account2: int, money: int) -> bool:
+        if 1 <= account1 <= len(self.balance) and 1 <= account2 <= len(self.balance) and self.balance[account1-1] >= money:
+            self.balance[account1-1] -= money
+            self.balance[account2-1] += money
+            return True
+        return False
+
+    def deposit(self, account: int, money: int) -> bool:
+        if 1 <= account <= len(self.balance):
+            self.balance[account-1] += money
+            return True
+        return False
+
+    def withdraw(self, account: int, money: int) -> bool:
+        if 1 <= account <= len(self.balance) and self.balance[account-1] >= money:
+            self.balance[account-1] -= money
+            return True
+        return False
+```
+
+The Bank class is initialized with the balance array. The transfer, deposit, and withdraw methods check the validity of the transaction and update the account balances accordingly. If the transaction is valid, the methods return True; otherwise, they return False.

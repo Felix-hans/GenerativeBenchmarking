@@ -1,0 +1,65 @@
+To solve this task, we can use a modified version of the Breadth-First Search (BFS) algorithm. 
+
+First, we need to determine if there is a path from (0, 0) to (m-1, n-1) without flipping any cell. To do this, we can perform a regular BFS starting from (0, 0). During the BFS, we mark visited cells to avoid revisiting them.
+
+If we can reach (m-1, n-1) without flipping any cell, then the matrix is not disconnected and we return False.
+
+Otherwise, we iterate over each cell in the grid. For each cell, we temporarily flip it and perform the BFS again starting from (0, 0). If we can still reach (m-1, n-1) after flipping one cell, then the matrix is not disconnected and we return False.
+
+If we cannot reach (m-1, n-1) after flipping any cell, then the matrix is disconnected and we return True.
+
+Here is the implementation of the `isPossibleToCutPath` function:
+
+```python
+from typing import List, Tuple
+
+
+class Solution:
+    def isPossibleToCutPath(self, grid: List[List[int]]) -> bool:
+        m, n = len(grid), len(grid[0])
+        
+        def bfs(grid: List[List[int]]) -> bool:
+            visited = [[False for _ in range(n)] for _ in range(m)]
+            queue = [(0, 0)]
+            
+            while queue:
+                row, col = queue.pop(0)
+                if row == m-1 and col == n-1:
+                    return True
+                
+                if grid[row][col] == 1:
+                    if row+1 < m and not visited[row+1][col]:
+                        queue.append((row+1, col))
+                        visited[row+1][col] = True
+                    if col+1 < n and not visited[row][col+1]:
+                        queue.append((row, col+1))
+                        visited[row][col+1] = True
+            
+            return False
+        
+        
+        if not bfs(grid):
+            return True
+        
+        for row in range(m):
+            for col in range(n):
+                if grid[row][col] == 1:
+                    grid[row][col] = 0
+                    if not bfs(grid):
+                        return True
+                    grid[row][col] = 1
+                
+        return False
+
+
+# Example usage:
+grid = [
+    [1, 1, 1],
+    [1, 0, 0],
+    [1, 1, 1]
+]
+solution = Solution()
+print(solution.isPossibleToCutPath(grid))  # Output: True
+```
+
+The time complexity of this solution is O(m * n) for the BFS algorithm, and the space complexity is O(m * n) for the visited array.

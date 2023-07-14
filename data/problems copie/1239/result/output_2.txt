@@ -1,0 +1,41 @@
+To solve this task, we can use a backtracking approach to generate all possible subsequences and check if each subsequence has unique characters. We'll keep track of the maximum length encountered during the process.
+
+Here's the implementation of the `maxLength` method in Python:
+
+```python
+class Solution:
+    def maxLength(self, arr):
+        self.max_len = 0  # variable to store the maximum length
+        
+        def backtrack(curr, idx):
+            if len(set(curr)) != len(curr):  # check if current subsequence has duplicate characters
+                return
+            
+            self.max_len = max(self.max_len, len(curr))  # update maximum length
+            
+            for i in range(idx, len(arr)):
+                backtrack(curr + arr[i], i + 1)  # recursive call to generate all possible subsequences
+        
+        backtrack("", 0)  # start with an empty subsequence at index 0
+        return self.max_len
+```
+
+Let's test the code with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+arr = ["un", "iq", "ue"]
+print(solution.maxLength(arr))  # Output: 4
+
+# Example 2
+arr = ["cha", "r", "act", "ers"]
+print(solution.maxLength(arr))  # Output: 6
+
+# Example 3
+arr = ["abcdefghijklmnopqrstuvwxyz"]
+print(solution.maxLength(arr))  # Output: 26
+```
+
+The code generates all possible subsequences by exploring different combinations of strings in the `arr` list. It keeps track of the maximum length encountered and returns it as the result.

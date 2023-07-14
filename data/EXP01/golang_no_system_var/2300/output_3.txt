@@ -1,0 +1,52 @@
+Here is the implementation in Go:
+
+```go
+import "sort"
+
+func successfulPairs(spells []int, potions []int, success int64) []int {
+    sort.Ints(potions)
+    pairs := make([]int, len(spells))
+    
+    for i := 0; i < len(spells); i++ {
+        spell := int64(spells[i])
+        count := binarySearch(potions, success/spell) - 1
+        if count < 0 {
+            count = 0
+        }
+        pairs[i] = count
+    }
+    
+    return pairs
+}
+
+func binarySearch(arr []int, target int64) int {
+    left := 0
+    right := len(arr)
+    
+    for left < right {
+        mid := left + (right-left)/2
+        if int64(arr[mid]) < target {
+            left = mid + 1
+        } else {
+            right = mid
+        }
+    }
+    
+    return left
+}
+```
+
+Explanation:
+- First, we sort the potions array in non-decreasing order.
+- Then, for each spell, we find the number of potions that can form a successful pair by dividing the target success by the spell's strength.
+- We use binary search to find the index where the spell's strength is less than or equal to the target value in the potions array.
+- Finally, we subtract 1 from the count obtained from binary search to exclude the spell itself from the pairs.
+- If the count is negative, we set it to 0 (since there are no potions that can form a successful pair with the current spell).
+
+Time Complexity: O(nlogm + mlogm), where n is the length of the spells array and m is the length of the potions array.
+- Sorting the potions array takes O(mlogm) time.
+- For each spell, binary search operation takes O(logm) time.
+- Since we perform this operation for n spells, the total time complexity is O(nlogm).
+- Adding the time complexity of sorting, the overall time complexity is O(nlogm + mlogm).
+
+Space Complexity: O(n), as we are using an additional array of size n to store the result.

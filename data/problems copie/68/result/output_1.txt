@@ -1,0 +1,65 @@
+To solve this task, we can follow the following steps:
+
+1. Initialize an empty list called `result` to store the formatted lines.
+2. Initialize a variable `line` to an empty string. This variable will represent the current line being constructed.
+3. Initialize a variable `line_length` to 0, which will track the length of the current line.
+4. Iterate through each word in the `words` list.
+5. If adding the current word to the line would exceed the `maxWidth`, it means we need to finalize the current line and start a new one.
+    - In this case, we will justify the line and add it to the `result` list.
+    - To justify the line, we need to calculate the number of extra spaces that need to be added between words.
+    - If the line contains only one word, it should be left-justified.
+    - Otherwise, we calculate the number of total spaces required to reach `maxWidth` by subtracting the total word length from `maxWidth`.
+    - We then distribute the spaces evenly between words, assigning more spaces to the left slots if the total spaces don't divide evenly.
+    - Finally, we append the justified line to the `result` list and reset `line` and `line_length` for the next line.
+6. After iterating through all the words, there might be a remaining line that needs to be justified. This will be the last line.
+    - We left-justify the last line by adding a single space between words.
+    - Finally, we append the last line to the `result` list.
+7. Return the `result` list, which contains the fully justified text.
+
+Here's the implementation of the `fullJustify` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        result = []  # to store the formatted lines
+        
+        line = ""  # current line being constructed
+        line_length = 0  # length of the current line
+        
+        for i, word in enumerate(words):
+            if line_length + len(word) + len(line) > maxWidth:
+                # Finalize the current line and start a new one
+                
+                # Justify the line
+                if len(line.split()) == 1:
+                    # Left-justify if the line contains only one word
+                    line += " " * (maxWidth - line_length)
+                else:
+                    # Calculate the number of spaces required to reach maxWidth
+                    total_spaces = maxWidth - line_length
+                    spaces_between_words = total_spaces // (len(line.split()) - 1)
+                    extra_spaces = total_spaces % (len(line.split()) - 1)
+                    
+                    # Distribute spaces evenly between words
+                    line = line.replace(" ", " " * spaces_between_words)
+                    
+                    # Assign extra spaces to the left slots
+                    line = line.replace(" " * spaces_between_words, " " * (spaces_between_words + 1), extra_spaces)
+                
+                result.append(line)  # add the justified line to the result
+                line = ""  # reset line for the next line
+                line_length = 0  # reset line_length for the next line
+            
+            line += word + " "  # add the word to the line
+            line_length += len(word) + 1  # update the line_length
+        
+        # Justify the last line (left-justified)
+        line += " " * (maxWidth - line_length)
+        result.append(line)
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `fullJustify` function, passing the `

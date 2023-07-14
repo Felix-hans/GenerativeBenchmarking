@@ -1,0 +1,59 @@
+To implement a FIFO queue using two stacks, we can use one stack to store the elements in the order they are pushed, and another stack to reverse the order of the elements. This way, the top of the second stack will always hold the oldest element, mimicking the behavior of a queue.
+
+Here's the implementation of the `MyQueue` class in Python:
+
+```python
+class MyQueue:
+
+    def __init__(self):
+        self.stack1 = []  # Used to store elements in the order they are pushed
+        self.stack2 = []  # Used to reverse the order of elements for queue-like behavior
+
+    def push(self, x: int) -> None:
+        # Push the element onto the first stack
+        self.stack1.append(x)
+
+    def pop(self) -> int:
+        # If the second stack is empty, transfer elements from the first stack
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+
+        # Pop the top element from the second stack
+        return self.stack2.pop()
+
+    def peek(self) -> int:
+        # If the second stack is empty, transfer elements from the first stack
+        if not self.stack2:
+            while self.stack1:
+                self.stack2.append(self.stack1.pop())
+
+        # Return the top element from the second stack without removing it
+        return self.stack2[-1]
+
+    def empty(self) -> bool:
+        # Check if both stacks are empty
+        return not self.stack1 and not self.stack2
+```
+
+This implementation ensures that the oldest element is always at the top of the `stack2`, allowing us to pop and peek efficiently. The `push` operation simply adds elements to the `stack1`.
+
+Let's test the implementation with the provided example:
+
+```python
+myQueue = MyQueue()
+myQueue.push(1)
+myQueue.push(2)
+print(myQueue.peek())  # Output: 1
+print(myQueue.pop())   # Output: 1
+print(myQueue.empty()) # Output: False
+```
+
+Output:
+```
+1
+1
+False
+```
+
+The implementation correctly produces the expected output.

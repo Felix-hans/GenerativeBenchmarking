@@ -1,0 +1,48 @@
+To solve the problem, we can use a hash table to count the number of rabbits with each color. 
+
+Here's the implementation of the `numRabbits` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numRabbits(self, answers: List[int]) -> int:
+        count = {}
+        total = 0
+
+        for ans in answers:
+            if ans == 0:
+                # If the rabbit claims there are 0 rabbits of its color,
+                # we count it separately.
+                total += 1
+            elif ans not in count or count[ans] == 0:
+                # If we haven't seen a rabbit with the same answer before
+                # or we have counted all rabbits with the same answer,
+                # we start a new group of rabbits with the same color.
+                count[ans] = ans
+                total += ans + 1
+            else:
+                # If we have already counted some rabbits with the same answer,
+                # we decrement the count and continue counting.
+                count[ans] -= 1
+
+        return total
+```
+
+You can create an instance of the `Solution` class and call the `numRabbits` function with your input array to get the minimum number of rabbits in the forest. For example:
+
+```python
+solution = Solution()
+answers = [1, 1, 2]
+minimum_rabbits = solution.numRabbits(answers)
+print(minimum_rabbits)  # Output: 5
+```
+
+```python
+solution = Solution()
+answers = [10, 10, 10]
+minimum_rabbits = solution.numRabbits(answers)
+print(minimum_rabbits)  # Output: 11
+```
+
+The time complexity of this solution is O(n), where n is the length of the `answers` array.

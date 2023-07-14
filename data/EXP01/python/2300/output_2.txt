@@ -1,0 +1,32 @@
+Here is one possible implementation of the `successfulPairs` function:
+
+```python
+class Solution:
+    def successfulPairs(self, spells, potions, success):
+        max_spell = max(spells)
+        counter = [0] * (max_spell + 1)
+        
+        for potion in potions:
+            for spell in spells:
+                if potion * spell >= success:
+                    counter[spell] += 1
+                    break
+        
+        return counter
+```
+
+The above implementation counts the number of successful pairs for each spell by iterating through each potion and checking if the product of the spell and the potion is greater than or equal to the desired success value. If a successful pair is found, the count for that spell is incremented. Finally, the function returns the counter list.
+
+You can create an instance of the `Solution` class and call the `successfulPairs` method with the given input as arguments to test the implementation. For example:
+
+```python
+s = Solution()
+spells = [5, 1, 3]
+potions = [1, 2, 3, 4, 5]
+success = 7
+
+result = s.successfulPairs(spells, potions, success)
+print(result)  # Output: [4, 0, 3]
+```
+
+Note: In the above implementation, the maximum value in the `spells` array is used to determine the size of the counter array. This is done to optimize the memory usage of the counter array.

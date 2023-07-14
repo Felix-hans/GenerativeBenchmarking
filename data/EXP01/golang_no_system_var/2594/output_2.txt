@@ -1,0 +1,57 @@
+To solve this problem, we can follow these steps:
+
+1. Sort the ranks array in descending order.
+2. Initialize variables to keep track of the total time taken and the number of cars repaired.
+3. Iterate through the mechanics in the ranks array:
+   a. Calculate the number of cars the current mechanic can repair based on their rank and the number of cars waiting.
+   b. Calculate the time taken to repair the cars by multiplying the rank, the number of cars repaired, and the square of the number of cars repaired.
+   c. Update the total time taken and the number of cars repaired.
+   d. Reduce the number of cars waiting by the number of cars repaired.
+   e. If there are no more cars waiting, break out of the loop.
+4. Return the total time taken.
+
+Here is the implementation in Go:
+
+```go
+import "sort"
+
+func repairCars(ranks []int, cars int) int {
+    // Sort the ranks array in descending order
+    sort.Sort(sort.Reverse(sort.IntSlice(ranks)))
+
+    totalTime := 0
+    totalCarsRepaired := 0
+
+    for _, rank := range ranks {
+        carsRepaired := min(cars, rank)
+        time := rank * carsRepaired * carsRepaired
+        totalTime += time
+        totalCarsRepaired += carsRepaired
+        cars -= carsRepaired
+
+        if cars == 0 {
+            break
+        }
+    }
+
+    return totalTime
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+
+Explanation:
+- First, we sort the ranks array in descending order using the `sort.Sort` function with `sort.Reverse` and `sort.IntSlice` as arguments.
+- We then initialize variables `totalTime` and `totalCarsRepaired` to keep track of the total time taken to repair the cars and the total number of cars repaired.
+- Next, we iterate through the mechanics in the ranks array using a `for` loop.
+- For each mechanic, we calculate the number of cars they can repair by taking the minimum of the rank and the remaining number of cars waiting.
+- We then calculate the time taken to repair the cars by multiplying the rank, the number of cars repaired, and the square of the number of cars repaired.
+- We update the `totalTime` and `totalCarsRepaired` variables accordingly.
+- We also reduce the number of cars waiting by the number of cars repaired.
+- If there are no more cars waiting, we break out of the loop.
+- Finally, we return the `totalTime`.

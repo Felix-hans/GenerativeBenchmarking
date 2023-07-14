@@ -1,0 +1,30 @@
+Here's the implementation of the Fibonacci number calculation in Python:
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n <= 1:
+            return n
+        
+        # Initialize the first two numbers in the Fibonacci sequence
+        prev1, prev2 = 0, 1
+        
+        # Calculate the Fibonacci number iteratively
+        for _ in range(2, n+1):
+            curr = prev1 + prev2
+            prev1, prev2 = prev2, curr
+        
+        return prev2
+```
+
+This solution follows the iterative approach to calculate the Fibonacci number for a given `n`. It uses two variables, `prev1` and `prev2`, to keep track of the previous two Fibonacci numbers. Starting from the third number (`F(2)`), it iteratively calculates the current Fibonacci number by summing the previous two numbers and updates the values of `prev1` and `prev2`. Finally, it returns the `prev2` value, which represents `F(n)`.
+
+You can create an instance of the `Solution` class and call the `fib()` method on it, passing the desired `n` as an argument to calculate the Fibonacci number. For example:
+
+```python
+solution = Solution()
+result = solution.fib(4)
+print(result)  # Output: 3
+```
+
+This will calculate `F(4)` and print the result, which is `3`, as expected.

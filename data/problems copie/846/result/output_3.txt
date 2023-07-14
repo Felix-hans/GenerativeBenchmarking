@@ -1,0 +1,39 @@
+To solve this problem, we can use a hash map to count the frequency of each card in the hand. Then, we can iterate over the hand and for each card, check if we can form a group of size `groupSize` starting from that card.
+
+Here's the implementation of the `isNStraightHand` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        if len(hand) % groupSize != 0:
+            return False
+        
+        counter = {}
+        for card in hand:
+            counter[card] = counter.get(card, 0) + 1
+        
+        sorted_hand = sorted(hand)
+        
+        for card in sorted_hand:
+            if counter[card] > 0:
+                for i in range(groupSize):
+                    if counter.get(card + i, 0) == 0:
+                        return False
+                    counter[card + i] -= 1
+        
+        return True
+```
+
+You can create an instance of the `Solution` class and call the `isNStraightHand` method to test it out. Here's an example:
+
+```python
+hand = [1, 2, 3, 6, 2, 3, 4, 7, 8]
+groupSize = 3
+
+solution = Solution()
+print(solution.isNStraightHand(hand, groupSize))  # Output: True
+```
+
+In the example above, the output is `True` because Alice's hand can be rearranged into groups of size 3: [1, 2, 3], [2, 3, 4], [6, 7, 8].

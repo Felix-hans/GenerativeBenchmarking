@@ -1,0 +1,36 @@
+To solve this problem, we can iterate through the array and check if each subarray satisfies one of the three conditions.
+
+Here is the implementation in Go:
+
+```go
+func validPartition(nums []int) bool {
+    n := len(nums)
+    
+    // Check for condition 1: subarray consists of exactly 2 equal elements
+    for i := 0; i < n-1; i++ {
+        if nums[i] == nums[i+1] {
+            return true
+        }
+    }
+    
+    // Check for condition 2: subarray consists of exactly 3 equal elements
+    for i := 0; i < n-2; i++ {
+        if nums[i] == nums[i+2] {
+            return true
+        }
+    }
+    
+    // Check for condition 3: subarray consists of exactly 3 consecutive increasing elements
+    for i := 0; i < n-2; i++ {
+        if nums[i+1] == nums[i]+1 && nums[i+2] == nums[i]+2 {
+            return true
+        }
+    }
+    
+    return false
+}
+```
+
+In this solution, we iterate through the array for each condition separately. If any condition is satisfied, we return `true`. If none of the conditions are satisfied, we return `false`.
+
+This solution has a time complexity of O(n) because we iterate through the array only once.

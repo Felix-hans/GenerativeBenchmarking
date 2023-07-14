@@ -1,0 +1,44 @@
+To solve the problem, we can preprocess the tree and store the ancestors of each node in a 2D array. This will allow us to quickly retrieve the k-th ancestor of any node.
+
+Here's the implementation of the `TreeAncestor` class in Python:
+
+```python
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.MAX_LOG = 20  # Maximum log value (assuming n <= 10^5)
+        self.n = n
+        self.ancestors = [[-1] * self.MAX_LOG for _ in range(n)]
+
+        # Preprocess the ancestors using dynamic programming
+        for node in range(n):
+            self.ancestors[node][0] = parent[node]
+
+        for log in range(1, self.MAX_LOG):
+            for node in range(n):
+                if self.ancestors[node][log - 1] != -1:
+                    self.ancestors[node][log] = self.ancestors[self.ancestors[node][log - 1]][log - 1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        # Binary lifting to find the k-th ancestor
+        for log in range(self.MAX_LOG - 1, -1, -1):
+            if node == -1 or k == 0:
+                break
+            if k >= (1 << log):
+                node = self.ancestors[node][log]
+                k -= 1 << log
+
+        return node
+```
+
+Here's an example of how you can use the `TreeAncestor` class:
+
+```python
+treeAncestor = TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2])
+print(treeAncestor.getKthAncestor(3, 1))  # Output: 1
+print(treeAncestor.getKthAncestor(5, 2))  # Output: 0
+print(treeAncestor.getKthAncestor(6, 3))  # Output: -1
+```
+
+The `TreeAncestor` class initializes the object by preprocessing the ancestors using dynamic programming. The `getKthAncestor` method uses binary lifting to find the k-th ancestor of the given node.
+
+Note: The code assumes that the number of nodes, `n`, is at most 10^5. The value of `self.MAX_LOG` is set to 20, which is sufficient for this range. If `n` exceeds 10^5, you may need to increase the value of `self.MAX_LOG` accordingly.

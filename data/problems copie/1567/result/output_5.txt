@@ -1,0 +1,38 @@
+Here's an implementation of the `getMaxLen` function in Python that solves the given task:
+
+```python
+from typing import List
+
+class Solution:
+    def getMaxLen(self, nums: List[int]) -> int:
+        max_len = 0
+        negative_count = 0
+        first_negative_index = -1
+        zero_index = -1
+        
+        for i in range(len(nums)):
+            if nums[i] < 0:
+                negative_count += 1
+                if first_negative_index == -1:
+                    first_negative_index = i
+            elif nums[i] == 0:
+                negative_count = 0
+                first_negative_index = -1
+                zero_index = i
+            if negative_count % 2 == 0:
+                max_len = max(max_len, i - zero_index)
+            else:
+                max_len = max(max_len, i - first_negative_index)
+        
+        return max_len
+```
+
+The function `getMaxLen` takes in an array `nums` as input and returns the maximum length of a subarray with a positive product.
+
+The algorithm iterates through the array, keeping track of the number of negative numbers encountered (`negative_count`), the index of the first negative number (`first_negative_index`), and the index of the last encountered zero (`zero_index`).
+
+If a negative number is encountered, `negative_count` is incremented, and if `first_negative_index` is not yet set, it is set to the current index. If a zero is encountered, `negative_count` and `first_negative_index` are reset, and `zero_index` is set to the current index.
+
+At each iteration, the algorithm checks if the number of negative numbers encountered so far (`negative_count`) is even or odd. If it is even, the current subarray (from the last zero index to the current index) has a positive product, and its length is compared with the `max_len` to update it if necessary. If `negative_count` is odd, the current subarray (from the first negative index to the current index) has a positive product, and its length is compared with `max_len` to update it if necessary.
+
+Finally, the function returns the `max_len`, which represents the maximum length of a subarray with a positive product.

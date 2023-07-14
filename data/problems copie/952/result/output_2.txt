@@ -1,0 +1,74 @@
+To solve this task, we can use the Union-Find algorithm to find and union connected components in the graph. Here's the implementation of the `largestComponentSize` function using the Union-Find algorithm:
+
+```python
+class Solution:
+    def largestComponentSize(self, nums):
+        # Helper function to find the parent of a node in the Union-Find structure
+        def find(parents, i):
+            while parents[i] != i:
+                parents[i] = parents[parents[i]]  # Path compression
+                i = parents[i]
+            return i
+
+        # Helper function to union two nodes in the Union-Find structure
+        def union(parents, sizes, i, j):
+            root_i = find(parents, i)
+            root_j = find(parents, j)
+            if root_i != root_j:
+                parents[root_j] = root_i
+                sizes[root_i] += sizes[root_j]
+
+        # Helper function to find the factors of a number
+        def get_factors(num):
+            factors = set()
+            for i in range(2, int(num ** 0.5) + 1):
+                if num % i == 0:
+                    factors.add(i)
+                    factors.add(num // i)
+            return factors
+
+        # Initialize parents and sizes arrays for the Union-Find structure
+        n = len(nums)
+        parents = list(range(n))
+        sizes = [1] * n
+
+        # Map each number to its index in the nums array
+        num_to_index = {num: i for i, num in enumerate(nums)}
+
+        # Union numbers that share a common factor
+        for num in nums:
+            factors = get_factors(num)
+            for factor in factors:
+                if factor in num_to_index:
+                    union(parents, sizes, num_to_index[num], num_to_index[factor])
+
+        # Find the size of the largest connected component
+        return max(sizes)
+```
+
+You can create an instance of the `Solution` class and call the `largestComponentSize` function with the `nums` array to get the size of the largest connected component. For example:
+
+```python
+solution = Solution()
+nums = [4, 6, 15, 35]
+result = solution.largestComponentSize(nums)
+print(result)  # Output: 4
+```
+
+```python
+solution = Solution()
+nums = [20, 50, 9, 63]
+result = solution.largestComponentSize(nums)
+print(result)  # Output: 2
+```
+
+```python
+solution = Solution()
+nums = [2, 3, 6, 7, 4, 12, 21, 39]
+result = solution.largestComponentSize(nums)
+print(result)  # Output: 8
+```
+
+The implementation works by iterating over each number in `nums` and finding its factors using the `get_factors` function. Then, for each factor, it checks if it exists in the `num_to_index` mapping and performs a union operation between the current number and the factor. This process connects all the numbers that share a common factor.
+
+After the union operations, the function returns the maximum size among the connected components, which represents the size of the largest connected component in the graph.

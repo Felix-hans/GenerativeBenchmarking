@@ -1,0 +1,30 @@
+To solve the problem, you can iterate over each character in the `stones` string and check if it exists in the `jewels` string. If a character in `stones` is found in `jewels`, increment a count variable. Finally, return the count.
+
+Here's the implementation of the `numJewelsInStones` function in Python:
+
+```python
+class Solution:
+    def numJewelsInStones(self, jewels: str, stones: str) -> int:
+        count = 0
+        for stone in stones:
+            if stone in jewels:
+                count += 1
+        return count
+```
+
+You can use this function as follows:
+
+```python
+solution = Solution()
+jewels = "aA"
+stones = "aAAbbbb"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 3
+
+jewels = "z"
+stones = "ZZ"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 0
+```
+
+The `numJewelsInStones` function counts the number of stones that are also jewels by iterating over each stone and checking if it exists in the jewels string. If a stone is found in jewels, the count is incremented. Finally, the count is returned as the result.

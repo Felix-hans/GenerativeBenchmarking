@@ -1,0 +1,45 @@
+One approach to solve this problem is to use Dijkstra's algorithm to find the shortest paths from the starting position to all reachable item cells within the price range. We can use a priority queue to keep track of the cells with their distances, prices, row numbers, and column numbers. As we traverse the grid, we update the distances and prices of the cells as necessary.
+
+Here is the implementation of the solution:
+
+```python
+import heapq
+from typing import List
+
+class Solution:
+    def highestRankedKItems(self, grid: List[List[int]], pricing: List[int], start: List[int], k: int) -> List[List[int]]:
+        rows, cols = len(grid), len(grid[0])
+        low, high = pricing
+
+        # Initialize priority queue
+        pq = []
+        heapq.heappush(pq, (0, low, start[0], start[1]))
+        
+        # Initialize visited set
+        visited = set()
+        
+        # Initialize result list
+        results = []
+        
+        while pq and len(results) < k:
+            dist, price, row, col = heapq.heappop(pq)
+            if (row, col) in visited:
+                continue
+            visited.add((row, col))
+            
+            # Check if the cell has an item with the price range
+            if low <= grid[row][col] <= high:
+                results.append([row, col])
+            
+            # Explore adjacent cells
+            for dr, dc in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                new_row, new_col = row + dr, col + dc
+                if 0 <= new_row < rows and 0 <= new_col < cols and (new_row, new_col) not in visited:
+                    new_dist = dist + 1
+                    new_price = min(price, grid[new_row][new_col])
+                    heapq.heappush(pq, (new_dist, new_price, new_row, new_col))
+        
+        return results
+```
+
+The time complexity of this solution is O(m * n * log(k)), where m is the number of rows, n is the number of columns, and k is the number of items to find.

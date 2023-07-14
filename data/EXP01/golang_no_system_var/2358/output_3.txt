@@ -1,0 +1,42 @@
+To solve this problem, we can follow the following steps:
+
+1. Sort the grades array in ascending order.
+2. Initialize a variable `numGroups` to 0 to keep track of the number of groups formed.
+3. Initialize a variable `currSum` to 0 to keep track of the current sum of grades in a group.
+4. Initialize a variable `currCount` to 0 to keep track of the current number of students in a group.
+5. Iterate through the sorted grades array.
+   - Add the current grade to `currSum`.
+   - Increment `currCount`.
+   - Check if the sum of grades in the current group is greater than the sum of grades in the next group. If yes, increment `numGroups`, reset `currSum` to 0, and reset `currCount` to 0.
+6. Check if there are any remaining students in the last group (i.e., `currCount > 0`). If yes, increment `numGroups`.
+7. Return `numGroups`.
+
+Here is the implementation in Go:
+
+```go
+import "sort"
+
+func maximumGroups(grades []int) int {
+    sort.Ints(grades)
+    numGroups := 0
+    currSum := 0
+    currCount := 0
+
+    for i := 0; i < len(grades); i++ {
+        currSum += grades[i]
+        currCount++
+
+        if i < len(grades)-1 && currSum >= grades[i+1] {
+            numGroups++
+            currSum = 0
+            currCount = 0
+        }
+    }
+
+    if currCount > 0 {
+        numGroups++
+    }
+
+    return numGroups
+}
+```

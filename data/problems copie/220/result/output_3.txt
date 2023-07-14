@@ -1,0 +1,49 @@
+To solve this task, we can use a sliding window approach. We will maintain a window of size `indexDiff` and check if the absolute difference between any two elements within this window is less than or equal to `valueDiff`.
+
+Here's the implementation of the `containsNearbyAlmostDuplicate` method:
+
+```python
+class Solution:
+    def containsNearbyAlmostDuplicate(self, nums, indexDiff, valueDiff):
+        n = len(nums)
+        window = {}
+        
+        for i in range(n):
+            # Check if the absolute difference between any two elements within the window is <= valueDiff
+            for j in range(max(0, i - indexDiff), i):
+                if abs(nums[i] - nums[j]) <= valueDiff:
+                    return True
+            
+            # Add the current element to the window
+            window[nums[i]] = window.get(nums[i], 0) + 1
+            
+            # Remove the oldest element from the window if the window size exceeds indexDiff
+            if i >= indexDiff:
+                window[nums[i - indexDiff]] -= 1
+                if window[nums[i - indexDiff]] == 0:
+                    del window[nums[i - indexDiff]]
+        
+        return False
+```
+
+Let's test the implementation using the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+print(solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff))
+# Output: True
+
+# Example 2
+nums = [1, 5, 9, 1, 5, 9]
+indexDiff = 2
+valueDiff = 3
+print(solution.containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff))
+# Output: False
+```
+
+The implementation should return the expected results for the given examples.

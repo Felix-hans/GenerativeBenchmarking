@@ -1,0 +1,46 @@
+To solve this problem, we can use a greedy approach. First, we need to check if it is possible to divide the players into teams such that the total skill of each team is equal. To do this, we can calculate the total sum of all the skills. If the sum is not divisible by the number of teams (which is half of the number of players), then it is not possible to divide the players equally and we return -1.
+
+If it is possible to divide the players equally, we can proceed to divide them into teams. We can sort the skill array in descending order and pair up players with the highest and lowest skill. This way, we maximize the chemistry of each team.
+
+Finally, we iterate through the teams and calculate the chemistry of each team by multiplying the skills of the players in the team. We add up the chemistries of all the teams and return the total.
+
+Here's the implementation in Python:
+
+```python
+class Solution:
+    def dividePlayers(self, skill):
+        n = len(skill)
+        total_sum = sum(skill)
+        if total_sum % (n // 2) != 0:
+            return -1
+        
+        team_sum = total_sum // (n // 2)
+        skill.sort(reverse=True)
+        
+        chemistries = []
+        i, j = 0, n-1
+        while i < j:
+            if skill[i] + skill[j] != team_sum:
+                return -1
+            chemistries.append(skill[i] * skill[j])
+            i += 1
+            j -= 1
+        
+        return sum(chemistries)
+```
+
+We can test the implementation with the provided examples:
+
+```python
+solution = Solution()
+print(solution.dividePlayers([3, 2, 5, 1, 3, 4]))  # Output: 22
+print(solution.dividePlayers([3, 4]))  # Output: 12
+print(solution.dividePlayers([1, 1, 2, 3]))  # Output: -1
+```
+
+Output:
+```
+22
+12
+-1
+```

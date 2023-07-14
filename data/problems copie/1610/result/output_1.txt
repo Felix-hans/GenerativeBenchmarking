@@ -1,0 +1,70 @@
+To solve the problem, we can follow these steps:
+
+1. Create a list `angles` to store the angles between each point and the location.
+2. Create two variables, `overlap` and `max_points`, both initially set to 0.
+3. Iterate over each point in the `points` array:
+   - Calculate the angle between the current point and the location using the `atan2` function.
+   - Append the angle to the `angles` list.
+   - Check if the current point is at the same location as the given location and increment `overlap` if true.
+4. Sort the `angles` list in ascending order.
+5. Extend the `angles` list by adding 360 to each angle to simulate a circular view.
+6. Iterate over each angle in the `angles` list:
+   - Use two pointers, `start` and `end`, to determine the maximum number of visible points within the current field of view.
+     - Initialize `start` and `end` to 0.
+     - While the difference between the current angle and the `angles[start]` is greater than the given `angle` divided by 2, increment `start`.
+     - While the difference between the current angle and the `angles[end]` is less than or equal to the given `angle` divided by 2, increment `end`.
+   - Update `max_points` with the maximum value between `max_points` and `end - start + overlap`.
+7. Return `max_points`.
+
+Here's the implementation of the `visiblePoints` function:
+
+```python
+from typing import List
+import math
+
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        angles = []
+        overlap = 0
+        max_points = 0
+
+        for point in points:
+            x, y = point[0] - location[0], point[1] - location[1]
+            if x == 0 and y == 0:
+                overlap += 1
+                continue
+            angles.append(math.degrees(math.atan2(y, x)))
+
+        angles.sort()
+
+        angles += [angle + angle_i for angle_i in angles]
+
+        for i in range(len(angles)):
+            start = end = 0
+            while angles[i] - angles[start] > angle / 2:
+                start += 1
+            while angles[i] - angles[end] >= -angle / 2:
+                end += 1
+            max_points = max(max_points, end - start)
+
+        return max_points + overlap
+```
+
+Now you can create an instance of the `Solution` class and call the `visiblePoints` function on it with the given inputs:
+
+```python
+solution = Solution()
+points = [[2, 1], [2, 2], [3, 3]]
+angle = 90
+location = [1, 1]
+result = solution.visiblePoints(points, angle, location)
+print(result)
+```
+
+The output will be:
+
+```
+3
+```
+
+You can similarly test the function with other examples.

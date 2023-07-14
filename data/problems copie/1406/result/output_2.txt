@@ -1,0 +1,40 @@
+To determine the winner of the game, we can use a dynamic programming approach. We'll create a list `dp` to store the maximum score difference that can be achieved at each position in the `stoneValue` list.
+
+Let's initialize `dp` with length `n + 1`, where `n` is the length of `stoneValue`. We'll fill `dp` in reverse order, starting from the last position. For each position `i`, we'll consider all three possible moves (taking 1, 2, or 3 stones) and calculate the maximum score difference that can be achieved from that position.
+
+Finally, we'll compare `dp[0]` with 0 to determine the winner. If it's greater than 0, Alice wins. If it's less than 0, Bob wins. Otherwise, it's a tie.
+
+Here's the implementation of the `stoneGameIII` function:
+
+```python
+from typing import List
+
+class Solution:
+    def stoneGameIII(self, stoneValue: List[int]) -> str:
+        n = len(stoneValue)
+        dp = [0] * (n + 1)
+
+        for i in range(n - 1, -1, -1):
+            take = 0
+            for j in range(i, min(i + 3, n)):
+                take += stoneValue[j]
+                dp[i] = max(dp[i], take - dp[j + 1])
+
+        if dp[0] > 0:
+            return "Alice"
+        elif dp[0] < 0:
+            return "Bob"
+        else:
+            return "Tie"
+```
+
+Now you can create an instance of the `Solution` class and call the `stoneGameIII` function with your input to get the result. For example:
+
+```python
+solution = Solution()
+values = [1, 2, 3, 7]
+result = solution.stoneGameIII(values)
+print(result)  # Output: "Bob"
+```
+
+I hope this helps! Let me know if you have any further questions.

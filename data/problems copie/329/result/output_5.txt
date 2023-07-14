@@ -1,0 +1,47 @@
+To solve this problem, we can use dynamic programming to keep track of the length of the longest increasing path starting from each cell in the matrix. We will initialize a separate memoization matrix to store these lengths.
+
+Here's the implementation of the `longestIncreasingPath` function:
+
+```python
+from typing import List
+
+class Solution:
+    def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
+        if not matrix:
+            return 0
+        
+        m, n = len(matrix), len(matrix[0])
+        memo = [[0] * n for _ in range(m)]  # Memoization matrix to store lengths
+        
+        def dfs(i, j):
+            if memo[i][j] != 0:
+                return memo[i][j]
+            
+            directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Possible directions to move
+            
+            for dx, dy in directions:
+                x, y = i + dx, j + dy
+                if 0 <= x < m and 0 <= y < n and matrix[x][y] > matrix[i][j]:
+                    memo[i][j] = max(memo[i][j], dfs(x, y))
+            
+            memo[i][j] += 1  # Add 1 to the length starting from the current cell
+            return memo[i][j]
+        
+        longest_path = 0
+        
+        for i in range(m):
+            for j in range(n):
+                longest_path = max(longest_path, dfs(i, j))
+        
+        return longest_path
+```
+
+We define a helper function `dfs` that performs a depth-first search from a given cell (i, j) and returns the length of the longest increasing path starting from that cell. We check the memoization matrix to see if the length has already been computed and return it if available.
+
+If the length is not available, we iterate over the possible directions to move (up, down, left, right). For each valid move, we recursively call the `dfs` function on the next cell in that direction, but only if the value in the next cell is greater than the current cell's value.
+
+After exploring all valid paths, we update the memoization matrix by storing the maximum length found starting from the current cell and add 1 to it. Finally, we update the `longest_path` variable with the maximum length found during the entire traversal of the matrix.
+
+At the end, we return the `longest_path`, which represents the length of the longest increasing path in the matrix.
+
+You can create an instance of the `Solution` class and call the `longestIncreasingPath` function with your matrix as an argument to obtain the desired result.

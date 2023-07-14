@@ -1,0 +1,39 @@
+To solve this problem, we can use a greedy approach. We iterate through the prices array and compare each price with the previous day's price. If the current price is higher than the previous price, we can make a profit by buying on the previous day and selling on the current day. We keep track of the total profit obtained by adding the differences between consecutive prices.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+        
+        max_profit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i-1]:
+                max_profit += prices[i] - prices[i-1]
+        
+        return max_profit
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+prices = [7, 1, 5, 3, 6, 4]
+print(solution.maxProfit(prices))  # Output: 7
+
+# Example 2
+prices = [1, 2, 3, 4, 5]
+print(solution.maxProfit(prices))  # Output: 4
+
+# Example 3
+prices = [7, 6, 4, 3, 1]
+print(solution.maxProfit(prices))  # Output: 0
+```
+
+The output matches the expected results. The function successfully calculates the maximum profit that can be achieved by buying and selling stocks.

@@ -1,0 +1,26 @@
+Here's the implementation of the `repeatedNTimes` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def repeatedNTimes(self, nums: List[int]) -> int:
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return num
+            seen.add(num)
+```
+
+In the `repeatedNTimes` function, we use a set called `seen` to keep track of the numbers we have encountered so far. We iterate through the elements in the `nums` list, and for each number, we check if it is already present in the `seen` set. If it is, we return that number as it is the element that is repeated `n` times. Otherwise, we add the number to the `seen` set and continue iterating.
+
+You can create an instance of the `Solution` class and call the `repeatedNTimes` function with the given `nums` list to get the output. Here's an example:
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 3]
+result = solution.repeatedNTimes(nums)
+print(result)  # Output: 3
+```
+
+Similarly, you can test the function with other example inputs provided in your question.

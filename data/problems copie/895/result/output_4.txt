@@ -1,0 +1,65 @@
+To design a stack-like data structure that supports pushing elements onto the stack and popping the most frequent element, we can use a combination of a dictionary and a list.
+
+The dictionary will store the frequency count of each element in the stack, while the list will store the elements in the order they were pushed onto the stack.
+
+Here's the implementation of the `FreqStack` class in Python:
+
+```python
+from collections import defaultdict
+
+class FreqStack:
+    def __init__(self):
+        # Dictionary to store the frequency count of each element
+        self.freq_count = defaultdict(int)
+        # List to store the elements in the order they were pushed
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        # Increment the frequency count of the element
+        self.freq_count[val] += 1
+        # Append the element to the stack
+        self.stack.append(val)
+
+    def pop(self) -> int:
+        max_freq = 0
+        max_freq_elements = []
+
+        # Find the maximum frequency and the elements with that frequency
+        for element, freq in self.freq_count.items():
+            if freq > max_freq:
+                max_freq = freq
+                max_freq_elements = [element]
+            elif freq == max_freq:
+                max_freq_elements.append(element)
+
+        # Find the index of the most frequent element that is closest to the top of the stack
+        max_freq_index = -1
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i] in max_freq_elements:
+                max_freq_index = i
+                break
+
+        # Remove the most frequent element from the stack and update its frequency count
+        popped_element = self.stack.pop(max_freq_index)
+        self.freq_count[popped_element] -= 1
+
+        return popped_element
+```
+
+You can test the implementation with the provided example:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The output matches the expected output in the example.

@@ -1,0 +1,32 @@
+To solve this problem, we can iterate through the string `s` and keep track of the current continuous substring length and the maximum substring length seen so far. 
+
+Here is the implementation in Go:
+
+```go
+func longestContinuousSubstring(s string) int {
+    maxLen := 0 // maximum substring length seen so far
+    curLen := 1 // length of the current substring
+    for i := 1; i < len(s); i++ {
+        if s[i] >= s[i-1] {
+            curLen++ // current substring is still alphabetical, increase length
+        } else {
+            maxLen = max(maxLen, curLen) // update maximum length if necessary
+            curLen = 1 // reset current length
+        }
+    }
+    return max(maxLen, curLen) // comparing the last substring with the maximum substring length
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+The `longestContinuousSubstring` function takes a string `s` as input and returns the length of the longest alphabetical continuous substring.
+
+In this implementation, we iterate through the characters of the string starting from the second character (`i=1`). If the current character is greater than or equal to the previous character, it means the current substring is alphabetical and we increment the current length (`curLen`). If the current character is smaller than the previous character, it means the current substring is not alphabetical, so we update the maximum length (`maxLen`) if necessary and reset the current length to 1.
+
+Finally, we return the maximum length between `maxLen` and `curLen` to handle the case where the last substring is the longest alphabetical continuous substring.

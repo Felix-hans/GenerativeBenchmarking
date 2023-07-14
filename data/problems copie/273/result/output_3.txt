@@ -1,0 +1,59 @@
+Sure! Here's the implementation of the `numberToWords` function in Python to convert a non-negative integer to its English words representation:
+
+```python
+class Solution:
+    def numberToWords(self, num: int) -> str:
+        if num == 0:
+            return "Zero"
+
+        # Define word lists for numbers
+        ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+                "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
+                "Eighteen", "Nineteen"]
+
+        tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+
+        thousands = ["", "Thousand", "Million", "Billion"]
+
+        # Helper function to convert three-digit groups to words
+        def convert_group(num):
+            if num == 0:
+                return ""
+
+            if num < 20:
+                return ones[num] + " "
+
+            if num < 100:
+                return tens[num // 10] + " " + convert_group(num % 10)
+
+            return ones[num // 100] + " Hundred " + convert_group(num % 100)
+
+        words = ""
+        i = 0
+
+        # Iterate through three-digit groups from right to left
+        while num > 0:
+            if num % 1000 != 0:
+                words = convert_group(num % 1000) + thousands[i] + " " + words
+
+            num //= 1000
+            i += 1
+
+        return words.strip()
+```
+
+You can create an instance of the `Solution` class and call the `numberToWords` method, passing the non-negative integer as the argument. It will return the English words representation of the number. Here's an example of how you can use it:
+
+```python
+solution = Solution()
+num = 12345
+result = solution.numberToWords(num)
+print(result)
+```
+
+Output:
+```
+Twelve Thousand Three Hundred Forty Five
+```
+
+I hope this helps! Let me know if you have any further questions.

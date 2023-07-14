@@ -1,0 +1,68 @@
+Here is the implementation of the spiralMatrix function in Go:
+
+```go
+type ListNode struct {
+    Val  int
+    Next *ListNode
+}
+
+func spiralMatrix(m int, n int, head *ListNode) [][]int {
+    // Create the matrix with -1 values
+    matrix := make([][]int, m)
+    for i := 0; i < m; i++ {
+        matrix[i] = make([]int, n)
+        for j := 0; j < n; j++ {
+            matrix[i][j] = -1
+        }
+    }
+    
+    // Fill the matrix in spiral order
+    row := 0
+    col := 0
+    direction := 0 // 0 = right, 1 = down, 2 = left, 3 = up
+    
+    for head != nil {
+        matrix[row][col] = head.Val
+        head = head.Next
+        
+        // Update row and col based on current direction
+        if direction == 0 {
+            col++
+            if col == n || matrix[row][col] != -1 {
+                // Change direction and update row and col
+                col--
+                direction = 1
+                row++
+            }
+        } else if direction == 1 {
+            row++
+            if row == m || matrix[row][col] != -1 {
+                // Change direction and update row and col
+                row--
+                direction = 2
+                col--
+            }
+        } else if direction == 2 {
+            col--
+            if col < 0 || matrix[row][col] != -1 {
+                // Change direction and update row and col
+                col++
+                direction = 3
+                row--
+            }
+        } else if direction == 3 {
+            row--
+            if row < 0 || matrix[row][col] != -1 {
+                // Change direction and update row and col
+                row++
+                direction = 0
+                col++
+            }
+        }
+    }
+    
+    return matrix
+}
+```
+
+This implementation uses a 2D matrix to represent the spiral matrix, with -1 values initially. The matrix is filled in a spiral order starting from the top-left corner, and the linked list is traversed to get the values to fill the matrix. The direction variable is used to keep track of the current direction (right, down, left, or up) to determine the next position to fill in the matrix.

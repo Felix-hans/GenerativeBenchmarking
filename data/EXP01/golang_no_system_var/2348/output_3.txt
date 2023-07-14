@@ -1,0 +1,36 @@
+Here is the implementation for the zeroFilledSubarray function in Go:
+
+```go
+func zeroFilledSubarray(nums []int) int {
+    count := 0
+    prefixSum := make(map[int]int)
+    prefixSum[0] = 1
+    sum := 0
+    
+    for _, num := range nums {
+        if num == 0 {
+            sum += 1
+        } else {
+            sum -= 1
+        }
+        
+        if freq, exist := prefixSum[sum]; exist {
+            count += freq
+        }
+        prefixSum[sum] += 1
+    }
+    
+    return count
+}
+```
+
+Explanation:
+- We maintain a prefix sum called `sum` which represents the number of zeros minus the number of non-zeros encountered so far.
+- We initialize a count variable to keep track of the number of subarrays filled with zero.
+- We also maintain a prefix sum map called `prefixSum` which keeps track of the frequencies of each prefix sum encountered so far.
+- For each element in the array, if the element is 0, we increment the `sum` by 1, otherwise we decrement the `sum` by 1.
+- We check if the current sum already exists in the `prefixSum` map. If it exists, it means there is a subarray from an earlier position to the current position with a sum of `sum`, which means there are `freq` number of subarrays filled with zero. We add `freq` to the `count` variable.
+- Finally, we update the `prefixSum` map by incrementing the frequency of the current `sum` by 1.
+- After iterating through all the elements, we return the total count of subarrays filled with zero.
+
+Note: The return type of the function is `int` as specified in the problem statement, not `int64` as mentioned in the template.

@@ -1,0 +1,26 @@
+To solve this problem, we can start by initializing an empty list called "result" to store the even integers that will be part of the maximum split. We can also create a variable called "currentSum" and set it equal to 0 to keep track of the current sum of the even integers.
+
+Next, we can iterate from 2 to finalSum (inclusive) using a for loop. For each iteration, we check if the current even integer is less than or equal to the remaining sum (finalSum - currentSum). If it is, we add the current even integer to "result" and update "currentSum" by adding the current even integer.
+
+After the loop finishes, we check if "currentSum" is equal to "finalSum". If it is, we return "result" since we have found a valid split. Otherwise, we return an empty list since no valid split exists.
+
+Here is the implementation of the above approach:
+
+```python
+class Solution:
+    def maximumEvenSplit(self, finalSum: int) -> List[int]:
+        result = []
+        currentSum = 0
+        
+        for num in range(2, finalSum + 1, 2):
+            if num <= finalSum - currentSum:
+                result.append(num)
+                currentSum += num
+        
+        if currentSum == finalSum:
+            return result
+        else:
+            return []
+```
+
+The time complexity of this implementation is O(finalSum/2) which simplifies to O(finalSum) and the space complexity is O(1) since the "result" list does not grow with the input size.

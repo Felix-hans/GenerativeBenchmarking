@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Compile Error\n  \xe2\x9c\x98 0/0 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 22: Char 1: syntax error: non-declaration statement outside function body (solution.go)\n  \xe2\x9c\x98 Error: Line 22: Char 1: syntax error: non-declaration statement outside function body (solution.go)\n  \xe2\x9c\x98 Testcase: \n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: \n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:46369) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

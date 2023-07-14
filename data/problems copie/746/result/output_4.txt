@@ -1,0 +1,24 @@
+To solve this problem, we can use a dynamic programming approach. We'll create an array, `dp`, to store the minimum cost to reach each step. The size of the `dp` array will be one more than the size of the `cost` array to accommodate the extra step at the top.
+
+We can initialize `dp[0]` and `dp[1]` with the cost of the respective steps in the `cost` array since we can start from either step 0 or step 1. For each subsequent step, `dp[i]` can be calculated as the minimum cost between climbing from the previous step or climbing from two steps before, plus the cost of the current step.
+
+Finally, the minimum cost to reach the top floor will be the minimum value between `dp[-1]` and `dp[-2]`, as we can either start from the second-to-last step and climb one more step or start from the last step directly.
+
+Here's the implementation of the `minCostClimbingStairs` function:
+
+```python
+class Solution:
+    def minCostClimbingStairs(self, cost: List[int]) -> int:
+        n = len(cost)
+        dp = [0] * (n + 1)
+
+        dp[0] = cost[0]
+        dp[1] = cost[1]
+
+        for i in range(2, n + 1):
+            dp[i] = min(dp[i - 1], dp[i - 2]) + (cost[i] if i < n else 0)
+
+        return min(dp[-1], dp[-2])
+```
+
+You can create an instance of the `Solution` class and call the `minCostClimbingStairs` method with the `cost` array as the input to get the minimum cost to reach the top floor.

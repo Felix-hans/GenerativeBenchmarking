@@ -1,0 +1,17 @@
+Here is one possible implementation of the `xorBeauty` function in Python:
+
+```python
+class Solution:
+    def xorBeauty(self, nums: List[int]) -> int:
+        n = len(nums)
+        result = 0
+        
+        for i in range(n):
+            for j in range(n):
+                for k in range(n):
+                    result ^= (nums[i] | nums[j]) & nums[k]
+        
+        return result
+```
+
+This implementation uses nested loops to iterate through all possible triplets of indices (i, j, k). For each triplet, it calculates the effective value and XORs it with the current result. Finally, it returns the accumulated result as the xor-beauty of the array.

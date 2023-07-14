@@ -1,0 +1,44 @@
+```python
+
+# Function to check if a number is prime or not
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            return False
+    return True
+
+# Function to check if a number is a palindrome or not
+def is_palindrome(num):
+    reverse = int(str(num)[::-1])
+    if num == reverse:
+        return True
+    return False
+
+# Function to generate a list of prime palindromes
+def prime_palindromes(min_num, max_num):
+    prime_palindrome_list = []
+    for num in range(min_num, max_num + 1):
+        if is_prime(num) and is_palindrome(num):
+            prime_palindrome_list.append(num)
+    return prime_palindrome_list
+
+# Main function
+def main():
+    # User input for the range of numbers
+    min_num = int(input("Enter the minimum number: "))
+    max_num = int(input("Enter the maximum number: "))
+    
+    # Generate the list of prime palindromes
+    prime_palindrome_list = prime_palindromes(min_num, max_num)
+    
+    # Display the list of prime palindromes
+    print("Prime palindromes between", min_num, "and", max_num, "are:")
+    for num in prime_palindrome_list:
+        print(num)
+
+# Call the main function
+main()
+
+```

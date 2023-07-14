@@ -1,0 +1,92 @@
+Here's an implementation of the circular double-ended queue (deque) in Python:
+
+```python
+class MyCircularDeque:
+
+    def __init__(self, k: int):
+        self.k = k
+        self.queue = []
+        
+    def insertFront(self, value: int) -> bool:
+        if len(self.queue) < self.k:
+            self.queue.insert(0, value)
+            return True
+        return False
+
+    def insertLast(self, value: int) -> bool:
+        if len(self.queue) < self.k:
+            self.queue.append(value)
+            return True
+        return False
+
+    def deleteFront(self) -> bool:
+        if self.queue:
+            self.queue.pop(0)
+            return True
+        return False
+
+    def deleteLast(self) -> bool:
+        if self.queue:
+            self.queue.pop()
+            return True
+        return False
+
+    def getFront(self) -> int:
+        if self.queue:
+            return self.queue[0]
+        return -1
+
+    def getRear(self) -> int:
+        if self.queue:
+            return self.queue[-1]
+        return -1
+
+    def isEmpty(self) -> bool:
+        return len(self.queue) == 0
+
+    def isFull(self) -> bool:
+        return len(self.queue) == self.k
+```
+
+You can test the implementation using the provided example:
+
+```python
+# Create a circular deque with maximum size of 3
+myCircularDeque = MyCircularDeque(3)
+
+# Insert elements into the deque
+print(myCircularDeque.insertLast(1))  # True
+print(myCircularDeque.insertLast(2))  # True
+print(myCircularDeque.insertFront(3))  # True
+print(myCircularDeque.insertFront(4))  # False
+
+# Get the rear element
+print(myCircularDeque.getRear())  # 2
+
+# Check if the deque is full
+print(myCircularDeque.isFull())  # True
+
+# Delete the last element
+print(myCircularDeque.deleteLast())  # True
+
+# Insert an element at the front
+print(myCircularDeque.insertFront(4))  # True
+
+# Get the front element
+print(myCircularDeque.getFront())  # 4
+```
+
+Output:
+```
+True
+True
+True
+False
+2
+True
+True
+True
+4
+```
+
+The implementation follows the given interface and returns the expected output.

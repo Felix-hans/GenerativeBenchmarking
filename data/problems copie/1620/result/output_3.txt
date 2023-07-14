@@ -1,0 +1,53 @@
+To solve this task, we can follow the following steps:
+
+1. Initialize the variables `max_quality` to 0 and `(cx, cy)` to (-1, -1). These variables will store the maximum network quality and the corresponding coordinate.
+
+2. Iterate over each coordinate `(x, y)` in the range of `(0, 51)` for both `x` and `y`. This will cover all possible coordinates within the constraints.
+
+3. For each coordinate `(x, y)`, calculate the network quality as follows:
+
+   a. Initialize `total_quality` to 0, which will store the network quality at the current coordinate.
+   
+   b. Iterate over each tower in the given `towers` array.
+   
+   c. Calculate the distance `d` between the current tower and the coordinate `(x, y)` using the Euclidean distance formula: `d = sqrt((x - xi)^2 + (y - yi)^2)`.
+   
+   d. If the distance `d` is less than or equal to the given `radius`, calculate the signal quality `signal` for the tower using the formula: `signal = floor(qi / (1 + d))`, where `qi` is the tower's quality factor.
+   
+   e. Add the `signal` to the `total_quality`.
+   
+   f. Update `max_quality` and `(cx, cy)` if the `total_quality` is greater than `max_quality` or if it is equal to `max_quality` but `(x, y)` is lexicographically smaller than `(cx, cy)`.
+   
+4. Return the coordinate `(cx, cy)` as the result.
+
+Here's the implementation of the `bestCoordinate` function in Python:
+
+```python
+from typing import List
+import math
+
+class Solution:
+    def bestCoordinate(self, towers: List[List[int]], radius: int) -> List[int]:
+        max_quality = 0
+        cx, cy = -1, -1
+
+        for x in range(51):
+            for y in range(51):
+                total_quality = 0
+
+                for tower in towers:
+                    xi, yi, qi = tower
+                    d = math.sqrt((x - xi) ** 2 + (y - yi) ** 2)
+
+                    if d <= radius:
+                        signal = math.floor(qi / (1 + d))
+                        total_quality += signal
+
+                if total_quality > max_quality or (total_quality == max_quality and (x, y) < (cx, cy)):
+                    max_quality = total_quality
+                    cx, cy = x, y
+
+        return [cx, cy]
+```
+
+You can create an instance of the `Solution` class and call the `bestCoordinate` function with the given inputs to get the desired result.

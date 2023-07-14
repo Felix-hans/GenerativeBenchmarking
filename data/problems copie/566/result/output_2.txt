@@ -1,0 +1,43 @@
+Certainly! Here's an implementation of the `matrixReshape` function in Python:
+
+```python
+class Solution:
+    def matrixReshape(self, mat, r, c):
+        m = len(mat)
+        n = len(mat[0])
+        
+        # Check if reshape is possible
+        if m * n != r * c:
+            return mat
+        
+        # Flatten the original matrix
+        flattened = [num for row in mat for num in row]
+        
+        # Create the new reshaped matrix
+        reshaped = [flattened[i*c : (i+1)*c] for i in range(r)]
+        
+        return reshaped
+```
+
+You can use this `Solution` class to create an instance and call the `matrixReshape` method. Here's an example usage:
+
+```python
+# Create an instance of the Solution class
+s = Solution()
+
+# Example 1
+mat1 = [[1, 2], [3, 4]]
+r1 = 1
+c1 = 4
+result1 = s.matrixReshape(mat1, r1, c1)
+print(result1)  # Output: [[1, 2, 3, 4]]
+
+# Example 2
+mat2 = [[1, 2], [3, 4]]
+r2 = 2
+c2 = 4
+result2 = s.matrixReshape(mat2, r2, c2)
+print(result2)  # Output: [[1, 2], [3, 4]]
+```
+
+Hope this helps!

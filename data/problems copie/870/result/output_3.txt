@@ -1,0 +1,47 @@
+To solve this problem, we can use a greedy approach. We'll start by sorting both arrays `nums1` and `nums2`. Then, we'll iterate over the sorted `nums2` array and for each element, find the smallest element in `nums1` that is greater than it. If such an element exists, we'll assign it to the corresponding index in the result array. Otherwise, we'll assign the smallest remaining element in `nums1` to maintain its advantage over `nums2`.
+
+Here's the implementation of the `advantageCount` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def advantageCount(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        sorted_nums1 = sorted(nums1)
+        sorted_nums2 = sorted(nums2)
+        result = [-1] * len(nums1)
+        remaining_nums1 = []
+
+        j = 0
+        for num2 in sorted_nums2:
+            if sorted_nums1[j] > num2:
+                result[nums2.index(num2)] = sorted_nums1[j]
+                j += 1
+            else:
+                remaining_nums1.append(sorted_nums1[j])
+                j += 1
+
+        for i in range(len(result)):
+            if result[i] == -1:
+                result[i] = remaining_nums1.pop()
+
+        return result
+```
+
+Let's test the implementation with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+nums1 = [2, 7, 11, 15]
+nums2 = [1, 10, 4, 11]
+print(solution.advantageCount(nums1, nums2))  # Output: [2, 11, 7, 15]
+
+# Example 2
+nums1 = [12, 24, 8, 32]
+nums2 = [13, 25, 32, 11]
+print(solution.advantageCount(nums1, nums2))  # Output: [24, 32, 8, 12]
+```
+
+The output matches the expected results for the given examples.

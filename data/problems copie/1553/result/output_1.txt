@@ -1,0 +1,41 @@
+To solve this problem, we can use a dynamic programming approach. We'll create a dictionary to store the minimum number of days required to eat a certain number of oranges. We'll start from 0 and work our way up to n, filling in the dictionary as we go.
+
+Here's the implementation of the `minDays` function:
+
+```python
+class Solution:
+    def minDays(self, n: int) -> int:
+        memo = {}  # Dictionary to store the minimum number of days
+        
+        def dp(num):
+            if num <= 1:
+                return num  # Base case: 0 or 1 orange requires 0 or 1 day
+            
+            if num not in memo:
+                # If the number of oranges is divisible by 2 and 3, we choose the minimum of the two subproblems
+                if num % 2 == 0 and num % 3 == 0:
+                    memo[num] = 1 + min(dp(num - 1), dp(num // 2), dp(num // 3))
+                # If the number of oranges is divisible by 2, we choose between eating 1 orange or half of them
+                elif num % 2 == 0:
+                    memo[num] = 1 + min(dp(num - 1), dp(num // 2))
+                # If the number of oranges is divisible by 3, we choose between eating 1 orange or two-thirds of them
+                elif num % 3 == 0:
+                    memo[num] = 1 + min(dp(num - 1), dp(2 * (num // 3)))
+                # If none of the above conditions are met, we subtract 1 orange and recurse
+                else:
+                    memo[num] = 1 + dp(num - 1)
+            
+            return memo[num]
+        
+        return dp(n)
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+print(solution.minDays(10))  # Output: 4
+print(solution.minDays(6))   # Output: 3
+```
+
+The function returns the expected outputs for the given examples.

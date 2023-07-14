@@ -1,0 +1,37 @@
+To solve this problem, we can use dynamic programming to build up the number of distinct ways to climb to each step.
+
+The idea is that to reach step `i`, we can either take one step from step `i-1` or two steps from step `i-2`. Therefore, the number of distinct ways to reach step `i` is the sum of the number of distinct ways to reach step `i-1` and step `i-2`.
+
+Here's the Python code to implement this solution:
+
+```python
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n == 1:
+            return 1
+        
+        # Initialize an array to store the number of distinct ways to reach each step
+        dp = [0] * (n + 1)
+        
+        # Base cases
+        dp[1] = 1
+        dp[2] = 2
+        
+        # Build up the array using dynamic programming
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        
+        return dp[n]
+```
+
+You can create an instance of the `Solution` class and call the `climbStairs` method, passing the desired `n` value to get the number of distinct ways to climb to the top.
+
+For example:
+
+```python
+solution = Solution()
+print(solution.climbStairs(2))  # Output: 2
+print(solution.climbStairs(3))  # Output: 3
+```
+
+The time complexity of this solution is O(n), and the space complexity is O(n) to store the array `dp`. However, we can optimize the space complexity to O(1) by using only three variables to keep track of the previous two steps instead of the entire array.

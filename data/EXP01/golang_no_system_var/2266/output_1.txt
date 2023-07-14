@@ -1,0 +1,40 @@
+The problem requires us to count the number of possible text messages Alice could have sent, given a string of pressed keys received by Bob.
+
+To solve this problem, we can use dynamic programming. We will create an array dp where dp[i] represents the number of possible text messages Alice could have sent using the first i digits of the pressed keys. Initially, dp[0] will be set to 1 since there is always at least one possible message with no pressed keys.
+
+For each index i from 1 to the length of pressedKeys, we will calculate dp[i] based on the previous values of dp. We can do this by iterating over all possible digits c that can correspond to a letter, and for each digit c, we will update dp[i] by adding the value of dp[i-c].
+
+Finally, the result will be dp[len(pressedKeys)] modulo 10^9 + 7.
+
+Here is the implementation of the countTexts function in Go:
+
+```go
+func countTexts(pressedKeys string) int {
+	// Initialize dp array
+	dp := make([]int, len(pressedKeys)+1)
+	dp[0] = 1
+
+	// Iterate over pressed keys
+	for i := 1; i <= len(pressedKeys); i++ {
+		// Iterate over possible digits
+		for j := 2; j <= 9; j++ {
+			// Increase dp[i] by dp[i-c]
+			if pressedKeys[i-1] == byte(j+'0') {
+				dp[i] = (dp[i] + dp[i-1]) % (1e9 + 7)
+			}
+		}
+	}
+
+	return dp[len(pressedKeys)]
+}
+```
+
+To use the countTexts function, you can call it with a string of pressed keys, like this:
+
+```go
+pressedKeys := "22233"
+result := countTexts(pressedKeys)
+fmt.Println(result) // Output: 8
+```
+
+I hope this helps!

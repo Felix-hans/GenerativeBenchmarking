@@ -1,0 +1,33 @@
+To solve the problem, we can iterate through the stockPrices array and check if the price of the current day is different from the price of the previous day. If it is, we increment the line count. Finally, we return the line count as the minimum number of lines needed to represent the line chart.
+
+Here's the implementation:
+
+```
+class Solution:
+    def minimumLines(self, stockPrices: List[List[int]]) -> int:
+        line_count = 1
+        prev_price = stockPrices[0][1]
+        for i in range(1, len(stockPrices)):
+            if stockPrices[i][1] != prev_price:
+                line_count += 1
+            prev_price = stockPrices[i][1]
+        return line_count
+```
+
+We can test the solution using the provided examples:
+
+```
+solution = Solution()
+
+stockPrices = [[1,7],[2,6],[3,5],[4,4],[5,4],[6,3],[7,2],[8,1]]
+print(solution.minimumLines(stockPrices))  # Output: 3
+
+stockPrices = [[3,4],[1,2],[7,8],[2,3]]
+print(solution.minimumLines(stockPrices))  # Output: 1
+```
+
+Output:
+```
+3
+1
+```

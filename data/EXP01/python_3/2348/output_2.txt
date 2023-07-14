@@ -1,0 +1,19 @@
+To solve this problem, we can use the sliding window technique. 
+
+We will iterate over the array `nums` using two pointers `left` and `right`. 
+
+Initially, both pointers will be at the start of the array (i.e., `left = right = 0`).
+
+We will keep track of the number of zeros encountered so far in the variable `zero_count`.
+
+At each iteration, we will check if the element at the right pointer is zero. If it is, we will increment `zero_count` by 1.
+
+If the number of zeros encountered so far (`zero_count`) is less than or equal to 2, we will add the number of subarrays formed by the elements from the left pointer to the right pointer (inclusive) to the result.
+
+Once `zero_count` becomes greater than 2, we will move the left pointer to the right by 1 and decrement `zero_count` by 1. This step is necessary to ensure that we consider all possible subarrays.
+
+Finally, we will return the result.
+
+The time complexity of this approach is O(n), where n is the length of the array. 
+
+Here is the implementation of the above approach:

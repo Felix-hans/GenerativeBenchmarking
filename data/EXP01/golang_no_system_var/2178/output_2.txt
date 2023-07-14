@@ -1,0 +1,62 @@
+Here is a possible implementation in Go:
+
+```go
+import "math"
+
+func maximumEvenSplit(finalSum int64) []int64 {
+    // Use dynamic programming to find the maximum number of unique positive even integers
+    // that sum up to the given finalSum
+    
+    // Initialize a 1D slice dp to store the maximum number of integers for each sum
+    dp := make([]int64, finalSum+1)
+    
+    // Initialize a 2D slice nums to store the numbers used for each sum
+    nums := make([][]int64, finalSum+1)
+    
+    // Initialize the base cases
+    dp[0] = 0
+    nums[0] = []int64{}
+    
+    // Iterate from 1 to finalSum
+    for i := int64(1); i <= finalSum; i++ {
+        // Initialize the maximum number of integers and the numbers used for the current sum i
+        maxInt := int64(math.MinInt64)
+        maxNums := []int64{}
+        
+        // Iterate from 1 to i
+        for j := int64(1); j <= i; j++ {
+            // If j is even and j is less than or equal to i
+            if j%2 == 0 && j <= i {
+                // If the maximum number of integers for sum i - j is greater than the current maximum
+                if dp[i-j] > maxInt {
+                    // Update the maximum number of integers and the numbers used
+                    maxInt = dp[i-j]
+                    maxNums = make([]int64, len(nums[i-j]))
+                    copy(maxNums, nums[i-j])
+                }
+            }
+        }
+        
+        // If the maximum number of integers is greater than or equal to 0
+        if maxInt >= 0 {
+            // Update the maximum number of integers and the numbers used for the current sum i
+            dp[i] = maxInt + 1
+            nums[i] = append(maxNums, i)
+        } else {
+            // If it is not possible to split the sum i into positive even integers,
+            // set the maximum number of integers to -1 and the numbers used to an empty slice
+            dp[i] = -1
+            nums[i] = []int64{}
+        }
+    }
+    
+    // Return the numbers used for the finalSum if it is possible to split into positive even integers,
+    // otherwise return an empty slice
+    if dp[finalSum] >= 0 {
+        return nums[finalSum]
+    }
+    return []int64{}
+}
+```
+
+This solution uses dynamic programming to find the maximum number of unique positive even integers that sum up to the finalSum. It uses a 1D slice `dp` to store the maximum number of integers for each sum and a 2D slice `nums` to store the numbers used for each sum. It iterates from 1 to `finalSum` and checks all possible splits by checking all even numbers less than or equal to the current sum. If a split results in a greater maximum number of integers, the `dp` and `nums` slices are updated. Finally, it returns the numbers used for the `finalSum` if it is possible to split into positive even integers, otherwise it returns an empty slice.

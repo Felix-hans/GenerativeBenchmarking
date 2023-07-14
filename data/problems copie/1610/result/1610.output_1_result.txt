@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/119 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 26: IndexError: list index out of range\n  \xe2\x9c\x98 Error: IndexError: list index out of range\n    while angles[i] - angles[end] >= -angle / 2:\nLine 26 in visiblePoints (Solution.py)\n    ret = Solution().visiblePoints(param_1, param_2, param_3)\nLine 59 in _driver (Solution.py)\n    _driver()\nLine 70 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: [[2,1],[2,2],[3,3]]\n90\n[1,1]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: 3\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:97508) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

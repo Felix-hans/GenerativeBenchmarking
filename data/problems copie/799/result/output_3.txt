@@ -1,0 +1,52 @@
+To solve this problem, we can simulate the pouring of champagne by keeping track of the amount of champagne in each glass. We'll use a 2D array to represent the pyramid of glasses.
+
+Here's the implementation of the `champagneTower` function in Python:
+
+```python
+class Solution:
+    def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
+        # Initialize the 2D array with all glasses empty
+        tower = [[0.0] * (row + 1) for row in range(query_row + 1)]
+
+        # Pour the champagne into the top glass
+        tower[0][0] = poured
+
+        # Simulate the pouring of champagne
+        for i in range(query_row):
+            for j in range(i + 1):
+                # Calculate the excess champagne in the current glass
+                excess = max(0.0, tower[i][j] - 1)
+
+                # Distribute the excess champagne equally to the two glasses below
+                tower[i + 1][j] += excess / 2
+                tower[i + 1][j + 1] += excess / 2
+
+        # Return the amount of champagne in the requested glass
+        return min(1.0, tower[query_row][query_glass])
+```
+
+Now, let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+poured = 1
+query_row = 1
+query_glass = 1
+print(solution.champagneTower(poured, query_row, query_glass))  # Output: 0.0
+
+# Example 2
+poured = 2
+query_row = 1
+query_glass = 1
+print(solution.champagneTower(poured, query_row, query_glass))  # Output: 0.5
+
+# Example 3
+poured = 100000009
+query_row = 33
+query_glass = 17
+print(solution.champagneTower(poured, query_row, query_glass))  # Output: 1.0
+```
+
+The function should produce the expected outputs for the given examples.

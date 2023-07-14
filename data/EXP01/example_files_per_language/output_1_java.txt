@@ -1,0 +1,23 @@
+To solve this problem, we can iterate over the stockPrices array and count the number of times the price changes.
+
+Here is the implementation in Java:
+
+```java
+class Solution {
+    public int minimumLines(int[][] stockPrices) {
+        int count = 1; // initial count of lines
+        
+        for (int i = 1; i < stockPrices.length; i++) {
+            if (stockPrices[i][1] != stockPrices[i - 1][1]) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+}
+```
+
+The main logic of the solution is in the for loop. We compare the price of the current day with the price of the previous day. If they are different, it means the line chart needs to change its direction and we increment the count of lines.
+
+In the end, we return the count as the minimum number of lines needed to represent the line chart.

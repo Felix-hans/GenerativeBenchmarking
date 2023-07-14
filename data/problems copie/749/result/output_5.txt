@@ -1,0 +1,78 @@
+To solve the problem, we can use a combination of depth-first search (DFS) and greedy algorithm. Here's the Python implementation of the `containVirus` function:
+
+```python
+from typing import List
+
+class Solution:
+    def containVirus(self, isInfected: List[List[int]]) -> int:
+        m, n = len(isInfected), len(isInfected[0])
+        walls_built = 0
+        
+        # Define the four directions: up, down, left, right
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        def dfs(row, col):
+            if isInfected[row][col] == -1:
+                return 0
+            
+            infected_cells = 0
+            perimeter = 0
+            walls = 0
+            isInfected[row][col] = -1  # Mark the cell as visited
+            
+            # Explore the four neighbors
+            for dx, dy in directions:
+                new_row, new_col = row + dx, col + dy
+                
+                if 0 <= new_row < m and 0 <= new_col < n:
+                    if isInfected[new_row][new_col] == 1:
+                        perimeter += 1
+                        infected_cells += dfs(new_row, new_col)
+                    elif isInfected[new_row][new_col] == 0:
+                        walls += 1
+            
+            # Build walls in the current region except for the one with the maximum perimeter
+            if walls > 0:
+                walls_built += walls
+                infected_cells += perimeter
+            
+            return infected_cells
+        
+        # Repeat the process until there are no more infected regions
+        while True:
+            regions = []
+            visited = set()
+            
+            # Find all infected regions and their perimeters
+            for i in range(m):
+                for j in range(n):
+                    if isInfected[i][j] == 1 and (i, j) not in visited:
+                        region = []
+                        perimeter = dfs(i, j)
+                        regions.append((region, perimeter))
+                        visited.update(region)
+            
+            if not regions:
+                break
+            
+            # Sort the regions by perimeter in descending order
+            regions.sort(key=lambda x: x[1], reverse=True)
+            
+            # Quarantine the region with the maximum perimeter (build walls around it)
+            for region, _ in regions[0][0]:
+                isInfected[region[0]][region[1]] = -1
+        
+            # Spread the virus to the neighboring cells of the other regions
+            for region, _ in regions[1:]:
+                for row, col in region:
+                    for dx, dy in directions:
+                        new_row, new_col = row + dx, col + dy
+                        if 0 <= new_row < m and 0 <= new_col < n and isInfected[new_row][new_col] == 0:
+                            isInfected[new_row][new_col] = 1
+        
+        return walls_built
+```
+
+This solution uses a recursive DFS to explore the infected regions and their perimeters. It keeps track of the number of walls built and the number of infected cells. The infected regions are sorted based on their perimeters in descending order, and walls are built around the region with the maximum perimeter. The virus is then spread to the neighboring cells of the other regions, and the process continues until there are no more infected regions.
+
+The time complexity of this solution is O(m * n * k), where m and n are the dimensions of the grid and k is the number of infected regions. The worst-case scenario is when the entire grid is infected, which results in k = O(m * n).

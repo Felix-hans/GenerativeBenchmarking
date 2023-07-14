@@ -1,0 +1,63 @@
+To solve this problem, we can use a disjoint set union (DSU) data structure. The DSU will help us keep track of the connected components in the graph.
+
+Here's the implementation of the `largestComponentSize` function:
+
+```python
+class Solution:
+    def largestComponentSize(self, nums: List[int]) -> int:
+        # Initialize the disjoint set union data structure
+        dsu = DSU(max(nums))
+
+        # Build the graph and merge connected nodes
+        for num in nums:
+            for factor in range(2, int(num ** 0.5) + 1):
+                if num % factor == 0:
+                    dsu.union(num, factor)
+                    dsu.union(num, num // factor)
+
+        # Count the size of the largest connected component
+        component_count = {}
+        max_size = 0
+
+        for num in nums:
+            root = dsu.find(num)
+            component_count[root] = component_count.get(root, 0) + 1
+            max_size = max(max_size, component_count[root])
+
+        return max_size
+
+
+class DSU:
+    def __init__(self, n):
+        self.parent = list(range(n + 1))
+        self.rank = [1] * (n + 1)
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        root_x = self.find(x)
+        root_y = self.find(y)
+
+        if root_x == root_y:
+            return
+
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+            self.rank[root_y] += self.rank[root_x]
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += self.rank[root_y]
+```
+
+This implementation uses the `DSU` class to implement the disjoint set union data structure. The `largestComponentSize` function utilizes this class to build the graph and find the size of the largest connected component.
+
+In the `largestComponentSize` function:
+1. We initialize the `DSU` with the maximum value in the `nums` array.
+2. We iterate through each number in `nums` and check for factors in the range from 2 to the square root of the number. If a factor is found, we merge the number with the factor and the number divided by the factor using the `union` method of the `DSU`.
+3. After building the graph and merging connected nodes, we count the size of each component using a dictionary `component_count`.
+4. Finally, we return the maximum size of the connected components from the `component_count` dictionary.
+
+Note: You need to import the `List` class from the `typing` module for the type hinting to work properly.

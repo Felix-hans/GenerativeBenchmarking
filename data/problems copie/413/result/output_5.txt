@@ -1,0 +1,27 @@
+To solve this task, we can use dynamic programming to count the number of arithmetic slices in the given array.
+
+Here's the Python implementation of the `Solution` class:
+
+```python
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n < 3:
+            return 0
+
+        dp = [0] * n  # Dynamic programming array to store the number of arithmetic slices ending at each index
+        count = 0  # Total count of arithmetic slices
+        
+        for i in range(2, n):
+            if nums[i] - nums[i-1] == nums[i-1] - nums[i-2]:
+                dp[i] = dp[i-1] + 1
+                count += dp[i]
+        
+        return count
+```
+
+The main idea is to iterate through the array starting from the third element (`i = 2`). For each element, if the difference between the current element and the previous element is equal to the difference between the previous element and the element before it, we have found a new arithmetic slice. We increment the `dp` array at index `i` by 1 (indicating the number of arithmetic slices ending at index `i`), and add the value to the `count` variable to keep track of the total number of arithmetic slices.
+
+Finally, we return the `count` variable as the result.
+
+Please note that the `List` type needs to be imported from the `typing` module for type annotations.

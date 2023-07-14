@@ -1,0 +1,40 @@
+Here is the implementation in Go for the FrequencyTracker class:
+
+```go
+type FrequencyTracker struct {
+    data map[int]int
+}
+
+func Constructor() FrequencyTracker {
+    return FrequencyTracker{
+        data: make(map[int]int),
+    }
+}
+
+func (this *FrequencyTracker) Add(number int) {
+    this.data[number]++
+}
+
+func (this *FrequencyTracker) DeleteOne(number int) {
+    if this.data[number] > 0 {
+        this.data[number]--
+    }
+}
+
+func (this *FrequencyTracker) HasFrequency(frequency int) bool {
+    for _, count := range this.data {
+        if count == frequency {
+            return true
+        }
+    }
+    return false
+}
+```
+
+Explanation:
+- We use a map to store the values and their frequencies.
+- In the `Add` method, we increment the frequency of the given number in the map.
+- In the `DeleteOne` method, we decrement the frequency of the given number if it exists in the map.
+- In the `HasFrequency` method, we iterate over the frequencies in the map and check if any of them match the given frequency.
+
+The time complexity of adding a number or deleting one occurrence is O(1), and the time complexity of checking the frequency is O(n), where n is the number of distinct numbers in the map. The space complexity is also O(n) as we store the frequencies in the map.

@@ -1,0 +1,19 @@
+To implement the given task in Python, you can use the following code:
+
+```python
+class Solution:
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return 0
+        elif num % 9 == 0:
+            return 9
+        else:
+            return num % 9
+```
+
+Explanation:
+1. If the input number `num` is 0, then the output will be 0, as stated in the example.
+2. If `num` is divisible by 9, then the output will be 9. This is because if `num` is a multiple of 9, the sum of its digits will always be divisible by 9 and will eventually reduce to 9 after repeating the process.
+3. For all other cases, the output will be the remainder when `num` is divided by 9. This is because when `num` is not divisible by 9, the sum of its digits will be equal to `num` modulo 9, and this will continue until the result has only one digit.
+
+This implementation provides the correct result for the given examples and other valid inputs. It has an O(1) runtime complexity as it does not involve any loops or recursion.

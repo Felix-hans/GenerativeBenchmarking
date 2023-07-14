@@ -1,0 +1,22 @@
+To solve this task, we can consider two scenarios:
+
+1. If `k` is greater than 1, we can simply sort the string `s` lexicographically and return the result. This is because we can freely choose any letter from `s` and append it to the end, so sorting the string will give us the lexicographically smallest result.
+
+2. If `k` is equal to 1, we need to consider all possible rotations of the string `s` to find the lexicographically smallest one. Since we can only move the first character to the end, the lexicographically smallest rotation is the one where the smallest character is at the beginning.
+
+Here's the implementation of the `orderlyQueue` method to solve the task:
+
+```python
+class Solution:
+    def orderlyQueue(self, s: str, k: int) -> str:
+        if k > 1:
+            return ''.join(sorted(s))
+        else:
+            return min(s[i:] + s[:i] for i in range(len(s)))
+```
+
+In the above code, we first check if `k` is greater than 1. If it is, we sort the string `s` using the `sorted` function and join the characters back together to get the lexicographically smallest result.
+
+If `k` is equal to 1, we use a generator expression to create all possible rotations of `s`. The rotations are created by concatenating `s[i:]` (from index `i` to the end) with `s[:i]` (from the start to index `i`). We then use the `min` function to find the lexicographically smallest rotation.
+
+Note: The given code assumes that the `orderlyQueue` method is part of a class called `Solution`.

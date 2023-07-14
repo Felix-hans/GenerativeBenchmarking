@@ -1,0 +1,55 @@
+To implement the NumMatrix class and handle multiple queries efficiently, we can use a technique called "prefix sum." The idea is to precompute the sums of all submatrices with the origin at (0, 0) and store them in a separate matrix. Then, when we receive a sumRegion query, we can use the precomputed sums to calculate the desired sum in constant time.
+
+Here's the implementation of the NumMatrix class in Python:
+
+```python
+class NumMatrix:
+    def __init__(self, matrix):
+        if not matrix or not matrix[0]:
+            self.prefix_sum = None
+        else:
+            rows, cols = len(matrix), len(matrix[0])
+            self.prefix_sum = [[0] * (cols + 1) for _ in range(rows + 1)]
+
+            # Compute prefix sum matrix
+            for i in range(1, rows + 1):
+                for j in range(1, cols + 1):
+                    self.prefix_sum[i][j] = (
+                        matrix[i - 1][j - 1]
+                        + self.prefix_sum[i - 1][j]
+                        + self.prefix_sum[i][j - 1]
+                        - self.prefix_sum[i - 1][j - 1]
+                    )
+
+    def sumRegion(self, row1, col1, row2, col2):
+        if self.prefix_sum is None:
+            return 0
+
+        return (
+            self.prefix_sum[row2 + 1][col2 + 1]
+            - self.prefix_sum[row1][col2 + 1]
+            - self.prefix_sum[row2 + 1][col1]
+            + self.prefix_sum[row1][col1]
+        )
+```
+
+This implementation initializes the NumMatrix object with the given input matrix and computes the prefix sum matrix in the constructor. The `sumRegion` method takes the coordinates of the rectangle and uses the prefix sum matrix to calculate the sum in constant time.
+
+Let's test the implementation with the example given:
+
+```python
+matrix = [
+    [3, 0, 1, 4, 2],
+    [5, 6, 3, 2, 1],
+    [1, 2, 0, 1, 5],
+    [4, 1, 0, 1, 7],
+    [1, 0, 3, 0, 5],
+]
+
+numMatrix = NumMatrix(matrix)
+print(numMatrix.sumRegion(2, 1, 4, 3))  # Output: 8
+print(numMatrix.sumRegion(1, 1, 2, 2))  # Output: 11
+print(numMatrix.sumRegion(1, 2, 2, 4))  # Output: 12
+```
+
+The output matches the expected results specified in the example.

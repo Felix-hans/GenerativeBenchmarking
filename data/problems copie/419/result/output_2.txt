@@ -1,0 +1,34 @@
+To solve the problem, we can iterate through the cells of the board and count the number of battleships based on the following rules:
+
+1. A battleship starts at a cell with 'X' if the cell above it (if it exists) and the cell to its left (if it exists) are both '.' (empty).
+2. For each cell with 'X' that satisfies the above condition, we increment the count of battleships.
+
+Here's the implementation of the `countBattleships` function:
+
+```python
+from typing import List
+
+class Solution:
+    def countBattleships(self, board: List[List[str]]) -> int:
+        m, n = len(board), len(board[0])
+        count = 0
+
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] == 'X':
+                    if (i == 0 or board[i - 1][j] == '.') and (j == 0 or board[i][j - 1] == '.'):
+                        count += 1
+
+        return count
+```
+
+You can create an instance of the `Solution` class and call the `countBattleships` function with the board as the input to get the count of battleships. For example:
+
+```python
+board = [["X",".",".","X"],[".",".",".","X"],[".",".",".","X"]]
+solution = Solution()
+count = solution.countBattleships(board)
+print(count)  # Output: 2
+```
+
+This implementation solves the problem in one pass, uses only O(1) extra memory, and doesn't modify the values of the board.

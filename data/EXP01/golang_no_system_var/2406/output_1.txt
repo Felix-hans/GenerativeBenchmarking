@@ -1,0 +1,50 @@
+To solve the problem, we can use a greedy approach. We will sort the intervals based on their start points. Then, we will iterate through the sorted intervals and check if the current interval intersects with the last interval added to the group. If it does not intersect, we will start a new group.
+
+Here is the implementation in Go:
+
+```go
+import "sort"
+
+func minGroups(intervals [][]int) int {
+    if len(intervals) == 0 {
+        return 0
+    }
+  
+    sort.Slice(intervals, func(i, j int) bool {
+        return intervals[i][0] < intervals[j][0]
+    })
+  
+    groups := 1
+    maxEnd := intervals[0][1]
+  
+    for i := 1; i < len(intervals); i++ {
+        if intervals[i][0] > maxEnd {
+            groups++
+            maxEnd = intervals[i][1]
+        } else {
+            maxEnd = max(maxEnd, intervals[i][1])
+        }
+    }
+  
+    return groups
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+In the code above, we first check if the intervals array is empty. If it is, we return 0 as there are no intervals to group.
+
+Next, we sort the intervals array based on the start points of the intervals. We use the sort.Slice function with a custom sorting function that compares the start points of the intervals.
+
+We initialize the groups counter as 1, as we already have one group with the first interval. We also initialize the maxEnd variable with the end point of the first interval.
+
+Then, we iterate through the sorted intervals starting from the second interval. If the start point of the current interval is greater than the maxEnd, it means that this interval does not intersect with the previous interval, so we start a new group and update the maxEnd with the end point of the current interval. Otherwise, we update the maxEnd to the maximum of its current value and the end point of the current interval.
+
+Finally, we return the value of the groups counter.
+
+The time complexity of this solution is O(n log n) due to the sorting step, where n is the number of intervals.

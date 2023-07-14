@@ -1,0 +1,62 @@
+To solve this problem, we can start by initializing a 2D grid of size m x n to represent the grid. We'll set all the cells in the grid to be unguarded initially.
+
+Next, we'll iterate through the walls array and mark all the wall cells as guarded in the grid.
+
+Then, we'll iterate through the guards array and mark all the cells that can be seen by each guard. To do this, we'll use a helper function called markSeenCells, which takes the position of a guard and marks all the cells that can be seen from that position in the grid. We'll implement this function later.
+
+After marking all the cells seen by the guards, we'll count the number of unguarded cells in the grid and return the count as the result.
+
+Here's the implementation:
+
+```go
+func countUnguarded(m int, n int, guards [][]int, walls [][]int) int {
+    // Initialize the grid
+    grid := make([][]bool, m)
+    for i := 0; i < m; i++ {
+        grid[i] = make([]bool, n)
+    }
+    
+    // Mark the wall cells as guarded
+    for _, wall := range walls {
+        row, col := wall[0], wall[1]
+        grid[row][col] = true
+    }
+    
+    // Mark the cells seen by the guards
+    for _, guard := range guards {
+        row, col := guard[0], guard[1]
+        markSeenCells(grid, m, n, row, col)
+    }
+    
+    // Count the unguarded cells
+    count := 0
+    for _, row := range grid {
+        for _, cell := range row {
+            if !cell {
+                count++
+            }
+        }
+    }
+    
+    return count
+}
+
+// Helper function to mark the cells seen by a guard
+func markSeenCells(grid [][]bool, m int, n int, row int, col int) {
+    // Check the cells in the north, east, south, and west directions
+    directions := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}}
+    for _, direction := range directions {
+        dx, dy := direction[0], direction[1]
+        newRow, newCol := row+dx, col+dy
+        
+        // Continue in the current direction until a wall or another guard is reached
+        for newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && !grid[newRow][newCol] {
+            grid[newRow][newCol] = true
+            newRow += dx
+            newCol += dy
+        }
+    }
+}
+```
+
+In the above code, we first initialize the grid with all cells set to unguarded. Then, we iterate through the walls and guards arrays to mark the wall cells and the cells seen by the guards. Finally, we count the number of unguarded cells in the grid and return the count as the result.

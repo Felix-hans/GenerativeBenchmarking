@@ -1,0 +1,33 @@
+We can solve this problem by iterating through the input string and keeping track of the current length of the alphabetical continuous substring. We also need to keep track of the longest length encountered so far. Whenever we encounter a character that is not in increasing order from the previous character, we update the longest length if necessary and reset the current length. Finally, we return the longest length.
+
+Here is the Python implementation for the `longestContinuousSubstring` method:
+
+```python
+class Solution:
+    def longestContinuousSubstring(self, s: str) -> int:
+        longest_length = 0
+        current_length = 0
+
+        # Iterate through the string
+        for i in range(len(s)):
+            if i > 0 and ord(s[i]) - ord(s[i-1]) != 1:
+                # Reset the current length if the characters are not in increasing order
+                current_length = 0
+            # Update the current length and longest length
+            current_length += 1
+            longest_length = max(longest_length, current_length)
+
+        return longest_length
+```
+
+We can test the solution using the provided examples:
+
+```python
+solution = Solution()
+s1 = "abacaba"
+print(solution.longestContinuousSubstring(s1))  # Output: 2
+s2 = "abcde"
+print(solution.longestContinuousSubstring(s2))  # Output: 5
+```
+
+This will output the expected results.

@@ -1,0 +1,41 @@
+To solve this problem, we can use dynamic programming to count the number of binary trees we can make for each integer in the array. We'll store the count in a dictionary to avoid recomputing the values.
+
+Here's the implementation of the `numFactoredBinaryTrees` function:
+
+```python
+class Solution:
+    def numFactoredBinaryTrees(self, arr):
+        MOD = 10**9 + 7
+        arr.sort()  # Sort the array in ascending order
+        dp = {}  # Dictionary to store the count of binary trees for each integer
+
+        for i in range(len(arr)):
+            dp[arr[i]] = 1  # Initialize the count to 1 for each individual integer
+            for j in range(i):
+                if arr[i] % arr[j] == 0:
+                    # If arr[j] is a factor of arr[i]
+                    factor = arr[i] // arr[j]
+                    if factor in dp:
+                        # If the factor exists in the dictionary, update the count
+                        dp[arr[i]] += dp[arr[j]] * dp[factor]
+                        dp[arr[i]] %= MOD
+
+        total_count = sum(dp.values()) % MOD  # Calculate the total count of binary trees
+        return total_count
+```
+
+Now, we can test the code using the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+arr1 = [2, 4]
+print(solution.numFactoredBinaryTrees(arr1))  # Output: 3
+
+# Example 2
+arr2 = [2, 4, 5, 10]
+print(solution.numFactoredBinaryTrees(arr2))  # Output: 7
+```
+
+The code should produce the correct outputs for the given examples.

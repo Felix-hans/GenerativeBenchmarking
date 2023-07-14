@@ -1,0 +1,58 @@
+Here's the implementation of the TimeMap class in Python:
+
+```python
+from collections import defaultdict
+
+class TimeMap:
+
+    def __init__(self):
+        # Initialize a dictionary to store the key-value data
+        self.data = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        # Append the (value, timestamp) pair to the list associated with the key
+        self.data[key].append((value, timestamp))
+
+    def get(self, key: str, timestamp: int) -> str:
+        # Retrieve the list of (value, timestamp) pairs associated with the key
+        values = self.data.get(key, [])
+
+        # Perform a binary search to find the largest timestamp_prev <= timestamp
+        left, right = 0, len(values) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if values[mid][1] == timestamp:
+                return values[mid][0]
+            elif values[mid][1] < timestamp:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        # If there are no values or all values have larger timestamps, return ""
+        if right < 0:
+            return ""
+        else:
+            return values[right][0]
+```
+
+You can create a TimeMap object and call the `set` and `get` methods as shown in the example you provided:
+
+```python
+timeMap = TimeMap()
+timeMap.set("foo", "bar", 1)
+print(timeMap.get("foo", 1))  # Output: "bar"
+print(timeMap.get("foo", 3))  # Output: "bar"
+timeMap.set("foo", "bar2", 4)
+print(timeMap.get("foo", 4))  # Output: "bar2"
+print(timeMap.get("foo", 5))  # Output: "bar2"
+```
+
+The output will be:
+```
+bar
+bar
+bar2
+bar2
+```
+
+This implementation stores the values for each key in a list of tuples, where each tuple represents a (value, timestamp) pair. When retrieving a value for a given timestamp, it performs a binary search on the list of pairs to find the largest timestamp_prev that is less than or equal to the given timestamp.

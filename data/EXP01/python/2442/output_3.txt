@@ -1,0 +1,15 @@
+One possible solution for this problem is to use a set to keep track of the distinct integers. We will iterate through each number in the given array, reverse its digits, and add it to the set. Finally, we return the length of the set, which corresponds to the number of distinct integers in the final array.
+
+Here's the implementation in Python:
+
+```python
+class Solution:
+    def countDistinctIntegers(self, nums: List[int]) -> int:
+        distinct_integers = set()
+
+        for num in nums:
+            reverse_num = int(str(num)[::-1])
+            distinct_integers.add(reverse_num)
+
+        return len(distinct_integers)
+```

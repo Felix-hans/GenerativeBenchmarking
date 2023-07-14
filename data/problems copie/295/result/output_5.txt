@@ -1,0 +1,48 @@
+Here's an implementation of the `MedianFinder` class in Python:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.min_heap = []
+        self.max_heap = []
+
+    def addNum(self, num: int) -> None:
+        if len(self.min_heap) == len(self.max_heap):
+            heapq.heappush(self.max_heap, -num)
+            heapq.heappush(self.min_heap, -heapq.heappop(self.max_heap))
+        else:
+            heapq.heappush(self.min_heap, num)
+            heapq.heappush(self.max_heap, -heapq.heappop(self.min_heap))
+
+    def findMedian(self) -> float:
+        if len(self.min_heap) == len(self.max_heap):
+            return (self.min_heap[0] - self.max_heap[0]) / 2
+        else:
+            return float(self.min_heap[0])
+```
+
+Here's how you can use the `MedianFinder` class:
+
+```python
+# Instantiate the MedianFinder object
+obj = MedianFinder()
+
+# Add numbers to the data structure
+obj.addNum(1)
+obj.addNum(2)
+
+# Find the median
+median1 = obj.findMedian()
+print(median1)  # Output: 1.5
+
+# Add another number
+obj.addNum(3)
+
+# Find the median again
+median2 = obj.findMedian()
+print(median2)  # Output: 2.0
+```
+
+The `MedianFinder` class uses two heaps: a max heap to store the smaller half of the numbers and a min heap to store the larger half of the numbers. The max heap stores the negation of the numbers to simulate a max heap behavior in Python's heapq module. The `addNum` method adds the number to the appropriate heap and balances the heaps if needed. The `findMedian` method returns the median based on the sizes of the heaps.

@@ -1,0 +1,29 @@
+Here's the implementation of the `sumEvenAfterQueries` function in Python:
+
+```python
+class Solution:
+    def sumEvenAfterQueries(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        # Initialize the sum of even values
+        even_sum = sum(num for num in nums if num % 2 == 0)
+        result = []
+
+        for val, index in queries:
+            # Update the value at the given index
+            nums[index] += val
+
+            # Check if the original value was even
+            if nums[index] % 2 == 0:
+                # If the updated value is even, add it to the even_sum
+                even_sum += nums[index]
+            elif nums[index] - val % 2 == 0:
+                # If the updated value is odd but the original value was even,
+                # subtract the original value from the even_sum
+                even_sum -= nums[index] - val
+
+            # Append the current even_sum to the result
+            result.append(even_sum)
+
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `sumEvenAfterQueries` function with the given `nums` and `queries` as arguments. It will return the desired result.

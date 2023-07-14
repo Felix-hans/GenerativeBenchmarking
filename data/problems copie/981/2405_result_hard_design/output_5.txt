@@ -1,0 +1,33 @@
+Here's the Python implementation of the TimeMap class that satisfies the given requirements:
+
+```python
+from collections import defaultdict
+from bisect import bisect_right
+
+class TimeMap:
+    def __init__(self):
+        self.data = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.data:
+            return ""
+
+        values = self.data[key]
+        index = bisect_right(values, (timestamp, chr(127)))
+
+        if index == 0:
+            return ""
+
+        return values[index - 1][1]
+```
+
+The TimeMap class uses a dictionary (`self.data`) to store the key-value pairs, where the values are stored as a list of tuples `(timestamp, value)`. The timestamps are strictly increasing within each key.
+
+The `set` method appends the new value to the list associated with the given key.
+
+The `get` method performs a binary search using `bisect_right` in the list of values for the given key. It finds the rightmost insertion point for the provided timestamp. If the index is 0, it means there are no values before the given timestamp, so it returns an empty string. Otherwise, it returns the value associated with the timestamp at the index minus one.
+
+This implementation has a time complexity of O(log n) for both the `set` and `get` operations, where n is the number of values associated with the given key.

@@ -1,0 +1,56 @@
+To solve this task, we can use a combination of a dictionary and a list.
+
+In the dictionary, we will store the numbers as keys and their frequencies as values. The list will store the numbers in the order they were added to the data structure.
+
+Here is the Python implementation for the FrequencyTracker class:
+
+```python
+class FrequencyTracker:
+    def __init__(self):
+        self.num_dict = {}
+        self.num_list = []
+
+    def add(self, number: int) -> None:
+        self.num_dict[number] = self.num_dict.get(number, 0) + 1
+        self.num_list.append(number)
+
+    def deleteOne(self, number: int) -> None:
+        if number in self.num_dict:
+            self.num_dict[number] -= 1
+            if self.num_dict[number] == 0:
+                del self.num_dict[number]
+            self.num_list.remove(number)
+
+    def hasFrequency(self, frequency: int) -> bool:
+        for num in self.num_dict:
+            if self.num_dict[num] == frequency:
+                return True
+        return False
+```
+
+The `add` method adds a number to the data structure. It increments its frequency in the dictionary and appends it to the list.
+
+The `deleteOne` method deletes one occurrence of a number from the data structure. If the number exists in the dictionary, its frequency is decremented, and if it becomes zero, it is removed from the dictionary. The number is also removed from the list.
+
+The `hasFrequency` method checks if there is a number in the data structure that occurs with the given frequency. It iterates over the numbers in the dictionary and returns True if a number has the required frequency.
+
+Here are the example test cases provided:
+
+```python
+frequencyTracker = FrequencyTracker()
+frequencyTracker.add(3)
+frequencyTracker.add(3)
+print(frequencyTracker.hasFrequency(2))  # Output: True
+
+frequencyTracker = FrequencyTracker()
+frequencyTracker.add(1)
+frequencyTracker.deleteOne(1)
+print(frequencyTracker.hasFrequency(1))  # Output: False
+
+frequencyTracker = FrequencyTracker()
+print(frequencyTracker.hasFrequency(2))  # Output: False
+frequencyTracker.add(3)
+print(frequencyTracker.hasFrequency(1))  # Output: True
+```
+
+The output matches the expected results in all the provided examples.

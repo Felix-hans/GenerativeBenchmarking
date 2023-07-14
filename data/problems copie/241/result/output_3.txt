@@ -1,0 +1,58 @@
+To solve this problem, we can use a divide-and-conquer approach combined with recursion. The idea is to split the expression into smaller subexpressions at each operator and recursively compute all possible results for each subexpression. Then, we combine the results in different ways based on the operator to get the final results.
+
+Here's the Python implementation for the `diffWaysToCompute` function:
+
+```python
+from typing import List
+
+class Solution:
+    def diffWaysToCompute(self, expression: str) -> List[int]:
+        # Helper function to compute results for a subexpression
+        def compute(left: List[int], right: List[int], operator: str) -> List[int]:
+            results = []
+            for l in left:
+                for r in right:
+                    if operator == '+':
+                        results.append(l + r)
+                    elif operator == '-':
+                        results.append(l - r)
+                    elif operator == '*':
+                        results.append(l * r)
+            return results
+        
+        # Recursive function to compute results for an expression
+        def helper(expression: str) -> List[int]:
+            results = []
+            # Base case: if the expression is a single number, return it as a list
+            if expression.isdigit():
+                return [int(expression)]
+            
+            # Iterate through the expression to find operators
+            for i, char in enumerate(expression):
+                if char in ['+', '-', '*']:
+                    # Split the expression at the operator
+                    left = helper(expression[:i])
+                    right = helper(expression[i+1:])
+                    
+                    # Combine the results using the operator
+                    results.extend(compute(left, right, char))
+            
+            return results
+        
+        # Start the recursion
+        return helper(expression)
+```
+
+Now we can create an instance of the `Solution` class and test it with the given examples:
+
+```python
+solution = Solution()
+
+expression = "2-1-1"
+print(solution.diffWaysToCompute(expression))  # Output: [0, 2]
+
+expression = "2*3-4*5"
+print(solution.diffWaysToCompute(expression))  # Output: [-34, -14, -10, -10, 10]
+```
+
+The code will output the expected results for the given examples.

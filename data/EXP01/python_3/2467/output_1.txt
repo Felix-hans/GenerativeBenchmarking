@@ -1,0 +1,35 @@
+
+Here is the code implementation for the given task:
+
+```python
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        n = len(amount)
+        graph = [[] for _ in range(n)]
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        net_income = [0] * n
+
+        def dfs(node, parent):
+            for child in graph[node]:
+                if child == parent:
+                    continue
+                dfs(child, node)
+                net_income[node] += max(net_income[child], -amount[child])
+
+        dfs(bob, -1)
+        return amount[bob] + net_income[bob]
+```
+
+Example usage:
+```python
+if __name__ == "__main__":
+    solution = Solution()
+    edges = [[0, 1], [1, 2], [1, 3], [3, 4]]
+    bob = 3
+    amount = [-2, 4, 2, -4, 6]
+    print(solution.mostProfitablePath(edges, bob, amount))
+```
+

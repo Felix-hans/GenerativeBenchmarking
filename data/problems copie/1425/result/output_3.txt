@@ -1,0 +1,30 @@
+Here's the implementation of the `constrainedSubsetSum` function in Python:
+
+```python
+class Solution:
+    def constrainedSubsetSum(self, nums, k):
+        n = len(nums)
+        dp = [0] * n
+        dp[0] = nums[0]
+        max_sum = dp[0]
+        
+        for i in range(1, n):
+            # Find the maximum sum within the constraint
+            max_val = max(dp[i-k:i]) if i > k else max(dp[:i])
+            dp[i] = max(nums[i], max_val + nums[i])
+            max_sum = max(max_sum, dp[i])
+        
+        return max_sum
+```
+
+This solution uses dynamic programming to calculate the maximum sum of a non-empty subsequence while satisfying the given condition.
+
+We initialize an array `dp` of the same length as `nums` to store the maximum sum of subsequences ending at each index. We also initialize `max_sum` to keep track of the maximum sum found so far.
+
+Then, we iterate over `nums` starting from the second element. For each element `nums[i]`, we calculate the maximum sum within the constraint by finding the maximum value in the previous `k` elements of `dp` if `i` is greater than `k`, or in all the elements of `dp` up to index `i` otherwise.
+
+We update `dp[i]` to be the maximum of `nums[i]` and the maximum sum within the constraint, i.e., `max_val + nums[i]`. We also update `max_sum` if `dp[i]` is greater than the current `max_sum`.
+
+Finally, we return `max_sum` as the maximum sum of a non-empty subsequence satisfying the given condition.
+
+You can create an instance of the `Solution` class and call the `constrainedSubsetSum` function with the input array `nums` and integer `k` to get the desired output.

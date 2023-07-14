@@ -1,0 +1,36 @@
+Here's the implementation of the `TimeMap` class in Python that fulfills the given requirements:
+
+```python
+from collections import defaultdict
+import bisect
+
+class TimeMap:
+
+    def __init__(self):
+        self.data = defaultdict(list)
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.data[key].append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.data:
+            return ""
+        
+        values = self.data[key]
+        
+        # Perform binary search to find the largest timestamp
+        index = bisect.bisect_right(values, (timestamp, chr(127)))
+        
+        if index > 0:
+            return values[index - 1][1]
+        
+        return ""
+```
+
+In this implementation, we use a dictionary (`self.data`) to store the key-value pairs. The key is the input key, and the value is a list of tuples representing the timestamp and value pairs.
+
+The `set` method appends a new tuple `(timestamp, value)` to the list associated with the given key in the dictionary.
+
+The `get` method performs a binary search using the `bisect_right` function from the `bisect` module. It finds the index at which the given timestamp should be inserted to maintain the sorted order. By retrieving the value at the index before that, we can obtain the value associated with the largest timestamp_prev that is less than or equal to the given timestamp.
+
+Please note that this implementation assumes that the timestamps passed to the `set` method are strictly increasing.

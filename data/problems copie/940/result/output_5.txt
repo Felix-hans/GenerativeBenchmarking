@@ -1,0 +1,65 @@
+To solve this problem, we can use dynamic programming. Let's go through the steps to implement the `distinctSubseqII` function in Python:
+
+```python
+class Solution:
+    def distinctSubseqII(self, s: str) -> int:
+        mod = 10**9 + 7  # Modulo value
+        
+        n = len(s)  # Length of the input string
+        dp = [0] * (n + 1)  # Initialize an array to store the dynamic programming values
+        last = {}  # Dictionary to store the last occurrence index of each character
+        
+        dp[0] = 1  # Base case
+        
+        for i in range(1, n + 1):
+            dp[i] = (dp[i - 1] * 2) % mod  # The number of subsequences without the current character
+            
+            if s[i - 1] in last:
+                dp[i] -= dp[last[s[i - 1]] - 1]  # Subtract the number of subsequences that end before the last occurrence of the current character
+                
+            last[s[i - 1]] = i  # Update the last occurrence index of the current character
+        
+        # Adjust the final result to be non-negative
+        result = dp[n] - 1 if dp[n] > 0 else 0
+        
+        return result
+```
+
+Let's walk through the implementation:
+
+1. We define the `distinctSubseqII` function that takes a string `s` as input and returns the number of distinct non-empty subsequences of `s`.
+
+2. We initialize the modulo value `mod` to `10**9 + 7`, which will be used to keep the result within a reasonable range.
+
+3. We determine the length of the input string `s` and initialize an array `dp` of length `n + 1` to store the dynamic programming values. We also initialize an empty dictionary `last` to store the last occurrence index of each character in `s`.
+
+4. We set the base case `dp[0] = 1`, indicating that there is one empty subsequence.
+
+5. We iterate over the characters of `s` using a range from 1 to `n + 1`. For each index `i`:
+
+   a. We calculate the number of subsequences without the current character by multiplying `dp[i - 1]` by 2 and taking the modulo value.
+
+   b. If the current character `s[i - 1]` is already present in `last`, we subtract the number of subsequences that end before the last occurrence of the current character (`dp[last[s[i - 1]] - 1]`) from `dp[i]`. This ensures that we count distinct subsequences.
+
+   c. We update the last occurrence index of the current character `s[i - 1]` in the `last` dictionary.
+
+6. After the loop, we calculate the final result by subtracting 1 from `dp[n]`. If `dp[n]` is already less than or equal to 0, we set the result to 0 to ensure a non-negative value.
+
+7. Finally, we return the result.
+
+You can create an instance of the `Solution` class and call the `distinctSubseqII` method to test the implementation with different inputs:
+
+```python
+solution = Solution()
+
+s = "abc"
+print(solution.distinctSubseqII(s))  # Output: 7
+
+s = "aba"
+print(solution.distinctSubseqII(s))  # Output: 6
+
+s = "aaa"
+print(solution.distinctSubseqII(s))  # Output: 3
+```
+
+This should give you

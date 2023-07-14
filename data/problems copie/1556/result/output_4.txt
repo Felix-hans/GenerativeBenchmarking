@@ -1,0 +1,38 @@
+You can implement the task of adding a dot as the thousands separator in Python using the following code:
+
+```python
+class Solution:
+    def thousandSeparator(self, n: int) -> str:
+        # Convert the integer to a string
+        num_str = str(n)
+
+        # Check if the number has 4 or more digits
+        if len(num_str) < 4:
+            return num_str
+
+        # Initialize an empty result string
+        result = ""
+
+        # Iterate over the string from the end
+        for i in range(len(num_str) - 1, -1, -1):
+            # Add the current digit to the result string
+            result = num_str[i] + result
+
+            # Add a dot as the thousands separator every 3 digits
+            if i > 0 and (len(num_str) - i) % 3 == 0:
+                result = "." + result
+
+        return result
+```
+
+Here's how you can use the `Solution` class to test the implementation:
+
+```python
+solution = Solution()
+
+print(solution.thousandSeparator(987))   # Output: "987"
+print(solution.thousandSeparator(1234))  # Output: "1.234"
+print(solution.thousandSeparator(1234567))  # Output: "1.234.567"
+```
+
+This code checks if the number has 4 or more digits. If it has less than 4 digits, it returns the number as is. Otherwise, it iterates over the string representation of the number from the end and adds each digit to the result string. It also adds a dot as the thousands separator every 3 digits using the modulo operator. Finally, it returns the result string.

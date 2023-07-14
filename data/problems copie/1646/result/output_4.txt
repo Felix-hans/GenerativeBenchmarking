@@ -1,0 +1,32 @@
+Here's the implementation of the `getMaximumGenerated` function in Python:
+
+```python
+class Solution:
+    def getMaximumGenerated(self, n: int) -> int:
+        if n == 0:
+            return 0
+        
+        nums = [0] * (n + 1)
+        nums[1] = 1
+        
+        for i in range(2, n + 1):
+            if i % 2 == 0:
+                nums[i] = nums[i // 2]
+            else:
+                nums[i] = nums[i // 2] + nums[i // 2 + 1]
+        
+        return max(nums)
+```
+
+This function uses dynamic programming to generate the `nums` array according to the given rules. It initializes the array with zeros and sets `nums[1] = 1`. Then, it iterates from `2` to `n` and fills in the array based on whether the index is even or odd. For even indices, it sets the value to `nums[i // 2]`, and for odd indices, it sets the value to `nums[i // 2] + nums[i // 2 + 1]`. Finally, it returns the maximum value in the `nums` array using the `max` function.
+
+You can create an instance of the `Solution` class and call the `getMaximumGenerated` method to test it, like this:
+
+```python
+solution = Solution()
+print(solution.getMaximumGenerated(7))  # Output: 3
+print(solution.getMaximumGenerated(2))  # Output: 1
+print(solution.getMaximumGenerated(3))  # Output: 2
+```
+
+I hope this helps! Let me know if you have any further questions.

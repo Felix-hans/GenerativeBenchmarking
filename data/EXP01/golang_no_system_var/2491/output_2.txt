@@ -1,0 +1,49 @@
+Here is the solution for the given task:
+
+```
+func dividePlayers(skill []int) int64 {
+    n := len(skill)
+    
+    // Calculate the sum of all skills
+    totalSkill := 0
+    for _, s := range skill {
+        totalSkill += s
+    }
+    
+    // If the total sum of skills is not divisible by n/2, return -1
+    if totalSkill % (n/2) != 0 {
+        return -1
+    }
+    
+    // Calculate the target skill for each team
+    targetSkill := totalSkill / (n/2)
+    
+    // Sort the skills in descending order
+    sort.Sort(sort.Reverse(sort.IntSlice(skill)))
+    
+    // Initialize the left and right pointers
+    left := 0
+    right := n - 1
+    
+    // Initialize the sum of chemistry
+    chemistry := int64(0)
+    
+    // Iterate until the left and right pointers meet
+    for left < right {
+        // If the sum of the skills is equal to the target skill, calculate the chemistry
+        if skill[left] + skill[right] == targetSkill {
+            chemistry += int64(skill[left] * skill[right])
+            left++
+            right--
+        // If the sum of the skills is less than the target skill, move the left pointer to the right
+        } else if skill[left] + skill[right] < targetSkill {
+            left++
+        // If the sum of the skills is greater than the target skill, move the right pointer to the left
+        } else {
+            right--
+        }
+    }
+    
+    return chemistry
+}
+```

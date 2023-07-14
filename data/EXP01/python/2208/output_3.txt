@@ -1,0 +1,29 @@
+To solve this problem, we can follow the following steps:
+
+1. Calculate the initial sum of nums.
+2. Sort the nums array in descending order.
+3. Initialize a variable 'target' with half of the sum of nums.
+4. Initialize a variable 'operations' to keep track of the number of operations performed.
+5. Iterate over the nums array and for each number, check if reducing it to half or less would make the sum of nums less than or equal to the target. If it does, update the target to be half of the new sum and increment the operations count.
+6. Return the operations count.
+
+Here is the implementation of the above approach:
+
+```python
+class Solution:
+    def halveArray(self, nums: List[int]) -> int:
+        total_sum = sum(nums)
+        nums.sort(reverse=True)
+        target = total_sum / 2
+        operations = 0
+        
+        for num in nums:
+            if num <= target:
+                break
+            target /= 2
+            operations += 1
+            
+        return operations
+```
+
+Note: The time complexity of this solution is O(nlogn) due to the sorting operation.

@@ -1,0 +1,52 @@
+To solve this problem, we can use a greedy approach. We'll count the frequency of each character in the string and store it in a dictionary. Then, we'll create a max heap using a priority queue to prioritize the characters with higher frequencies.
+
+We'll initialize an empty result string and repeatedly pop the two most frequent characters from the priority queue. If the last character added to the result is the same as the current character, we'll pop the next character. Then, we'll append the characters to the result string and decrement their frequencies. If the frequency is still greater than zero, we'll push the character back into the priority queue.
+
+If at any point, there's only one character left in the priority queue, and its frequency is greater than one, it means we can't rearrange the string to satisfy the condition of not having adjacent characters the same. In that case, we'll return an empty string.
+
+Here's the implementation of the `reorganizeString` function in Python:
+
+```python
+import heapq
+
+class Solution:
+    def reorganizeString(self, s: str) -> str:
+        freq = {}
+        for ch in s:
+            freq[ch] = freq.get(ch, 0) + 1
+
+        pq = [(-f, ch) for ch, f in freq.items()]
+        heapq.heapify(pq)
+
+        result = ""
+        prev_freq, prev_ch = 0, None
+
+        while pq:
+            curr_freq, curr_ch = heapq.heappop(pq)
+            result += curr_ch
+
+            if prev_freq < 0:
+                heapq.heappush(pq, (prev_freq, prev_ch))
+
+            curr_freq += 1
+            prev_freq, prev_ch = curr_freq, curr_ch
+
+            if len(pq) == 1 and pq[0][0] < -1:
+                return ""
+
+        return result
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+s = "aab"
+print(solution.reorganizeString(s))  # Output: "aba"
+
+s = "aaab"
+print(solution.reorganizeString(s))  # Output: ""
+```
+
+The function returns the expected outputs for the given examples.

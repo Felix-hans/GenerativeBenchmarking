@@ -1,0 +1,31 @@
+To solve this problem, we can use a dynamic programming approach.
+
+We can define a dp array where dp[i] represents the length of the longest ideal string that ends at index i of the string s.
+
+We can start by initializing dp[0] to 1, as the longest ideal string ending at index 0 is just the character at index 0.
+
+Then, for each index i from 1 to the length of the string s, we can calculate dp[i] as follows:
+
+- Initialize dp[i] to 1, as the minimum length of an ideal string ending at index i is 1 (the character at index i).
+- Iterate over all indices j from i-1 to 0, calculating the absolute difference between the current character at index i and the character at index j. If this difference is less than or equal to k, we can extend the ideal string ending at index j to include the character at index i, increasing the length of the ideal string by 1. In that case, we update dp[i] to be the maximum of dp[i] and dp[j] + 1.
+
+Finally, we return the maximum value in the dp array as the length of the longest ideal string.
+
+Here is the implementation of the above algorithm in Python:
+
+```
+class Solution:
+    def longestIdealString(self, s: str, k: int) -> int:
+        n = len(s)
+        dp = [1] * n
+        
+        for i in range(1, n):
+            for j in range(i-1, -1, -1):
+                diff = abs(ord(s[i]) - ord(s[j]))
+                if diff <= k:
+                    dp[i] = max(dp[i], dp[j] + 1)
+        
+        return max(dp)
+```
+
+The time complexity of this solution is O(n^2), where n is the length of the string s. However, since the constraints state that the length of s can be at most 10^5, this solution should be efficient enough.

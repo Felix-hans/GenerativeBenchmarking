@@ -1,0 +1,27 @@
+To solve the problem, we can use a simple iterative approach. We start with the given number of bottles, and while we have enough empty bottles to exchange, we perform the exchange operation and update the counts accordingly. Here's the implementation of the `numWaterBottles` function:
+
+```python
+class Solution:
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        totalBottles = numBottles  # Initialize the total number of bottles
+        emptyBottles = numBottles  # Initialize the number of empty bottles
+
+        while emptyBottles >= numExchange:
+            # Perform the exchange operation
+            newBottles = emptyBottles // numExchange
+            totalBottles += newBottles
+            emptyBottles = newBottles + emptyBottles % numExchange
+
+        return totalBottles
+```
+
+Now, let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+print(solution.numWaterBottles(9, 3))  # Output: 13
+print(solution.numWaterBottles(15, 4))  # Output: 19
+```
+
+The function will output the maximum number of water bottles that can be drunk based on the given parameters.

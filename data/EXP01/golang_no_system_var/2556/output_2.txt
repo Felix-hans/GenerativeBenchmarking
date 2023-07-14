@@ -1,0 +1,94 @@
+import (
+    "container/list"
+)
+
+func isPossibleToCutPath(grid [][]int) bool {
+    m := len(grid)
+    n := len(grid[0])
+    
+    // Initialize visited matrix
+    visited := make([][]bool, m)
+    for i := 0; i < m; i++ {
+        visited[i] = make([]bool, n)
+    }
+    
+    // Perform DFS starting from (0, 0)
+    queue := list.New()
+    queue.PushBack([]int{0, 0})
+    
+    for queue.Len() > 0 {
+        pos := queue.Remove(queue.Front()).([]int)
+        row := pos[0]
+        col := pos[1]
+        
+        visited[row][col] = true
+        
+        // Check if we reached the destination
+        if row == m-1 && col == n-1 {
+            // Check if the destination is reachable without flipping any cell
+            if grid[0][0] == grid[m-1][n-1] {
+                return true
+            }
+            
+            // Check if there is a path from (0, 0) to (m-1, n-1) if we flip one cell
+            return findPath(grid, visited, m, n, row, col, -1, -1)
+        }
+        
+        // Check downward movement
+        if row+1 < m && grid[row+1][col] == 1 && !visited[row+1][col] {
+            queue.PushBack([]int{row+1, col})
+        }
+        
+        // Check rightward movement
+        if col+1 < n && grid[row][col+1] == 1 && !visited[row][col+1] {
+            queue.PushBack([]int{row, col+1})
+        }
+    }
+    
+    return false
+}
+
+func findPath(grid [][]int, visited [][]bool, m, n, row, col, flipRow, flipCol int) bool {
+    // Perform DFS to find a path from (row, col) to (m-1, n-1)
+    
+    // Set the flipped cell to 0 if specified
+    if flipRow >= 0 && flipCol >= 0 {
+        grid[flipRow][flipCol] = 0
+    }
+    
+    // Reset visited matrix
+    for i := 0; i < m; i++ {
+        for j := 0; j < n; j++ {
+            visited[i][j] = false
+        }
+    }
+    
+    // Perform DFS starting from (row, col)
+    queue := list.New()
+    queue.PushBack([]int{row, col})
+    
+    for queue.Len() > 0 {
+        pos := queue.Remove(queue.Front()).([]int)
+        row := pos[0]
+        col := pos[1]
+        
+        visited[row][col] = true
+        
+        // Check if we reached the destination
+        if row == m-1 && col == n-1 {
+            return true
+        }
+        
+        // Check downward movement
+        if row+1 < m && grid[row+1][col] == 1 && !visited[row+1][col] {
+            queue.PushBack([]int{row+1, col})
+        }
+        
+        // Check rightward movement
+        if col+1 < n && grid[row][col+1] == 1 && !visited[row][col+1] {
+            queue.PushBack([]int{row, col+1})
+        }
+    }
+    
+    return false
+}

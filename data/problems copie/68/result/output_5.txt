@@ -1,0 +1,72 @@
+To solve this task, we can use a greedy approach. We iterate through the words and try to pack as many words as possible into each line, while ensuring that the line does not exceed the maximum width. We keep track of the current line's words and the total length of the characters in those words.
+
+Here's the implementation of the `fullJustify` function:
+
+```python
+from typing import List
+
+class Solution:
+    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
+        result = []  # Store the formatted lines
+        
+        line_words = []  # Words in the current line
+        line_length = 0  # Total length of characters in the line
+        
+        for word in words:
+            # Check if adding the current word exceeds the maximum width
+            if line_length + len(line_words) + len(word) > maxWidth:
+                # Distribute extra spaces between words
+                num_words = len(line_words)
+                num_spaces = maxWidth - line_length
+                
+                # If there is only one word, left-justify it
+                if num_words == 1:
+                    formatted_line = line_words[0] + ' ' * num_spaces
+                else:
+                    # Calculate the number of spaces between words and the remaining extra spaces
+                    spaces_between_words = num_spaces // (num_words - 1)
+                    extra_spaces = num_spaces % (num_words - 1)
+                    
+                    # Format the line with the calculated spaces
+                    formatted_line = ''
+                    for i in range(num_words - 1):
+                        formatted_line += line_words[i] + ' ' * spaces_between_words
+                        if i < extra_spaces:
+                            formatted_line += ' '
+                    formatted_line += line_words[-1]  # Add the last word
+                
+                result.append(formatted_line)  # Add the formatted line to the result
+                
+                # Reset the line variables for the next line
+                line_words = []
+                line_length = 0
+            
+            # Add the current word to the line
+            line_words.append(word)
+            line_length += len(word)
+        
+        # Handle the last line (left-justify)
+        last_line = ' '.join(line_words)
+        last_line += ' ' * (maxWidth - len(last_line))
+        result.append(last_line)
+        
+        return result
+```
+
+You can use the `Solution` class to call the `fullJustify` method and obtain the formatted lines. Here's an example usage:
+
+```python
+solution = Solution()
+words = ["This", "is", "an", "example", "of", "text", "justification."]
+maxWidth = 16
+result = solution.fullJustify(words, maxWidth)
+print(result)
+```
+
+The output will be:
+
+```
+['This    is    an', 'example  of text', 'justification.  ']
+```
+
+Hope this helps! Let me know if you have any further questions.

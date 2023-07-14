@@ -1,0 +1,57 @@
+You can solve this problem by simulating the process of dominoes falling. Here's an implementation of the `pushDominoes` function in Python:
+
+```python
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        n = len(dominoes)
+        forces = [0] * n
+
+        # Pass from left to right
+        force = 0
+        for i in range(n):
+            if dominoes[i] == 'R':
+                force = n
+            elif dominoes[i] == 'L':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+            forces[i] += force
+
+        # Pass from right to left
+        force = 0
+        for i in range(n - 1, -1, -1):
+            if dominoes[i] == 'L':
+                force = n
+            elif dominoes[i] == 'R':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+            forces[i] -= force
+
+        # Construct the final state based on the forces
+        result = ""
+        for force in forces:
+            if force > 0:
+                result += 'R'
+            elif force < 0:
+                result += 'L'
+            else:
+                result += '.'
+
+        return result
+```
+
+In this solution, we use an array `forces` to keep track of the cumulative force on each domino. We iterate through the `dominoes` string twice: once from left to right and once from right to left. In each iteration, we update the `forces` array based on the state of the current domino and the force exerted by the adjacent dominoes.
+
+After updating the `forces` array, we construct the final state string by examining the values in the `forces` array. If the force is positive, the domino is falling to the right ('R'). If the force is negative, the domino is falling to the left ('L'). If the force is zero, the domino remains upright ('.').
+
+Finally, we return the resulting string representing the final state of the dominoes.
+
+You can create an instance of the `Solution` class and call the `pushDominoes` method with the input string to get the final state. For example:
+
+```python
+solution = Solution()
+dominoes = "RR.L"
+result = solution.pushDominoes(dominoes)
+print(result)  # Output: RR.L
+```

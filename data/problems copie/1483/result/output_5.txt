@@ -1,0 +1,48 @@
+To solve the given task, we can preprocess the tree by calculating the ancestors of each node up to the k-th level using dynamic programming. Then, for each query, we can retrieve the k-th ancestor of a node in constant time.
+
+Here's the implementation of the `TreeAncestor` class in Python:
+
+```python
+from typing import List
+
+class TreeAncestor:
+    def __init__(self, n: int, parent: List[int]):
+        self.max_level = 17  # Assuming the maximum number of nodes is 2^17
+        self.dp = [[-1] * self.max_level for _ in range(n)]  # Initialize dp table
+
+        # Preprocess the tree
+        for node in range(n):
+            self.dp[node][0] = parent[node]
+
+        for level in range(1, self.max_level):
+            for node in range(n):
+                if self.dp[node][level - 1] != -1:
+                    parent_node = self.dp[node][level - 1]
+                    self.dp[node][level] = self.dp[parent_node][level - 1]
+
+    def getKthAncestor(self, node: int, k: int) -> int:
+        for level in range(self.max_level - 1, -1, -1):
+            if node == -1 or k == 0:
+                break
+
+            if k >= (1 << level):
+                node = self.dp[node][level]
+                k -= 1 << level
+
+        return node
+```
+
+The `TreeAncestor` class uses a dynamic programming approach to preprocess the tree in the constructor (`__init__` method). The `dp` table stores the ancestors of each node at each level up to the `max_level`.
+
+In the `getKthAncestor` method, we start from the highest level and iteratively check if the k-th ancestor exists at that level. If it does, we update the node to the k-th ancestor and decrement k by the appropriate amount. We continue this process until we reach the lowest level or k becomes zero.
+
+Here's an example usage of the `TreeAncestor` class based on the provided example:
+
+```python
+treeAncestor = TreeAncestor(7, [-1, 0, 0, 1, 1, 2, 2])
+print(treeAncestor.getKthAncestor(3, 1))  # Output: 1
+print(treeAncestor.getKthAncestor(5, 2))  # Output: 0
+print(treeAncestor.getKthAncestor(6, 3))  # Output: -1
+```
+
+The output matches the expected results.

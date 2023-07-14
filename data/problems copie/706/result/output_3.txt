@@ -1,0 +1,78 @@
+To implement a HashMap without using any built-in hash table libraries, we can use an array of linked lists. Each index in the array will represent a bucket, and each bucket will contain a linked list of key-value pairs.
+
+Here's the implementation of the `MyHashMap` class in Python:
+
+```python
+class ListNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
+        self.next = None
+
+
+class MyHashMap:
+    def __init__(self):
+        self.size = 10000
+        self.buckets = [None] * self.size
+
+    def _hash(self, key):
+        return key % self.size
+
+    def put(self, key: int, value: int) -> None:
+        index = self._hash(key)
+        if not self.buckets[index]:
+            self.buckets[index] = ListNode(key, value)
+        else:
+            curr = self.buckets[index]
+            while True:
+                if curr.key == key:
+                    curr.value = value
+                    return
+                if not curr.next:
+                    break
+                curr = curr.next
+            curr.next = ListNode(key, value)
+
+    def get(self, key: int) -> int:
+        index = self._hash(key)
+        curr = self.buckets[index]
+        while curr:
+            if curr.key == key:
+                return curr.value
+            curr = curr.next
+        return -1
+
+    def remove(self, key: int) -> None:
+        index = self._hash(key)
+        curr = prev = self.buckets[index]
+        if not curr:
+            return
+        if curr.key == key:
+            self.buckets[index] = curr.next
+        else:
+            curr = curr.next
+            while curr:
+                if curr.key == key:
+                    prev.next = curr.next
+                    return
+                curr, prev = curr.next, prev.next
+```
+
+Here's how you can test the `MyHashMap` class using the provided example:
+
+```python
+# Create a new instance of MyHashMap
+myHashMap = MyHashMap()
+
+# Test the operations
+myHashMap.put(1, 1)
+myHashMap.put(2, 2)
+print(myHashMap.get(1))  # Output: 1
+print(myHashMap.get(3))  # Output: -1
+myHashMap.put(2, 1)
+print(myHashMap.get(2))  # Output: 1
+myHashMap.remove(2)
+print(myHashMap.get(2))  # Output: -1
+```
+
+This implementation should give you the expected output for the provided example.

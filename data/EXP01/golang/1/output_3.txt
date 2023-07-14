@@ -1,0 +1,36 @@
+```go
+// import the necessary module
+import "fmt"
+
+// implementation of twoSum function
+func twoSum(nums []int, target int) []int {
+    // create a map to store the complement of each element
+    complement := make(map[int]int)
+    
+    // loop through the array
+    for i, num := range nums {
+        // calculate the complement
+        complementNum := target - num
+        
+        // check if the complement exists in the map
+        if j, ok := complement[complementNum]; ok {
+            // return the indices of the two elements that add up to target
+            return []int{j, i}
+        }
+        
+        // store the index and complement in the map
+        complement[num] = i
+    }
+    
+    // return an empty array if no solution is found
+    return []int{}
+}
+
+// example usage
+func main() {
+    nums := []int{2, 7, 11, 15}
+    target := 9
+    result := twoSum(nums, target)
+    fmt.Println(result) // Output: [0 1]
+}
+```

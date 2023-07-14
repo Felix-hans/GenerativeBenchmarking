@@ -1,0 +1,31 @@
+You can solve this task using a greedy approach. The idea is to count the number of 'a' characters encountered while traversing the string from left to right. If you encounter a 'b' character, you can either delete it or delete the previously encountered 'a' character to balance the string. To minimize the number of deletions, you should delete 'b' characters whenever possible.
+
+Here's the implementation of the `minimumDeletions` function:
+
+```python
+class Solution:
+    def minimumDeletions(self, s: str) -> int:
+        deletions = 0  # Count of deletions needed to balance the string
+        count_a = 0  # Count of 'a' characters encountered
+        
+        for char in s:
+            if char == 'a':
+                count_a += 1
+            else:  # char == 'b'
+                if count_a > 0:
+                    count_a -= 1
+                    deletions += 1
+        
+        return deletions
+```
+
+You can create an instance of the `Solution` class and call the `minimumDeletions` method, passing the input string as an argument. Here's an example usage:
+
+```python
+solution = Solution()
+s = "aababbab"
+result = solution.minimumDeletions(s)
+print(result)  # Output: 2
+```
+
+This will output the minimum number of deletions needed to make the string balanced.

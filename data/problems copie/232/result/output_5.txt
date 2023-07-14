@@ -1,0 +1,60 @@
+To implement a FIFO queue using two stacks, we can use one stack for pushing elements and the other stack for popping elements. The idea is to maintain the order of elements by transferring elements between the two stacks when necessary.
+
+Here's the implementation of the `MyQueue` class in Python:
+
+```python
+class MyQueue:
+
+    def __init__(self):
+        self.stack_push = []
+        self.stack_pop = []
+
+    def push(self, x: int) -> None:
+        # Push elements into the push stack
+        self.stack_push.append(x)
+
+    def transfer_elements(self):
+        # Transfer elements from the push stack to the pop stack
+        while self.stack_push:
+            self.stack_pop.append(self.stack_push.pop())
+
+    def pop(self) -> int:
+        # If the pop stack is empty, transfer elements from the push stack
+        if not self.stack_pop:
+            self.transfer_elements()
+        # Pop the top element from the pop stack
+        return self.stack_pop.pop()
+
+    def peek(self) -> int:
+        # If the pop stack is empty, transfer elements from the push stack
+        if not self.stack_pop:
+            self.transfer_elements()
+        # Return the top element from the pop stack without removing it
+        return self.stack_pop[-1]
+
+    def empty(self) -> bool:
+        # The queue is empty if both stacks are empty
+        return not self.stack_push and not self.stack_pop
+```
+
+Let's test the implementation with the given example:
+
+```python
+# Create a MyQueue object
+myQueue = MyQueue()
+
+# Push elements
+myQueue.push(1)
+myQueue.push(2)
+
+# Get the front element
+print(myQueue.peek())  # Output: 1
+
+# Remove the front element
+print(myQueue.pop())   # Output: 1
+
+# Check if the queue is empty
+print(myQueue.empty())  # Output: False
+```
+
+The output matches the expected output `[null, null, null, 1, 1, false]` for the given example.

@@ -1,0 +1,24 @@
+To implement the Tribonacci sequence in Python, you can use a simple iterative approach or a recursive function. Here's an implementation using a recursive function:
+
+```python
+class Solution:
+    def tribonacci(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1 or n == 2:
+            return 1
+        else:
+            return self.tribonacci(n - 1) + self.tribonacci(n - 2) + self.tribonacci(n - 3)
+```
+
+This solution checks the base cases for n = 0, 1, and 2, and then recursively calculates the Tribonacci value for n >= 3 by summing the three previous Tribonacci numbers.
+
+You can test the solution with the given examples or additional test cases:
+
+```python
+solution = Solution()
+print(solution.tribonacci(4))  # Output: 4
+print(solution.tribonacci(25))  # Output: 1389537
+```
+
+The solution should return the expected output for each test case.

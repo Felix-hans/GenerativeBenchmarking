@@ -1,0 +1,30 @@
+Here's one possible way to implement the given task in Go:
+
+```go
+func maximumEvenSplit(finalSum int64) []int64 {
+    var result []int64
+    divisor := int64(2)
+
+    for finalSum > 0 && divisor <= finalSum {
+        if finalSum-divisor != divisor && (finalSum-divisor)%2 == 0 {
+            result = append(result, divisor)
+            finalSum -= divisor
+        }
+        divisor += 2
+    }
+
+    if finalSum == 0 {
+        return result
+    }
+  
+    return []int64{}
+}
+```
+
+Let me explain the implementation:
+
+1. We start by initializing an empty slice `result` to store the maximum even integers that sum up to `finalSum`.
+2. We initialize `divisor` to `2`, as we need to find unique positive even integers.
+3. We iterate until `finalSum` becomes 0 or the `divisor` becomes greater than `finalSum`.
+4. Inside the loop, we check if subtracting the `divisor` from `finalSum` gives a number that is different from the `divisor` itself and is an even number. If both conditions are satisfied, we add the `divisor` to the `result` slice and subtract it from `finalSum`.
+5. After the loop, we check if `finalSum` has become 0. If it has, we return the `result` slice containing the maximum even integers. Otherwise, we return an empty slice `[]int64{}` to indicate that no valid split exists for `finalSum`.

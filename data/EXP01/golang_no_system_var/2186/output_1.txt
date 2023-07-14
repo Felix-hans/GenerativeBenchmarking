@@ -1,0 +1,35 @@
+To solve this problem, we can count the number of occurrences of each character in both strings and then find the difference between the counts. The minimum number of steps required will be equal to this difference.
+
+Here is the implementation of the `minSteps` function:
+
+```go
+func minSteps(s string, t string) int {
+    // Create a map to count the occurrences of each character in s
+    countS := make(map[byte]int)
+    for i := 0; i < len(s); i++ {
+        countS[s[i]]++
+    }
+    
+    // Create a map to count the occurrences of each character in t
+    countT := make(map[byte]int)
+    for i := 0; i < len(t); i++ {
+        countT[t[i]]++
+    }
+    
+    // Calculate the difference between the counts of each character
+    diff := 0
+    for char, count := range countS {
+        if countT[char] < count {
+            diff += count - countT[char]
+        }
+    }
+    
+    return diff
+}
+```
+
+In this implementation, we first create two maps `countS` and `countT` to store the counts of each character in `s` and `t`, respectively. Then, we iterate over the characters in `s` and `t` to count their occurrences and store them in the respective maps.
+
+Finally, we calculate the difference between the counts of each character in `countS` and `countT`. If the count of a character in `countT` is less than the count in `countS`, it means that we need to append additional characters to either `s` or `t` to make them anagrams. We add the difference to the `diff` variable.
+
+Finally, we return the value of `diff`, which represents the minimum number of steps required to make `s` and `t` anagrams.

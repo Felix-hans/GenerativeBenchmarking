@@ -1,0 +1,28 @@
+You can implement the task using the following code:
+
+```python
+class Solution:
+    def generate(self, numRows: int) -> List[List[int]]:
+        triangle = []
+        for i in range(numRows):
+            row = [1] * (i + 1)
+            if i > 1:
+                prev_row = triangle[i - 1]
+                for j in range(1, i):
+                    row[j] = prev_row[j - 1] + prev_row[j]
+            triangle.append(row)
+        return triangle
+```
+
+Here's how the code works:
+
+1. Initialize an empty list `triangle` to store the rows of Pascal's triangle.
+2. Iterate `i` from 0 to `numRows - 1` to generate each row.
+3. Create a new list `row` and set all elements to 1 initially.
+4. If `i` is greater than 1 (i.e., not the first or second row), update the elements of `row` using the previous row in `triangle`.
+   - Iterate `j` from 1 to `i - 1` (excluding the first and last elements).
+   - Update `row[j]` by adding the corresponding elements from the previous row, `prev_row[j - 1]` and `prev_row[j]`.
+5. Append `row` to `triangle` after generating each row.
+6. Finally, return `triangle` as the result.
+
+Note: The code assumes that `List` is imported from the `typing` module. If you're using Python version 3.9 or above, you can remove the import statement as `List` will be available by default.

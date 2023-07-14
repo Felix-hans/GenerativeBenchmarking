@@ -1,0 +1,51 @@
+Here's the implementation of the `findWords` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        def dfs(i, j, word):
+            if i < 0 or i >= m or j < 0 or j >= n or board[i][j] == '#':
+                return False
+            if board[i][j] != word[0]:
+                return False
+            if len(word) == 1:
+                return True
+
+            char = board[i][j]
+            board[i][j] = '#'
+
+            for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                x, y = i + dx, j + dy
+                if dfs(x, y, word[1:]):
+                    board[i][j] = char
+                    return True
+
+            board[i][j] = char
+            return False
+
+        m, n = len(board), len(board[0])
+        result = []
+        
+        for word in words:
+            found = False
+            for i in range(m):
+                for j in range(n):
+                    if dfs(i, j, word):
+                        result.append(word)
+                        found = True
+                        break
+                if found:
+                    break
+
+        return result
+```
+
+The `findWords` function takes a 2D board and a list of words as input and returns a list of words found on the board. It uses a depth-first search (DFS) approach to check if each word can be formed on the board.
+
+The helper function `dfs` performs the depth-first search. It takes the current position `(i, j)` on the board and the remaining characters of the word to be formed. It checks if the current position is within the bounds of the board, if the cell has been visited before (marked with `'#'`), and if the current character matches the first character of the remaining word. If any of these conditions are not satisfied, it returns `False`. If the length of the remaining word is 1, it means the entire word has been formed, so it returns `True`.
+
+Inside the DFS function, it temporarily marks the current cell as visited by changing its value to `'#'`. Then, it recursively explores the neighboring cells in all four directions (up, down, left, and right). If any of the recursive calls return `True`, it means the word can be formed, so it restores the original value of the current cell and returns `True`. Otherwise, it restores the original value of the current cell and returns `False`.
+
+In the main function, it initializes an empty list called `result` to store the words found on the board. It iterates over each word in the input list of words and uses nested loops to iterate over each cell on the board. For each cell, it calls the `dfs` function to check if the current word can be formed starting from that cell. If it finds a word, it appends it to the `result` list and breaks out of the inner loop to move on to the next word. Finally, it returns the `result` list containing all the words found on the board.

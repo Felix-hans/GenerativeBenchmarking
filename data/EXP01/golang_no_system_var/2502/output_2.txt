@@ -1,0 +1,69 @@
+Here is the implementation of the Allocator class in Go:
+
+```go
+type Allocator struct {
+    memory []int
+}
+
+func Constructor(n int) Allocator {
+    return Allocator{
+        memory: make([]int, n),
+    }
+}
+
+func (a *Allocator) Allocate(size int, mID int) int {
+    for i := 0; i <= len(a.memory)-size; i++ {
+        if a.isMemoryFree(i, size) {
+            a.assignMemory(i, size, mID)
+            return i
+        }
+    }
+    return -1
+}
+
+func (a *Allocator) Free(mID int) int {
+    count := 0
+    for i := 0; i < len(a.memory); i++ {
+        if a.memory[i] == mID {
+            a.memory[i] = 0
+            count++
+        }
+    }
+    return count
+}
+
+func (a *Allocator) isMemoryFree(startIndex, size int) bool {
+    for i := startIndex; i < startIndex+size; i++ {
+        if a.memory[i] != 0 {
+            return false
+        }
+    }
+    return true
+}
+
+func (a *Allocator) assignMemory(startIndex, size, mID int) {
+    for i := startIndex; i < startIndex+size; i++ {
+        a.memory[i] = mID
+    }
+}
+```
+
+I've added the `isMemoryFree` method to check if a block of memory is free, and the `assignMemory` method to mark a block of memory as assigned to a specific mID.
+
+You can try running the following code to test the Allocator class:
+
+```go
+func main() {
+    loc := Constructor(10)
+    fmt.Println(loc.Allocate(1, 1)) // Output: 0
+    fmt.Println(loc.Allocate(1, 2)) // Output: 1
+    fmt.Println(loc.Allocate(1, 3)) // Output: 2
+    fmt.Println(loc.Free(2)) // Output: 1
+    fmt.Println(loc.Allocate(3, 4)) // Output: 3
+    fmt.Println(loc.Allocate(1, 1)) // Output: 1
+    fmt.Println(loc.Allocate(1, 1)) // Output: 6
+    fmt.Println(loc.Free(1)) // Output: 3
+    fmt.Println(loc.Allocate(10, 2)) // Output: -1
+    fmt.Println(loc.Free(7)) // Output: 0
+}
+```

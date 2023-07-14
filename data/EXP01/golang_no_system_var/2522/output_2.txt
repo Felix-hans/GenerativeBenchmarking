@@ -1,0 +1,43 @@
+To solve this problem, we can iterate through the string `s` and keep track of the current substring value and the number of substrings.
+
+Here is the step-by-step approach:
+
+1. Initialize a variable `partition` to keep track of the number of substrings.
+2. Initialize a variable `substringValue` to store the value of the current substring. Set it to 0.
+3. Iterate through the characters in the string `s`.
+4. Convert the character to an integer and add it to the `substringValue`.
+5. If the `substringValue` is greater than `k`, return -1 (no good partition exists).
+6. If the `substringValue` is equal to `k`, increment `partition` and reset `substringValue` to 0.
+7. After the loop ends, if `substringValue` is not equal to 0, increment `partition` by 1.
+8. Return the value of `partition`.
+
+Here is the implementation of the above logic in Go:
+
+```go
+func minimumPartition(s string, k int) int {
+    partition := 0
+    substringValue := 0
+    
+    for _, char := range s {
+        digit := int(char - '0')
+        substringValue += digit
+        
+        if substringValue > k {
+            return -1
+        }
+        
+        if substringValue == k {
+            partition++
+            substringValue = 0
+        }
+    }
+    
+    if substringValue != 0 {
+        partition++
+    }
+    
+    return partition
+}
+```
+
+This solution has a time complexity of O(n), where n is the length of the input string `s`.

@@ -1,0 +1,36 @@
+One approach to solve this problem is to iterate through each word in the queries array and check if it can be transformed into any word in the dictionary array within two edits. 
+
+For each word in queries, we can generate all possible words with 1 edit by replacing each letter with all possible lowercase letters. Then, for each of those generated words, we can generate all possible words with 2 edits by again replacing each letter with all possible lowercase letters. If any generated word matches a word in the dictionary array, we add the original word from queries to a result list. 
+
+Here is an implementation of the above approach:
+
+```python
+class Solution:
+    def twoEditWords(self, queries: List[str], dictionary: List[str]) -> List[str]:
+        def generate_edit_words(word, edits):
+            words = set()
+            for i in range(len(word)):
+                for letter in 'abcdefghijklmnopqrstuvwxyz':
+                    new_word = word[:i] + letter + word[i+1:]
+                    if edits == 2:
+                        words.update(generate_edit_words(new_word, edits - 1))
+                    else:
+                        words.add(new_word)
+            return words
+        
+        result = []
+        for query in queries:
+            edit_words_1 = generate_edit_words(query, 1)
+            edit_words_2 = generate_edit_words(query, 2)
+            
+            if any(word in dictionary for word in edit_words_1) or any(word in dictionary for word in edit_words_2):
+                result.append(query)
+        
+        return result
+```
+
+We define a helper function `generate_edit_words` that takes a word and the number of edits available. This function generates all possible words by replacing each letter in the word with all possible lowercase letters. If the number of edits is 2, we recursively call the function with the edited word and 1 edit available. The generated words are stored in a set to remove duplicates.
+
+In the main function, we iterate through each word in queries and generate the possible words with 1 and 2 edits. We then check if any of these generated words exist in the dictionary array using the `any` function. If any of the generated words exist in the dictionary, we add the original word from queries to the result list.
+
+Finally, we return the result list containing the words from queries that match with some word from the dictionary after a maximum of two edits.

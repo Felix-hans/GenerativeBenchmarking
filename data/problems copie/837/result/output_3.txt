@@ -1,0 +1,44 @@
+To solve the problem, we can use dynamic programming. Let's define an array `dp` of size `n + k + 1`, where `dp[i]` represents the probability of having `i` or fewer points. Initially, all elements of `dp` are set to 0.
+
+We can calculate `dp[i]` for each `i` from `k` to `n` (inclusive) using the following approach:
+
+1. If `i` is less than or equal to `n`, set `dp[i]` to `1.0`, as Alice has already reached or exceeded `n` points, and the game ends.
+2. Otherwise, calculate `dp[i]` as the sum of probabilities of getting `j` points on the current draw, where `j` ranges from `1` to `maxPts`. We need to consider only the points that keep Alice's total points within `n` or below. This can be represented as the sum of `dp[i+j] / maxPts` for each `j` within the valid range.
+3. After calculating `dp[i]`, update it by subtracting `dp[i+k] / maxPts`. This step accounts for the possibility of Alice getting `k` points and ending the game.
+
+Finally, the result is the sum of `dp[i]` for `i` from `0` to `k-1` (inclusive), as these represent the probabilities of Alice having `n` or fewer points.
+
+Here's the implementation of the `new21Game` function:
+
+```python
+class Solution:
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+        dp = [0.0] * (n + k + 1)
+        
+        # Set initial values for dp[i] when i >= k
+        for i in range(k, min(n, k + maxPts)):
+            dp[i] = 1.0
+        
+        dp[k-1] = min(n - k + 1, maxPts) / maxPts
+        
+        # Calculate dp[i] for i from k-2 down to 0
+        for i in range(k - 2, -1, -1):
+            dp[i] = dp[i+1] - (dp[i+1+k] - dp[i+1]) / maxPts
+        
+        # Calculate the final result
+        result = sum(dp[:k])
+        
+        return result
+```
+
+Now, let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+print(solution.new21Game(10, 1, 10))   # Output: 1.0
+print(solution.new21Game(6, 1, 10))    # Output: 0.6
+print(solution.new21Game(21, 17, 10))  # Output: 0.73278
+```
+
+The function should return the expected results for each example.

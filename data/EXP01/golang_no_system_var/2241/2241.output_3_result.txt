@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Wrong Answer\n  \xe2\x9c\x98 57/152 cases passed (N/A)\n  \xe2\x9c\x98 Testcase: ["ATM","deposit","withdraw","deposit","withdraw","withdraw"]\n\' +\n  \'[[],[[0,0,1,2,1]],[600],[[0,1,0,1,1]],[600],[550]]\n  \xe2\x9c\x98 Answer: [null,null,[0,0,1,0,1],null,[-1],[-1]]\n  \xe2\x9c\x98 Expected Answer: [null,null,[0,0,1,0,1],null,[-1],[0,1,0,0,1]]\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:22923) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

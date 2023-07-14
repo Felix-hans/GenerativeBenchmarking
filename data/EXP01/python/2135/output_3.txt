@@ -1,0 +1,41 @@
+One approach to solve this problem is to use a frequency array to count the occurrence of each letter in each word of startWords, and then check if it is possible to transform each word in targetWords using the frequency array.
+
+Here's the Python implementation of the solution:
+
+```python
+from typing import List
+
+class Solution:
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        # Create a frequency array to count the occurrence of each letter
+        freqArray = [[0] * 26 for _ in range(len(startWords[0]))]
+        
+        # Count the occurrence of each letter in each word of startWords
+        for word in startWords:
+            for i, char in enumerate(word):
+                freqArray[i][ord(char) - ord('a')] += 1
+        
+        # Check if it is possible to transform each word in targetWords
+        count = 0
+        for word in targetWords:
+            for i, char in enumerate(word):
+                freqArray[i][ord(char) - ord('a')] -= 1
+                if freqArray[i][ord(char) - ord('a')] < 0:
+                    break
+            else:
+                count += 1
+        
+        return count
+```
+
+We can test the solution using the given examples:
+
+```python
+startWords = ["ant","act","tack"]
+targetWords = ["tack","act","acti"]
+print(Solution().wordCount(startWords, targetWords))  # Output: 2
+
+startWords = ["ab","a"]
+targetWords = ["abc","abcd"]
+print(Solution().wordCount(startWords, targetWords))  # Output: 1
+```

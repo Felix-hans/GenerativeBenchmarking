@@ -1,0 +1,38 @@
+To solve this problem, we can use dynamic programming. We'll create a dp array to keep track of the longest ideal string ending at each character in the string.
+
+The dp[i] represents the length of the longest ideal string ending at index i in the string.
+
+We'll initialize dp with all zeros, except dp[0] which will be initialized with 1 because the longest ideal string ending at the first character is always of length 1.
+
+Then, for each character in the string starting from the second character, we'll iterate through all previous characters and check if the absolute difference in the alphabet order of the current character and the previous character is less than or equal to k. If it is, we'll update the dp[i] value with the maximum of dp[i] and dp[j] + 1, where j is the index of the previous character.
+
+Finally, we'll return the maximum value in dp.
+
+Here is the implementation of the Solution class:
+```
+class Solution:
+    def longestIdealString(self, s: str, k: int) -> int:
+        n = len(s)
+        dp = [0] * n
+        dp[0] = 1
+
+        for i in range(1, n):
+            for j in range(i):
+                diff = abs(ord(s[i]) - ord(s[j]))
+                if diff <= k:
+                    dp[i] = max(dp[i], dp[j] + 1)
+
+        return max(dp)
+```
+
+We can test the solution with the given examples:
+```
+s = Solution()
+
+print(s.longestIdealString("acfgbd", 2))  # Output: 4
+print(s.longestIdealString("abcd", 3))    # Output: 4
+```
+
+The output is as expected.
+
+The time complexity of this solution is O(n^2), where n is the length of the string.

@@ -1,0 +1,37 @@
+To solve this task, we can create a grid of size m x n and initialize all cells to be unguarded. Then, we iterate over the given walls and guards arrays, and mark the corresponding cells as guarded in the grid. Finally, we count the number of unguarded cells in the grid.
+
+Here's the implementation for the `countUnguarded` function:
+
+```python
+class Solution:
+    def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+        grid = [[0] * n for _ in range(m)] # create a grid of size m x n
+        
+        # mark the guarded cells in the grid
+        for guard in guards:
+            x, y = guard
+            grid[x][y] = 1
+        
+        for wall in walls:
+            x, y = wall
+            grid[x][y] = -1
+        
+        # count the number of unguarded cells
+        count = 0
+        for row in range(m):
+            for col in range(n):
+                if grid[row][col] == 0:
+                    count += 1
+        
+        return count
+```
+
+Note: In the grid, we use 0 to represent unguarded cells, 1 to represent guarded cells by guards, and -1 to represent cells blocked by walls.
+
+We can create an instance of the `Solution` class and call the `countUnguarded` method to solve the examples given in the prompt:
+
+```python
+solution = Solution()
+print(solution.countUnguarded(4, 6, [[0,0],[1,1],[2,3]], [[0,1],[2,2],[1,4]])) # Output: 7
+print(solution.countUnguarded(3, 3, [[1,1]], [[0,1],[1,0],[2,1],[1,2]])) # Output: 4
+```

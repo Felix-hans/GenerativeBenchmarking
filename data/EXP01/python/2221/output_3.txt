@@ -1,0 +1,22 @@
+Here is one possible implementation of the `triangularSum` function:
+
+```python
+from typing import List
+
+class Solution:
+    def triangularSum(self, nums: List[int]) -> int:
+        while len(nums) > 1:
+            newNums = []
+            for i in range(len(nums) - 1):
+                newNums.append((nums[i] + nums[i+1]) % 10)
+            nums = newNums
+        return nums[0]
+```
+
+We start by checking if the length of the `nums` array is greater than 1. If it is, we enter the while loop. Inside the loop, we create a new empty list `newNums` to store the values for the next iteration.
+
+We iterate over the elements of `nums` from index 0 to index `len(nums) - 2`. For each index `i`, we calculate the value `(nums[i] + nums[i+1]) % 10` and append it to `newNums`.
+
+After the loop, we assign `newNums` to `nums` to start the next iteration with the updated values. This process continues until the length of `nums` becomes 1.
+
+Finally, we return the only element present in `nums`, which is the triangular sum of the initial `nums` array.

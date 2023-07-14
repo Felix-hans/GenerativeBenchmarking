@@ -1,0 +1,28 @@
+Here is the implementation of the `successfulPairs` function in Go:
+
+```go
+func successfulPairs(spells []int, potions []int, success int64) []int {
+    n := len(spells)
+    m := len(potions)
+    pairs := make([]int, n)
+
+    for i := 0; i < n; i++ {
+        spell := spells[i]
+        for j := 0; j < m; j++ {
+            potion := potions[j]
+            if int64(spell)*int64(potion) >= success {
+                pairs[i]++
+            }
+        }
+    }
+
+    return pairs
+}
+```
+
+Explanation:
+
+- First, we initialize an array `pairs` of length `n` to store the number of successful pairs for each spell.
+- Then, for each spell and each potion, we calculate their product and check if it is greater than or equal to the success threshold.
+- If the product is successful, we increment the count for the corresponding spell in the `pairs` array.
+- Finally, we return the `pairs` array as the result.

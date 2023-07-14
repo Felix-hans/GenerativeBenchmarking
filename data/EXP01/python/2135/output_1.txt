@@ -1,0 +1,41 @@
+To solve this problem, we can iterate through each string in targetWords and check if there exists a string in startWords that can be transformed to it. 
+We can do this by counting the frequency of each character in the target string, then iterating through each string in startWords and checking if its character frequencies are less than or equal to the frequencies in the target string.
+
+Here's the implementation of the Solution class:
+
+```python
+from typing import List
+
+class Solution:
+    def wordCount(self, startWords: List[str], targetWords: List[str]) -> int:
+        count = 0
+        
+        for target in targetWords:
+            target_freq = [0] * 26
+            
+            # Count the frequency of characters in the target string
+            for ch in target:
+                target_freq[ord(ch) - ord('a')] += 1
+            
+            # Check each string in startWords
+            for start in startWords:
+                start_freq = [0] * 26
+                
+                # Count the frequency of characters in the start string
+                for ch in start:
+                    start_freq[ord(ch) - ord('a')] += 1
+                
+                # Check if the start string can be transformed to the target string
+                is_transformable = True
+                for i in range(26):
+                    if start_freq[i] > target_freq[i]:
+                        is_transformable = False
+                        break
+                
+                if is_transformable:
+                    count += 1
+                    break
+        
+        return count
+```
+Note: The code assumes that all strings in startWords and targetWords are valid lowercase English letters, so no additional input validation is included.

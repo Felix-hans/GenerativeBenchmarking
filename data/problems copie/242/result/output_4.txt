@@ -1,0 +1,13 @@
+To determine if two strings are anagrams, we can compare their sorted versions. An anagram is a word or phrase formed by rearranging the letters of another word or phrase. If two strings are anagrams, their sorted versions will be identical.
+
+Here's the implementation of the `isAnagram` function in Python:
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        return sorted(s) == sorted(t)
+```
+
+This solution sorts both strings and compares them. If the sorted versions are equal, it means the strings are anagrams, and the function returns `True`. Otherwise, it returns `False`.
+
+For the follow-up question regarding Unicode characters, the same approach can be used. Python's `sorted` function handles Unicode characters correctly, considering their respective code points for sorting. Therefore, the solution remains the same, and no modifications are needed to handle Unicode characters.

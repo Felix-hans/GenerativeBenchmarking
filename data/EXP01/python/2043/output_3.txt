@@ -1,0 +1,43 @@
+One possible implementation of the Bank class in Python is as follows:
+
+```python
+class Bank:
+
+    def __init__(self, balance: List[int]):
+        self.balance = balance
+
+    def transfer(self, account1: int, account2: int, money: int) -> bool:
+        if self._is_valid_account(account1) and self._is_valid_account(account2) and money <= self.balance[account1-1]:
+            self.balance[account1-1] -= money
+            self.balance[account2-1] += money
+            return True
+        return False
+
+    def deposit(self, account: int, money: int) -> bool:
+        if self._is_valid_account(account):
+            self.balance[account-1] += money
+            return True
+        return False
+
+    def withdraw(self, account: int, money: int) -> bool:
+        if self._is_valid_account(account) and money <= self.balance[account-1]:
+            self.balance[account-1] -= money
+            return True
+        return False
+
+    def _is_valid_account(self, account: int) -> bool:
+        return account >= 1 and account <= len(self.balance)
+```
+
+In this implementation, we store the initial balance of each account in the `balance` list. The `transfer`, `deposit`, and `withdraw` methods check if the given account numbers and the transaction amount are valid. If they are valid, the corresponding operations are performed and the balance is updated accordingly. If the transaction is successful, the methods return `True`; otherwise, they return `False`.
+
+The `_is_valid_account` method is a helper method that checks if the given account number is within the valid range (between 1 and the length of the balance list).
+
+To use this Bank class, you can create an object of the class with the initial balance and then call the necessary methods on the object. For example:
+
+```python
+obj = Bank([10, 100, 20, 50, 30])
+param_1 = obj.transfer(5, 1, 20)
+param_2 = obj.deposit(5, 20)
+param_3 = obj.withdraw(10, 50)
+```

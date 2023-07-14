@@ -1,0 +1,41 @@
+To solve this problem, we can use the greedy algorithm. We start by sorting the players' array and trainers' array in non-decreasing order. Then, we iterate through each player in the sorted array and try to find a trainer with the highest training capacity that the player can be matched with.
+
+Here is the implementation of the `matchPlayersAndTrainers` function in Go:
+
+```go
+import "sort"
+
+func matchPlayersAndTrainers(players []int, trainers []int) int {
+    // Sort the players and trainers arrays in non-decreasing order
+    sort.Ints(players)
+    sort.Ints(trainers)
+
+    // Initialize two pointers to keep track of the current player and trainer
+    playerPtr := 0
+    trainerPtr := 0
+    count := 0
+
+    // Iterate through each player
+    for playerPtr < len(players) && trainerPtr < len(trainers) {
+        // If the player's ability is less than or equal to the trainer's training capacity,
+        // increment the count and move to the next player and trainer
+        if players[playerPtr] <= trainers[trainerPtr] {
+            count++
+            playerPtr++
+            trainerPtr++
+        } else {
+            // If the player's ability is greater than the trainer's training capacity,
+            // move to the next trainer
+            trainerPtr++
+        }
+    }
+
+    return count
+}
+```
+
+This function first sorts the players and trainers arrays in non-decreasing order using the `sort.Ints()` function. Then, it initializes two pointers `playerPtr` and `trainerPtr` to 0 to keep track of the current player and trainer. The `count` variable is initialized to 0.
+
+The function then enters a loop that continues as long as both the player pointer (`playerPtr`) and trainer pointer (`trainerPtr`) are within the respective array bounds. Inside the loop, it checks if the player's ability is less than or equal to the trainer's training capacity. If it is, it increments the `count` variable, moves both the player pointer and trainer pointer to the next position, and continues to the next iteration of the loop. If the player's ability is greater than the trainer's training capacity, it only moves the trainer pointer to the next position.
+
+Finally, after the loop ends, the function returns the `count` variable, which represents the maximum number of matchings that can be formed.

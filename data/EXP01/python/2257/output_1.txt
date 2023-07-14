@@ -1,0 +1,63 @@
+To solve this task, we can use a 2D matrix to represent the grid. We initialize the matrix with all cells set to 0, indicating that they are unguarded.
+
+Next, we iterate over the guards array and mark the cells that they can see as guarded. We start from the guard's position and go in each of the four cardinal directions until we reach a wall or another guard. We mark each cell as guarded by setting its value to 1.
+
+After marking the cells seen by the guards, we iterate over the walls array and mark the corresponding cells as guarded as well.
+
+Finally, we count the number of unguarded cells in the matrix and return the count.
+
+Here's the implementation of the countUnguarded function:
+
+```python
+from typing import List
+
+class Solution:
+    def countUnguarded(self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]) -> int:
+        grid = [[0] * n for _ in range(m)]  # Initialize the grid with all cells set to 0
+        
+        for guard in guards:
+            self.markGuardedCells(grid, m, n, guard)  # Mark cells seen by guards
+            
+        for wall in walls:
+            self.markGuardedCells(grid, m, n, wall)  # Mark cells corresponding to walls
+            
+        count = 0
+        
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 0:  # Count unguarded cells
+                    count += 1
+                    
+        return count
+    
+    def markGuardedCells(self, grid: List[List[int]], m: int, n: int, position: List[int]) -> None:
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # Cardinal directions
+        
+        for direction in directions:
+            row, col = position
+            
+            while 0 <= row < m and 0 <= col < n and grid[row][col] != 1:  # Move in the current direction until we reach a wall or another guard
+                grid[row][col] = 1
+                row += direction[0]
+                col += direction[1]
+```
+
+We can test the function with the given examples:
+
+```python
+solution = Solution()
+
+m = 4
+n = 6
+guards = [[0, 0], [1, 1], [2, 3]]
+walls = [[0, 1], [2, 2], [1, 4]]
+print(solution.countUnguarded(m, n, guards, walls))  # Output: 7
+
+m = 3
+n = 3
+guards = [[1, 1]]
+walls = [[0, 1], [1, 0], [2, 1], [1, 2]]
+print(solution.countUnguarded(m, n, guards, walls))  # Output: 4
+```
+
+This will output the expected results.

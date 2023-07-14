@@ -1,0 +1,29 @@
+To find the subarray with the largest sum, we can use the Kadane's algorithm, which has a time complexity of O(n). Here's the implementation of the `maxSubArray` function in Python:
+
+```python
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        
+        current_sum = max_sum = nums[0]
+        
+        for num in nums[1:]:
+            current_sum = max(num, current_sum + num)
+            max_sum = max(max_sum, current_sum)
+        
+        return max_sum
+```
+
+In the above code, we initialize `current_sum` and `max_sum` with the first element of the array `nums`. We then iterate over the remaining elements of `nums`, updating `current_sum` to be the maximum of the current element or the current element plus the previous `current_sum`. We also update `max_sum` to be the maximum of the current `max_sum` and the new `current_sum`. Finally, we return `max_sum`, which represents the largest sum of any subarray in `nums`.
+
+You can use this code by creating an instance of the `Solution` class and calling the `maxSubArray` method with the input array `nums`. For example:
+
+```python
+solution = Solution()
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+result = solution.maxSubArray(nums)
+print(result)  # Output: 6
+```
+
+This will print the largest sum of any subarray in the given input array `nums`.

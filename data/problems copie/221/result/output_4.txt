@@ -1,0 +1,35 @@
+To find the largest square containing only 1's in a binary matrix, we can use dynamic programming. Here's the implementation of the `maximalSquare` function in Python:
+
+```python
+class Solution:
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        if not matrix:
+            return 0
+        
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        # Create a DP table to store the maximum square size at each position
+        dp = [[0] * (cols + 1) for _ in range(rows + 1)]
+        
+        max_square_size = 0
+        
+        # Iterate over the matrix
+        for i in range(1, rows + 1):
+            for j in range(1, cols + 1):
+                # If the current position contains '1'
+                if matrix[i - 1][j - 1] == '1':
+                    # Calculate the size of the square that can be formed at this position
+                    dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
+                    max_square_size = max(max_square_size, dp[i][j])
+        
+        return max_square_size * max_square_size
+```
+
+The function `maximalSquare` takes the binary matrix as input and returns the area of the largest square containing only 1's. It initializes a dynamic programming (DP) table `dp` with all entries set to 0. It also keeps track of the maximum square size encountered so far.
+
+The nested loops iterate over each position in the matrix. If the current position contains '1', it calculates the size of the square that can be formed at that position based on the values in the DP table. The size of the square is determined by taking the minimum of the values from the three adjacent positions above, to the left, and diagonally up-left, and adding 1. The maximum square size is updated if necessary.
+
+Finally, the function returns the area of the largest square by multiplying the maximum square size by itself.
+
+Note: The code assumes that the input matrix is a list of lists of strings, as specified in the function signature. The matrix elements are treated as strings ('0' and '1'). If the matrix elements are integers 0 and 1 instead, you can remove the string comparison and adjust the code accordingly.

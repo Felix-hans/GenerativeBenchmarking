@@ -1,0 +1,29 @@
+/*
+ * @lc app=leetcode id=2502 lang=java
+ *
+ * [2502] Design Memory Allocator
+ */
+
+// @lc code=start
+class Allocator {
+
+    public Allocator(int n) {
+        
+    }
+    
+    public int allocate(int size, int mID) {
+        
+    }
+    
+    public int free(int mID) {
+        
+    }
+}
+
+/**
+ * Your Allocator object will be instantiated and called as such:
+ * Allocator obj = new Allocator(n);
+ * int param_1 = obj.allocate(size,mID);
+ * int param_2 = obj.free(mID);
+ */
+// @lc code=end

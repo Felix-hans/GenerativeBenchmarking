@@ -1,0 +1,54 @@
+To solve this problem, we can use dynamic programming to calculate the probabilities for each possible number of points. Let's define a list `dp` of length `n+1`, where `dp[i]` represents the probability of having `i` or fewer points.
+
+We start by initializing `dp[0]` to 1 since the probability of having 0 points is 1. Then, for each index `i` from 1 to `n`, we calculate `dp[i]` by summing up the probabilities of getting points from `1` to `maxPts` and updating the probabilities accordingly.
+
+Here's the implementation of the `new21Game` function:
+
+```python
+class Solution:
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+        if k == 0 or n >= k + maxPts:
+            return 1.0
+
+        dp = [0.0] * (n + 1)
+        dp[0] = 1.0
+        window_sum = 1.0
+        probability = 0.0
+
+        for i in range(1, n + 1):
+            dp[i] = window_sum / maxPts
+            if i < k:
+                window_sum += dp[i]
+            else:
+                probability += dp[i]
+            if i - maxPts >= 0:
+                window_sum -= dp[i - maxPts]
+
+        return probability
+```
+
+Now, let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+n = 10
+k = 1
+maxPts = 10
+print(solution.new21Game(n, k, maxPts))  # Output: 1.00000
+
+# Example 2
+n = 6
+k = 1
+maxPts = 10
+print(solution.new21Game(n, k, maxPts))  # Output: 0.60000
+
+# Example 3
+n = 21
+k = 17
+maxPts = 10
+print(solution.new21Game(n, k, maxPts))  # Output: 0.73278
+```
+
+The function should return the expected outputs for the given examples.

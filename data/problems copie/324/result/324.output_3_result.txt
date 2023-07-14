@@ -1,0 +1,5 @@
+
+**stdout:**
+b'  \xe2\x9c\x98 Runtime Error\n  \xe2\x9c\x98 0/52 cases passed (N/A)\n  \xe2\x9c\x98 Error: Line 22: IndexError: list index out of range\n  \xe2\x9c\x98 Error: IndexError: list index out of range\n    new_nums[i] = nums1[j]\nLine 22 in wiggleSort (Solution.py)\n    ret = Solution().wiggleSort(param_1)\nLine 45 in _driver (Solution.py)\n    _driver()\nLine 57 in <module> (Solution.py)\n  \xe2\x9c\x98 Testcase: [1,5,1,1,6,4]\n  \xe2\x9c\x98 Answer: \n  \xe2\x9c\x98 Expected Answer: [1,6,1,5,1,4]\n  \xe2\x9c\x98 Stdout: \n'
+**stderr:**
+b"- Sending code to judge\n(node:97146) Warning: Accessing non-existent property 'padLevels' of module exports inside circular dependency\n(Use `node --trace-warnings ...` to show where the warning was created)\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n- Waiting for judge result\n"

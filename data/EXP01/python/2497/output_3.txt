@@ -1,0 +1,50 @@
+To solve this task, we can use a depth-first search (DFS) algorithm. 
+
+First, we need to build an adjacency list representation of the graph using the given edges. Then, we can start the DFS from any node and calculate the total sum of the values of all nodes in each star graph we encounter.
+
+In each recursive call of the DFS, we maintain two values: 1) the total sum of values of the nodes in the current star graph, and 2) the number of edges in the current star graph.
+
+At each node, we can either include it in the star graph or not. If we include it, we increment the number of edges and update the sum with the value of the current node. Then, we recursively explore all neighbors of the current node, updating the sum and the number of edges accordingly.
+
+After exploring all neighbors, we compare the number of edges to the given limit k. If it is less than or equal to k, we update the maximum star sum if necessary.
+
+Here is the implementation of the above algorithm:
+
+```python
+from typing import List
+
+class Solution:
+    def maxStarSum(self, vals: List[int], edges: List[List[int]], k: int) -> int:
+        n = len(vals)
+        adj_list = [[] for _ in range(n)]  # adjacency list representation of the graph
+        for edge in edges:
+            u, v = edge
+            adj_list[u].append(v)
+            adj_list[v].append(u)
+        
+        max_sum = float('-inf')
+        
+        def dfs(node, parent):
+            nonlocal max_sum
+            
+            sum_with_node = vals[node]
+            num_edges = 0
+            
+            for neighbor in adj_list[node]:
+                if neighbor == parent:
+                    continue
+                sum_with_neighbor, num_edges_with_neighbor = dfs(neighbor, node)
+                sum_with_node += sum_with_neighbor
+                num_edges += num_edges_with_neighbor + 1
+            
+            if num_edges <= k:
+                max_sum = max(max_sum, sum_with_node)
+            
+            return sum_with_node, num_edges
+        
+        dfs(0, -1)  # Start the DFS from node 0
+        
+        return max_sum
+```
+
+The overall time complexity of this solution is O(n), where n is the number of nodes in the graph.

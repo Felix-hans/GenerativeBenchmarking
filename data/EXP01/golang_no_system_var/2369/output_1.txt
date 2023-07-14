@@ -1,0 +1,37 @@
+Here's the implementation of the validPartition function in Go:
+
+```go
+func validPartition(nums []int) bool {
+    n := len(nums)
+    if n < 3 {
+        return false
+    }
+    
+    prev, count := nums[0], 1
+    
+    for i := 1; i < n; i++ {
+        if nums[i] == prev {
+            count++
+        } else {
+            if count > 2 {
+                return true
+            }
+            prev = nums[i]
+            count = 1
+        }
+    }
+    
+    return count > 2
+}
+```
+
+Explanation:
+1. We first check if the length of the input array is less than 3. If it is, we immediately return false because we need at least 3 elements for a valid partition.
+2. We initialize a variable `prev` to store the previous element and a variable `count` to keep track of the count of consecutive equal elements.
+3. We iterate through the array starting from the second element.
+4. If the current element is equal to the previous element, we increment the count.
+5. If the current element is not equal to the previous element, we check if the count is greater than 2. If it is, we have found a valid partition and return true.
+6. Otherwise, we update the `prev` variable to the current element and reset the count to 1.
+7. After the loop ends, we check if the count is greater than 2. If it is, we have a valid partition at the end of the array and return true. Otherwise, we return false.
+
+This solution has a time complexity of O(n) and a space complexity of O(1), where n is the length of the input array.

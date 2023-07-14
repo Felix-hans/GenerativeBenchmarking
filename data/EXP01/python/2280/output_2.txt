@@ -1,0 +1,42 @@
+To solve the problem, we can iterate through the given stockPrices array and check if the price at each day is equal to the price at the previous day. If it is, we can continue checking the next day until we find a day with a different price.
+
+Since the start and end points of each line segment are determined by the first and last days with the same price, respectively, we can count the number of such segments and return it as the minimum number of lines needed to represent the line chart.
+
+Here's the implementation of the `minimumLines` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def minimumLines(self, stockPrices: List[List[int]]) -> int:
+        n = len(stockPrices)
+        if n == 0:
+            return 0
+
+        lines = 1
+        for i in range(1, n):
+            if stockPrices[i][1] != stockPrices[i-1][1]:
+                lines += 1
+        
+        return lines
+```
+
+We can test the solution with the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+stockPrices1 = [[1, 7], [2, 6], [3, 5], [4, 4], [5, 4], [6, 3], [7, 2], [8, 1]]
+print(solution.minimumLines(stockPrices1))  # Output: 3
+
+# Example 2
+stockPrices2 = [[3, 4], [1, 2], [7, 8], [2, 3]]
+print(solution.minimumLines(stockPrices2))  # Output: 1
+```
+
+Output:
+```
+3
+1
+```

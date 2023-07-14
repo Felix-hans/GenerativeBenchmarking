@@ -1,0 +1,43 @@
+To find the minimum number of steps to make s and t anagrams of each other, we can count the frequency of each character in both strings and calculate the difference in frequencies. The sum of these differences will give us the minimum number of steps required.
+
+Here is the implementation of the above approach:
+
+```python
+class Solution:
+    def minSteps(self, s: str, t: str) -> int:
+        # Initialize arrays to store the frequency of characters in s and t
+        freq_s = [0] * 26
+        freq_t = [0] * 26
+        
+        # Count the frequency of characters in s
+        for char in s:
+            freq_s[ord(char) - ord('a')] += 1
+        
+        # Count the frequency of characters in t
+        for char in t:
+            freq_t[ord(char) - ord('a')] += 1
+        
+        # Calculate the difference in frequencies and sum them up
+        total_steps = 0
+        for i in range(26):
+            total_steps += abs(freq_s[i] - freq_t[i])
+        
+        return total_steps
+```
+
+Now, we can create an instance of the Solution class and call the minSteps() function to find the minimum number of steps to make s and t anagrams of each other.
+
+```python
+s = "leetcode"
+t = "coats"
+solution = Solution()
+steps = solution.minSteps(s, t)
+print(steps)
+```
+
+The output will be:
+```
+7
+```
+
+In this example, it takes 7 steps to make the strings "leetcode" and "coats" anagrams of each other.

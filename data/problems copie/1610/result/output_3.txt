@@ -1,0 +1,71 @@
+To solve this task, we can follow the following steps:
+
+1. Calculate the angles between each point and the location, relative to the positive x-axis.
+2. Create a list to store the angles.
+3. Count the number of points at the location.
+4. Iterate through each point and calculate its angle using the `atan2` function from the math module.
+5. Adjust the angles to be between 0 and 360 degrees.
+6. Sort the angles in ascending order.
+7. Duplicate the sorted angles list to handle circular cases.
+8. Iterate through the duplicated angles list using a sliding window of size `points.length`.
+9. Calculate the difference between the angles within the window and check if it falls within the given angle range.
+10. Update the maximum number of visible points.
+11. Return the maximum number of visible points.
+
+Here's the implementation of the `visiblePoints` function:
+
+```python
+from math import atan2, degrees
+from typing import List
+
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        angles = []
+        num_points_at_location = 0
+        max_visible_points = 0
+
+        for point in points:
+            if point == location:
+                num_points_at_location += 1
+            else:
+                x, y = point[0] - location[0], point[1] - location[1]
+                angle = degrees(atan2(y, x))
+                angles.append(angle)
+
+        angles.sort()
+        angles += [angle + 360 for angle in angles]  # Duplicate angles for circular cases
+
+        left = 0
+        for right in range(len(angles)):
+            while angles[right] - angles[left] > angle:
+                left += 1
+            max_visible_points = max(max_visible_points, right - left + 1)
+
+        return max_visible_points + num_points_at_location
+```
+
+Now you can create an instance of the `Solution` class and call the `visiblePoints` function with the given input to test it out:
+
+```python
+solution = Solution()
+
+# Example 1
+points1 = [[2, 1], [2, 2], [3, 3]]
+angle1 = 90
+location1 = [1, 1]
+print(solution.visiblePoints(points1, angle1, location1))  # Output: 3
+
+# Example 2
+points2 = [[2, 1], [2, 2], [3, 4], [1, 1]]
+angle2 = 90
+location2 = [1, 1]
+print(solution.visiblePoints(points2, angle2, location2))  # Output: 4
+
+# Example 3
+points3 = [[1, 0], [2, 1]]
+angle3 = 13
+location3 = [1, 1]
+print(solution.visiblePoints(points3, angle3, location3))  # Output: 1
+```
+
+The code will output the maximum number of visible points for each example.

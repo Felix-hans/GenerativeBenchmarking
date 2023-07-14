@@ -1,0 +1,61 @@
+To implement the FrequencyTracker class, we can use a dictionary to track the frequencies of the numbers in the data structure. The keys of the dictionary will be the numbers and the values will be their frequencies.
+
+Here is the implementation of the FrequencyTracker class:
+
+```python
+class FrequencyTracker:
+
+    def __init__(self):
+        self.data = {}
+
+    def add(self, number: int) -> None:
+        if number in self.data:
+            self.data[number] += 1
+        else:
+            self.data[number] = 1
+
+    def deleteOne(self, number: int) -> None:
+        if number in self.data:
+            self.data[number] -= 1
+            if self.data[number] == 0:
+                del self.data[number]
+
+    def hasFrequency(self, frequency: int) -> bool:
+        return frequency in self.data.values()
+```
+
+In the `__init__` method, we initialize the `data` attribute as an empty dictionary.
+
+In the `add` method, we check if the number is already in the `data` dictionary. If it is, we increment its frequency by 1. Otherwise, we add it to the dictionary with a frequency of 1.
+
+In the `deleteOne` method, we first check if the number exists in the `data` dictionary. If it does, we decrement its frequency by 1. If the frequency becomes 0, we remove the number from the dictionary.
+
+In the `hasFrequency` method, we simply check if the given frequency exists in the values of the `data` dictionary.
+
+Finally, we can create an instance of the `FrequencyTracker` class and test it with the provided examples:
+
+```python
+frequencyTracker = FrequencyTracker()
+frequencyTracker.add(3)
+frequencyTracker.add(3)
+print(frequencyTracker.hasFrequency(2))
+
+frequencyTracker = FrequencyTracker()
+frequencyTracker.add(1)
+frequencyTracker.deleteOne(1)
+print(frequencyTracker.hasFrequency(1))
+
+frequencyTracker = FrequencyTracker()
+print(frequencyTracker.hasFrequency(2))
+frequencyTracker.add(3)
+print(frequencyTracker.hasFrequency(1))
+```
+
+The output will be:
+
+```
+True
+False
+False
+True
+```

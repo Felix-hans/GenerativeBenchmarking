@@ -1,0 +1,45 @@
+First, let's analyze the problem.
+
+We need to count the number of subarrays filled with 0 in an integer array. A subarray is a contiguous non-empty sequence of elements within the array.
+
+To solve this problem, we can iterate over the array and keep track of the subarrays filled with 0.
+
+Here's the plan:
+
+1. Initialize a variable "count" to 0 to keep track of the number of subarrays filled with 0.
+2. Iterate over the array, starting from index 0.
+3. If the current element is 0, increment the count by 1.
+4. If the current element is not 0, reset the count to 0.
+5. After each iteration, add the count value to a running total.
+6. Finally, return the running total as the result.
+
+Now, let's implement this plan in the code:
+
+```go
+func zeroFilledSubarray(nums []int) int {
+    count := 0
+    result := 0
+    
+    for _, num := range nums {
+        if num == 0 {
+            count++
+        } else {
+            count = 0
+        }
+        
+        result += count
+    }
+    
+    return result
+}
+```
+
+In this code, we iterate over the array using a range loop and check each element.
+
+If the element is 0, we increment the count variable. If the element is not 0, we reset the count variable to 0.
+
+After each iteration, we add the count value to the result variable.
+
+Finally, we return the result as the answer.
+
+The time complexity of this solution is O(n), where n is the length of the input array nums.

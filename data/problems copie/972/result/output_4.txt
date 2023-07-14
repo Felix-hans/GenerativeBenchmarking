@@ -1,0 +1,27 @@
+Here's one way to implement the `isRationalEqual` function in Python:
+
+```python
+class Solution:
+    def isRationalEqual(self, s: str, t: str) -> bool:
+        def convert_to_decimal(string):
+            if '.' not in string:
+                return int(string)
+            
+            integer_part, decimal_part = string.split('.')
+            non_repeating_part, repeating_part = '', ''
+            
+            if '(' in decimal_part:
+                decimal_part, repeating_part = decimal_part.split('(')
+                repeating_part = repeating_part[:-1]  # Remove the closing bracket
+            
+            return float(integer_part + '.' + decimal_part + repeating_part * 10)
+        
+        s_decimal = convert_to_decimal(s)
+        t_decimal = convert_to_decimal(t)
+        
+        return s_decimal == t_decimal
+```
+
+In this implementation, we define a helper function `convert_to_decimal` that takes a string representation of a rational number and converts it into a decimal number. The function splits the string into its integer part, non-repeating part, and repeating part (if any). It then combines these parts to form a decimal number.
+
+In the `isRationalEqual` function, we use the `convert_to_decimal` function to convert both input strings `s` and `t` into decimal numbers. Finally, we compare the decimal numbers and return `True` if they are equal, and `False` otherwise.

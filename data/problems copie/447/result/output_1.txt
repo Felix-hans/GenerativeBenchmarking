@@ -1,0 +1,37 @@
+The given task is to find the number of boomerangs in a list of points in the plane. A boomerang is defined as a tuple of three points (i, j, k), where the distance between i and j is equal to the distance between i and k.
+
+To solve this task, we can iterate over each point in the list and calculate the distance between that point and all other points. We can store the distances in a dictionary, where the key is the distance and the value is the number of points that have that distance from the current point.
+
+Here's the implementation of the `numberOfBoomerangs` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        boomerangs = 0
+
+        for i in range(len(points)):
+            distances = {}
+            for j in range(len(points)):
+                if i != j:
+                    distance = self.calculateDistance(points[i], points[j])
+                    if distance in distances:
+                        distances[distance] += 1
+                    else:
+                        distances[distance] = 1
+
+            for distance_count in distances.values():
+                boomerangs += distance_count * (distance_count - 1)
+
+        return boomerangs
+
+    def calculateDistance(self, point1, point2):
+        x1, y1 = point1
+        x2, y2 = point2
+        return (x2 - x1) ** 2 + (y2 - y1) ** 2
+```
+
+We define a helper function `calculateDistance` to calculate the distance between two points using the Euclidean distance formula. The `numberOfBoomerangs` function iterates over each point, calculates the distances to all other points, and stores the distances in the `distances` dictionary. Then, we iterate over the values of the `distances` dictionary and count the number of boomerangs for each distance. Finally, we return the total number of boomerangs found.
+
+You can create an instance of the `Solution` class and call the `numberOfBoomerangs` function with the input points to get the desired output.

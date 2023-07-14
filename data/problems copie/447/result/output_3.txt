@@ -1,0 +1,53 @@
+To solve this task, we can use the concept of a hashmap or dictionary to store the count of distances between each point and all other points. For each point, we calculate the distance to all other points and increment the count in the hashmap.
+
+Here's the implementation of the `numberOfBoomerangs` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfBoomerangs(self, points: List[List[int]]) -> int:
+        boomerangs = 0
+        
+        for i in range(len(points)):
+            distances = {}  # Dictionary to store count of distances
+            
+            for j in range(len(points)):
+                if i == j:
+                    continue
+                
+                distance = self.calculateDistance(points[i], points[j])
+                distances[distance] = distances.get(distance, 0) + 1
+                
+            for count in distances.values():
+                boomerangs += count * (count - 1)  # Count possible boomerangs for each distance
+        
+        return boomerangs
+
+    def calculateDistance(self, point1: List[int], point2: List[int]) -> int:
+        x1, y1 = point1
+        x2, y2 = point2
+        return (x2 - x1) ** 2 + (y2 - y1) ** 2
+```
+
+This solution has a time complexity of O(n^2), where n is the number of points. We iterate over each point and calculate the distance to all other points, resulting in a nested loop. The space complexity is O(n) since we store the distances in a dictionary.
+
+You can create an instance of the `Solution` class and call the `numberOfBoomerangs` function with the input points to get the desired output. For example:
+
+```python
+solution = Solution()
+points = [[0,0],[1,0],[2,0]]
+print(solution.numberOfBoomerangs(points))  # Output: 2
+```
+
+```python
+solution = Solution()
+points = [[1,1],[2,2],[3,3]]
+print(solution.numberOfBoomerangs(points))  # Output: 2
+```
+
+```python
+solution = Solution()
+points = [[1,1]]
+print(solution.numberOfBoomerangs(points))  # Output: 0
+```

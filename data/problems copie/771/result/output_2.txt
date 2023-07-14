@@ -1,0 +1,26 @@
+To solve the problem, you can iterate over each stone in the "stones" string and check if it is present in the "jewels" string. If it is, increment a count variable. Finally, return the count.
+
+Here's the implementation of the `numJewelsInStones` function:
+
+```python
+class Solution:
+    def numJewelsInStones(self, jewels: str, stones: str) -> int:
+        count = 0
+        for stone in stones:
+            if stone in jewels:
+                count += 1
+        return count
+```
+
+You can create an instance of the `Solution` class and call the `numJewelsInStones` method, passing the "jewels" and "stones" strings as arguments.
+
+Example usage:
+```python
+solution = Solution()
+jewels = "aA"
+stones = "aAAbbbb"
+result = solution.numJewelsInStones(jewels, stones)
+print(result)  # Output: 3
+```
+
+Let me know if you need any further assistance!

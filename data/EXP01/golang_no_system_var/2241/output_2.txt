@@ -1,0 +1,53 @@
+This is the implementation of the ATM class in Go:
+
+```go
+type ATM struct {
+    banknotesCount []int
+}
+
+func Constructor() ATM {
+    return ATM{banknotesCount: make([]int, 5)}
+}
+
+func (a *ATM) Deposit(banknotesCount []int) {
+    for i := 0; i < 5; i++ {
+        a.banknotesCount[i] += banknotesCount[i]
+    }
+}
+
+func (a *ATM) Withdraw(amount int) []int {
+    withdrawnCount := make([]int, 5)
+    denominations := []int{500, 200, 100, 50, 20}
+
+    for i := 0; i < 5; i++ {
+        withdrawnCount[i] = min(amount/denominations[i], a.banknotesCount[i])
+        amount -= withdrawnCount[i] * denominations[i]
+    }
+
+    if amount > 0 {
+        return []int{-1}
+    }
+
+    for i := 0; i < 5; i++ {
+        a.banknotesCount[i] -= withdrawnCount[i]
+    }
+
+    return withdrawnCount
+}
+
+func min(a, b int) int {
+    if a < b {
+        return a
+    }
+    return b
+}
+```
+The `ATM` struct has an array `banknotesCount` to keep track of the count of each denomination of banknotes in the ATM.
+
+The `Constructor` function initializes the `ATM` object.
+
+The `Deposit` method takes an array `banknotesCount` representing the count of each denomination of banknotes to be deposited, and updates the `banknotesCount` in the ATM accordingly.
+
+The `Withdraw` method takes an `amount` and returns an array `withdrawnCount` representing the count of each denomination of banknotes that will be handed to the user. It uses a greedy algorithm to prioritize larger denominations and deducts the withdrawn banknotes from the `banknotesCount` in the ATM. If it is not possible to withdraw the requested `amount`, it returns `[-1]`.
+
+The `min` function returns the minimum of two integers. This helper function is used to calculate the withdrawn count for each denomination.

@@ -1,0 +1,52 @@
+To solve the given task, we can follow the following steps:
+
+1. Convert all the points' coordinates from (x, y) to polar coordinates (r, theta) relative to the location. This will help us calculate the angles later.
+2. Initialize a variable `max_points` to keep track of the maximum number of points visible.
+3. Count the number of points at the current location and assign it to `max_points`.
+4. Create an empty list `angles` to store all the angles formed by the points relative to the east direction.
+5. Iterate over each point and calculate its angle relative to the east direction. Add this angle to the `angles` list.
+6. Sort the `angles` list in ascending order.
+7. Concatenate the `angles` list with itself to handle circular cases when the field of view wraps around from 360 degrees to 0 degrees.
+8. Initialize two pointers, `start` and `end`, both pointing to the beginning of the `angles` list.
+9. Iterate while the `start` pointer is less than the length of the `angles` list:
+   - While the angle between the `start` and `end` pointers is less than or equal to the given `angle`, increment the `end` pointer.
+   - Update the `max_points` variable by taking the maximum of its current value and the difference between `end` and `start`.
+   - Increment the `start` pointer.
+10. Return the `max_points` as the maximum number of points visible.
+
+Here's the implementation of the `visiblePoints` method in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def visiblePoints(self, points: List[List[int]], angle: int, location: List[int]) -> int:
+        def calculate_angle(x, y):
+            dx = x - location[0]
+            dy = y - location[1]
+            return math.atan2(dy, dx) * (180 / math.pi)
+
+        polar_points = []
+        max_points = 0
+        same_location = 0
+
+        for point in points:
+            x, y = point
+            if x == location[0] and y == location[1]:
+                same_location += 1
+            else:
+                polar_points.append(calculate_angle(x, y))
+
+        polar_points.sort()
+        polar_points += [angle + polar_point for polar_point in polar_points]
+
+        start = 0
+        for end in range(len(polar_points)):
+            while polar_points[end] - polar_points[start] > angle:
+                start += 1
+            max_points = max(max_points, end - start + 1)
+
+        return max_points + same_location
+```
+
+You can create an instance of the `Solution` class and call the `visiblePoints` method with the given inputs to get the maximum number of points visible.

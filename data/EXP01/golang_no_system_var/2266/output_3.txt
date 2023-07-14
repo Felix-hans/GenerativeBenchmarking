@@ -1,0 +1,51 @@
+To solve this problem, we need to find all possible combinations of letters that Alice could have pressed based on the given string of pressed keys.
+
+First, we need to create a mapping of digits to letters. We can use a map with key-value pairs to represent this mapping.
+
+Next, we can use a backtracking algorithm to find all possible combinations. Starting from the first digit in the pressed keys, we iterate through all the corresponding letters and recursively call the function for the remaining digits. We keep track of the current combination of letters using a string and append each letter as we go through the digits.
+
+Once we reach the end of the pressed keys string, we add the current combination to a set to eliminate duplicates.
+
+Finally, we return the size of the set as the number of possible text messages Alice could have sent, modulo 10^9 + 7.
+
+Here is the implementation in Go:
+
+```go
+const mod = int(1e9) + 7
+
+func countTexts(pressedKeys string) int {
+    mappings := map[byte]string{
+        '2': "abc",
+        '3': "def",
+        '4': "ghi",
+        '5': "jkl",
+        '6': "mno",
+        '7': "pqrs",
+        '8': "tuv",
+        '9': "wxyz",
+    }
+
+    combinations := make(map[string]bool)
+    backtrack(pressedKeys, "", 0, mappings, combinations)
+
+    return len(combinations) % mod
+}
+
+func backtrack(pressedKeys, combination string, index int, mappings map[byte]string, combinations map[string]bool) {
+    if index == len(pressedKeys) {
+        combinations[combination] = true
+        return
+    }
+
+    digit := pressedKeys[index]
+    letters := mappings[digit]
+
+    for _, letter := range letters {
+        combination += string(letter)
+        backtrack(pressedKeys, combination, index+1, mappings, combinations)
+        combination = combination[:len(combination)-1]
+    }
+}
+```
+
+The time complexity of this solution is O(4^N) where N is the length of the pressed keys string.

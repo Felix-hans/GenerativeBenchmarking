@@ -1,0 +1,40 @@
+To solve this problem, we can iterate through the array starting from index k and check if the previous k elements are in non-increasing order and the next k elements are in non-decreasing order. If both conditions are true, we add the index i to a result array.
+
+Here is the implementation:
+
+```go
+func goodIndices(nums []int, k int) []int {
+    n := len(nums)
+    result := []int{}
+    
+    for i := k; i < n-k; i++ {
+        valid := true
+        
+        // Check if the previous k elements are in non-increasing order
+        for j := i-1; j >= i-k; j-- {
+            if nums[j] < nums[j+1] {
+                valid = false
+                break
+            }
+        }
+        
+        // Check if the next k elements are in non-decreasing order
+        for j := i+1; j <= i+k; j++ {
+            if nums[j] < nums[j-1] {
+                valid = false
+                break
+            }
+        }
+        
+        if valid {
+            result = append(result, i)
+        }
+    }
+    
+    return result
+}
+```
+
+Note: In the code, we are iterating `i` from `k` to `n-k` because for the indices less than `k` or greater than `n-k`, it won't be possible to find k elements before or after the index respectively.
+
+The time complexity of this solution is O(n*k), where n is the length of the input array and k is the given positive integer.

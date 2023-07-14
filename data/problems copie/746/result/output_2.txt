@@ -1,0 +1,32 @@
+To solve this problem, we can use dynamic programming. We'll create an array, `dp`, where `dp[i]` represents the minimum cost to reach step `i` in the staircase. The size of the `dp` array will be `len(cost)`, as each step corresponds to an element in the `cost` array.
+
+The base cases are `dp[0] = cost[0]` and `dp[1] = cost[1]`. We'll iterate through the remaining steps, starting from index 2, and calculate the minimum cost at each step as the cost of the current step plus the minimum cost of the previous two steps.
+
+Finally, the minimum cost to reach the top of the staircase will be the minimum of `dp[-1]` and `dp[-2]`. Here's the implementation:
+
+```python
+class Solution:
+    def minCostClimbingStairs(self, cost):
+        dp = [0] * len(cost)
+        dp[0] = cost[0]
+        dp[1] = cost[1]
+        
+        for i in range(2, len(cost)):
+            dp[i] = cost[i] + min(dp[i-1], dp[i-2])
+        
+        return min(dp[-1], dp[-2])
+```
+
+Let's test the solution with the given examples:
+
+```python
+solution = Solution()
+
+cost = [10, 15, 20]
+print(solution.minCostClimbingStairs(cost))  # Output: 15
+
+cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]
+print(solution.minCostClimbingStairs(cost))  # Output: 6
+```
+
+The output matches the expected results.

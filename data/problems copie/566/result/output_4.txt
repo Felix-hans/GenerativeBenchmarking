@@ -1,0 +1,48 @@
+You can implement the matrix reshaping task in Python using the provided class and function as follows:
+
+```python
+from typing import List
+
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        m, n = len(mat), len(mat[0])
+        
+        if m * n != r * c:  # Check if reshape is possible
+            return mat
+        
+        flattened = [element for row in mat for element in row]  # Flatten the original matrix
+        
+        reshaped = []
+        index = 0
+        
+        for i in range(r):
+            row = []
+            for j in range(c):
+                row.append(flattened[index])
+                index += 1
+            reshaped.append(row)
+        
+        return reshaped
+```
+
+Here's how you can use the `matrixReshape` function:
+
+```python
+solution = Solution()
+
+# Example 1
+mat1 = [[1, 2], [3, 4]]
+r1, c1 = 1, 4
+result1 = solution.matrixReshape(mat1, r1, c1)
+print(result1)  # Output: [[1, 2, 3, 4]]
+
+# Example 2
+mat2 = [[1, 2], [3, 4]]
+r2, c2 = 2, 4
+result2 = solution.matrixReshape(mat2, r2, c2)
+print(result2)  # Output: [[1, 2], [3, 4]]
+```
+
+The `matrixReshape` function takes a matrix `mat` and two integers `r` and `c` as input. It first checks if the reshape operation is possible by comparing the number of elements in the original matrix (`m * n`) with the desired number of elements in the reshaped matrix (`r * c`). If the reshape is not possible, it returns the original matrix.
+
+If the reshape is possible, it flattens the original matrix by iterating through each element in row-traversing order. Then, it constructs the reshaped matrix by iterating through `r` rows and `c` columns, and populates each element from the flattened list. Finally, it returns the reshaped matrix.

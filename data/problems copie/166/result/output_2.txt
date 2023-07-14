@@ -1,0 +1,56 @@
+Here's an implementation of the `fractionToDecimal` function in Python that solves the given task:
+
+```python
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        # Handle the case of zero numerator
+        if numerator == 0:
+            return "0"
+
+        # Initialize the result string
+        result = ""
+
+        # Handle the sign of the result
+        if (numerator < 0) ^ (denominator < 0):
+            result += "-"
+
+        # Convert numerator and denominator to absolute values
+        numerator = abs(numerator)
+        denominator = abs(denominator)
+
+        # Calculate the quotient and remainder
+        quotient, remainder = divmod(numerator, denominator)
+
+        # Append the integer part to the result
+        result += str(quotient)
+
+        # If remainder is zero, return the result
+        if remainder == 0:
+            return result
+
+        # Append the decimal point
+        result += "."
+
+        # Create a dictionary to store the remainders and their corresponding indices
+        remainders = {}
+
+        # Perform long division to find the decimal part
+        while remainder != 0:
+            # If the remainder repeats, insert the opening parenthesis
+            if remainder in remainders:
+                result = result[:remainders[remainder]] + "(" + result[remainders[remainder]:] + ")"
+                break
+
+            # Store the current remainder and its index
+            remainders[remainder] = len(result)
+
+            # Calculate the next quotient and remainder
+            quotient, remainder = divmod(remainder * 10, denominator)
+
+            # Append the current quotient to the result
+            result += str(quotient)
+
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `fractionToDecimal` method with the numerator and denominator as arguments to obtain the desired result.

@@ -1,0 +1,60 @@
+Here's the implementation of the `matrixReshape` function in Python:
+
+```python
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        # Get the dimensions of the original matrix
+        m = len(mat)
+        n = len(mat[0])
+        
+        # Check if reshape is possible
+        if m * n != r * c:
+            return mat
+        
+        # Flatten the original matrix
+        flattened = [num for row in mat for num in row]
+        
+        # Create the reshaped matrix
+        reshaped = []
+        index = 0
+        for i in range(r):
+            row = []
+            for j in range(c):
+                row.append(flattened[index])
+                index += 1
+            reshaped.append(row)
+        
+        return reshaped
+```
+
+You can use this `Solution` class to create an instance and call the `matrixReshape` function with the given inputs:
+
+```python
+solution = Solution()
+mat = [[1, 2], [3, 4]]
+r = 1
+c = 4
+result = solution.matrixReshape(mat, r, c)
+print(result)
+```
+
+Output:
+```
+[[1, 2, 3, 4]]
+```
+
+```python
+solution = Solution()
+mat = [[1, 2], [3, 4]]
+r = 2
+c = 4
+result = solution.matrixReshape(mat, r, c)
+print(result)
+```
+
+Output:
+```
+[[1, 2], [3, 4]]
+```
+
+The `matrixReshape` function checks if the reshape operation is possible by comparing the total number of elements in the original matrix (`m * n`) with the total number of elements in the desired reshaped matrix (`r * c`). If they are not equal, it returns the original matrix. Otherwise, it flattens the original matrix and constructs the reshaped matrix by iterating over the flattened list and populating the rows and columns. Finally, it returns the reshaped matrix.

@@ -1,0 +1,38 @@
+Here's the implementation of the `numUniqueEmails` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def numUniqueEmails(self, emails: List[str]) -> int:
+        unique_emails = set()  # Use a set to store unique email addresses
+        
+        for email in emails:
+            local, domain = email.split('@')  # Split the email address into local and domain parts
+            
+            # Remove everything after the first '+' sign in the local part
+            local = local.split('+')[0]
+            
+            # Remove all '.' characters from the local part
+            local = local.replace('.', '')
+            
+            # Construct the normalized email address by combining the modified local and domain parts
+            normalized_email = local + '@' + domain
+            
+            # Add the normalized email address to the set
+            unique_emails.add(normalized_email)
+        
+        # Return the count of unique email addresses
+        return len(unique_emails)
+```
+
+You can create an instance of the `Solution` class and call the `numUniqueEmails` method with the given email list to obtain the number of different addresses that actually receive mails. Here's an example:
+
+```python
+emails = ["test.email+alex@leetcode.com", "test.e.mail+bob.cathy@leetcode.com", "testemail+david@lee.tcode.com"]
+solution = Solution()
+result = solution.numUniqueEmails(emails)
+print(result)  # Output: 2
+```
+
+I hope this helps! Let me know if you have any further questions.

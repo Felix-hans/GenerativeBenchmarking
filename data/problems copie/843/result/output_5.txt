@@ -1,0 +1,40 @@
+To solve this task, we can use the following approach:
+
+1. Initialize a set called `candidates` with all the words from the given list `words`.
+2. While the set `candidates` is not empty and we haven't exceeded the maximum number of allowed guesses:
+   - Pick a random word from the `candidates` set as a guess.
+   - Call `master.guess(guess)` to get the number of exact matches for the guess.
+   - Remove the guess from the `candidates` set.
+   - Iterate over the remaining words in the `candidates` set and remove any word that doesn't have the same number of exact matches with the guess.
+3. If we have guessed the secret word correctly, output "You guessed the secret word correctly." Otherwise, output "Either you took too many guesses, or you did not find the secret word."
+
+Here's the implementation of the `findSecretWord` function using the above approach:
+
+```python
+import random
+from typing import List
+
+class Solution:
+    def findSecretWord(self, words: List[str], master: 'Master') -> None:
+        candidates = set(words)
+        allowedGuesses = 10
+
+        while candidates and allowedGuesses > 0:
+            guess = random.choice(list(candidates))
+            matches = master.guess(guess)
+            allowedGuesses -= 1
+
+            if matches == len(guess):
+                return "You guessed the secret word correctly."
+
+            candidates = {word for word in candidates if self.countMatches(guess, word) == matches}
+
+        return "Either you took too many guesses, or you did not find the secret word."
+
+    def countMatches(self, word1: str, word2: str) -> int:
+        return sum(c1 == c2 for c1, c2 in zip(word1, word2))
+```
+
+Note: The `countMatches` function counts the number of characters that match in the same positions between two words.
+
+You can test the solution using the provided examples or additional test cases.

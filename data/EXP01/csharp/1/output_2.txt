@@ -1,0 +1,30 @@
+Here is the solution to the given task:
+
+```go
+func twoSum(nums []int, target int) []int {
+    // Create a map to store the complement of each element
+    // The complement is the difference between the target and the current element
+    compMap := make(map[int]int)
+    
+    // Iterate through the array
+    for i, num := range nums {
+        
+        // Check if the complement of the current element exists in the map
+        if j, ok := compMap[num]; ok {
+            // If it exists, return the indices of the two elements
+            return []int{j, i}
+        }
+        
+        // If the complement does not exist in the map, add the current element and its index to the map
+        compMap[target-num] = i
+    }
+    
+    // Return an empty array if no solution is found
+    return []int{}
+}
+```
+
+Explanation:
+- We iterate through the array and for each element, we check if the complement exists in the map. If it does, we return the indices of the two elements.
+- Otherwise, we add the current element and its index to the map.
+- This solution has a time complexity of O(n) since we iterate through the array only once.

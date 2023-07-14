@@ -1,0 +1,70 @@
+To solve the problem, we can use a breadth-first search (BFS) algorithm. Here's the implementation of the `numBusesToDestination` function in Python:
+
+```python
+from collections import deque
+
+class Solution:
+    def numBusesToDestination(self, routes, source, target):
+        if source == target:
+            return 0
+        
+        # Create a map of bus stops to the bus routes that pass through them
+        stop_to_routes = {}
+        for bus_route in routes:
+            for stop in bus_route:
+                if stop not in stop_to_routes:
+                    stop_to_routes[stop] = set()
+                stop_to_routes[stop].add(tuple(bus_route))
+
+        # Use a set to track the visited bus stops and a queue for BFS
+        visited_stops = set()
+        queue = deque([(source, 0)])  # (bus_stop, bus_changes)
+        
+        while queue:
+            current_stop, bus_changes = queue.popleft()
+            
+            # Check if the current stop is the target
+            if current_stop == target:
+                return bus_changes
+            
+            # Get the bus routes passing through the current stop
+            routes_passing_through_stop = stop_to_routes.get(current_stop, [])
+            
+            # Check each route and its stops
+            for route in routes_passing_through_stop:
+                for next_stop in route:
+                    if next_stop not in visited_stops:
+                        visited_stops.add(next_stop)
+                        queue.append((next_stop, bus_changes + 1))
+                
+                # Remove the route from other stops since we've already explored it
+                for stop, routes_set in stop_to_routes.items():
+                    if route in routes_set:
+                        routes_set.remove(route)
+        
+        return -1
+```
+
+You can create an instance of the `Solution` class and call the `numBusesToDestination` method with the given input to get the desired output. For example:
+
+```python
+routes = [[1, 2, 7], [3, 6, 7]]
+source = 1
+target = 6
+
+solution = Solution()
+result = solution.numBusesToDestination(routes, source, target)
+print(result)  # Output: 2
+```
+
+```python
+routes = [[7, 12], [4, 5, 15], [6], [15, 19], [9, 12, 13]]
+source = 15
+target = 12
+
+solution = Solution()
+result = solution.numBusesToDestination(routes, source, target)
+print(result)  # Output: -1
+```
+
+The `numBusesToDestination` function uses a BFS approach to explore the bus stops and their connections. It keeps track of the visited stops and the number of bus changes required to reach each stop. If the target stop is found, it returns the number of bus changes. If the target cannot be reached, it returns -1.

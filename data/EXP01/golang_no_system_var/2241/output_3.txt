@@ -1,0 +1,69 @@
+```go
+/*
+ * @lc app=leetcode id=2241 lang=golang
+ *
+ * [2241] Design an ATM Machine
+ */
+
+// @lc code=start
+type ATM struct {
+	banknotesCount []int
+}
+
+func Constructor() ATM {
+	return ATM{
+		banknotesCount: make([]int, 5),
+	}
+}
+
+func (this *ATM) Deposit(banknotesCount []int) {
+	for i := 0; i < len(this.banknotesCount); i++ {
+		this.banknotesCount[i] += banknotesCount[i]
+	}
+}
+
+func (this *ATM) Withdraw(amount int) []int {
+	remainingAmount := amount
+	result := make([]int, 5)
+
+	// Iterate through the banknotes from highest to lowest denominations
+	for i := 4; i >= 0; i-- {
+		// Calculate the number of banknotes needed for the current denomination
+		numBanknotes := remainingAmount / denominations[i]
+
+		// If there are not enough banknotes of the current denomination in the ATM, return [-1]
+		if this.banknotesCount[i] < numBanknotes {
+			return []int{-1}
+		}
+
+		// Update the number of banknotes in the ATM and the remaining amount
+		this.banknotesCount[i] -= numBanknotes
+		remainingAmount -= numBanknotes * denominations[i]
+
+		// Store the number of banknotes of the current denomination in the result array
+		result[i] = numBanknotes
+	}
+
+	// If there is still a remaining amount, return [-1]
+	if remainingAmount > 0 {
+		return []int{-1}
+	}
+
+	return result
+}
+
+// Banknote denominations
+var denominations = []int{20, 50, 100, 200, 500}
+
+/**
+ * Your ATM object will be instantiated and called as such:
+ * obj := Constructor();
+ * obj.Deposit(banknotesCount);
+ * param_2 := obj.Withdraw(amount);
+ */
+// @lc code=end
+```
+
+The above implementation defines an ATM struct with two methods: `Deposit` and `Withdraw`. The `Deposit` method takes in an array of banknote counts and updates the number of banknotes in the ATM. The `Withdraw` method takes in an amount and returns an array of banknote counts that will be handed to the user if the withdrawal is successful. If the withdrawal is not possible, it returns [-1]. The implementation also includes a constructor function to create an instance of the ATM struct.
+
+In the `Withdraw` method, the implementation uses a greedy approach to prioritize using banknotes of larger denominations. It iterates through the banknote denominations from highest to lowest and calculates the number of banknotes needed for each denomination. It checks if there are enough banknotes of the current denomination in the ATM and updates the number of banknotes in the ATM and the remaining amount accordingly. If there is still a remaining amount after iterating through all the denominations, it returns [-1]. Otherwise, it returns the array of banknote counts.

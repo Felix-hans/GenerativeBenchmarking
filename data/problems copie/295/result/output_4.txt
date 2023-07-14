@@ -1,0 +1,57 @@
+To implement the MedianFinder class in Python, we can use two heaps: a max heap to store the smaller half of the numbers and a min heap to store the larger half of the numbers. This approach allows us to efficiently find the median at any point in time.
+
+Here's the implementation:
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.min_heap = []  # stores the larger half of the numbers
+        self.max_heap = []  # stores the smaller half of the numbers
+
+    def addNum(self, num: int) -> None:
+        # Add the number to the appropriate heap
+        if len(self.max_heap) == len(self.min_heap):
+            # If the heaps are balanced, add to the max heap (smaller half)
+            # But negate the value to simulate a max heap
+            heapq.heappush(self.max_heap, -num)
+        else:
+            # If the heaps are unbalanced, add to the min heap (larger half)
+            heapq.heappush(self.min_heap, num)
+
+        # Balance the heaps if necessary
+        if self.min_heap and -self.max_heap[0] > self.min_heap[0]:
+            # If the max heap's largest element is greater than the min heap's smallest element,
+            # we need to balance the heaps by swapping elements
+            max_heap_top = -heapq.heappop(self.max_heap)
+            min_heap_top = heapq.heappop(self.min_heap)
+            heapq.heappush(self.max_heap, -min_heap_top)
+            heapq.heappush(self.min_heap, max_heap_top)
+
+    def findMedian(self) -> float:
+        if len(self.max_heap) == len(self.min_heap):
+            # If the number of elements is even, take the average of the top elements from both heaps
+            return (-self.max_heap[0] + self.min_heap[0]) / 2
+        else:
+            # If the number of elements is odd, the max heap (smaller half) will have one extra element,
+            # so the top element of the max heap is the median
+            return -self.max_heap[0]
+```
+
+Now we can create a MedianFinder object, add numbers using the `addNum` method, and find the median using the `findMedian` method:
+
+```python
+medianFinder = MedianFinder()
+medianFinder.addNum(1)
+medianFinder.addNum(2)
+print(medianFinder.findMedian())  # Output: 1.5
+medianFinder.addNum(3)
+print(medianFinder.findMedian())  # Output: 2.0
+```
+
+Regarding the follow-up questions:
+
+1. If all integer numbers from the stream are in the range [0, 100], we can optimize the solution by using a list or an array of size 101 instead of heaps. Each index represents a number from 0 to 100, and the value at each index represents the count of that number in the stream. This approach allows us to find the median in constant time.
+
+2. If 99% of all integer numbers from the stream are in the range [0, 100], we can still use the optimized solution mentioned above. The slight modification we can make is to switch to the heap-based approach if the numbers fall outside the range [0, 100]. This way, we handle the majority of cases efficiently while still having a backup plan for numbers outside the optimized range.

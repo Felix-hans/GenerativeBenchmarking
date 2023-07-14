@@ -1,0 +1,38 @@
+To solve this problem, we can use dynamic programming. We will create an array `dp` where `dp[i]` represents the number of possible text messages that can be formed using the first `i` characters of the pressedKeys string.
+
+We can initialize `dp[0] = 1` since there is only one way to form an empty text message.
+
+Then, for each index `i` from 1 to the length of pressedKeys, we will update `dp[i]` based on the mapping of digits to letters.
+
+For each character at index `i`, we will check all the previous characters and add the number of text messages that can be formed by appending the current letter to each of the previous text messages.
+
+Finally, we will return `dp[-1]` modulo 10^9 + 7 as the result.
+
+Here is the implementation of the `countTexts` function:
+
+```python
+class Solution:
+    def countTexts(self, pressedKeys: str) -> int:
+        mod = 1000000007
+        dp = [0] * (len(pressedKeys) + 1)
+        dp[0] = 1
+        for i in range(1, len(pressedKeys) + 1):
+            for j in range(i - 1, -1, -1):
+                if pressedKeys[j:i] in {"2", "3", "4", "5", "6", "7", "8", "9"}:
+                    dp[i] = (dp[i] + dp[j]) % mod
+        return dp[-1]
+```
+
+We can test the function with the provided test cases:
+
+```python
+solution = Solution()
+
+pressedKeys = "22233"
+print(solution.countTexts(pressedKeys))  # Output: 8
+
+pressedKeys = "222222222222222222222222222222222222"
+print(solution.countTexts(pressedKeys))  # Output: 82876089
+```
+
+This will give the expected output for the given examples.

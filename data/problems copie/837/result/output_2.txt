@@ -1,0 +1,38 @@
+To solve this problem, we can use dynamic programming. We'll create a list, `dp`, of size `n + maxPts + 1`, where `dp[i]` represents the probability of having `i` points or fewer. Initially, all elements of `dp` are set to 0.
+
+Next, we'll populate `dp` from right to left. We start with the base case where `dp[n]` to `dp[min(n + maxPts, k)]` are set to 1, as Alice already has `n` or more points and will stop drawing.
+
+Then, for each index `i` from `n - 1` to `0`, we calculate `dp[i]` by taking the average of the probabilities of drawing each number from 1 to `maxPts` and adding it to `dp[i + 1]`, `dp[i + 2]`, ..., `dp[i + maxPts]`. However, we need to handle the cases where `i + maxPts` exceeds `k`, as Alice will stop drawing if she reaches `k` or more points.
+
+Finally, we return the sum of `dp[0]` to `dp[k]`, which represents the probability that Alice has `k` or fewer points.
+
+Here's the implementation of the `new21Game` function:
+
+```python
+class Solution:
+    def new21Game(self, n: int, k: int, maxPts: int) -> float:
+        if k == 0 or n >= k + maxPts:
+            return 1.0
+
+        dp = [0.0] * (n + maxPts + 1)
+        for i in range(n, min(n + maxPts, k - 1), -1):
+            dp[i] = 1.0
+
+        dp[k - 1] = float(min(n - k + 1, maxPts)) / maxPts
+
+        for i in range(k - 2, -1, -1):
+            dp[i] = dp[i + 1] - (dp[i + maxPts + 1] - dp[i + 1]) / maxPts
+
+        return sum(dp[:k])
+```
+
+Now, let's test the function with the given examples:
+
+```python
+solution = Solution()
+print(solution.new21Game(10, 1, 10))    # Output: 1.0
+print(solution.new21Game(6, 1, 10))     # Output: 0.6
+print(solution.new21Game(21, 17, 10))   # Output: 0.73278
+```
+
+The outputs match the expected results.

@@ -1,0 +1,34 @@
+To solve the given task, we can follow the following steps:
+
+1. Initialize a variable `total_sum` to hold the total sum of the numbers in `nums`.
+2. Iterate through `nums` and calculate the `total_sum`.
+3. Sort the `nums` array in descending order.
+4. Initialize a variable `curr_sum` to 0 to keep track of the current sum.
+5. Initialize a variable `operations` to 0 to keep track of the number of operations performed.
+6. Iterate through the sorted `nums` array.
+   - Add the current number to `curr_sum`.
+   - Increment `operations` by 1.
+   - Check if `curr_sum` is greater than or equal to half of `total_sum`. If so, break out of the loop.
+7. Return `operations` as the minimum number of operations needed to reduce the sum of `nums` by at least half.
+
+Here is the Python implementation:
+
+```python
+class Solution:
+    def halveArray(self, nums: List[int]) -> int:
+        total_sum = sum(nums)
+        
+        nums.sort(reverse=True)
+        
+        curr_sum = 0
+        operations = 0
+        for num in nums:
+            curr_sum += num
+            operations += 1
+            if curr_sum >= total_sum / 2:
+                break
+                
+        return operations
+```
+
+This solution has a time complexity of O(n log n), where n is the length of the `nums` array, due to the sorting operation.

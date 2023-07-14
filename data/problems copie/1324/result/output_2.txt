@@ -1,0 +1,52 @@
+To solve this task, we can follow these steps:
+
+1. Split the input string `s` into a list of words using the `split` function.
+2. Find the maximum length of the words in the list to determine the number of columns we need.
+3. Initialize an empty list `result` to store the vertically arranged words.
+4. Iterate `i` from 0 to the maximum length - 1. This represents the columns.
+5. For each column, iterate through the words and append the character at index `i` to the corresponding column string.
+6. Add the column string to the `result` list.
+7. Return the `result` list as the final output.
+
+Here's the implementation of the `printVertically` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def printVertically(self, s: str) -> List[str]:
+        words = s.split()
+        max_length = max(len(word) for word in words)
+        result = []
+
+        for i in range(max_length):
+            column = ''
+            for word in words:
+                if i < len(word):
+                    column += word[i]
+                else:
+                    column += ' '  # Add space if the word is shorter than the current index
+            result.append(column.rstrip())  # Remove trailing spaces
+
+        return result
+```
+
+You can test the solution using the given examples like this:
+
+```python
+solution = Solution()
+
+s = "HOW ARE YOU"
+print(solution.printVertically(s))
+# Output: ["HAY", "ORO", "WEU"]
+
+s = "TO BE OR NOT TO BE"
+print(solution.printVertically(s))
+# Output: ["TBONTB", "OEROOE", "   T"]
+
+s = "CONTEST IS COMING"
+print(solution.printVertically(s))
+# Output: ["CIC", "OSO", "N M", "T I", "E N", "S G", "T"]
+```
+
+The solution splits the string into words and arranges them vertically by iterating through the columns and words. It handles the trailing spaces and returns the result as a list of strings.

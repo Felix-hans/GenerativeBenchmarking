@@ -1,0 +1,16 @@
+Here is one possible solution to the problem:
+
+```go
+func triangularSum(nums []int) int {
+    for len(nums) > 1 {
+        newNums := make([]int, len(nums)-1)
+        for i := 0; i < len(nums)-1; i++ {
+            newNums[i] = (nums[i] + nums[i+1]) % 10
+        }
+        nums = newNums
+    }
+    return nums[0]
+}
+```
+
+In this solution, we iterate until the length of the `nums` array is reduced to 1. In each iteration, we create a new array `newNums` with length `len(nums)-1` and calculate the values based on the formula `(nums[i] + nums[i+1]) % 10`. Finally, we return the only element left in the `nums` array.

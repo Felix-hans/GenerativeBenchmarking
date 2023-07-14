@@ -1,0 +1,51 @@
+To solve the problem, we can use a dictionary to keep track of the frequencies of the numbers. Each key in the dictionary will represent a unique number, and the corresponding value will be its frequency.
+
+Here's the implementation of the FrequencyTracker class:
+
+```python
+class FrequencyTracker:
+    def __init__(self):
+        self.frequency_dict = {}
+
+    def add(self, number):
+        if number in self.frequency_dict:
+            self.frequency_dict[number] += 1
+        else:
+            self.frequency_dict[number] = 1
+
+    def deleteOne(self, number):
+        if number in self.frequency_dict:
+            self.frequency_dict[number] -= 1
+            if self.frequency_dict[number] == 0:
+                del self.frequency_dict[number]
+
+    def hasFrequency(self, frequency):
+        return frequency in self.frequency_dict.values()
+```
+
+The `add` method increment the frequency of the given number in the dictionary. If the number is not present in the dictionary, it adds it with a frequency of 1.
+
+The `deleteOne` method decrements the frequency of the given number in the dictionary. If the frequency becomes zero, it removes the number from the dictionary.
+
+The `hasFrequency` method checks if the given frequency exists in the dictionary values.
+
+Here's an example usage of the FrequencyTracker class:
+
+```python
+frequencyTracker = FrequencyTracker()
+frequencyTracker.add(3)
+frequencyTracker.add(3)
+print(frequencyTracker.hasFrequency(2))  # Output: True
+
+frequencyTracker = FrequencyTracker()
+frequencyTracker.add(1)
+frequencyTracker.deleteOne(1)
+print(frequencyTracker.hasFrequency(1))  # Output: False
+
+frequencyTracker = FrequencyTracker()
+print(frequencyTracker.hasFrequency(2))  # Output: False
+frequencyTracker.add(3)
+print(frequencyTracker.hasFrequency(1))  # Output: True
+```
+
+The expected outputs for the example cases are mentioned in the comments.

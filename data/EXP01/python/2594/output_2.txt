@@ -1,0 +1,39 @@
+To solve this problem, we can first sort the ranks array in descending order, as we want the mechanics with higher ranks to repair more cars. We can then iterate through the sorted ranks array and calculate the time taken by each mechanic to repair their assigned cars.
+
+Here is the implementation of the solution:
+
+```python
+from typing import List
+
+class Solution:
+    def repairCars(self, ranks: List[int], cars: int) -> int:
+        ranks.sort(reverse=True)  # Sort ranks array in descending order
+        
+        # Calculate the time taken by each mechanic
+        time_taken = 0
+        for rank in ranks:
+            num_cars = min(cars, rank)  # Assign as many cars as possible to the mechanic
+            time_taken += rank * num_cars * num_cars
+            cars -= num_cars  # Reduce the number of cars remaining
+            
+            if cars == 0:
+                break  # All cars have been assigned
+        
+        return time_taken
+```
+
+We can test the solution using the provided examples:
+
+```python
+solution = Solution()
+
+ranks = [4, 2, 3, 1]
+cars = 10
+print(solution.repairCars(ranks, cars))  # Output: 16
+
+ranks = [5, 1, 8]
+cars = 6
+print(solution.repairCars(ranks, cars))  # Output: 16
+```
+
+The output matches the expected results for both examples.

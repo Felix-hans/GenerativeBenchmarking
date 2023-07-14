@@ -1,0 +1,50 @@
+To find the shortest substring in a binary string s that XORs with a given value, we can use a sliding window approach.
+
+First, we calculate the prefix XOR array for the binary string s. The prefix XOR array `prefix_xor` at index i represents the XOR value of the substring from index 0 to i. We can calculate the prefix XOR array using the following formula:
+
+prefix_xor[i] = prefix_xor[i-1] ^ s[i]
+
+Next, for each query [firsti, secondi], we iterate through the prefix XOR array to find the left and right indices of the shortest substring with XOR value equal to firsti XOR secondi. We keep track of the minimum length and the corresponding left and right indices.
+
+Here is the implementation of the above approach:
+
+```
+class Solution:
+    def substringXorQueries(self, s: str, queries: List[List[int]]) -> List[List[int]]:
+        n = len(s)
+        
+        # calculate prefix xor array
+        prefix_xor = [0] * n
+        prefix_xor[0] = int(s[0])
+        for i in range(1, n):
+            prefix_xor[i] = prefix_xor[i-1] ^ int(s[i])
+        
+        ans = []
+        for query in queries:
+            first, second = query
+            left, right = -1, -1
+            min_len = float('inf')
+            
+            for i in range(n):
+                if prefix_xor[i] ^ first == second:
+                    left = i - min_len + 1
+                    right = i
+                    min_len = right - left + 1
+            
+            if left == -1:
+                ans.append([-1, -1])
+            else:
+                ans.append([left, right])
+        
+        return ans
+```
+
+Time complexity analysis:
+- Calculating the prefix XOR array takes O(n) time.
+- For each query, we iterate through the prefix XOR array which also takes O(n) time.
+- Therefore, the overall time complexity is O(n * q), where n is the length of the binary string s and q is the number of queries.
+
+Space complexity analysis:
+- We use O(n) space to store the prefix XOR array.
+- The extra space used for storing the answer is O(q).
+- Hence, the overall space complexity is O(n + q).

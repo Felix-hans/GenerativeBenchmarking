@@ -1,0 +1,24 @@
+To solve this task, we can iterate over each row and column of the matrix and compare them to find the equal pairs. We will use two nested loops to iterate over the rows and columns.
+
+Here is the implementation of the given task in Python:
+
+```python
+class Solution:
+    def equalPairs(self, grid: List[List[int]]) -> int:
+        count = 0
+        n = len(grid)
+        
+        # Iterate over each row
+        for ri in range(n):
+            row = grid[ri]
+            
+            # Iterate over each column
+            for cj in range(n):
+                column = [grid[i][cj] for i in range(n)]
+                
+                # Check if row and column are equal
+                if row == column:
+                    count += 1
+        
+        return count
+```

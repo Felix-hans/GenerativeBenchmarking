@@ -1,0 +1,33 @@
+Here's the implementation of the task in Go:
+
+```go
+func countDistinctIntegers(nums []int) int {
+    distinctSet := make(map[int]bool)
+
+    for _, num := range nums {
+        distinctSet[num] = true
+        reverseNum := reverseDigits(num)
+        distinctSet[reverseNum] = true
+    }
+
+    return len(distinctSet)
+}
+
+func reverseDigits(num int) int {
+    reverse := 0
+
+    for num > 0 {
+        remainder := num % 10
+        reverse = reverse*10 + remainder
+        num /= 10
+    }
+
+    return reverse
+}
+```
+
+Explanation:
+- We create a map `distinctSet` to keep track of distinct integers.
+- For each number `num` in the input array `nums`, we add `num` and its reverse to `distinctSet`.
+- To reverse the digits of a number, we use the `reverseDigits` function.
+- Finally, we return the length of `distinctSet`, which gives us the number of distinct integers in the final array.

@@ -1,0 +1,39 @@
+You can implement the task using the provided `Solution` class. Here's the implementation of the `specialArray` method:
+
+```python
+from typing import List
+
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        n = len(nums)
+        count = [0] * (n + 1)
+
+        # Count the frequency of numbers in nums
+        for num in nums:
+            if num >= n:
+                count[n] += 1
+            else:
+                count[num] += 1
+
+        # Check if there exists a number x that satisfies the condition
+        curr_count = 0
+        for i in range(n, -1, -1):
+            curr_count += count[i]
+            if curr_count == i:
+                return i
+
+        return -1
+```
+
+You can create an instance of the `Solution` class and call the `specialArray` method with the `nums` list as the argument. It will return the value of x if the array is special; otherwise, it will return -1.
+
+Here's an example usage:
+
+```python
+solution = Solution()
+nums = [3, 5]
+result = solution.specialArray(nums)
+print(result)  # Output: 2
+```
+
+Make sure to import the `List` type from the `typing` module for type hinting.

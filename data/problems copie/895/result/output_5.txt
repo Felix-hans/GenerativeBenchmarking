@@ -1,0 +1,41 @@
+To implement the stack-like data structure with the ability to push elements and pop the most frequent element, we can use a combination of a dictionary and a list. Here's the implementation in Python:
+
+```python
+class FreqStack:
+    def __init__(self):
+        self.frequency = {}  # Dictionary to track the frequency of elements
+        self.stack = []  # List to store the elements in the stack
+
+    def push(self, val: int) -> None:
+        if val in self.frequency:
+            self.frequency[val] += 1
+        else:
+            self.frequency[val] = 1
+        self.stack.append(val)
+
+    def pop(self) -> int:
+        max_freq = max(self.frequency.values())  # Find the maximum frequency
+        elements_with_max_freq = [x for x in self.stack if self.frequency[x] == max_freq]
+        top_most_element = elements_with_max_freq[-1]  # Get the element closest to the stack's top
+        self.frequency[top_most_element] -= 1  # Decrement the frequency of the popped element
+        self.stack.remove(top_most_element)  # Remove the popped element from the stack
+        return top_most_element
+```
+
+Here's how you can use the `FreqStack` class based on the given example:
+
+```python
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 7
+print(freqStack.pop())  # Output: 5
+print(freqStack.pop())  # Output: 4
+```
+
+The implementation keeps track of the frequency of elements using a dictionary, and the elements are stored in a list. When popping an element, it finds the maximum frequency, retrieves all elements with that frequency, and returns the top-most element among them. The frequency of the popped element is decremented, and it is removed from the stack.

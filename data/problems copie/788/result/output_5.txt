@@ -1,0 +1,43 @@
+Here's the implementation of the given task in Python:
+
+```python
+class Solution:
+    def rotatedDigits(self, n: int) -> int:
+        count = 0
+        for num in range(1, n+1):
+            if self.isGoodNumber(num):
+                count += 1
+        return count
+
+    def isGoodNumber(self, num: int) -> bool:
+        rotated = ""
+        for digit in str(num):
+            if digit in "018":
+                rotated += digit
+            elif digit == "2":
+                rotated += "5"
+            elif digit == "5":
+                rotated += "2"
+            elif digit == "6":
+                rotated += "9"
+            elif digit == "9":
+                rotated += "6"
+            else:
+                return False
+        return rotated != str(num)
+```
+
+In the above implementation, we define a class `Solution` with two methods. The `rotatedDigits` method takes an integer `n` as input and returns the count of good numbers in the range [1, n]. It iterates through each number in the range and checks if it is a good number by calling the `isGoodNumber` method.
+
+The `isGoodNumber` method takes an integer `num` and checks if it is a good number. It converts the number to a string and iterates through each digit. If the digit is 0, 1, or 8, it remains unchanged. If the digit is 2 or 5, it gets rotated to the other digit. If the digit is 6 or 9, it gets rotated to the other digit. If any other digit is encountered, the number is not valid, and the method returns False. Finally, it checks if the rotated number is different from the original number and returns the result accordingly.
+
+You can create an instance of the `Solution` class and call the `rotatedDigits` method with the desired value of `n` to get the count of good numbers in the range. For example:
+
+```python
+solution = Solution()
+print(solution.rotatedDigits(10))  # Output: 4
+print(solution.rotatedDigits(1))   # Output: 0
+print(solution.rotatedDigits(2))   # Output: 1
+```
+
+Note: The above implementation assumes that `n` is a positive integer. It doesn't handle cases where `n` is less than or equal to 0.

@@ -1,0 +1,41 @@
+Here's the implementation of the `maximalSquare` function in Python to solve the given task:
+
+```python
+class Solution:
+    def maximalSquare(self, matrix):
+        if not matrix or not matrix[0]:
+            return 0
+
+        rows = len(matrix)
+        cols = len(matrix[0])
+        max_square = 0
+        dp = [[0] * (cols + 1) for _ in range(rows + 1)]
+
+        for i in range(1, rows + 1):
+            for j in range(1, cols + 1):
+                if matrix[i-1][j-1] == '1':
+                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+                    max_square = max(max_square, dp[i][j])
+
+        return max_square * max_square
+```
+
+This solution uses dynamic programming to find the largest square containing only 1's. It maintains a 2D `dp` table where each entry `dp[i][j]` represents the size of the largest square ending at position `(i, j)` in the matrix. It iterates over each element in the matrix and updates the `dp` table based on the values of neighboring elements.
+
+Finally, it returns the area of the largest square by multiplying its size by itself.
+
+You can use this solution as follows:
+
+```python
+solution = Solution()
+matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+result = solution.maximalSquare(matrix)
+print(result)
+```
+
+Output:
+```
+4
+```
+
+Note: Make sure to import the `List` class from the `typing` module if you haven't already.

@@ -1,0 +1,63 @@
+To solve this problem, we can use dynamic programming. Let's define a recursive function `dp(i, M)` that represents the maximum number of stones Alice can get starting from pile `i` with the value of `M` set to `M`. We can define this function as follows:
+
+```python
+def dp(i, M, piles, memo):
+    if i >= len(piles):
+        return 0
+    
+    if (i, M) in memo:
+        return memo[(i, M)]
+    
+    max_stones = 0
+    curr_sum = 0
+    
+    for x in range(1, min(2 * M + 1, len(piles) - i + 1)):
+        curr_sum += piles[i + x - 1]
+        max_stones = max(max_stones, curr_sum + dp(i + x, max(M, x), piles, memo))
+    
+    memo[(i, M)] = max_stones
+    return max_stones
+```
+
+Here, `i` represents the starting index of the remaining piles, `M` represents the maximum number of piles Alice can take, `piles` is the list of piles, and `memo` is a dictionary to store previously calculated results to avoid redundant calculations.
+
+We can then initialize the `memo` dictionary and call the `dp` function with the starting index `i = 0` and `M = 1` to find the maximum number of stones Alice can get:
+
+```python
+class Solution:
+    def stoneGameII(self, piles: List[int]) -> int:
+        memo = {}
+        return dp(0, 1, piles, memo)
+```
+
+The `stoneGameII` function serves as the entry point for the solution and returns the result calculated by the `dp` function.
+
+The complete code for the solution is as follows:
+
+```python
+from typing import List
+
+def dp(i, M, piles, memo):
+    if i >= len(piles):
+        return 0
+    
+    if (i, M) in memo:
+        return memo[(i, M)]
+    
+    max_stones = 0
+    curr_sum = 0
+    
+    for x in range(1, min(2 * M + 1, len(piles) - i + 1)):
+        curr_sum += piles[i + x - 1]
+        max_stones = max(max_stones, curr_sum + dp(i + x, max(M, x), piles, memo))
+    
+    memo[(i, M)] = max_stones
+    return max_stones
+
+class Solution:
+    def stoneGameII(self, piles: List[int]) -> int:
+        memo = {}
+        return dp(0, 1, piles, memo)
+```
+
+You can instantiate the `Solution` class and call the `stoneGameII` function with the given input to get the desired output.

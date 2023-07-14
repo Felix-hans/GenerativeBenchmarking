@@ -1,0 +1,26 @@
+To solve this problem, we can use a greedy approach. We will iterate through the string s from left to right and try to form substrings with values less than or equal to k.
+
+We will keep track of the maximum digit encountered so far, and whenever we encounter a digit greater than k, we will split the string and form a new substring.
+
+Here is the implementation of the minimumPartition function in Go:
+
+```go
+func minimumPartition(s string, k int) int {
+    maxDigit, count := 0, 0 // variables to track maximum digit and count of substrings
+    for i := 0; i < len(s); i++ {
+        digit := int(s[i] - '0') // convert character to integer
+        if digit > maxDigit {
+            maxDigit = digit // update the maximum digit
+        }
+        if maxDigit > k {
+            return -1 // no good partition exists
+        }
+        if digit == k {
+            count++ // increment count if the digit is equal to k
+        }
+    }
+    return count // return the count of substrings
+}
+```
+
+The time complexity of this solution is O(n), where n is the length of the input string s.

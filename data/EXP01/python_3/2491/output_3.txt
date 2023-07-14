@@ -1,0 +1,7 @@
+To solve this task, we can consider using a greedy algorithm approach. 
+
+First, we need to check if it is possible to divide the players into teams such that the total skill of each team is equal. To do this, we can calculate the sum of all the skills. If the sum is not divisible by the number of teams (which is n / 2), then it is not possible to divide the players equally and we should return -1.
+
+If it is possible to divide the players equally, we can sort the skills in ascending order. Then, we can pair the players with the lowest and highest skills, the second lowest and second highest skills, and so on. We calculate the chemistry of each team by multiplying the skills of the players in the team and sum up all the chemistries.
+
+Here is the implementation of the above approach:

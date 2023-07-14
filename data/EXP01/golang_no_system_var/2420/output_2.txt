@@ -1,0 +1,37 @@
+Here is one possible implementation of the given task:
+
+```go
+func goodIndices(nums []int, k int) []int {
+    result := make([]int, 0)
+
+    // Check each index in the range k <= i < n - k
+    for i := k; i < len(nums)-k; i++ {
+        // Check if the k elements before i are in non-increasing order
+        nonIncreasing := true
+        for j := i-1; j >= i-k; j-- {
+            if nums[j] < nums[j+1] {
+                nonIncreasing = false
+                break
+            }
+        }
+
+        // Check if the k elements after i are in non-decreasing order
+        nonDecreasing := true
+        for j := i+1; j <= i+k; j++ {
+            if nums[j] < nums[j-1] {
+                nonDecreasing = false
+                break
+            }
+        }
+
+        // If both conditions are satisfied, add i to the result
+        if nonIncreasing && nonDecreasing {
+            result = append(result, i)
+        }
+    }
+
+    return result
+}
+```
+
+This implementation checks each index in the range `k <= i < n - k`. For each index, it then checks if the `k` elements before it are in non-increasing order and if the `k` elements after it are in non-decreasing order. If both conditions are satisfied, the index is added to the result array. Finally, the result array is returned.

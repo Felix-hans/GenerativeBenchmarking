@@ -1,0 +1,46 @@
+To solve this problem, we can use dynamic programming. We will define two matrices: `max_product` and `min_product`. Both matrices will have the same dimensions as the input grid.
+
+The idea is to calculate the maximum and minimum product values for each cell of the grid based on the previous cells' values.
+
+Here's the implementation of the `maxProductPath` function:
+
+```python
+class Solution:
+    def maxProductPath(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+
+        max_product = [[0] * n for _ in range(m)]
+        min_product = [[0] * n for _ in range(m)]
+
+        max_product[0][0] = min_product[0][0] = grid[0][0]
+
+        # Initialize the first row
+        for j in range(1, n):
+            max_product[0][j] = min_product[0][j] = max_product[0][j - 1] * grid[0][j]
+
+        # Initialize the first column
+        for i in range(1, m):
+            max_product[i][0] = min_product[i][0] = max_product[i - 1][0] * grid[i][0]
+
+        for i in range(1, m):
+            for j in range(1, n):
+                if grid[i][j] >= 0:
+                    max_product[i][j] = max(max_product[i - 1][j], max_product[i][j - 1]) * grid[i][j]
+                    min_product[i][j] = min(min_product[i - 1][j], min_product[i][j - 1]) * grid[i][j]
+                else:
+                    max_product[i][j] = min(min_product[i - 1][j], min_product[i][j - 1]) * grid[i][j]
+                    min_product[i][j] = max(max_product[i - 1][j], max_product[i][j - 1]) * grid[i][j]
+
+        max_product_value = max_product[m - 1][n - 1] % (10 ** 9 + 7)
+        if max_product_value < 0:
+            return -1
+        else:
+            return max_product_value
+```
+
+The `maxProductPath` function takes the grid as input and returns the maximum non-negative product modulo 10^9 + 7.
+
+We initialize the `max_product` and `min_product` matrices with zeros, and then calculate the values for each cell of the matrices using dynamic programming. Finally, we check if the maximum product is negative and return the result accordingly.
+
+Note that we use modulo operation to prevent integer overflow.

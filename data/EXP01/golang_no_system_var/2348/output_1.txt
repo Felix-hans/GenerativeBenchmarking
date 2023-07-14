@@ -1,0 +1,23 @@
+Here is one possible implementation of the provided problem:
+
+```go
+func zeroFilledSubarray(nums []int) int {
+    numZeros := 0
+    result := 0
+    
+    for i := 0; i < len(nums); i++ {
+        if nums[i] == 0 {
+            numZeros++
+        } else {
+            result += (numZeros * (numZeros + 1)) / 2
+            numZeros = 0
+        }
+    }
+    
+    result += (numZeros * (numZeros + 1)) / 2
+    
+    return result
+}
+```
+
+In this implementation, we iterate through the input array `nums` and keep a count of the number of consecutive zeros (`numZeros`). Whenever we encounter a non-zero number, we calculate the number of subarrays filled with zeros that can be formed using the formula `(numZeros * (numZeros + 1)) / 2` and add it to the result. Finally, we calculate the number of subarrays filled with zeros that end at the last index and add it to the result as well. This gives us the total number of subarrays filled with zeros.

@@ -1,0 +1,37 @@
+Here is the solution for the given task:
+
+```go
+package main
+
+import "strconv"
+
+func countDistinctIntegers(nums []int) int {
+    distinctIntegers := make(map[int]bool)
+
+    for _, num := range nums {
+        distinctIntegers[num] = true
+        numStr := strconv.Itoa(num)
+        reversed := reverse(numStr)
+        reversedNum, _ := strconv.Atoi(reversed)
+        distinctIntegers[reversedNum] = true
+    }
+
+    return len(distinctIntegers)
+}
+
+func reverse(str string) string {
+    reversed := ""
+    for i := len(str) - 1; i >= 0; i-- {
+        reversed += string(str[i])
+    }
+    return reversed
+}
+```
+
+In the `countDistinctIntegers` function, we initialize a set called `distinctIntegers` to store the distinct integers. We iterate through each number in the `nums` array, add it to the set, and also add its reversed form to the set using the `reverse` function.
+
+The `reverse` function takes a string and returns its reversed form by iterating through the characters in reverse order and appending them to a new string.
+
+Finally, we return the length of the `distinctIntegers` set, which gives us the number of distinct integers in the final array.
+
+Note: Since this solution uses a map to store distinct integers, it has a time complexity of O(n), where n is the length of the `nums` array.

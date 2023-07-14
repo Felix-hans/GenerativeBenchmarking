@@ -1,0 +1,33 @@
+Here is the implementation of the solution:
+
+```python
+class Solution:
+    def twoEditWords(self, queries: List[str], dictionary: List[str]) -> List[str]:
+        def is_valid_edit(word1: str, word2: str) -> bool:
+            if word1 == word2:
+                return True
+            elif len(word1) != len(word2):
+                return False
+            else:
+                diff_count = 0
+                for i in range(len(word1)):
+                    if word1[i] != word2[i]:
+                        diff_count += 1
+                    if diff_count > 2:
+                        return False
+                return True
+        
+        valid_words = []
+        for query in queries:
+            for d in dictionary:
+                if is_valid_edit(query, d):
+                    valid_words.append(query)
+                    break
+        return valid_words
+```
+
+The `is_valid_edit` function checks if two words are valid edits of each other. It compares each letter of the two words and counts the number of differences. If the number of differences is less than or equal to 2, the function returns True, indicating that the two words can be considered equivalent.
+
+The `twoEditWords` function loops through each query word and each word in the dictionary, calling the `is_valid_edit` function to check if they are valid edits of each other. If a valid edit is found, the query word is added to the `valid_words` list. Finally, the `valid_words` list is returned as the result.
+
+Note: The code assumes that the `List` class is imported from the `typing` module.

@@ -1,0 +1,42 @@
+To find the maximum length of a subarray where the product of all its elements is positive, we can use a sliding window approach. Here's the implementation of the `getMaxLen` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def getMaxLen(self, nums: List[int]) -> int:
+        max_len = 0
+        positive_count = 0
+        negative_count = 0
+
+        for num in nums:
+            if num > 0:
+                positive_count += 1
+                if negative_count > 0:
+                    negative_count += 1
+            elif num < 0:
+                temp = positive_count
+                positive_count = negative_count + 1
+                negative_count = temp + 1
+            else:
+                positive_count = 0
+                negative_count = 0
+
+            max_len = max(max_len, positive_count)
+
+        return max_len
+```
+
+The `getMaxLen` function takes an input list `nums` and returns the maximum length of a subarray with a positive product.
+
+We initialize `max_len` to 0, `positive_count` to 0, and `negative_count` to 0. We iterate over each element `num` in the `nums` array.
+
+If `num` is positive, we increment `positive_count` by 1. If `negative_count` is greater than 0, it means we have encountered negative numbers before the current positive number, so we increment `negative_count` by 1 as well.
+
+If `num` is negative, we swap the values of `positive_count` and `negative_count`. The current positive count becomes the new negative count plus 1, and the current negative count becomes the previous positive count plus 1. This swap ensures that we keep track of the longest subarray with a positive product.
+
+If `num` is zero, it breaks the subarray, so we reset both `positive_count` and `negative_count` to 0.
+
+After each iteration, we update `max_len` by taking the maximum of the current `max_len` and `positive_count`. This ensures that we keep track of the maximum length seen so far.
+
+Finally, we return `max_len`, which represents the maximum length of a subarray with a positive product.

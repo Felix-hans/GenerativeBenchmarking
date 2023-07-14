@@ -1,0 +1,51 @@
+Here's the implementation of the problem in Go:
+
+```go
+func mostProfitablePath(edges [][]int, bob int, amount []int) int {
+    n := len(amount)
+    
+    // Create an adjacency list representation of the tree
+    adjList := make([][]int, n)
+    for _, edge := range edges {
+        u, v := edge[0], edge[1]
+        adjList[u] = append(adjList[u], v)
+        adjList[v] = append(adjList[v], u)
+    }
+    
+    // Initialize visited array and result variable
+    visited := make([]bool, n)
+    res := make([]int, n)
+    
+    // DFS traversal starting from node 0
+    dfs(0, adjList, visited, amount, res)
+    
+    return res[bob]
+}
+
+func dfs(node int, adjList [][]int, visited []bool, amount []int, res []int) {
+    visited[node] = true
+    result := 0
+    
+    for _, neighbor := range adjList[node] {
+        if !visited[neighbor] {
+            dfs(neighbor, adjList, visited, amount, res)
+            result = max(result, res[neighbor])
+        }
+    }
+    
+    res[node] = result + amount[node]
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+Explanation:
+- First, we create an adjacency list representation of the tree using the given edges. This allows us to efficiently traverse the tree.
+- Then, we initialize a visited array and a result array to store the maximum net income for each node.
+- We perform a DFS traversal starting from node 0. For each node, we recursively visit its neighbors, update the result array with the maximum net income, and mark the node as visited.
+- Finally, we return the maximum net income for the given node bob.

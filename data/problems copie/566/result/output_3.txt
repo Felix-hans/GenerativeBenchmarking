@@ -1,0 +1,41 @@
+You can implement the given task in Python by creating a class `Solution` and defining the `matrixReshape` method within it. Here's the implementation:
+
+```python
+class Solution:
+    def matrixReshape(self, mat, r, c):
+        m = len(mat)  # Number of rows in the original matrix
+        n = len(mat[0])  # Number of columns in the original matrix
+        
+        if m * n != r * c:
+            # If the reshape operation is not possible, return the original matrix
+            return mat
+        
+        # Flatten the original matrix
+        flattened = [element for row in mat for element in row]
+        
+        # Reshape the flattened matrix into the desired shape
+        reshaped = [flattened[i*c:(i+1)*c] for i in range(r)]
+        
+        return reshaped
+```
+
+You can then create an instance of the `Solution` class and call the `matrixReshape` method, providing the `mat`, `r`, and `c` parameters to reshape the matrix. Here's an example usage:
+
+```python
+# Example usage
+mat = [[1, 2], [3, 4]]
+r = 1
+c = 4
+
+solution = Solution()
+result = solution.matrixReshape(mat, r, c)
+print(result)
+```
+
+This will output:
+
+```
+[[1, 2, 3, 4]]
+```
+
+Similarly, you can try different inputs and test the `matrixReshape` method.

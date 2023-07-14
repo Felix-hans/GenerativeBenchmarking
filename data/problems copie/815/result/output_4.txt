@@ -1,0 +1,63 @@
+To solve this problem, we can use a breadth-first search (BFS) algorithm. The idea is to treat each bus stop as a node in a graph, where two bus stops are connected if there is a bus route that connects them.
+
+Here's the implementation of the `numBusesToDestination` function:
+
+```python
+from collections import defaultdict, deque
+from typing import List
+
+class Solution:
+    def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        if source == target:
+            return 0
+        
+        # Create a dictionary to store the bus routes for each bus stop
+        stop_to_routes = defaultdict(set)
+        
+        # Build the graph representation
+        for i, route in enumerate(routes):
+            for stop in route:
+                stop_to_routes[stop].add(i)
+        
+        # Initialize a set to keep track of visited bus routes
+        visited_routes = set()
+        
+        # Initialize a queue for BFS traversal
+        queue = deque([(source, 0)])  # (bus stop, number of buses taken)
+        
+        while queue:
+            curr_stop, num_buses = queue.popleft()
+            
+            if curr_stop == target:
+                return num_buses
+            
+            # Iterate over the bus routes that pass through the current stop
+            for route_index in stop_to_routes[curr_stop]:
+                if route_index not in visited_routes:
+                    visited_routes.add(route_index)
+                    
+                    # Add all the bus stops in the current route to the queue
+                    for stop in routes[route_index]:
+                        queue.append((stop, num_buses + 1))
+        
+        return -1
+```
+
+Let's test the function with the given examples:
+
+```python
+routes1 = [[1, 2, 7], [3, 6, 7]]
+source1 = 1
+target1 = 6
+solution = Solution()
+print(solution.numBusesToDestination(routes1, source1, target1))
+# Output: 2
+
+routes2 = [[7, 12], [4, 5, 15], [6], [15, 19], [9, 12, 13]]
+source2 = 15
+target2 = 12
+print(solution.numBusesToDestination(routes2, source2, target2))
+# Output: -1
+```
+
+The function returns the expected outputs for the given examples.

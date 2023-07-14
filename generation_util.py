@@ -7,6 +7,8 @@ import handleQuestionBank
 import generateGPTResponse
 import leetcode_util
 import createPrompt
+import createOneShot
+import verifyResponse
 
 class GenerationUtil:
     def __init__(self):
@@ -16,23 +18,26 @@ class GenerationUtil:
         self.messages = []
 
   
-    def generate(self, prompt=None, max_length=1024):
+    def generate(self,template, prompt=None, max_length=1024):
 
-        if self.model_name == "ChatGPT":
 
-            #This is the old version referring to the inofficial chatgpt api
-            #response,self.chatbot = generateGPTResponse.generate_chatgpt(self.chatbot,prompt)
+        #This is the old version referring to the inofficial chatgpt api
+        #response,self.chatbot = generateGPTResponse.generate_chatgpt(self.chatbot,prompt)
 
-            #This is the new version referring to the official chatgpt api
-            response = generateGPTResponse.generate_chatgpt_api(self.messages)
+        #This is the new version referring to the official chatgpt api
 
-            return response
+        response = generateGPTResponse.generate_chatgpt_api(self.messages)
+
+        #We check whether the response fulfills the requirements we defined
+        #verifyResponse.verifyResponse(self.messages,response,self.config.language, template)
+
+        return response
         
-        else: assert False, "Invalid model name"
-    
 
     def get_description(self, path:str, problem_template_file_path:str, \
-        with_examples:bool, with_constraints:bool, remarks='Implement the above task in Python.'):
+        with_examples:bool, with_constraints:bool):
+
+
         desc=None
         with open(path,'r',encoding='UTF8') as fr:
             prob=fr.read()
@@ -47,15 +52,15 @@ class GenerationUtil:
                 desc=desc+'Constraints:'+prob.split('Constraints:')[1]
         with open(problem_template_file_path,'r',encoding='UTF8') as fr:
             template=fr.read().strip()
+            desc+=' Here is the provided template to create the solution:\n '
             desc+='\n```\n'+template+'\n```'
-        desc+=remarks
         if self.model_name!="ChatGPT":
             desc="'''\n'+desc+'\n'''\n"+template
             desc+='\n'+'\n'.join(
                 [l for l in template.split('\n') if l.strip()!='' \
                     and (not l.strip().startswith('#'))][:2])
-
-        return desc
+        
+        return desc,template
 
     def handlePathCreation(self,root_path,folder_name):
 
@@ -72,7 +77,7 @@ class GenerationUtil:
 
         problem_instructions_file_path = os.path.join(problem_folder_path, "README.md")
         try:
-            problem_template_file_path = glob.glob(problem_folder_path + '/*.py')[0]
+            problem_template_file_path = glob.glob(problem_folder_path + f'/*.{self.config.languageFileFormat}')[0]
         except:
             print('problem premium')
             print(problem_folder_path)
@@ -108,16 +113,32 @@ class GenerationUtil:
             print(f"An error occurred: {e}")
 
     
-    def executeEachRep(self,output_dir,output_path,folder_name,prompt, rep):
+    def executeEachRep(self,output_dir,output_path,folder_name,prompt, rep,remarks,template):
         tryAgain = True
 
         print(f'Asking {self.model_name}...')
         curr_time=time.time()
 
+        self.messages.append({"role": "system", "content": remarks})
 
+        #Append one shot
+        '''
+        one_shot_user, one_shot_assistant = createOneShot.createOneShot(self.config.language)
+        self.messages.append({"role": "user", "content": one_shot_user})
+        self.messages.append({"role": "assistant", "content": one_shot_assistant})
+        
+        #
+        '''
         self.messages.append({"role": "user", "content": prompt})
-        #response=self.generate(prompt, self.config.max_length)
-        response=self.generate()
+
+        #print(self.messages)
+        response=self.generate(template)
+        #response=self.generate(template)
+        
+
+        print()
+        print('RESPONSE----------------------------')
+        print(response)
 
         
         time_used=time.time()-curr_time
@@ -128,7 +149,7 @@ class GenerationUtil:
         print()
 
         #Generate the output file
-        py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
+        py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name)
         
         #submit test on leetcode, we try a couple of times before we stop trying
         iteration = 0
@@ -136,9 +157,17 @@ class GenerationUtil:
             
 
             output = LeetCodeUtil().run_leetcode_test(py_file_path)
-            tryAgain, errorPrompt = createPrompt.evaluateOutput(tryAgain, output)
+            tryAgain, errorPrompt,runtime_error = createPrompt.evaluateOutput(tryAgain, output)
 
-            print('validating question')
+            if(runtime_error == True):
+                self.messages.append({"role": "user", "content": 'There is a runtime error. Do not deviate from the provided template.'})
+                response=self.generate(template)
+                output = LeetCodeUtil().run_leetcode_test(py_file_path)
+                tryAgain, errorPrompt,runtime_error = createPrompt.evaluateOutput(tryAgain, output)
+                print(response)
+
+
+            
             handleQuestionBank.logQuestionValidation(folder_name,rep,output_dir,self.config.sampled_df_path, self.config.logFile, iteration,tryAgain)
 
             
@@ -151,18 +180,18 @@ class GenerationUtil:
             if tryAgain:
 
                 self.messages.append({"role": "user", "content": errorPrompt})
-                response=self.generate()
+                response=self.generate(template)
                 #response = self.generate(prompt, self.config.max_length)
 
                 #We name the current file "attempt" to not overwrite
-                self.renameFile(py_file_path, iteration, 'py')
+                self.renameFile(py_file_path, iteration, '{self.config.languageFileFormat}')
                 self.renameFile(py_file_path[:-3]+'_result.txt', iteration,'txt')
 
                 with open(output_path,'w',encoding='UTF8') as f:
                     f.write(response)
                 print('Response written to',output_path)
 
-                py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name,self.model_name)
+                py_file_path=LeetCodeUtil().generate_submit_file(output_path, folder_name)
 
             iteration = iteration + 1
      
@@ -176,8 +205,18 @@ class GenerationUtil:
         
     
     def generate_selection(self, with_examples:bool, with_constraints:bool, \
-        remarks='Implement the above task in Python.'):
-        
+        remarks=''):
+
+        #Define langmuage and import rules (if multiple at the same time, removing them becomes tedious)
+        #We remove imports because leetcode has loaded them already and they take a lot of time and make comparisons more difficult
+        remarks = f'''Implement the below task in {self.config.language} according to the following rules: 
+                    - If necessary to import modules; import every module one by one in a single line (no grouped imports).
+                    - Use all variables that are declared.
+                    - When writing code, put the code in a markup snippet for this language in the format of ```{self.config.language} ```
+                    - First create one code snippet to fill the programming template. Then, create a snippet for execution.
+                    - Do not call the functions in the first code snippet to test the functions defined.
+                    - Do not change the provided code template that will be given to you.'''
+
         root_path=os.path.normpath(self.config.generation_path)
 
         folder_path_list = handleQuestionBank.main(self.config.sampled_df_path, self.config.logFile)
@@ -205,8 +244,9 @@ class GenerationUtil:
                 print(e)
                 print('folder path creation failed')
 
-            prompt=self.get_description(problem_instructions_file_path, problem_template_file_path, with_examples, with_constraints, remarks)
-            
+            prompt,template=self.get_description(problem_instructions_file_path, problem_template_file_path, with_examples, with_constraints)
+            #print('TEMPLATE -------------------------')
+            #print(template)
             #iterate x times over the problem (repeating experiment)
             for i in range(1,self.config.repetition+1):
 
@@ -216,7 +256,7 @@ class GenerationUtil:
                 if self.output_exists(output_path): 
                     continue
 
-                self.executeEachRep(output_dir,output_path,folder_name,prompt, i)
+                self.executeEachRep(output_dir,output_path,folder_name,prompt, i,remarks,template)
                 
             handleQuestionBank.logQuestionGeneration(self.config.logFile,folder_name)
                 

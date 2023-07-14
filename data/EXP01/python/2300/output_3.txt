@@ -1,0 +1,28 @@
+Here is the implementation of the above task in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+        pairs = [0] * len(spells) # Initialize the result list with zeros
+        
+        potions.sort() # Sort the potions array in ascending order
+        
+        for i, spell in enumerate(spells):
+            left, right = 0, len(potions) - 1 # Pointers for left and right ends of potions array
+            
+            while left <= right:
+                mid = (left + right) // 2
+                if spell * potions[mid] >= success:
+                    pairs[i] += len(potions) - mid
+                    right = mid - 1
+                else:
+                    left = mid + 1
+        
+        return pairs
+```
+
+We initialize the result list, `pairs`, with zeros. Then we sort the `potions` array in ascending order. For each `spell` in `spells`, we use binary search to find the number of `potions` that will form a successful pair with that `spell`. We increment the count in `pairs` accordingly. Finally, we return the `pairs` list as the result.
+
+The time complexity of this solution is O(n log m), where n is the length of `spells` and m is the length of `potions`.

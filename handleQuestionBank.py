@@ -102,7 +102,15 @@ def parse_file(file_path):
         total_cases = re.search(r'(?<=\d\/)(\d+)(?= cases)', content)
         total_cases = int(total_cases.group()) if total_cases else None
 
-        ratio_cases = cases_passed/total_cases
+        try:
+            ratio_cases = cases_passed/total_cases
+        except:
+            ratio_cases = "ERROR"
+            print("####################################################")
+            print()
+            print("ERROR IN SUBMISSION")
+            print()
+            print("####################################################")
 
         runtime_performance = re.search(r'(?<=Your runtime beats )([\d\.]+)', content)
         runtime_performance = float(runtime_performance.group()) if runtime_performance else None

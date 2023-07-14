@@ -1,0 +1,62 @@
+To implement the `DinnerPlates` class in Python, we can use a list of stacks to represent the dinner plates. Each stack has a maximum capacity defined by the input parameter `capacity`. We'll also keep track of the leftmost and rightmost non-empty stacks for efficient pushing and popping operations.
+
+Here's the implementation:
+
+```python
+class DinnerPlates:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.stacks = []
+        self.leftmost = 0
+        self.rightmost = -1
+
+    def push(self, val: int) -> None:
+        # If there are no empty stacks available, create a new one
+        if not self.stacks or len(self.stacks[self.rightmost]) == self.capacity:
+            self.stacks.append([])
+            self.rightmost += 1
+        self.stacks[self.rightmost].append(val)
+
+    def pop(self) -> int:
+        # Find the rightmost non-empty stack
+        while self.rightmost >= 0 and not self.stacks[self.rightmost]:
+            self.rightmost -= 1
+        if self.rightmost < 0:
+            return -1
+        return self.stacks[self.rightmost].pop()
+
+    def popAtStack(self, index: int) -> int:
+        if index >= len(self.stacks) or not self.stacks[index]:
+            return -1
+        return self.stacks[index].pop()
+
+
+# Example usage
+D = DinnerPlates(2)
+D.push(1)
+D.push(2)
+D.push(3)
+D.push(4)
+D.push(5)
+print(D.popAtStack(0))  # Output: 2
+D.push(20)
+D.push(21)
+print(D.popAtStack(0))  # Output: 20
+print(D.popAtStack(2))  # Output: 21
+print(D.pop())  # Output: 5
+print(D.pop())  # Output: 4
+print(D.pop())  # Output: 3
+print(D.pop())  # Output: 1
+print(D.pop())  # Output: -1
+```
+
+This implementation maintains the invariant that the leftmost stack is always the first non-empty stack. We use the `rightmost` variable to keep track of the rightmost non-empty stack for efficient popping. When a stack becomes empty, we decrement `rightmost` until we find the next non-empty stack or reach the leftmost stack.
+
+The `push` operation appends the value to the rightmost stack. If there are no empty stacks available, a new stack is created.
+
+The `pop` operation pops and returns the value from the rightmost non-empty stack. If there are no non-empty stacks, it returns -1.
+
+The `popAtStack` operation pops and returns the value from the stack at the given index. If the stack is empty or the index is out of range, it returns -1.
+
+The example usage demonstrates the expected output based on the given example in the question.

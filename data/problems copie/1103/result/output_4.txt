@@ -1,0 +1,41 @@
+Here's the implementation of the `distributeCandies` function in Python:
+
+```python
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        ans = [0] * num_people  # Initialize the distribution array
+        curr_candies = 1  # Number of candies to be distributed
+        
+        # Iterate until we run out of candies
+        while candies > 0:
+            for i in range(num_people):
+                # If there are no more candies, exit the loop
+                if candies <= 0:
+                    break
+                # Distribute candies to the current person
+                ans[i] += min(curr_candies, candies)
+                candies -= curr_candies
+                curr_candies += 1
+
+        return ans
+```
+
+You can create an instance of the `Solution` class and call the `distributeCandies` method with the given inputs to get the final distribution of candies. For example:
+
+```python
+solution = Solution()
+candies = 7
+num_people = 4
+result = solution.distributeCandies(candies, num_people)
+print(result)  # Output: [1, 2, 3, 1]
+```
+
+```python
+solution = Solution()
+candies = 10
+num_people = 3
+result = solution.distributeCandies(candies, num_people)
+print(result)  # Output: [5, 2, 3]
+```
+
+The `distributeCandies` function follows the described distribution process and keeps track of the remaining candies using a `candies` variable. It distributes the candies in a round-robin manner, incrementing the number of candies given in each round. The loop breaks when there are no more candies to distribute. The final distribution is returned as a list.

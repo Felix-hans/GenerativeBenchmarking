@@ -1,0 +1,35 @@
+To solve the given task, we can use dynamic programming. We'll iterate over the array `nums` and keep track of the number of arithmetic subarrays ending at each index. Let's define a variable `count` to keep track of the total count of arithmetic subarrays.
+
+For each index `i` in the range `[2, len(nums)-1]`, we'll check if `nums[i] - nums[i-1]` is equal to `nums[i-1] - nums[i-2]`. If it is, then we have found a new arithmetic subarray ending at index `i`. We increment the count and add it to the total count.
+
+Here's the implementation of the `numberOfArithmeticSlices` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numberOfArithmeticSlices(self, nums: List[int]) -> int:
+        count = 0
+        dp = [0] * len(nums)
+
+        for i in range(2, len(nums)):
+            if nums[i] - nums[i-1] == nums[i-1] - nums[i-2]:
+                dp[i] = dp[i-1] + 1
+                count += dp[i]
+
+        return count
+```
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+nums = [1, 2, 3, 4]
+print(solution.numberOfArithmeticSlices(nums))  # Output: 3
+
+nums = [1]
+print(solution.numberOfArithmeticSlices(nums))  # Output: 0
+```
+
+The function returns the expected results for the given examples.

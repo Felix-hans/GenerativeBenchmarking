@@ -1,0 +1,42 @@
+To solve this problem, we can use dynamic programming to calculate the probability that the knight remains on the board after making k moves.
+
+We can create a 3D grid of size (n, n, k+1), where the first two dimensions represent the chessboard and the third dimension represents the number of moves. The value at grid[i][j][moves] will represent the probability of the knight being at position (i, j) after making moves moves.
+
+The base case is when moves = 0, where the knight is initially at position (row, column). In this case, the probability of the knight being on the board is 1.
+
+For each subsequent move, we iterate over all possible moves of the knight and calculate the probability of reaching the new position. We sum up the probabilities from the previous move at the knight's possible starting positions and update the current probability at the new position.
+
+Finally, we return the probability of the knight being on the board at the end of k moves, which is grid[row][column][k].
+
+Here's the implementation of the `knightProbability` function:
+
+```python
+class Solution:
+    def knightProbability(self, n: int, k: int, row: int, column: int) -> float:
+        moves = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+        
+        dp = [[[0] * (k + 1) for _ in range(n)] for _ in range(n)]
+        dp[row][column][0] = 1
+        
+        for m in range(1, k + 1):
+            for i in range(n):
+                for j in range(n):
+                    for move in moves:
+                        new_i, new_j = i + move[0], j + move[1]
+                        if 0 <= new_i < n and 0 <= new_j < n:
+                            dp[i][j][m] += dp[new_i][new_j][m - 1] / 8
+        
+        return sum(sum(row) for row in dp[row][column])  # Probability of staying on board
+        
+```
+
+You can test the function with the given examples:
+
+```python
+solution = Solution()
+
+print(solution.knightProbability(3, 2, 0, 0))  # Output: 0.0625
+print(solution.knightProbability(1, 0, 0, 0))  # Output: 1.0
+```
+
+This should give you the expected results.

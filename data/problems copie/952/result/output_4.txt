@@ -1,0 +1,61 @@
+To solve this task, we can use the union-find algorithm. We'll create a union-find data structure to keep track of connected components. 
+
+Here's the implementation:
+
+```python
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.size = [1] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        rootX = self.find(x)
+        rootY = self.find(y)
+        if rootX != rootY:
+            if self.size[rootX] < self.size[rootY]:
+                rootX, rootY = rootY, rootX
+            self.parent[rootY] = rootX
+            self.size[rootX] += self.size[rootY]
+
+class Solution:
+    def largestComponentSize(self, nums):
+        def primeFactors(num):
+            factors = set()
+            while num % 2 == 0:
+                factors.add(2)
+                num //= 2
+            i = 3
+            while i * i <= num:
+                if num % i == 0:
+                    factors.add(i)
+                    num //= i
+                else:
+                    i += 2
+            if num > 1:
+                factors.add(num)
+            return factors
+
+        n = len(nums)
+        uf = UnionFind(n)
+        primeToIndex = {}
+        for i, num in enumerate(nums):
+            factors = primeFactors(num)
+            for factor in factors:
+                if factor in primeToIndex:
+                    uf.union(i, primeToIndex[factor])
+                primeToIndex[factor] = i
+
+        return max(uf.size)
+
+```
+
+The `UnionFind` class is an implementation of the union-find data structure. It keeps track of the parent of each node and the size of each connected component. The `find` method finds the root of a node and applies path compression for optimization. The `union` method merges two components by updating the parent and size.
+
+In the `largestComponentSize` method, we iterate over each number in the `nums` array. For each number, we find its prime factors using the `primeFactors` function. Then, we iterate over the factors and perform unions between the current number's index and the indices of previous numbers with the same factor. Finally, we return the size of the largest connected component by finding the maximum size in the union-find data structure.
+
+Note: The code assumes that the `nums` array is already defined and passed as an argument to the `largestComponentSize` method.

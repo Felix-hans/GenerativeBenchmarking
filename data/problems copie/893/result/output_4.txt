@@ -1,0 +1,23 @@
+To solve the problem, we can use a set to keep track of the unique special-equivalent groups. For each word in the input array, we can separate its characters into two groups: characters at even indices and characters at odd indices. We can then sort each group and combine them back into a new string. The resulting string represents the special-equivalent signature of the word.
+
+We iterate through all the words and add their signatures to the set. Finally, we return the size of the set, which corresponds to the number of unique special-equivalent groups.
+
+Here's the implementation of the `numSpecialEquivGroups` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numSpecialEquivGroups(self, words: List[str]) -> int:
+        signature_set = set()
+
+        for word in words:
+            even_chars = sorted(word[0::2])  # Sort characters at even indices
+            odd_chars = sorted(word[1::2])  # Sort characters at odd indices
+            signature = ''.join(even_chars) + ''.join(odd_chars)
+            signature_set.add(signature)
+
+        return len(signature_set)
+```
+
+Note: I have added the `Solution` class wrapper to match the format of a typical LeetCode solution. However, you can remove the `self` parameter if you're not using this implementation in a class.

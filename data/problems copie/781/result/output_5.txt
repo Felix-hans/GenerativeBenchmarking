@@ -1,0 +1,50 @@
+To solve the problem, we can use a hash map to keep track of the number of rabbits with each color. We iterate through the answers and count the occurrences of each answer. For each answer, we add it to the hash map if it's not already present or increment its count if it's already present.
+
+To calculate the minimum number of rabbits in the forest, we iterate through the hash map. For each color, we calculate the number of groups of rabbits with that color based on the count and the answer. If the count is c and the answer is a, each group will have a + 1 rabbits, and we need to round up the count c to the nearest multiple of (a + 1) if c % (a + 1) != 0. The minimum number of rabbits in the forest is the sum of the counts of all groups.
+
+Here's the implementation of the `numRabbits` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def numRabbits(self, answers: List[int]) -> int:
+        count_map = {}  # Hash map to store the counts of rabbits with each color
+        
+        for answer in answers:
+            if answer not in count_map:
+                count_map[answer] = 1
+            else:
+                count_map[answer] += 1
+        
+        min_rabbits = 0
+        
+        for answer, count in count_map.items():
+            groups = count // (answer + 1)  # Number of groups with rabbits of the same color
+            remainder = count % (answer + 1)  # Remaining rabbits
+            
+            if remainder > 0:
+                groups += 1
+            
+            min_rabbits += groups * (answer + 1)
+        
+        return min_rabbits
+```
+
+Now, you can create an instance of the `Solution` class and call the `numRabbits` function with the input array to get the minimum number of rabbits in the forest. For example:
+
+```python
+solution = Solution()
+answers = [1, 1, 2]
+min_rabbits = solution.numRabbits(answers)
+print(min_rabbits)  # Output: 5
+```
+
+```python
+solution = Solution()
+answers = [10, 10, 10]
+min_rabbits = solution.numRabbits(answers)
+print(min_rabbits)  # Output: 11
+```
+
+The function `numRabbits` returns the minimum number of rabbits in the forest based on the given array of answers.

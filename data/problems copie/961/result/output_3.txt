@@ -1,0 +1,25 @@
+Certainly! Here's the implementation of the `repeatedNTimes` function in Python that solves the given task:
+
+```python
+class Solution:
+    def repeatedNTimes(self, nums):
+        count = {}
+        for num in nums:
+            if num in count:
+                return num
+            else:
+                count[num] = 1
+```
+
+You can use this implementation as follows:
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 3]
+result = solution.repeatedNTimes(nums)
+print(result)  # Output: 3
+```
+
+In this implementation, we iterate over the elements in the `nums` array. For each element, we check if it already exists in the `count` dictionary. If it does, we've found the element that is repeated `n` times, so we return it. Otherwise, we add the element to the `count` dictionary with an initial count of 1.
+
+Note that this solution assumes that there is always one element repeated `n` times, as stated in the problem description.

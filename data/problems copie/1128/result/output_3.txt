@@ -1,0 +1,24 @@
+To solve the given task in Python, you can use a dictionary to count the occurrences of equivalent dominoes. Iterate through the dominoes list and for each domino, create a unique key by sorting its values in ascending order. Increment the count for that key in the dictionary. Finally, calculate the number of pairs using the count of equivalent dominoes.
+
+Here's the implementation of the `numEquivDominoPairs` method:
+
+```python
+from typing import List
+
+class Solution:
+    def numEquivDominoPairs(self, dominoes: List[List[int]]) -> int:
+        count = {}
+        pairs = 0
+
+        for domino in dominoes:
+            key = tuple(sorted(domino))
+            if key in count:
+                pairs += count[key]
+                count[key] += 1
+            else:
+                count[key] = 1
+
+        return pairs
+```
+
+You can create an instance of the `Solution` class and call the `numEquivDominoPairs` method, passing the `dominoes` list as an argument, to get the desired result.

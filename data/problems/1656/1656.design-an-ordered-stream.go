@@ -1,0 +1,28 @@
+/*
+ * @lc app=leetcode id=1656 lang=golang
+ *
+ * [1656] Design an Ordered Stream
+ */
+
+// @lc code=start
+type OrderedStream struct {
+    
+}
+
+
+func Constructor(n int) OrderedStream {
+    
+}
+
+
+func (this *OrderedStream) Insert(idKey int, value string) []string {
+    
+}
+
+
+/**
+ * Your OrderedStream object will be instantiated and called as such:
+ * obj := Constructor(n);
+ * param_1 := obj.Insert(idKey,value);
+ */
+// @lc code=end

@@ -1,0 +1,57 @@
+To solve this problem, we can use dynamic programming. We will create a two-dimensional array dp where dp[i][z][o] represents the number of different good strings that can be constructed with z zeros and o ones, using the first i characters.
+
+We can initialize dp[0][0][0] = 1, since there is one way to construct an empty string with no zeros and no ones.
+
+Then, we can iterate over the characters of the string and update the dp array accordingly. For each character, we will iterate over the possible number of zeros and ones, and update the dp array based on the two possible choices: appending zero characters or appending one character.
+
+Finally, we can calculate the total number of good strings by summing up the values in dp[high][z][o] for all possible values of z and o such that low ≤ z + o ≤ high.
+
+Here is the implementation in Go:
+
+```go
+func countGoodStrings(low int, high int, zero int, one int) int {
+    const mod = int(1e9 + 7)
+    n := high - low + 1
+    dp := make([][][]int, n+1)
+
+    // Initialize dp array
+    for i := range dp {
+        dp[i] = make([][]int, zero+1)
+        for j := range dp[i] {
+            dp[i][j] = make([]int, one+1)
+        }
+    }
+
+    // Base case: empty string
+    dp[0][0][0] = 1
+
+    // Iterate over characters
+    for i := 1; i <= n; i++ {
+        for z := 0; z <= zero; z++ {
+            for o := 0; o <= one; o++ {
+                // Append zero characters
+                dp[i][z][o] = (dp[i][z][o] + dp[i-1][z][o]) % mod
+
+                // Append one character
+                if o > 0 && i <= high-low+1-z {
+                    dp[i][z][o] = (dp[i][z][o] + dp[i-1][z][o-1]) % mod
+                }
+            }
+        }
+    }
+
+    // Calculate total number of good strings
+    count := 0
+    for z := 0; z <= zero; z++ {
+        for o := 0; o <= one; o++ {
+            if low <= z+o && z+o <= high {
+                count = (count + dp[n][z][o]) % mod
+            }
+        }
+    }
+
+    return count
+}
+
+```
+The time complexity of this solution is O(n * zero * one), where n is the length of the string and zero and one are the maximum number of zeros and ones respectively.

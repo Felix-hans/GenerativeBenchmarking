@@ -1,0 +1,25 @@
+You can solve the problem by sorting the array and considering two cases:
+
+1. If all the numbers are positive or zero, the maximum product is the product of the three largest numbers in the sorted array, which is `nums[-1] * nums[-2] * nums[-3]`.
+2. If there are negative numbers in the array, the maximum product could be the product of the two smallest negative numbers and the largest positive number, or the product of the three largest positive numbers. We compare these two cases and return the maximum product.
+
+Here's the implementation of the `maximumProduct` function:
+
+```python
+class Solution:
+    def maximumProduct(self, nums):
+        nums.sort()
+        n = len(nums)
+        return max(nums[0] * nums[1] * nums[-1], nums[-1] * nums[-2] * nums[-3])
+```
+
+You can create an instance of the `Solution` class and call the `maximumProduct` function with the input array `nums` to get the maximum product. For example:
+
+```python
+s = Solution()
+nums = [1, 2, 3]
+result = s.maximumProduct(nums)
+print(result)  # Output: 6
+```
+
+Note: The above solution has a time complexity of O(n log n) due to the sorting operation. If you're interested, there's also a linear time solution with a time complexity of O(n) using a single pass through the array.

@@ -1,0 +1,59 @@
+To solve this problem, we can use dynamic programming. We will create two 2D arrays, one to track the maximum non-negative product and another to track the minimum non-positive product at each cell. We will initialize the arrays with the first cell values.
+
+Then, we will iterate through the grid from left to right and top to bottom, updating the maximum and minimum product arrays based on the neighboring cells. For each cell, we will calculate the maximum and minimum products by multiplying the current cell value with the maximum and minimum products from the neighboring cells (up and left).
+
+Finally, we will return the maximum non-negative product from the bottom-right corner of the grid. If the maximum product is negative, we will return -1.
+
+Here's the implementation of the `maxProductPath` function:
+
+```python
+class Solution:
+    def maxProductPath(self, grid):
+        m, n = len(grid), len(grid[0])
+        mod = 10 ** 9 + 7
+
+        max_product = [[0] * n for _ in range(m)]
+        min_product = [[0] * n for _ in range(m)]
+
+        max_product[0][0] = min_product[0][0] = grid[0][0]
+
+        # Update the first row
+        for j in range(1, n):
+            max_product[0][j] = min_product[0][j] = max_product[0][j - 1] * grid[0][j]
+
+        # Update the first column
+        for i in range(1, m):
+            max_product[i][0] = min_product[i][0] = max_product[i - 1][0] * grid[i][0]
+
+        for i in range(1, m):
+            for j in range(1, n):
+                if grid[i][j] < 0:
+                    max_product[i][j] = min(max_product[i - 1][j], max_product[i][j - 1]) * grid[i][j]
+                    min_product[i][j] = max(max_product[i - 1][j], max_product[i][j - 1]) * grid[i][j]
+                else:
+                    max_product[i][j] = max(max_product[i - 1][j], max_product[i][j - 1]) * grid[i][j]
+                    min_product[i][j] = min(min_product[i - 1][j], min_product[i][j - 1]) * grid[i][j]
+
+        result = max_product[-1][-1]
+        if result < 0:
+            return -1
+        else:
+            return result % mod
+```
+
+You can create an instance of the `Solution` class and call the `maxProductPath` function on it to test the provided examples:
+
+```python
+solution = Solution()
+
+grid1 = [[-1, -2, -3], [-2, -3, -3], [-3, -3, -2]]
+print(solution.maxProductPath(grid1))  # Output: -1
+
+grid2 = [[1, -2, 1], [1, -2, 1], [3, -4, 1]]
+print(solution.maxProductPath(grid2))  # Output: 8
+
+grid3 = [[1, 3], [0, -4]]
+print(solution.maxProductPath(grid3))  # Output: 0
+```
+
+This implementation has a time complexity of O(m * n) since we iterate through each cell of the grid once.

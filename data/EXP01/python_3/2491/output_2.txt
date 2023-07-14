@@ -1,0 +1,12 @@
+To solve this problem, we can follow these steps:
+
+1. Sort the skill array in descending order.
+2. Initialize the variables `n` to store the length of the skill array, `sumSkill` to store the sum of all the skills, and `teamSum` to store the target skill sum for each team.
+3. If the sum of all the skills is not divisible by `teamSum` or the length of the skill array is not divisible by 2, return -1 as it is not possible to divide the players into teams with equal skill sum.
+4. Initialize `left` and `right` pointers at the start and end of the skill array.
+5. Initialize `teamChemistry` to store the sum of chemistry for all the teams.
+6. Iterate until `left` is less than `right`:
+   - Calculate the chemistry of the team formed by players at `left` and `right` as `skill[left] * skill[right]`.
+   - Add the chemistry to `teamChemistry`.
+   - Increment `left` and decrement `right`.
+7. Finally, return `teamChemistry`.

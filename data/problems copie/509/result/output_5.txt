@@ -1,0 +1,33 @@
+Here's the implementation of the task in Python:
+
+```python
+class Solution:
+    def fib(self, n: int) -> int:
+        if n == 0:
+            return 0
+        elif n == 1:
+            return 1
+        
+        # Initialize the first two Fibonacci numbers
+        fib_n_minus_2 = 0
+        fib_n_minus_1 = 1
+        
+        # Calculate the Fibonacci sequence up to the given number
+        for i in range(2, n + 1):
+            current_fib = fib_n_minus_1 + fib_n_minus_2
+            fib_n_minus_2 = fib_n_minus_1
+            fib_n_minus_1 = current_fib
+        
+        return fib_n_minus_1
+```
+
+You can create an instance of the `Solution` class and call the `fib()` method, passing the desired `n` value as an argument to get the Fibonacci number. For example:
+
+```python
+solution = Solution()
+print(solution.fib(2))  # Output: 1
+print(solution.fib(3))  # Output: 2
+print(solution.fib(4))  # Output: 3
+```
+
+The solution follows the iterative approach to calculate the Fibonacci numbers. It starts with the initial Fibonacci numbers (0 and 1) and iteratively calculates the next Fibonacci number by summing the previous two. The process continues until the desired Fibonacci number `n` is reached, and the corresponding Fibonacci number is returned.

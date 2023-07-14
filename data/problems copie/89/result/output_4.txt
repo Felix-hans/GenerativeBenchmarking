@@ -1,0 +1,29 @@
+To generate a valid n-bit gray code sequence, we can use a recursive algorithm. The idea is to generate the gray code sequence for n-1 bits and then append the reverse of the sequence with an additional bit.
+
+Here's the implementation of the `grayCode` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def grayCode(self, n: int) -> List[int]:
+        if n == 0:
+            return [0]
+        
+        prev_sequence = self.grayCode(n - 1)
+        mask = 1 << (n - 1)  # Create a mask to toggle the additional bit
+        
+        # Append the reverse of the previous sequence with an additional bit
+        return prev_sequence + [num | mask for num in reversed(prev_sequence)]
+```
+
+Now, you can create an instance of the `Solution` class and call the `grayCode` function to generate a valid n-bit gray code sequence. Here's an example:
+
+```python
+solution = Solution()
+n = 2
+sequence = solution.grayCode(n)
+print(sequence)  # Output: [0, 1, 3, 2]
+```
+
+The above code will generate a valid 2-bit gray code sequence as requested in the example.

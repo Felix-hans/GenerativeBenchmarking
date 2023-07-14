@@ -1,0 +1,39 @@
+Here's an implementation of the `dominantIndex` function in Python:
+
+```python
+class Solution:
+    def dominantIndex(self, nums):
+        max_val = max(nums)
+        max_index = nums.index(max_val)
+
+        for num in nums:
+            if num != max_val and max_val < 2 * num:
+                return -1
+
+        return max_index
+```
+
+Explanation:
+
+1. First, we find the maximum value in the `nums` array using the `max` function and store it in the `max_val` variable.
+2. We also find the index of the maximum value using the `index` method and store it in the `max_index` variable.
+3. Next, we iterate through each element in the `nums` array using a loop. If any element is not equal to the maximum value and the maximum value is less than twice that element, we return -1.
+4. If all elements satisfy the condition, we return the `max_index` as the result.
+
+You can create an instance of the `Solution` class and call the `dominantIndex` method with the input array `nums` to get the desired result. For example:
+
+```python
+solution = Solution()
+nums = [3, 6, 1, 0]
+result = solution.dominantIndex(nums)
+print(result)  # Output: 1
+```
+
+```python
+solution = Solution()
+nums = [1, 2, 3, 4]
+result = solution.dominantIndex(nums)
+print(result)  # Output: -1
+```
+
+Note: In the given code, the `dominantIndex` function is defined inside a class `Solution` because it looks like the code might be part of a larger class-based solution. However, if you are not working within a class, you can remove the class definition and modify the function signature accordingly.

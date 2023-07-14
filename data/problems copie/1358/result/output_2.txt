@@ -1,0 +1,41 @@
+To solve this task, we can use a sliding window approach. We'll initialize three pointers, one for each character 'a', 'b', and 'c', and move them through the string to find the substrings containing at least one occurrence of all three characters. Here's the implementation of the `numberOfSubstrings` method:
+
+```python
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        count = 0
+        a_ptr, b_ptr, c_ptr = -1, -1, -1
+        n = len(s)
+        
+        for i in range(n):
+            if s[i] == 'a':
+                a_ptr = i
+            elif s[i] == 'b':
+                b_ptr = i
+            else:
+                c_ptr = i
+            
+            if a_ptr != -1 and b_ptr != -1 and c_ptr != -1:
+                # Find the minimum pointer value
+                min_ptr = min(a_ptr, b_ptr, c_ptr)
+                count += min_ptr + 1  # Add the count of substrings ending at the minimum pointer
+         
+        return count
+```
+
+Let's test the implementation with the provided examples:
+
+```python
+solution = Solution()
+
+s = "abcabc"
+print(solution.numberOfSubstrings(s))  # Output: 10
+
+s = "aaacb"
+print(solution.numberOfSubstrings(s))  # Output: 3
+
+s = "abc"
+print(solution.numberOfSubstrings(s))  # Output: 1
+```
+
+The output matches the expected results for the provided examples.

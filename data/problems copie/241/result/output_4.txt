@@ -1,0 +1,51 @@
+To solve the problem, we can use a recursive approach. We'll iterate through the expression and whenever we encounter an operator, we'll split the expression into two parts: the left expression and the right expression. Then, we'll recursively calculate all possible results for the left and right expressions and combine them based on the operator.
+
+Here's the implementation for the `diffWaysToCompute` method:
+
+```python
+class Solution:
+    def diffWaysToCompute(self, expression: str) -> List[int]:
+        # Base case: if the expression is a single number, return it as a list
+        if expression.isdigit():
+            return [int(expression)]
+
+        results = []
+        # Iterate through the expression
+        for i in range(len(expression)):
+            if expression[i] in ['+', '-', '*']:
+                # Split the expression into left and right parts
+                left_expr = expression[:i]
+                right_expr = expression[i+1:]
+
+                # Recursively calculate all possible results for left and right expressions
+                left_results = self.diffWaysToCompute(left_expr)
+                right_results = self.diffWaysToCompute(right_expr)
+
+                # Combine the results based on the operator
+                for left in left_results:
+                    for right in right_results:
+                        if expression[i] == '+':
+                            results.append(left + right)
+                        elif expression[i] == '-':
+                            results.append(left - right)
+                        elif expression[i] == '*':
+                            results.append(left * right)
+
+        return results
+```
+
+Now, let's test the solution with the provided examples:
+
+```python
+solution = Solution()
+
+expression = "2-1-1"
+print(solution.diffWaysToCompute(expression))
+# Output: [0, 2]
+
+expression = "2*3-4*5"
+print(solution.diffWaysToCompute(expression))
+# Output: [-34, -10, -14, -10, 10]
+```
+
+The solution correctly computes all the different possible ways to group numbers and operators for the given expressions.

@@ -1,0 +1,55 @@
+Sure! Here's the implementation of the given task in Python:
+
+```python
+class Solution:
+    def findWords(self, board, words):
+        # Create a trie to store the words
+        trie = {}
+        for word in words:
+            node = trie
+            for char in word:
+                node = node.setdefault(char, {})
+            node['_end'] = True
+
+        # Define the DFS function to search for words on the board
+        def dfs(i, j, node, path):
+            char = board[i][j]
+            if char in node:
+                path += char
+                node = node[char]
+                if '_end' in node:
+                    result.append(path)
+                    del node['_end']  # Remove the word from trie to avoid duplicates
+
+                # Mark the cell as visited
+                board[i][j] = '#'
+
+                # Explore the neighboring cells
+                if i > 0: dfs(i - 1, j, node, path)
+                if i < len(board) - 1: dfs(i + 1, j, node, path)
+                if j > 0: dfs(i, j - 1, node, path)
+                if j < len(board[0]) - 1: dfs(i, j + 1, node, path)
+
+                # Restore the cell
+                board[i][j] = char
+
+        # Initialize variables
+        result = []
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                dfs(i, j, trie, "")
+
+        return result
+```
+
+You can use the `findWords` method of the `Solution` class to find the words on the board. Here's an example usage:
+
+```python
+board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
+words = ["oath","pea","eat","rain"]
+solution = Solution()
+output = solution.findWords(board, words)
+print(output)  # Output: ["eat", "oath"]
+```
+
+Similarly, you can test with different inputs and words to find the desired words on the board.

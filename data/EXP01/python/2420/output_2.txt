@@ -1,0 +1,32 @@
+Here is the implementation of the Solution class in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def goodIndices(self, nums: List[int], k: int) -> List[int]:
+        n = len(nums)
+        result = []
+        
+        for i in range(k, n-k):
+            left_subarray = nums[i-k:i]  # Elements just before the index i
+            right_subarray = nums[i+1:i+k+1]  # Elements just after the index i
+            
+            if left_subarray == sorted(left_subarray, reverse=True) and right_subarray == sorted(right_subarray):
+                result.append(i)
+        
+        return result
+```
+
+You can create an instance of the Solution class and call the `goodIndices` method on that instance to get the desired output. For example:
+
+```python
+nums = [2,1,1,1,3,4,1]
+k = 2
+
+solution = Solution()
+output = solution.goodIndices(nums, k)
+print(output)  # [2, 3]
+```
+
+Note that the `goodIndices` method returns a list of good indices, which is `[2, 3]` in the above example.

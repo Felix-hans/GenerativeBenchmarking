@@ -1,0 +1,41 @@
+import "sort"
+
+func repairCars(ranks []int, cars int) int64 {
+    // Sort the ranks array in descending order
+    sort.Sort(sort.Reverse(sort.IntSlice(ranks)))
+
+    // Initialize the total time to repair all cars
+    totalTime := int64(0)
+
+    // Initialize the number of cars repaired by each mechanic
+    carsRepaired := make([]int, len(ranks))
+
+    // Loop through each car
+    for i := 0; i < cars; i++ {
+        // Find the mechanic with the lowest cumulative repair time
+        minTime := int64(1<<63 - 1)
+        mechanicIdx := -1
+        for j, rank := range ranks {
+            time := (int64(rank) * int64(carsRepaired[j]+1) * int64(carsRepaired[j]+1))
+            if time < minTime {
+                minTime = time
+                mechanicIdx = j
+            }
+        }
+
+        // Increment the number of cars repaired by the selected mechanic
+        carsRepaired[mechanicIdx]++
+        // Update the total time
+        totalTime = max(totalTime, minTime)
+    }
+
+    return totalTime
+}
+
+// Function to find the maximum of two integers
+func max(a, b int64) int64 {
+    if a > b {
+        return a
+    }
+    return b
+}

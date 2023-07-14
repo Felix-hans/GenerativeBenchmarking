@@ -11,11 +11,22 @@ def evaluateOutput(tryAgain,output):
 
     # total_cases = re.search(r'(?<=\d\/)(\d+)(?= cases)', output)
     # total_cases = int(total_cases.group()) if total_cases else None
+
+    #Check if runtime error
+    match = re.search('Runtime Error', output)
+
+    if match:
+        runtime_error = True
+        
+    else:
+        runtime_error = False
+
     
     #if checkmark in output, all good
     if "\\xe2\\x9c\\x94" in output:
         tryAgain = False
         print('all good')
+
 
 
     #if crossmark in output, try again
@@ -32,4 +43,4 @@ def evaluateOutput(tryAgain,output):
     print(output)
     output = 'There seems to be an issue in the code: ' + output + 'Correct the error.'
 
-    return tryAgain, output
+    return tryAgain, output,runtime_error

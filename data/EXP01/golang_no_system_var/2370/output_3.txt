@@ -1,0 +1,66 @@
+To solve the problem, we can use a dynamic programming approach. We will maintain a memoization table to store the longest ideal string for a given substring. The table will have a size of n x 26, where n is the length of the input string.
+
+We will initialize the table with all zeros. Then, for each character in the input string, we will consider two cases:
+
+1. Include the current character in the longest ideal string:
+   - Calculate the index of the current character in the memoization table.
+   - For each character in the alphabet, calculate the index of the next character in the memoization table.
+   - Update the longest ideal string for the current character by taking the maximum value among the longest ideal strings for the next characters.
+   - Increment the longest ideal string by 1, as we have included the current character.
+
+2. Exclude the current character from the longest ideal string:
+   - Calculate the index of the current character in the memoization table.
+   - Update the longest ideal string for the current character by taking the maximum value among the longest ideal strings for the previous characters.
+
+Finally, we will return the maximum value in the last row of the memoization table, which represents the length of the longest ideal string.
+
+Here's the implementation in Go:
+
+```go
+func longestIdealString(s string, k int) int {
+    n := len(s)
+    dp := make([][]int, n+1)
+    for i := 0; i <= n; i++ {
+        dp[i] = make([]int, 26)
+    }
+
+    // Initialize the first row with -1 to indicate that there's no ideal string for substrings of length 0
+    for i := 0; i < 26; i++ {
+        dp[0][i] = -1
+    }
+
+    // Iterate over the characters of the input string
+    for i := 1; i <= n; i++ {
+        currentChar := int(s[i-1] - 'a')
+
+        // Consider the case of including the current character
+        for j := 0; j < 26; j++ {
+            nextChar := (j + k) % 26
+            dp[i][currentChar] = max(dp[i][currentChar], dp[i-1][j]+1)
+            dp[i][currentChar] = max(dp[i][currentChar], dp[i-1][nextChar]+1)
+        }
+
+        // Consider the case of excluding the current character
+        for j := 0; j < 26; j++ {
+            dp[i][j] = max(dp[i][j], dp[i-1][j])
+        }
+    }
+
+    // Find the maximum value in the last row
+    longest := 0
+    for i := 0; i < 26; i++ {
+        longest = max(longest, dp[n][i])
+    }
+
+    return longest
+}
+
+func max(a, b int) int {
+    if a > b {
+        return a
+    }
+    return b
+}
+```
+
+The time complexity of this solution is O(n), where n is the length of the input string. This is because we iterate over each character of the input string once. The space complexity is O(n) as well, since we need to store the memoization table of size n x 26.

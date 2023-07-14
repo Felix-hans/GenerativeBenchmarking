@@ -1,0 +1,42 @@
+Here's the implementation of the `minTimeToVisitAllPoints` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
+        total_time = 0
+        for i in range(len(points) - 1):
+            x1, y1 = points[i]
+            x2, y2 = points[i+1]
+            dx = abs(x2 - x1)
+            dy = abs(y2 - y1)
+            diagonal_distance = min(dx, dy)
+            straight_distance = abs(dx - dy)
+            total_time += diagonal_distance + straight_distance
+        return total_time
+```
+
+The `minTimeToVisitAllPoints` function takes a list of points as input and returns the minimum time in seconds to visit all the points in the given order.
+
+The function iterates over the list of points from the first point to the second-to-last point. For each pair of consecutive points, it calculates the horizontal distance (`dx`) and vertical distance (`dy`) between the two points using absolute values. The diagonal distance is determined by taking the minimum of `dx` and `dy`, as it takes the same amount of time to move diagonally in both directions. The straight distance is calculated as the absolute difference between `dx` and `dy`, representing the remaining movement along the axis where the diagonal movement is not possible.
+
+The function adds the diagonal distance and straight distance for each pair of consecutive points to the `total_time` variable. Finally, it returns the `total_time` as the minimum time required to visit all the points in the given order.
+
+You can create an instance of the `Solution` class and call the `minTimeToVisitAllPoints` function with the input points to get the desired result. For example:
+
+```python
+points = [[1, 1], [3, 4], [-1, 0]]
+solution = Solution()
+result = solution.minTimeToVisitAllPoints(points)
+print(result)  # Output: 7
+```
+
+```python
+points = [[3, 2], [-2, 2]]
+solution = Solution()
+result = solution.minTimeToVisitAllPoints(points)
+print(result)  # Output: 5
+```
+
+I hope this helps! Let me know if you have any further questions.

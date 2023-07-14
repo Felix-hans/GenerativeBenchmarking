@@ -1,0 +1,54 @@
+To solve this task, we can iterate through the string `dominoes` and simulate the falling of dominoes. We'll use an array `forces` to keep track of the forces being exerted on each domino.
+
+Here's the implementation of the `pushDominoes` function:
+
+```python
+class Solution:
+    def pushDominoes(self, dominoes: str) -> str:
+        n = len(dominoes)
+        forces = [0] * n
+
+        # Pass from left to right to simulate falling from the left side
+        force = 0
+        for i in range(n):
+            if dominoes[i] == 'R':
+                force = n
+            elif dominoes[i] == 'L':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+            forces[i] += force
+
+        # Pass from right to left to simulate falling from the right side
+        force = 0
+        for i in range(n - 1, -1, -1):
+            if dominoes[i] == 'L':
+                force = n
+            elif dominoes[i] == 'R':
+                force = 0
+            else:
+                force = max(force - 1, 0)
+            forces[i] -= force
+
+        # Generate the final state based on the forces
+        result = ''
+        for f in forces:
+            if f > 0:
+                result += 'R'
+            elif f < 0:
+                result += 'L'
+            else:
+                result += '.'
+
+        return result
+```
+
+Now, let's test the function with the provided examples:
+
+```python
+solution = Solution()
+print(solution.pushDominoes("RR.L"))  # Output: "RR.L"
+print(solution.pushDominoes(".L.R...LR..L.."))  # Output: "LL.RR.LLRRLL.."
+```
+
+The function should produce the expected outputs for the given examples.

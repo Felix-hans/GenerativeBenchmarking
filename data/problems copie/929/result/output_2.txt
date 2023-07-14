@@ -1,0 +1,32 @@
+To implement the given task in Python, you can use the following code:
+
+```python
+class Solution:
+    def numUniqueEmails(self, emails):
+        unique_emails = set()
+        
+        for email in emails:
+            local_name, domain_name = email.split('@')
+            local_name = local_name.replace('.', '')
+            local_name = local_name.split('+')[0]
+            unique_emails.add(local_name + '@' + domain_name)
+        
+        return len(unique_emails)
+```
+
+Here's how the code works:
+
+1. We create an empty set called `unique_emails` to store the unique email addresses.
+2. Iterate through each email in the given `emails` list.
+3. Split the email into `local_name` and `domain_name` using the '@' sign as the separator.
+4. Remove any dots ('.') from the `local_name` using the `replace()` function.
+5. Split the `local_name` using the '+' sign as the separator and take the first part.
+   This removes anything after the '+' sign, as per the given rule.
+6. Construct the modified email address by concatenating the modified `local_name`,
+   '@' symbol, and the `domain_name`.
+7. Add the modified email address to the `unique_emails` set.
+8. Finally, return the length of the `unique_emails` set, which represents the number
+   of different addresses that actually receive mails.
+
+You can use the `Solution` class and call the `numUniqueEmails()` method on an instance
+of the class to get the desired result.

@@ -1,0 +1,47 @@
+To solve the given task, we can use a simple iterative approach. We'll initialize an array `result` of length `num_people` with all zeros to represent the final distribution of candies. Then, we'll distribute the candies according to the given rules until we run out of candies.
+
+Here's the Python implementation of the `distributeCandies` function:
+
+```python
+from typing import List
+
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        result = [0] * num_people
+        current_candies = 1
+        idx = 0
+        
+        while candies > 0:
+            result[idx % num_people] += min(candies, current_candies)
+            candies -= current_candies
+            current_candies += 1
+            idx += 1
+        
+        return result
+```
+
+We start by initializing `result` with zeros. Then, we have a variable `current_candies` to keep track of the number of candies to distribute in each iteration, and `idx` to determine the current person's index in the `result` array.
+
+In each iteration, we distribute the candies to the current person by adding the minimum value between the remaining candies and `current_candies` to `result[idx % num_people]`. We subtract the distributed candies from the total `candies`, increment `current_candies`, and move to the next person by incrementing `idx`.
+
+Finally, we return the `result` array, which represents the final distribution of candies.
+
+Let's test the function with the provided examples:
+
+```python
+solution = Solution()
+
+# Example 1
+candies = 7
+num_people = 4
+print(solution.distributeCandies(candies, num_people))
+# Output: [1, 2, 3, 1]
+
+# Example 2
+candies = 10
+num_people = 3
+print(solution.distributeCandies(candies, num_people))
+# Output: [5, 2, 3]
+```
+
+The function returns the expected results for the provided examples.

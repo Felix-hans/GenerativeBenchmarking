@@ -1,0 +1,22 @@
+To solve this task efficiently, we can utilize the concept of dynamic programming. We'll build the answer array iteratively by using the previously computed results.
+
+Here's the implementation of the `countBits` function in Python:
+
+```python
+class Solution:
+    def countBits(self, n: int) -> List[int]:
+        # Initialize the answer array with 0s
+        ans = [0] * (n + 1)
+        
+        for i in range(1, n + 1):
+            # The number of 1's in a binary representation of 'i' is equal to
+            # the number of 1's in its rightmost bit (i & 1) plus the number of
+            # 1's in the remaining bits (ans[i >> 1])
+            ans[i] = ans[i >> 1] + (i & 1)
+        
+        return ans
+```
+
+In this solution, we initialize the answer array `ans` with `n + 1` zeros. Then, for each number `i` from 1 to `n`, we compute the number of 1's in its binary representation using the formula `ans[i] = ans[i >> 1] + (i & 1)`. Here, `i >> 1` represents the number obtained by shifting `i` one bit to the right, and `i & 1` gives the value of the rightmost bit of `i` (either 0 or 1). By summing these two values, we get the count of 1's in the binary representation of `i`.
+
+This solution has a linear runtime complexity of O(n) and solves the task in a single pass through the numbers from 1 to `n`. Additionally, it doesn't rely on any built-in functions to compute the result.

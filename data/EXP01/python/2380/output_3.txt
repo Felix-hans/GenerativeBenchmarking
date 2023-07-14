@@ -1,0 +1,37 @@
+To solve this problem, we can iterate through the given binary string and keep track of the number of occurrences of "01". 
+
+We start with a count variable initialized to 0 and a flag variable initialized to True. 
+
+In each iteration, we check if the current character is '0' and the flag variable is True. If both conditions are satisfied, it means that we have encountered the first character of a potential occurrence of "01". We set the flag variable to False to indicate that we are expecting the next character to be '1'. 
+
+If the current character is '1' and the flag variable is False, it means that we have encountered the second character of a potential occurrence of "01". We increment the count variable by 1 and set the flag variable back to True to start looking for the first character of the next potential occurrence. 
+
+Finally, we return the count variable, which represents the number of seconds needed to complete the process.
+
+Here is the implementation of the Solution class:
+
+```python
+class Solution:
+    def secondsToRemoveOccurrences(self, s: str) -> int:
+        count = 0
+        flag = True
+
+        for c in s:
+            if c == '0' and flag:
+                flag = False
+            elif c == '1' and not flag:
+                count += 1
+                flag = True
+
+        return count
+```
+
+Example usage:
+
+```python
+s = Solution()
+print(s.secondsToRemoveOccurrences("0110101"))  # Output: 4
+print(s.secondsToRemoveOccurrences("11100"))    # Output: 0
+```
+
+The time complexity of this solution is O(n), where n is the length of the input string s. We only iterate through the string once, performing constant time operations in each iteration.

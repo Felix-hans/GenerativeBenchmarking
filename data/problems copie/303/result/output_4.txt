@@ -1,0 +1,33 @@
+To implement the `NumArray` class and handle the given task in Python, you can store the cumulative sums of the array elements in an instance variable. This allows you to efficiently calculate the sum of elements between any two indices by subtracting the cumulative sum at the left index from the cumulative sum at the right index.
+
+Here's the implementation:
+
+```python
+class NumArray:
+    def __init__(self, nums):
+        self.cumulative_sums = [0]
+        cum_sum = 0
+        for num in nums:
+            cum_sum += num
+            self.cumulative_sums.append(cum_sum)
+
+    def sumRange(self, left, right):
+        return self.cumulative_sums[right + 1] - self.cumulative_sums[left]
+```
+
+Let's test the code with the given example:
+
+```python
+nums = [-2, 0, 3, -5, 2, -1]
+obj = NumArray(nums)
+
+print(obj.sumRange(0, 2))  # Output: 1
+print(obj.sumRange(2, 5))  # Output: -1
+print(obj.sumRange(0, 5))  # Output: -3
+```
+
+The `NumArray` constructor initializes the object by calculating the cumulative sums of the input `nums` array and storing them in the `cumulative_sums` list. The cumulative sums include an extra 0 at the beginning to simplify the calculation in the `sumRange` method.
+
+The `sumRange` method takes the `left` and `right` indices as input and returns the sum of elements between the given indices (inclusive) using the precalculated cumulative sums.
+
+Note: This implementation assumes that the `sumRange` method will be called after the `NumArray` object is instantiated and the `nums` array is initialized.

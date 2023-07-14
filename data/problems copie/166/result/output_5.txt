@@ -1,0 +1,59 @@
+Here's the implementation of the `fractionToDecimal` function in Python:
+
+```python
+class Solution:
+    def fractionToDecimal(self, numerator: int, denominator: int) -> str:
+        # Check if the fraction is negative
+        sign = '-' if numerator * denominator < 0 else ''
+        
+        # Convert numerator and denominator to positive values
+        numerator, denominator = abs(numerator), abs(denominator)
+        
+        # Calculate the integer part of the fraction
+        integer_part = numerator // denominator
+        
+        # Calculate the remainder
+        remainder = numerator % denominator
+        
+        # If the remainder is zero, return the integer part only
+        if remainder == 0:
+            return sign + str(integer_part)
+        
+        # Store the fractional part
+        fractional_part = []
+        
+        # Store the remainders and their corresponding indices
+        remainders = {}
+        
+        # Perform long division to calculate the fractional part
+        while remainder != 0:
+            # If the remainder repeats, enclose the repeating part in parentheses
+            if remainder in remainders:
+                index = remainders[remainder]
+                fractional_part.insert(index, '(')
+                fractional_part.append(')')
+                break
+            
+            # Store the current remainder and its index
+            remainders[remainder] = len(fractional_part)
+            
+            # Calculate the next digit of the fractional part
+            quotient, remainder = divmod(remainder * 10, denominator)
+            fractional_part.append(str(quotient))
+        
+        # Construct the final decimal string
+        decimal_str = sign + str(integer_part) + '.' + ''.join(fractional_part)
+        
+        return decimal_str
+```
+
+You can create an instance of the `Solution` class and call the `fractionToDecimal` method with the numerator and denominator as arguments to get the desired result. For example:
+
+```python
+solution = Solution()
+print(solution.fractionToDecimal(1, 2))    # Output: "0.5"
+print(solution.fractionToDecimal(2, 1))    # Output: "2"
+print(solution.fractionToDecimal(4, 333))  # Output: "0.(012)"
+```
+
+The code handles both positive and negative fractions correctly and encloses the repeating part in parentheses if necessary.

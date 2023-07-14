@@ -1,0 +1,37 @@
+To solve the problem, we can follow the following steps:
+
+1. Sort the given array `nums` in non-decreasing order.
+2. Calculate the sum of all the numbers in `nums`.
+3. Initialize a variable `target` to hold the target value, which is half of the sum of `nums`. (target = sum(nums) / 2)
+4. Initialize a variable `operations` to hold the number of operations performed.
+5. Iterate through each number `num` in the sorted `nums` array.
+   - Divide `num` by 2 until it is less than or equal to the `target`.
+   - Increment `operations` by the number of divisions performed on `num`.
+   - Update the `target` value by subtracting the divided `num` from it.
+6. Return the value of `operations`.
+
+Here is the implementation of the `halveArray` function in Go:
+
+```go
+import "sort"
+
+func halveArray(nums []int) int {
+   sort.Ints(nums)
+   sum := 0
+   for _, num := range nums {
+      sum += num
+   }
+   target := sum / 2
+   operations := 0
+   for _, num := range nums {
+      for num > target {
+         num /= 2
+         operations++
+      }
+      target -= num
+   }
+   return operations
+}
+```
+
+The time complexity of this solution is O(n log n), where n is the length of the `nums` array.

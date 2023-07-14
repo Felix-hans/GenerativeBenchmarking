@@ -1,0 +1,46 @@
+To solve this problem, we can first calculate the total sum of all the skills in the `skill` array. If this total sum is not divisible by `n/2`, where `n` is the length of the `skill` array, then it is not possible to divide the players into teams with equal total skill. In this case, we return -1.
+
+If the total sum is divisible by `n/2`, we can proceed to divide the players into teams. We can sort the `skill` array in non-decreasing order. Then, we can start forming teams by pairing the players with the highest and lowest skills. The sum of the skills of these two players will be equal to the sum of skills of any other two players in the sorted array. We can calculate the sum of the chemistry of each team and return the total sum of all the teams' chemistry.
+
+Here is the implementation of the `dividePlayers` function:
+
+```python
+class Solution:
+    def dividePlayers(self, skill) -> int:
+        total_sum = sum(skill)
+        n = len(skill)
+        if total_sum % (n/2) != 0:
+            return -1
+        
+        avg_skill = total_sum / (n/2)
+        team_chem = 0
+        i = 0
+        j = n - 1
+        
+        skill.sort()
+        
+        while i < j:
+            if skill[i] + skill[j] != avg_skill:
+                return -1
+            
+            team_chem += skill[i] * skill[j]
+            i += 1
+            j -= 1
+        
+        return team_chem
+```
+
+To test this function, we can create an instance of the `Solution` class and call the `dividePlayers` function with the given input:
+
+```python
+solution = Solution()
+
+skill = [3, 2, 5, 1, 3, 4]
+print(solution.dividePlayers(skill))  # Output: 22
+
+skill = [3, 4]
+print(solution.dividePlayers(skill))  # Output: 12
+
+skill = [1, 1, 2, 3]
+print(solution.dividePlayers(skill))  # Output: -1
+```

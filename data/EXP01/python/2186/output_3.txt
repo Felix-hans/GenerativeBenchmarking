@@ -1,0 +1,43 @@
+To solve this problem, we can use a dictionary to count the frequency of characters in both strings. We iterate through each character in string s and update the count in the dictionary. Then, we iterate through each character in string t and decrease the count in the dictionary if the character is found.
+
+Finally, we sum up the absolute differences between the counts in the dictionary to get the minimum number of steps needed to make the strings anagrams of each other.
+
+Here is the implementation of the minSteps function:
+
+```python
+class Solution:
+    def minSteps(self, s: str, t: str) -> int:
+        # Initialize a dictionary to count the frequency of characters
+        count = {}
+        
+        # Iterate through each character in string s
+        for char in s:
+            if char in count:
+                count[char] += 1
+            else:
+                count[char] = 1
+        
+        # Iterate through each character in string t
+        for char in t:
+            if char in count:
+                count[char] -= 1
+                if count[char] == 0:
+                    del count[char]
+        
+        # Calculate the minimum number of steps
+        min_steps = 0
+        for key in count:
+            min_steps += abs(count[key])
+        
+        return min_steps
+```
+
+We can test the function with the given examples:
+
+```python
+s = Solution()
+print(s.minSteps("leetcode", "coats"))  # Output: 7
+print(s.minSteps("night", "thing"))     # Output: 0
+```
+
+This will give the expected outputs.

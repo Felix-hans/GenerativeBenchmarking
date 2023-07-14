@@ -1,0 +1,37 @@
+To solve this problem, we can follow these steps:
+
+1. Sort the grades array in descending order.
+2. Initialize a variable `maxGroups` to keep track of the maximum number of groups that can be formed.
+3. Initialize two variables `totalSum` and `totalCount` to keep track of the sum of grades and the total number of students in the current group.
+4. Iterate through the sorted grades array.
+5. For each grade, add it to the current group's sum and increment the total count of students in the group.
+6. Check if the sum of grades in the current group is less than the sum of grades in the next group and if the total count of students in the current group is less than the total count of students in the next group. If both conditions are met, increment `maxGroups`.
+7. Finally, return `maxGroups`.
+
+Here's the implementation in Go:
+
+```go
+import "sort"
+
+func maximumGroups(grades []int) int {
+    sort.Sort(sort.Reverse(sort.IntSlice(grades))) // Sort the grades array in descending order
+
+    maxGroups := 1 // At least one group can be formed
+    totalSum := grades[0]
+    totalCount := 1
+    
+    for i := 1; i < len(grades); i++ {
+        totalSum += grades[i]
+        totalCount++
+        
+        // Check if conditions for forming another group are met
+        if totalSum >= grades[i]*(totalCount+1) {
+            maxGroups++
+        }
+    }
+    
+    return maxGroups
+}
+```
+
+The time complexity of this solution is O(n log n) due to the sorting operation.

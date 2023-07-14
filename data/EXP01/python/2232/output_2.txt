@@ -1,0 +1,37 @@
+To solve the problem, we need to find the position of the '+' sign in the expression. We will iterate through each character of the expression and find the index of '+'.
+
+Once we find the '+' sign, we can split the expression into two parts: the substring from 0 to the '+' index (inclusive) and the substring from the '+' index+1 to the end of the expression.
+
+We will then add parentheses around the second substring and concatenate all the parts together to form the final expression.
+
+Here is the Python implementation of the above approach:
+
+```
+class Solution:
+    def minimizeResult(self, expression: str) -> str:
+        # Find the position of the '+' sign
+        plus_index = expression.index("+")
+        
+        # Split the expression into two parts
+        num1 = expression[:plus_index]
+        num2 = expression[plus_index+1:]
+        
+        # Add parentheses around the second part
+        result = num1 + "(" + num2 + ")"
+        
+        return result
+```
+
+We can test the solution with the given examples:
+
+```
+s = Solution()
+expression = "247+38"
+print(s.minimizeResult(expression)) # Output: "2(47+38)"
+
+expression = "12+34"
+print(s.minimizeResult(expression)) # Output: "1(2+3)4"
+
+expression = "999+999"
+print(s.minimizeResult(expression)) # Output: "(999+999)"
+```

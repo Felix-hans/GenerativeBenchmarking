@@ -1,0 +1,26 @@
+Certainly! Here's an implementation of the `findRepeatedDnaSequences` function in Python:
+
+```python
+from collections import defaultdict
+
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        sequences = defaultdict(int)  # Store the count of each 10-letter sequence
+        result = []
+        
+        for i in range(len(s) - 9):
+            sequence = s[i:i+10]  # Get the current 10-letter sequence
+            
+            # Increment the count of the sequence
+            sequences[sequence] += 1
+            
+            # Check if the sequence occurs more than once
+            if sequences[sequence] == 2:
+                result.append(sequence)
+        
+        return result
+```
+
+This solution utilizes a sliding window approach to iterate over the DNA sequence `s` and maintain a count of each 10-letter sequence encountered. The `defaultdict` data structure is used to conveniently initialize the count of any unseen sequence to zero. Whenever a sequence is encountered for the second time, it is added to the `result` list.
+
+You can create an instance of the `Solution` class and call the `findRepeatedDnaSequences` method, passing the DNA sequence as an argument. The method will return a list of all the 10-letter sequences that occur more than once in the DNA molecule.

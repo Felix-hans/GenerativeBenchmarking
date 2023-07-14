@@ -1,0 +1,45 @@
+To solve this problem, we can use a greedy approach. First, we need to count the frequency of each card in the hand. Then, we iterate over the hand from the smallest card to the largest, and for each card, we check if it has been used up or not. If it hasn't been used up, we start a new group with this card as the smallest card and try to form a group of size `groupSize` by using consecutive cards.
+
+Here's the implementation of the `isNStraightHand` function:
+
+```python
+from typing import List
+
+class Solution:
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        # Count the frequency of each card
+        card_count = {}
+        for card in hand:
+            card_count[card] = card_count.get(card, 0) + 1
+
+        # Iterate over the hand from the smallest card to the largest
+        for card in sorted(card_count):
+            count = card_count[card]
+            if count > 0:
+                # Try to form a group of size groupSize
+                for i in range(card, card + groupSize):
+                    if card_count.get(i, 0) < count:
+                        return False
+                    card_count[i] -= count
+
+        # If all cards have been used up, return True
+        return all(count == 0 for count in card_count.values())
+```
+
+Now, you can create an instance of the `Solution` class and call the `isNStraightHand` function with the given inputs:
+
+```python
+hand = [1, 2, 3, 6, 2, 3, 4, 7, 8]
+groupSize = 3
+
+solution = Solution()
+result = solution.isNStraightHand(hand, groupSize)
+print(result)
+```
+
+This will output:
+```
+True
+```
+
+Similarly, you can test the function with other inputs.

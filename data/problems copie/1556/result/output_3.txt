@@ -1,0 +1,40 @@
+Here's the implementation of the `thousandSeparator` function in Python:
+
+```python
+class Solution:
+    def thousandSeparator(self, n: int) -> str:
+        # Convert the integer to string
+        n_str = str(n)
+        
+        # Determine the number of digits
+        num_digits = len(n_str)
+        
+        # Check if the number has less than or equal to 3 digits
+        if num_digits <= 3:
+            return n_str
+        
+        # Calculate the number of separators needed
+        num_separators = (num_digits - 1) // 3
+        
+        # Initialize the result string with the first group of digits
+        result = n_str[:num_digits % 3] if num_digits % 3 != 0 else ''
+        
+        # Iterate over the remaining groups of digits
+        for i in range(num_separators):
+            start = num_digits % 3 + i * 3
+            end = start + 3
+            result += '.' + n_str[start:end]
+        
+        return result
+```
+
+You can create an instance of the `Solution` class and call the `thousandSeparator` method with the desired input to get the result. Here's an example usage:
+
+```python
+solution = Solution()
+n = 1234567
+result = solution.thousandSeparator(n)
+print(result)  # Output: "1.234.567"
+```
+
+The function takes an integer `n` as input and returns the corresponding string with dots as thousands separators. If the number has less than or equal to 3 digits, it simply returns the string representation of the input number without any modifications.

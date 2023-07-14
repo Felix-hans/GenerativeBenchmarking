@@ -1,0 +1,22 @@
+To solve this problem, we can sort both the players and trainers arrays in increasing order. Then, we can iterate through each player and find the first trainer whose training capacity is greater than or equal to the player's ability. If such a trainer is found, we can increment the count of matchings and mark that trainer as used by setting its training capacity to -1.
+
+Here is the implementation of the given task in Python:
+
+```python
+class Solution:
+    def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:
+        players.sort()
+        trainers.sort()
+        
+        count = 0
+        for player in players:
+            for i in range(len(trainers)):
+                if trainers[i] >= player:
+                    count += 1
+                    trainers[i] = -1  # Mark the trainer as used
+                    break
+        
+        return count
+```
+
+The time complexity of this solution is O(n^2), where n is the maximum length of the players or trainers arrays. This is because we need to iterate through each player and search for a trainer for each player.

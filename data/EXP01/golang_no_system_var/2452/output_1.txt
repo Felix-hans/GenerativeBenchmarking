@@ -1,0 +1,57 @@
+To solve this problem, we can follow the following steps:
+
+1. Create an empty result array to store the words from queries that match with some word from the dictionary.
+2. Iterate through each word in the queries array.
+3. For each word, check if it is present in the dictionary. If it is, add it to the result array.
+4. If the word is not present in the dictionary, check if it can be transformed into a dictionary word with at most two edits.
+   - Iterate through each word in the dictionary.
+   - For each dictionary word, calculate the edit distance between the query word and the dictionary word.
+   - If the edit distance is less than or equal to 2, add the query word to the result array and break out of the inner loop.
+5. Finally, return the result array.
+
+Here is the implementation in Go:
+
+```go
+func twoEditWords(queries []string, dictionary []string) []string {
+    result := []string{}
+    
+    for _, query := range queries {
+        if contains(dictionary, query) {
+            result = append(result, query)
+        } else {
+            for _, word := range dictionary {
+                if isTransformable(query, word) {
+                    result = append(result, query)
+                    break
+                }
+            }
+        }
+    }
+    
+    return result
+}
+
+func contains(arr []string, word string) bool {
+    for _, w := range arr {
+        if w == word {
+            return true
+        }
+    }
+    return false
+}
+
+func isTransformable(query, word string) bool {
+    diffCount := 0
+    for i := 0; i < len(query); i++ {
+        if query[i] != word[i] {
+            diffCount++
+            if diffCount > 2 {
+                return false
+            }
+        }
+    }
+    return true
+}
+```
+
+Note: We can optimize the `contains` function by using a map to store the words in the dictionary. This would reduce the time complexity of the function from O(n) to O(1). However, since the number of words in the dictionary is at most 100, the impact on performance would be negligible.

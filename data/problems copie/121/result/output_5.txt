@@ -1,0 +1,23 @@
+To solve this problem, we can iterate through the array of prices and keep track of the minimum price we have seen so far. As we iterate, we calculate the potential profit we could make if we sell on the current day, which is the difference between the current price and the minimum price. We update the maximum profit if the potential profit is greater than the current maximum profit.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+from typing import List
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+        
+        min_price = prices[0]
+        max_profit = 0
+        
+        for price in prices[1:]:
+            min_price = min(min_price, price)
+            max_profit = max(max_profit, price - min_price)
+        
+        return max_profit
+```
+
+This solution has a time complexity of O(n), where n is the length of the prices array. We iterate through the array once, performing constant time operations for each element.

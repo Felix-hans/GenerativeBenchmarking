@@ -1,0 +1,46 @@
+Here is the implementation for the given task:
+
+```go
+func substringXorQueries(s string, queries [][]int) [][]int {
+    n := len(s)
+    ans := make([][]int, len(queries))
+    
+    // Calculate the cumulative XOR of the binary string
+    prefixXor := make([]int, n+1)
+    for i := 1; i <= n; i++ {
+        prefixXor[i] = prefixXor[i-1] ^ int(s[i-1]-'0')
+    }
+    
+    // Process each query
+    for i, query := range queries {
+        left := query[0]
+        right := query[1]
+        
+        // Iterate over all possible substrings
+        for j := left; j <= right; j++ {
+            for k := j+1; k <= right; k++ {
+                // Calculate the XOR of the current substring
+                xor := prefixXor[k] ^ prefixXor[j]
+                if xor == query[0] {
+                    ans[i] = []int{j, k-1}
+                    break
+                }
+            }
+            
+            // Check if a valid substring is found
+            if ans[i] != nil {
+                break
+            }
+        }
+        
+        // If no valid substring is found, set ans[i] to [-1, -1]
+        if ans[i] == nil {
+            ans[i] = []int{-1, -1}
+        }
+    }
+    
+    return ans
+}
+```
+
+The time complexity of this solution is O(n * m), where n is the length of the binary string `s` and m is the number of queries.

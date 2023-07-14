@@ -1,0 +1,50 @@
+To solve this problem, we can use a depth-first search (DFS) approach to traverse the tree and calculate the maximum net income for Alice.
+
+First, we need to create an adjacency list representation of the tree using the given edges. We can use a dictionary to store the neighbors of each node.
+
+Next, we can define a helper function called dfs that takes the current node, the previous node, and the current net income as parameters. This function will recursively traverse the tree and calculate the maximum net income for Alice.
+
+In the dfs function, we can check if the current node is a leaf node. If it is, we return the current net income.
+
+Otherwise, we iterate over the neighbors of the current node and call the dfs function recursively for each neighbor, passing the neighbor as the current node and updating the net income accordingly. We also need to consider the case when Alice and Bob reach the node simultaneously and share the price/reward for opening the gate.
+
+Finally, we initialize the maximum net income for Alice as negative infinity and call the dfs function with the root node (node 0) and bob as the previous node. We return the maximum net income obtained.
+
+Here is the implementation in Python:
+
+```
+from typing import List
+
+class Solution:
+    def mostProfitablePath(self, edges: List[List[int]], bob: int, amount: List[int]) -> int:
+        # Create an adjacency list representation of the tree
+        graph = {}
+        for edge in edges:
+            u, v = edge
+            if u not in graph:
+                graph[u] = []
+            if v not in graph:
+                graph[v] = []
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        def dfs(curr, prev, income):
+            if not graph[curr]:  # current node is a leaf node
+                return income
+            
+            max_income = -float('inf')
+            for neighbor in graph[curr]:
+                if neighbor == prev:  # skip the previous node
+                    continue
+                if income >= 0:  # Alice pays her share for opening the gate
+                    new_income = income + amount[curr] // 2
+                else:  # Alice receives her share for opening the gate
+                    new_income = income + amount[curr]
+                max_income = max(max_income, dfs(neighbor, curr, new_income))
+            
+            return max_income
+        
+        return dfs(0, bob, 0)
+```
+
+We can create an instance of the Solution class and call the mostProfitablePath method with the given inputs to test the implementation.

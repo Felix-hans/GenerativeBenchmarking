@@ -1,0 +1,40 @@
+To solve the problem, we can use a dynamic programming approach. We'll maintain a list of super ugly numbers and their corresponding pointers for each prime factor. We'll start with the initial super ugly number as 1 and initialize all pointers to 0.
+
+In each iteration, we'll calculate the next super ugly number by multiplying each prime factor with the corresponding pointer and selecting the minimum value. We'll increment the pointers for the prime factors whose multiples were selected. Finally, we'll return the n-th super ugly number.
+
+Here's the implementation of the `nthSuperUglyNumber` function:
+
+```python
+from typing import List
+
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        uglies = [1]  # List to store super ugly numbers
+        pointers = [0] * len(primes)  # Pointers for each prime factor
+        
+        for _ in range(n - 1):  # Generate the next (n - 1) super ugly numbers
+            next_ugly = min(primes[i] * uglies[pointers[i]] for i in range(len(primes)))
+            uglies.append(next_ugly)
+            
+            for i in range(len(primes)):  # Update pointers for selected prime factors
+                if primes[i] * uglies[pointers[i]] == next_ugly:
+                    pointers[i] += 1
+        
+        return uglies[-1]  # Return the n-th super ugly number
+```
+
+Let's test the function with the given examples:
+
+```python
+solution = Solution()
+
+n = 12
+primes = [2, 7, 13, 19]
+print(solution.nthSuperUglyNumber(n, primes))  # Output: 32
+
+n = 1
+primes = [2, 3, 5]
+print(solution.nthSuperUglyNumber(n, primes))  # Output: 1
+```
+
+The function produces the correct outputs for the given examples.

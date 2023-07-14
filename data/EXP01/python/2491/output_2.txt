@@ -1,0 +1,46 @@
+To solve the problem, we can use a hashmap to count the frequency of each skill value in the given array skill. Then, we can iterate over the hashmap and for each skill value, check if there is a pair with the same skill value. If not, return -1. 
+
+If there is a pair, we can calculate the product of the skill value and its frequency. We multiply this product by 2, as there are two players in each team, and add it to the final result. Finally, we return the result.
+
+Here is the implementation of the `dividePlayers` function:
+
+```python
+from typing import List
+
+class Solution:
+    def dividePlayers(self, skill: List[int]) -> int:
+        n = len(skill)
+        
+        # Count the frequency of each skill value
+        freq = {}
+        for s in skill:
+            if s in freq:
+                freq[s] += 1
+            else:
+                freq[s] = 1
+        
+        result = 0
+        for s, f in freq.items():
+            # Check if there is a pair with the same skill value
+            if s in freq and freq[s] >= 2:
+                # Calculate the product of skill value and its frequency
+                team_skill = s * f * 2
+                result += team_skill
+                # Decrease the frequency of the skill value by 2
+                freq[s] -= 2
+        
+        # If all skill values have been used to form teams, return the result
+        if sum(freq.values()) == 0:
+            return result
+        else:
+            return -1
+```
+
+To test the implementation, we can create an instance of the `Solution` class and call the `dividePlayers` function with different inputs:
+
+```python
+solution = Solution()
+print(solution.dividePlayers([3, 2, 5, 1, 3, 4]))  # Output: 22
+print(solution.dividePlayers([3, 4]))  # Output: 12
+print(solution.dividePlayers([1, 1, 2, 3]))  # Output: -1
+```

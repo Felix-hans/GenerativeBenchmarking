@@ -1,0 +1,77 @@
+To solve this problem, we can use Dijkstra's algorithm to find the shortest paths from the start cell to all other cells in the grid. We will keep track of the distances, prices, row numbers, and column numbers for each cell. Then, we can filter the cells that have a price within the given range and sort them based on their rank criteria.
+
+Here is the implementation in Python:
+
+```
+import heapq
+
+class Solution:
+    def highestRankedKItems(self, grid, pricing, start, k):
+        m = len(grid)
+        n = len(grid[0])
+        
+        # Initialize the distance, price, row, and column arrays
+        distance = [[float('inf')] * n for _ in range(m)]
+        price = [[0] * n for _ in range(m)]
+        row = [[0] * n for _ in range(m)]
+        col = [[0] * n for _ in range(m)]
+        
+        # Define the directions for adjacent cells
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        
+        # Create a priority queue to store the cells based on their distance
+        queue = []
+        heapq.heappush(queue, (0, pricing[0], start[0], start[1]))
+        
+        while queue:
+            curr_dist, curr_price, curr_row, curr_col = heapq.heappop(queue)
+            
+            # If the current cell has already been visited with a shorter distance, skip it
+            if distance[curr_row][curr_col] < curr_dist:
+                continue
+            
+            # Update the distance, price, row, and column arrays for the current cell
+            distance[curr_row][curr_col] = curr_dist
+            price[curr_row][curr_col] = curr_price
+            row[curr_row][curr_col] = curr_row
+            col[curr_row][curr_col] = curr_col
+            
+            # Check adjacent cells and add them to the priority queue if they have not been visited yet
+            for direction in directions:
+                next_row = curr_row + direction[0]
+                next_col = curr_col + direction[1]
+                
+                # Check if the next cell is within the grid boundaries
+                if 0 <= next_row < m and 0 <= next_col < n:
+                    next_dist = curr_dist + 1
+                    next_price = max(curr_price, grid[next_row][next_col])
+                    
+                    # If the next cell has a shorter distance, add it to the priority queue
+                    if next_dist < distance[next_row][next_col]:
+                        heapq.heappush(queue, (next_dist, next_price, next_row, next_col))
+        
+        # Create a list to store the cells that have a price within the given range
+        items = []
+        
+        # Iterate through all cells in the grid
+        for i in range(m):
+            for j in range(n):
+                curr_price = price[i][j]
+                
+                # Check if the price is within the given range
+                if pricing[0] <= curr_price <= pricing[1]:
+                    # Add the cell to the list with its rank criteria
+                    items.append((distance[i][j], curr_price, row[i][j], col[i][j]))
+        
+        # Sort the items based on their rank criteria (distance, price, row, column)
+        items.sort(reverse=True)
+        
+        # Get the k highest ranked items
+        top_items = [[item[2], item[3]] for item in items[:k]]
+        
+        return top_items
+```
+
+Time Complexity: The Dijkstra's algorithm has a time complexity of O((m+n)log(m+n)), where m and n are the dimensions of the grid. Sorting the items based on their rank criteria takes O(klogk) time. Therefore, the overall time complexity is O((m+n)log(m+n) + klogk).
+
+Space Complexity: The space complexity is O(m*n) to store the distance, price, row, and column arrays, and O(m+n) for the priority queue. Therefore, the total space complexity is O(m*n + m+n), which can be simplified to O(m*n).

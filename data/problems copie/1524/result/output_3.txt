@@ -1,0 +1,46 @@
+To solve the given task, we can use the following approach:
+
+1. Initialize variables:
+   - `count`: Number of subarrays with an odd sum.
+   - `prefix_sum`: An array to store the prefix sum of the elements in `arr`.
+   - `odd_count`: Count of odd prefix sums encountered so far.
+
+2. Iterate through the elements of `arr` and calculate the prefix sum.
+   - For each element `num` at index `i`, calculate the prefix sum as `prefix_sum[i] = prefix_sum[i-1] + num`.
+
+3. Initialize `count` and `odd_count` as 0.
+
+4. Iterate through the elements of `prefix_sum` and count the number of subarrays with an odd sum.
+   - For each element `sum` at index `i` in `prefix_sum`, if `sum` is odd, increment `count` by `i+1`.
+   - Increment `odd_count` by 1 if `sum` is odd.
+   - If `sum` is even, increment `count` by `odd_count`.
+
+5. Finally, return `count` modulo 10^9 + 7.
+
+Here's the implementation of the `numOfSubarrays` method in Python:
+
+```python
+class Solution:
+    def numOfSubarrays(self, arr: List[int]) -> int:
+        mod = int(1e9) + 7
+        prefix_sum = [0] * len(arr)
+        prefix_sum[0] = arr[0]
+        count = 0
+        odd_count = 0
+        
+        # Calculate prefix sum
+        for i in range(1, len(arr)):
+            prefix_sum[i] = prefix_sum[i-1] + arr[i]
+        
+        # Count subarrays with odd sum
+        for sum in prefix_sum:
+            if sum % 2 == 0:
+                count += odd_count
+            else:
+                count += 1
+                odd_count += 1
+        
+        return count % mod
+```
+
+You can create an instance of the `Solution` class and call the `numOfSubarrays` method on it to solve the problem.

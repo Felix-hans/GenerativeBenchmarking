@@ -1,0 +1,39 @@
+To solve this task, we can use a while loop to repeatedly replace occurrences of "01" with "10" in the binary string until no occurrences exist. We keep track of the number of seconds taken to complete the process.
+
+Here's the implementation of the given task in Python:
+
+```python
+class Solution:
+    def secondsToRemoveOccurrences(self, s: str) -> int:
+        seconds = 0
+        
+        while "01" in s:
+            s = s.replace("01", "10")
+            seconds += 1
+        
+        return seconds
+```
+
+We can test the implementation using the given examples:
+
+```python
+solution = Solution()
+
+# Example 1
+s = "0110101"
+# After 1 second: "1011010"
+# After 2 seconds: "1101100"
+# After 3 seconds: "1110100"
+# After 4 seconds: "1111000"
+# No occurrence of "01" exists anymore
+# The process needed 4 seconds to complete
+print(solution.secondsToRemoveOccurrences(s)) # Output: 4
+
+# Example 2
+s = "11100"
+# No occurrence of "01" exists in the initial string
+# The process needed 0 seconds to complete
+print(solution.secondsToRemoveOccurrences(s)) # Output: 0
+```
+
+The time complexity of this solution is O(n^2) because the .replace() method has a time complexity of O(n), and we iterate the while loop until no occurrences of "01" exist, which can iterate up to n/2 times.

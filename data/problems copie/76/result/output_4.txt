@@ -1,0 +1,50 @@
+To solve this problem, we can use the sliding window technique. The idea is to maintain a window that contains all the characters of string t, and then slide the window across string s to find the minimum window substring.
+
+Here's the implementation of the `minWindow` function in Python:
+
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        # Create a dictionary to store the count of characters in t
+        t_count = {}
+        for char in t:
+            t_count[char] = t_count.get(char, 0) + 1
+
+        # Initialize variables
+        window_start = 0
+        window_end = 0
+        min_length = float('inf')
+        min_window = ""
+        count = len(t_count)
+
+        # Slide the window across string s
+        while window_end < len(s):
+            char = s[window_end]
+
+            # If the current character is in t, decrement its count
+            if char in t_count:
+                t_count[char] -= 1
+                if t_count[char] == 0:
+                    count -= 1
+
+            # If all characters in t are included in the window
+            while count == 0:
+                # Update the minimum window substring
+                if window_end - window_start + 1 < min_length:
+                    min_length = window_end - window_start + 1
+                    min_window = s[window_start:window_end+1]
+
+                # Move the window start to the right and remove the character at that position
+                left_char = s[window_start]
+                if left_char in t_count:
+                    t_count[left_char] += 1
+                    if t_count[left_char] > 0:
+                        count += 1
+                window_start += 1
+
+            window_end += 1
+
+        return min_window
+```
+
+This solution has a time complexity of O(m + n), where m is the length of string s and n is the length of string t.

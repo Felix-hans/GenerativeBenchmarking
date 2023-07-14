@@ -1,0 +1,27 @@
+To solve the task in Python, you can use a set data structure to keep track of the unique email addresses. Here's an implementation of the `numUniqueEmails` function:
+
+```python
+from typing import List
+
+class Solution:
+    def numUniqueEmails(self, emails: List[str]) -> int:
+        unique_emails = set()
+
+        for email in emails:
+            local_name, domain_name = email.split('@')
+            local_name = local_name.replace('.', '')
+            local_name = local_name.split('+')[0]
+            unique_emails.add(local_name + '@' + domain_name)
+
+        return len(unique_emails)
+```
+
+In this solution, we iterate over each email in the given list. For each email, we split it into the local name and domain name using the `'@'` character as the separator.
+
+Next, we remove the periods `'.'` from the local name by using the `replace` function. Then, we split the local name by `'+'` and only consider the part before the plus sign, effectively ignoring any characters after it.
+
+Finally, we combine the modified local name with the domain name and add it to the set `unique_emails`. Since sets only store unique elements, we can rely on it to keep track of the distinct email addresses.
+
+At the end, we return the size of the set, which represents the number of different addresses that actually receive mails.
+
+You can create an instance of the `Solution` class and call the `numUniqueEmails` function with the given email list to test it.

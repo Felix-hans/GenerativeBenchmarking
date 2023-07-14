@@ -1,0 +1,40 @@
+Here's the implementation of the `relativeSortArray` function in Python:
+
+```python
+class Solution:
+    def relativeSortArray(self, arr1, arr2):
+        # Count the occurrences of each element in arr1
+        counts = {}
+        for num in arr1:
+            counts[num] = counts.get(num, 0) + 1
+        
+        # Sort arr1 based on the relative order in arr2
+        sorted_arr = []
+        for num in arr2:
+            sorted_arr.extend([num] * counts[num])
+            del counts[num]
+        
+        # Append the remaining elements in arr1 in ascending order
+        for num in sorted(counts.keys()):
+            sorted_arr.extend([num] * counts[num])
+        
+        return sorted_arr
+```
+
+You can create an instance of the `Solution` class and call the `relativeSortArray` method to sort the elements of `arr1` based on the relative ordering in `arr2`. Here's an example of how to use it:
+
+```python
+arr1 = [2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19]
+arr2 = [2, 1, 4, 3, 9, 6]
+
+solution = Solution()
+result = solution.relativeSortArray(arr1, arr2)
+print(result)
+```
+
+Output:
+```
+[2, 2, 2, 1, 4, 3, 3, 9, 6, 7, 19]
+```
+
+Note that the implementation uses a dictionary to count the occurrences of each element in `arr1`. The `counts` dictionary is then used to determine the order of elements in `arr1` based on the order in `arr2`. Finally, the remaining elements in `arr1` that are not in `arr2` are appended to the end of the sorted array in ascending order.

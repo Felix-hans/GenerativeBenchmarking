@@ -1,0 +1,43 @@
+Here is the implementation of the given task:
+
+```go
+func equalPairs(grid [][]int) int {
+    count := 0
+
+    rows := make(map[string]int)
+    cols := make(map[string]int)
+
+    n := len(grid)
+
+    for i := 0; i < n; i++ {
+        rowStr := ""
+        colStr := ""
+
+        for j := 0; j < n; j++ {
+            rowStr += strconv.Itoa(grid[i][j]) + ","
+            colStr += strconv.Itoa(grid[j][i]) + ","
+        }
+
+        rows[rowStr]++
+        cols[colStr]++
+    }
+
+    for _, val := range rows {
+        count += (val * (val - 1)) / 2
+    }
+
+    for _, val := range cols {
+        count += (val * (val - 1)) / 2
+    }
+
+    return count
+}
+```
+
+The solution uses two maps, `rows` and `cols`, to keep track of the frequency of row and column strings in the `grid` matrix. The row string is formed by concatenating all the elements of a row separated by a comma, and the column string is formed by concatenating all the elements of a column separated by a comma.
+
+The solution then iterates over the `grid` matrix and generates row and column strings for each row and column. It increments the count of these strings in the `rows` and `cols` maps. 
+
+Finally, the solution calculates the count of pairs by iterating over the values in the `rows` and `cols` maps. It uses the formula `(val * (val - 1)) / 2` to calculate the number of pairs for each string, where `val` is the frequency of the string. The count of pairs is then incremented by this value.
+
+The function returns the total count of pairs.

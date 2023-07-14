@@ -1,0 +1,49 @@
+Here is the implementation of the above task in Go:
+
+```go
+func substringXorQueries(s string, queries [][]int) [][]int {
+	// Preprocess the binary string to calculate the xor prefix sum
+	n := len(s)
+	xorSum := make([]int, n+1)
+	for i := 1; i <= n; i++ {
+		// Calculate the prefix xor value at index i
+		xorSum[i] = xorSum[i-1] ^ int(s[i-1]-'0')
+	}
+
+	// Process each query
+	ans := make([][]int, len(queries))
+	for i, query := range queries {
+		left, right := query[0], query[1]
+		// Calculate the xor value for the given range
+		xorValue := xorSum[right+1] ^ xorSum[left]
+
+		// Find the leftmost occurrence of the xor value in the xor prefix sum
+		leftIndex := -1
+		for j := 0; j <= right; j++ {
+			if xorSum[j] == xorValue {
+				leftIndex = j
+				break
+			}
+		}
+
+		if leftIndex == -1 {
+			// If the xor value is not found, set the endpoints to -1
+			ans[i] = []int{-1, -1}
+		} else {
+			// Find the rightmost occurrence of the xor value in the xor prefix sum
+			rightIndex := leftIndex
+			for j := right; j >= left; j-- {
+				if xorSum[j] == xorValue {
+					rightIndex = j
+					break
+				}
+			}
+			ans[i] = []int{leftIndex, rightIndex - 1} // Adjust the right endpoint by 1
+		}
+	}
+
+	return ans
+}
+```
+
+The solution first calculates the xor prefix sum for the binary string `s` using the values `'0'` and `'1'`. Then, for each query, it calculates the xor value for the given range and finds the leftmost and rightmost occurrences of that xor value in the xor prefix sum. If the xor value is not found, it sets the endpoints to -1. Otherwise, it sets the left endpoint to the leftmost occurrence and the right endpoint to the rightmost occurrence minus 1 (to get the correct substring endpoints). Finally, it returns the array `ans` containing the answers to all the queries.

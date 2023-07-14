@@ -1,0 +1,43 @@
+To solve this problem, we can iterate over each index `i` in the range `k <= i < n - k` and check if the two subarrays before and after `i` satisfy the given conditions. If they do, we add `i` to the result array.
+
+Here's the implementation in Go:
+
+```go
+func goodIndices(nums []int, k int) []int {
+    n := len(nums)
+
+    var result []int
+
+    for i := k; i < n-k; i++ {
+        good := true
+
+        // Check the subarray before i
+        for j := i-k; j < i; j++ {
+            if nums[j] < nums[j+1] {
+                good = false
+                break
+            }
+        }
+
+        // Check the subarray after i
+        for j := i; j < i+k; j++ {
+            if nums[j] > nums[j+1] {
+                good = false
+                break
+            }
+        }
+
+        if good {
+            result = append(result, i)
+        }
+    }
+
+    return result
+}
+```
+
+In this implementation, we initialize an empty `result` array to store the good indices. Then, we iterate over the indices from `k` to `n-k` (inclusive) and check the two subarrays before and after `i` for the given conditions. If both subarrays satisfy the conditions, we append `i` to the `result` array.
+
+Finally, we return the `result` array containing all the good indices.
+
+The time complexity of this solution is O(nk), where n is the length of the input array and k is the given positive integer. The space complexity is O(1) as we are only using a constant amount of extra space to store the result array.

@@ -1,0 +1,38 @@
+First, we need to check if it is possible to divide the players into teams such that the total skill of each team is equal. The total sum of skills should be even, otherwise it will not be possible to divide the players equally.
+
+Then, we can start by sorting the skill array in non-decreasing order. We can use the built-in sort function in Go for this.
+
+Next, we can iterate through the sorted skill array and form teams by pairing players with adjacent skills. We can calculate the chemistry of each team by multiplying the skills of the two players.
+
+Finally, we can return the sum of the chemistry of all the teams. If it is not possible to divide the players equally, we return -1 as instructed.
+
+Here is the implementation in Go:
+
+```go
+import "sort"
+
+func dividePlayers(skill []int) int {
+    // Check if it is possible to divide the players into teams
+    totalSkills := 0
+    for _, s := range skill {
+        totalSkills += s
+    }
+    if totalSkills%2 != 0 {
+        return -1
+    }
+    
+    // Sort the skill array
+    sort.Ints(skill)
+    
+    // Divide the players into teams and calculate the chemistry
+    n := len(skill)
+    sum := 0
+    for i := 0; i < n/2; i++ {
+        sum += skill[i] * skill[n-i-1]
+    }
+    
+    return sum
+}
+```
+
+The time complexity of this solution is O(n log n) due to the sorting step. The space complexity is O(1) as we are not using any extra space.

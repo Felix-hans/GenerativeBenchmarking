@@ -1,0 +1,48 @@
+To solve the problem, we can use dynamic programming. We'll create a 2D array `dp` to store the maximum profit at each day and the number of transactions made so far.
+
+Here's the implementation:
+
+```python
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+        
+        # If k is greater than or equal to half the number of prices,
+        # we can perform as many transactions as we want. In this case,
+        # the problem is reduced to a simpler problem of finding maximum
+        # profit with unlimited transactions.
+        if k >= n // 2:
+            return self.maxProfitUnlimitedTransactions(prices)
+        
+        # Initialize the dp array
+        dp = [[0] * (k + 1) for _ in range(n)]
+        
+        for i in range(1, k + 1):
+            # Initialize the variables for tracking the maximum profit and the minimum price
+            maxProfit = 0
+            minPrice = prices[0]
+            
+            for j in range(1, n):
+                # Update the minimum price if we can buy at a lower price
+                minPrice = min(minPrice, prices[j] - dp[j - 1][i - 1])
+                
+                # Calculate the maximum profit we can achieve by either not making a transaction on day j
+                # or by selling the stock on day j at the current price
+                dp[j][i] = max(dp[j - 1][i], prices[j] - minPrice)
+                
+                # Update the maximum profit if necessary
+                maxProfit = max(maxProfit, dp[j][i])
+        
+        return maxProfit
+    
+    def maxProfitUnlimitedTransactions(self, prices: List[int]) -> int:
+        # Calculate the maximum profit with unlimited transactions
+        maxProfit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                maxProfit += prices[i] - prices[i - 1]
+        
+        return maxProfit
+```
+
+This solution has a time complexity of O(n * k), where n is the length of the prices array and k is the maximum number of transactions allowed.

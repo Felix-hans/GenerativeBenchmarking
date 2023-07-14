@@ -1,0 +1,28 @@
+You can use a recursive approach to solve this problem. Here's the implementation of the `tree2str` function:
+
+```python
+class Solution:
+    def tree2str(self, root: Optional[TreeNode]) -> str:
+        if root is None:
+            return ""
+
+        left_str = self.tree2str(root.left)
+        right_str = self.tree2str(root.right)
+
+        if left_str == "" and right_str == "":
+            return str(root.val)
+
+        if right_str == "":
+            return str(root.val) + "(" + left_str + ")"
+
+        return str(root.val) + "(" + left_str + ")" + "(" + right_str + ")"
+```
+
+Explanation:
+1. The base case is when the `root` is `None`, in which case we return an empty string.
+2. Recursively call `tree2str` function on the left and right subtrees, storing the returned strings in `left_str` and `right_str` variables.
+3. If both `left_str` and `right_str` are empty, it means the current node is a leaf node, so we return the string representation of the current node's value.
+4. If only `right_str` is empty, it means the current node has a left child but no right child. In this case, we return the string representation of the current node's value followed by the left subtree in parentheses.
+5. If both `left_str` and `right_str` are non-empty, we return the string representation of the current node's value followed by the left subtree in parentheses, then the right subtree in parentheses.
+
+By following this approach, we can construct the desired string representation of the binary tree using the preorder traversal.

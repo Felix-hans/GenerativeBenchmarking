@@ -1,0 +1,27 @@
+To find the maximum profit while considering transaction fees, we can use a dynamic programming approach. We can define two variables, `cash` and `hold`, where `cash` represents the maximum profit when we don't hold any stock and `hold` represents the maximum profit when we hold a stock.
+
+Here's the implementation of the `maxProfit` function in Python:
+
+```python
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+        n = len(prices)
+        cash = 0  # maximum profit when not holding any stock
+        hold = -prices[0]  # maximum profit when holding a stock
+        
+        for i in range(1, n):
+            cash = max(cash, hold + prices[i] - fee)  # Either continue not holding the stock or sell the stock
+            hold = max(hold, cash - prices[i])  # Either continue holding the stock or buy a new stock
+        
+        return cash
+```
+
+In this implementation, we iterate over the prices starting from the second day (`range(1, n)`) since we initialize `cash` and `hold` with the values from the first day.
+
+Within each iteration, we update `cash` and `hold` using the maximum of two possibilities:
+
+1. `cash` is updated by comparing the current value of `cash` with the profit of selling the stock on the current day (`hold + prices[i] - fee`). We subtract the transaction fee since we need to pay it for each transaction. This represents the scenario where we don't hold any stock on the current day.
+
+2. `hold` is updated by comparing the current value of `hold` with the profit of buying the stock on the current day (`cash - prices[i]`). This represents the scenario where we continue holding the stock.
+
+Finally, we return the value of `cash`, which represents the maximum profit achievable after considering all transactions and fees.

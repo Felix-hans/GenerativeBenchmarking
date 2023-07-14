@@ -1,0 +1,35 @@
+To solve this problem, we can iterate through the given stock prices array and count the number of times the price changes. Each time the price changes, we increment a count variable. 
+
+Here is the implementation of the `minimumLines` function in Go:
+
+```go
+func minimumLines(stockPrices [][]int) int {
+    if len(stockPrices) == 0 {
+        return 0
+    }
+    
+    count := 1 // start with one line
+    prevPrice := stockPrices[0][1] // initialize the previous price to the first price in the array
+    
+    for i := 1; i < len(stockPrices); i++ {
+        currPrice := stockPrices[i][1] // get the current price
+        
+        if currPrice != prevPrice {
+            count++ // increment the count if the price changes
+            prevPrice = currPrice // update the previous price to the current price
+        }
+    }
+    
+    return count
+}
+```
+
+In this implementation, we first handle the edge case where the stock prices array is empty. We return 0 in this case as there are no lines needed to represent the line chart.
+
+We then initialize the count variable to 1, as we always need at least one line to represent the line chart. We also initialize the prevPrice variable to the price of the first day in the array.
+
+Next, we iterate through the stockPrices array starting from the second day. For each day, we compare the current price with the previous price. If they are different, it means the price has changed and we need to increment the count variable and update the previous price.
+
+Finally, we return the count variable as the minimum number of lines needed to represent the line chart.
+
+Note: The given problem statement does not require importing any modules, so there are no import statements in the provided solution.

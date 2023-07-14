@@ -1,0 +1,54 @@
+To solve this task, we can follow these steps:
+
+1. Split the input string `s` into a list of words using the `split()` method, which splits the string at whitespace.
+2. Find the length of the longest word in the list of words. This will determine the number of columns in our vertical representation.
+3. Initialize an empty list `result` to store the vertically arranged words.
+4. Iterate over the range of the length of the longest word.
+5. For each column index `i`, iterate over the words in the list of words.
+6. If the word has a length greater than `i`, append the character at index `i` to the `result` list.
+   - Otherwise, append a space to the `result` list.
+7. Join the characters in each column of the `result` list to form strings.
+8. Return the `result` list as the final output.
+
+Here's the implementation of the `printVertically` function:
+
+```python
+from typing import List
+
+class Solution:
+    def printVertically(self, s: str) -> List[str]:
+        words = s.split()
+        max_length = max(len(word) for word in words)
+        result = []
+        
+        for i in range(max_length):
+            column = ''
+            for word in words:
+                if i < len(word):
+                    column += word[i]
+                else:
+                    column += ' '
+            result.append(column.rstrip())  # Remove trailing spaces
+        
+        return result
+```
+
+Now we can create an instance of the `Solution` class and test the function with the given examples:
+
+```python
+solution = Solution()
+
+s = "HOW ARE YOU"
+print(solution.printVertically(s))
+# Output: ["HAY","ORO","WEU"]
+
+s = "TO BE OR NOT TO BE"
+print(solution.printVertically(s))
+# Output: ["TBONTB","OEROOE","   T"]
+
+s = "CONTEST IS COMING"
+print(solution.printVertically(s))
+# Output: ["CIC","OSO","N M","T I","E N","S G","T"]
+```
+
+The code will produce the expected outputs for the given examples.

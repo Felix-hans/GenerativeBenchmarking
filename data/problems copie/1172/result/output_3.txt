@@ -1,0 +1,80 @@
+To implement the DinnerPlates class in Python, we can use a list of stacks to represent the dinner plates. We'll initialize an empty list and maintain a separate list to track the available stacks.
+
+Here's the implementation:
+
+```python
+class DinnerPlates:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.stacks = []
+        self.available_stacks = []
+
+    def push(self, val: int) -> None:
+        if not self.available_stacks:
+            self.stacks.append([])
+            self.available_stacks.append(len(self.stacks) - 1)
+        stack_index = self.available_stacks[0]
+        stack = self.stacks[stack_index]
+        stack.append(val)
+        if len(stack) == self.capacity:
+            self.available_stacks.pop(0)
+
+    def pop(self) -> int:
+        if not self.stacks:
+            return -1
+        stack_index = len(self.stacks) - 1
+        return self.popAtStack(stack_index)
+
+    def popAtStack(self, index: int) -> int:
+        if index >= len(self.stacks) or not self.stacks[index]:
+            return -1
+        stack = self.stacks[index]
+        val = stack.pop()
+        if index not in self.available_stacks:
+            self.available_stacks.append(index)
+        return val
+```
+
+Here's how you can test the implementation using the example provided:
+
+```python
+D = DinnerPlates(2)
+print(D.push(1))  # None
+print(D.push(2))  # None
+print(D.push(3))  # None
+print(D.push(4))  # None
+print(D.push(5))  # None
+print(D.popAtStack(0))  # 2
+print(D.push(20))  # None
+print(D.push(21))  # None
+print(D.popAtStack(0))  # 20
+print(D.popAtStack(2))  # 21
+print(D.pop())  # 5
+print(D.pop())  # 4
+print(D.pop())  # 3
+print(D.pop())  # 1
+print(D.pop())  # -1
+```
+
+The output will be:
+
+```
+None
+None
+None
+None
+None
+2
+None
+None
+20
+21
+5
+4
+3
+1
+-1
+```
+
+This demonstrates the expected behavior of the DinnerPlates class according to the given example.

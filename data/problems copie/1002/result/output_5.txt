@@ -1,0 +1,50 @@
+You can implement the task using the following code:
+
+```python
+from typing import List
+
+class Solution:
+    def commonChars(self, words: List[str]) -> List[str]:
+        if not words:
+            return []
+
+        # Initialize the count dictionary with the character counts from the first word
+        char_count = {}
+        for char in words[0]:
+            char_count[char] = char_count.get(char, 0) + 1
+
+        # Update the character counts by iterating through the remaining words
+        for word in words[1:]:
+            temp_count = {}
+            for char in word:
+                if char in char_count:
+                    temp_count[char] = temp_count.get(char, 0) + 1
+                    if temp_count[char] > char_count[char]:
+                        temp_count[char] = char_count[char]
+            char_count = temp_count
+
+        # Convert the character counts to the output list
+        output = []
+        for char, count in char_count.items():
+            output.extend([char] * count)
+
+        return output
+```
+
+Here's how you can use the `Solution` class:
+
+```python
+words = ["bella", "label", "roller"]
+solution = Solution()
+common_chars = solution.commonChars(words)
+print(common_chars)  # Output: ["e", "l", "l"]
+```
+
+```python
+words = ["cool", "lock", "cook"]
+solution = Solution()
+common_chars = solution.commonChars(words)
+print(common_chars)  # Output: ["c", "o"]
+```
+
+The `commonChars` method takes in a list of words and returns a list of characters that appear in all the words. The approach used is to keep track of the count of characters in the first word using a dictionary. Then, iterate through the remaining words and update the character counts accordingly. Finally, convert the character counts to the output list by extending the character for each count in the dictionary.
